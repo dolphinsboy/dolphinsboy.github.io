@@ -5,12 +5,12 @@
   
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <link rel="dns-prefetch" href="http://yoursite.com">
+  <link rel="dns-prefetch" href="http://dolphinsboy.github.io">
   <title>郭颂</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
 <meta property="og:title" content="郭颂">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://dolphinsboy.github.io/index.html">
 <meta property="og:site_name" content="郭颂">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="郭颂">
@@ -147,20 +147,20 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-2017-11-13-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-2017-11-13-leetcode-L15-3sum" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017-11-13-hello-world/">2017_11_13_hello_world</a>
+      <a class="article-title" href="/2017-11-13-leetcode-L15-3sum/">Leetcode L15 3sum</a>
     </h1>
   
 
         
-        <a href="/2017-11-13-hello-world/" class="archive-article-date">
-  	<time datetime="2017-11-13T07:12:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-13</time>
+        <a href="/2017-11-13-leetcode-L15-3sum/" class="archive-article-date">
+  	<time datetime="2017-11-13T07:29:46.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-13</time>
 </a>
         
       </header>
@@ -169,11 +169,17 @@
       
             
 <div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Hello-World"><span class="toc-text">Hello World</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解题思路"><span class="toc-text">解题思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go版本"><span class="toc-text">Go版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python版本"><span class="toc-text">Python版本</span></a></li></ol>
 </div>
 
 
-            <h3 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h3>
+            <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
+<p>Note: The solution set must not contain duplicate triplets.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">For example, given array S = [-1, 0, 1, 2, -1, -4],</span><br><span class="line"></span><br><span class="line">A solution set is:</span><br><span class="line">[</span><br><span class="line">  [-1, 0, 1],</span><br><span class="line">  [-1, -1, 2]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>首先将数组进行排序，排序后使用3个索引进行sum的判断</p>
+<h3 id="Go版本"><a href="#Go版本" class="headerlink" title="Go版本"></a>Go版本</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">threeSum</span><span class="params">(nums []<span class="keyword">int</span>)</span> [][]<span class="title">int</span></span> &#123;</span><br><span class="line">    l := <span class="built_in">len</span>(nums)</span><br><span class="line">    r := [][]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    sort.Ints(nums)</span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>; i&lt;l<span class="number">-2</span>;i++  &#123;</span><br><span class="line">        j := i+<span class="number">1</span></span><br><span class="line">        k := l<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j&lt;k &#123;</span><br><span class="line">            s := nums[i] + nums[j] + nums[k]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> s&gt;<span class="number">0</span>&#123;</span><br><span class="line">                k--</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> s&lt;<span class="number">0</span> &#123;</span><br><span class="line">                j++</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                row:=[]<span class="keyword">int</span>&#123;nums[i],nums[j], nums[k]&#125;</span><br><span class="line">                flag := <span class="literal">true</span></span><br><span class="line">                <span class="keyword">for</span> _, v := <span class="keyword">range</span> r&#123;</span><br><span class="line">                    <span class="keyword">if</span> v[<span class="number">0</span>]==row[<span class="number">0</span>] &amp;&amp;v[<span class="number">1</span>] == row[<span class="number">1</span>] &amp;&amp; v[<span class="number">2</span>] == row[<span class="number">2</span>] &#123;</span><br><span class="line">                        flag = <span class="literal">false</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> flag &#123;</span><br><span class="line">                    r = <span class="built_in">append</span>(r,row)</span><br><span class="line">                &#125;</span><br><span class="line">                j++</span><br><span class="line">                k--</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Python版本"><a href="#Python版本" class="headerlink" title="Python版本"></a>Python版本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">threeSum</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        r = []</span><br><span class="line"></span><br><span class="line">        nums = sorted(nums)</span><br><span class="line">        l = len(nums)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(l):</span><br><span class="line">            j = i + <span class="number">1</span></span><br><span class="line">            k = l - <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> j &lt; k:</span><br><span class="line">                s = nums[i] + nums[j] + nums[k]</span><br><span class="line">                <span class="keyword">if</span> s &gt; <span class="number">0</span>:</span><br><span class="line">                    k -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">elif</span> s &lt; <span class="number">0</span>:</span><br><span class="line">                    j += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    t = [nums[i], nums[j], nums[k]]</span><br><span class="line">                    <span class="keyword">if</span> t <span class="keyword">not</span> <span class="keyword">in</span> r:</span><br><span class="line">                        r.append(t)</span><br><span class="line">                    j += <span class="number">1</span></span><br><span class="line">                    k -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+
       
 
       
@@ -186,7 +192,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Test</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">LeetCode</a>
         		</li>
       		
 		</ul>
@@ -196,7 +202,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017-11-13-hello-world/">展开全文 >></a>
+          <a class="article-more-a" href="/2017-11-13-leetcode-L15-3sum/">展开全文 >></a>
         </p>
       
 
@@ -1107,7 +1113,7 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Test</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>
