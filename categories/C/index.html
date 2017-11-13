@@ -6,18 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://dolphinsboy.github.io">
-  <title>使用信号量实现超时 | 郭颂</title>
+  <title>Category: C | 郭颂</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1. C语言版本使用信号量实现超时功能-C版本12345678910111213141516171819202122232425262728 include &quot;apue.h&quot;static void sig_alm(int);int main()&amp;#123;int i;if (signal(SIGALRM, sig_alm) == SIG_ERR)err_sys(&quot;signal error&quot;);al">
-<meta property="og:type" content="article">
-<meta property="og:title" content="使用信号量实现超时">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-05-27-unixxin-hao-ce-shi-chao-shi/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="郭颂">
+<meta property="og:url" content="http://dolphinsboy.github.io/categories/C/index.html">
 <meta property="og:site_name" content="郭颂">
-<meta property="og:description" content="1. C语言版本使用信号量实现超时功能-C版本12345678910111213141516171819202122232425262728 include &quot;apue.h&quot;static void sig_alm(int);int main()&amp;#123;int i;if (signal(SIGALRM, sig_alm) == SIG_ERR)err_sys(&quot;signal error&quot;);al">
-<meta property="og:updated_time" content="2017-11-13T07:49:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用信号量实现超时">
-<meta name="twitter:description" content="1. C语言版本使用信号量实现超时功能-C版本12345678910111213141516171819202122232425262728 include &quot;apue.h&quot;static void sig_alm(int);int main()&amp;#123;int i;if (signal(SIGALRM, sig_alm) == SIG_ERR)err_sys(&quot;signal error&quot;);al">
+<meta name="twitter:title" content="郭颂">
   
     <link rel="alternative" href="/atom.xml" title="郭颂" type="application/atom+xml">
   
@@ -149,75 +145,37 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-05-27-unixxin-hao-ce-shi-chao-shi" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      使用信号量实现超时
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2015" class="archive-year">2015</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2015-05-27-unixxin-hao-ce-shi-chao-shi/" class="archive-article-date">
+  	<time datetime="2015-05-27T03:39:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-05-27</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2015-05-27-unixxin-hao-ce-shi-chao-shi/">使用信号量实现超时</a>
     </h1>
   
 
-        
-        <a href="/2015-05-27-unixxin-hao-ce-shi-chao-shi/" class="archive-article-date">
-  	<time datetime="2015-05-27T03:39:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-05-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-            
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-C语言版本"><span class="toc-text">1. C语言版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Python版本"><span class="toc-text">2. Python版本</span></a></li></ol>
-</div>
-
-
-            <h3 id="1-C语言版本"><a href="#1-C语言版本" class="headerlink" title="1. C语言版本"></a>1. C语言版本</h3><figure class="highlight c"><figcaption><span>使用信号量实现超时功能-C版本</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"> include <span class="string">"apue.h"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sig_alm</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">if</span> (signal(SIGALRM, sig_alm) == SIG_ERR)</span><br><span class="line">err_sys(<span class="string">"signal error"</span>);</span><br><span class="line"></span><br><span class="line">alarm(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"pid = %d\n"</span>, getpid());</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i&lt; <span class="number">20</span>; i++)&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"i = %d\n"</span>,i);</span><br><span class="line">sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sig_alm</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (signo == SIGALRM)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"received SIGALRM\n"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"pid=%d\n"</span>, getpid());</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h3 id="2-Python版本"><a href="#2-Python版本" class="headerlink" title="2. Python版本"></a>2. Python版本</h3><figure class="highlight python"><figcaption><span>使用信号量实现超时功能-Python版本</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps</span><br><span class="line"><span class="keyword">import</span> errno</span><br><span class="line"><span class="keyword">import</span> signal</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line">TIMEOUT=<span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TimeoutError</span><span class="params">(Exception)</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, message=None, **kwargs)</span>:</span></span><br><span class="line">self.message = message</span><br><span class="line">super(TimeoutError, self).__init__(**kwargs)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="keyword">return</span> self.message</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">timeout</span><span class="params">(seconds=<span class="number">10</span>, error_message=os.strerror<span class="params">(errno.ETIME)</span>)</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(func)</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_handle_timeout</span><span class="params">(signum, frame)</span>:</span></span><br><span class="line"><span class="keyword">raise</span> TimeoutError(error_message)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">signal.signal(signal.SIGALRM, _handle_timeout)</span><br><span class="line">signal.alarm(seconds)</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">result = func(*args, **kwargs)</span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">signal.alarm(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> wraps(func)(wrapper)</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> decorator</span><br><span class="line"></span><br><span class="line"><span class="meta">@timeout(seconds=TIMEOUT,error_message='tcpdump call timeout')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tcpdump</span><span class="params">(eth,port,count)</span>:</span></span><br><span class="line"><span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
-                      <span class="reward-type">支付宝</span>
-                    </div>
-                    
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
-                      <span class="reward-type">微信</span>
-                    </div>
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
+        <div class="article-info info-on-right">
+          
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -234,124 +192,93 @@
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-05-27-unixxin-hao-ce-shi-chao-shi/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
   
-<nav id="article-nav">
-  
-    <a href="/2015-05-27-iotong-ji/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          IO统计
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015-05-18-tcpdumpjie-xi-sql/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">tcpdump解析SQL</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/" class="archive-article-date">
+  	<time datetime="2015-05-15T09:15:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-05-15</time>
+</a>
         </div>
-        
-        
-    </div>
-</aside>
-
-
-
+    	 
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-05-27-unixxin-hao-ce-shi-chao-shi/", 
-    sourceId: "2015-05-27-unixxin-hao-ce-shi-chao-shi",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/">C宏定义的特殊用法</a>
+    </h1>
   
 
+        <div class="article-info info-on-right">
+          
+          
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/C/" class="article-tag-list-link color2">C</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+    
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2015-05-14-ccheng-xu-cun-chu-kong-jian/" class="archive-article-date">
+  	<time datetime="2015-05-14T03:39:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-05-14</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2015-05-14-ccheng-xu-cun-chu-kong-jian/">C程序存储空间</a>
+    </h1>
   
 
+        <div class="article-info info-on-right">
+          
+          
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/C/" class="article-tag-list-link color2">C</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+        </div>
+        <div class="clearfix"></div>
+    </header>
+  </div>
+</article>
+  
+  
+    </div></section>
   
 
-  
+    
 
 
           </div>
@@ -375,10 +302,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
