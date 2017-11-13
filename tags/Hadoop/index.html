@@ -6,18 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://dolphinsboy.github.io">
-  <title>ELK搭建过程 | 郭颂</title>
+  <title>Tag: Hadoop | 郭颂</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1、背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 2、ELK搭建过程文档之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ELK搭建过程">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-06-03-elkda-jian-guo-cheng/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="郭颂">
+<meta property="og:url" content="http://dolphinsboy.github.io/tags/Hadoop/index.html">
 <meta property="og:site_name" content="郭颂">
-<meta property="og:description" content="1、背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 2、ELK搭建过程文档之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ELK搭建过程">
-<meta name="twitter:description" content="1、背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 2、ELK搭建过程文档之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:">
+<meta name="twitter:title" content="郭颂">
   
     <link rel="alternative" href="/atom.xml" title="郭颂" type="application/atom+xml">
   
@@ -149,210 +145,60 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-06-03-elkda-jian-guo-cheng" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      ELK搭建过程
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2016" class="archive-year">2016</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2016-12-23-zai-aws-ec2da-jian-hadoop2-dot-6ji-qun/" class="archive-article-date">
+  	<time datetime="2016-12-23T05:55:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-23</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2016-12-23-zai-aws-ec2da-jian-hadoop2-dot-6ji-qun/">在AWS EC2搭建Hadoop2.6集群</a>
     </h1>
   
 
-        
-        <a href="/2015-06-03-elkda-jian-guo-cheng/" class="archive-article-date">
-  	<time datetime="2015-06-03T02:41:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-06-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-            
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、背景"><span class="toc-text">1、背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、ELK搭建过程文档"><span class="toc-text">2、ELK搭建过程文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、重点"><span class="toc-text">3、重点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、新浪使用ELK进行日志分析"><span class="toc-text">4、新浪使用ELK进行日志分析</span></a></li></ol>
-</div>
-
-
-            <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。</p>
-<h3 id="2、ELK搭建过程文档"><a href="#2、ELK搭建过程文档" class="headerlink" title="2、ELK搭建过程文档"></a>2、ELK搭建过程文档</h3><p>之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:</p>
-<a id="more"></a>
-<p>参照百度网盘上的链接<a href="http://pan.baidu.com/s/1pJKFoE3" target="_blank" rel="external">http://pan.baidu.com/s/1pJKFoE3</a></p>
-<h3 id="3、重点"><a href="#3、重点" class="headerlink" title="3、重点"></a>3、重点</h3><p>根据上面的文档就可以搭建出ELK了，其中对于日志分析的重点还是写正则表达式。<br>文档中提供Grok，在线工具非常值得推荐<a href="http://grokdebug.herokuapp.com/" target="_blank" rel="external">http://grokdebug.herokuapp.com/</a></p>
-<p>常用的patterns：<a href="https://github.com/logstash/logstash/tree/v1.4.0/patterns" target="_blank" rel="external">https://github.com/logstash/logstash/tree/v1.4.0/patterns</a></p>
-<p>可以根据的日志格式生成定义的pattern，定义好的变量可以放在${LogstashHOME}/patterns/grok-patterns文件中。</p>
-<h3 id="4、新浪使用ELK进行日志分析"><a href="#4、新浪使用ELK进行日志分析" class="headerlink" title="4、新浪使用ELK进行日志分析"></a>4、新浪使用ELK进行日志分析</h3><p><a href="http://mp.weixin.qq.com/s?__biz=MzA5OTAyNzQ2OA==&amp;mid=207036526&amp;idx=1&amp;sn=b0de410e0d1026cd100ac2658e093160&amp;scene=5#rd" target="_blank" rel="external">新浪是如何分析处理32亿条实时日志的?</a></p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
-                      <span class="reward-type">支付宝</span>
-                    </div>
-                    
-                    
-                    <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
-                      <span class="reward-type">微信</span>
-                    </div>
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
+        <div class="article-info info-on-right">
+          
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/ElasticSearch-Logstash-Kibana/" class="article-tag-list-link color5">ElasticSearch Logstash Kibana</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Hadoop</a>
         		</li>
       		
 		</ul>
 	</div>
 
+          
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-06-03-elkda-jian-guo-cheng/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2015-06-08-pythondan-yuan-ce-shi/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Python单元测试
-        
-      </div>
-    </a>
   
   
-    <a href="/2015-06-02-tornadoyi-bu-fei-zu-sai/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">tornado异步非阻塞</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-06-03-elkda-jian-guo-cheng/", 
-    sourceId: "2015-06-03-elkda-jian-guo-cheng",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -376,9 +222,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
