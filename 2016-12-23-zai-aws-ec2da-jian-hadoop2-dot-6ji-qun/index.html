@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://dolphinsboy.github.io">
   <title>在AWS EC2搭建Hadoop2.6集群 | 郭颂</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="升级Java版本12345sudo yum install java-1.8.0-openjdk.x86_64#生成jpssudo yum install java-1.8.0-openjdk-devel.x86_64sudo alternatives --config java 安装hadoophttp://www.powerxing.com/install-hadoop-cluster/ 12">
+  <meta name="description" content="升级Java版本Hadoop2.X版本需要JDK1.8版本，故首要任务就先升级JDK 1234sudo yum install java-1.8.0-openjdk.x86_64#生成jpssudo yum install java-1.8.0-openjdk-devel.x86_64sudo alternatives --config java">
 <meta name="keywords" content="Hadoop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在AWS EC2搭建Hadoop2.6集群">
 <meta property="og:url" content="http://dolphinsboy.github.io/2016-12-23-zai-aws-ec2da-jian-hadoop2-dot-6ji-qun/index.html">
 <meta property="og:site_name" content="郭颂">
-<meta property="og:description" content="升级Java版本12345sudo yum install java-1.8.0-openjdk.x86_64#生成jpssudo yum install java-1.8.0-openjdk-devel.x86_64sudo alternatives --config java 安装hadoophttp://www.powerxing.com/install-hadoop-cluster/ 12">
-<meta property="og:updated_time" content="2017-11-13T08:00:31.000Z">
+<meta property="og:description" content="升级Java版本Hadoop2.X版本需要JDK1.8版本，故首要任务就先升级JDK 1234sudo yum install java-1.8.0-openjdk.x86_64#生成jpssudo yum install java-1.8.0-openjdk-devel.x86_64sudo alternatives --config java">
+<meta property="og:updated_time" content="2017-11-13T08:03:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在AWS EC2搭建Hadoop2.6集群">
-<meta name="twitter:description" content="升级Java版本12345sudo yum install java-1.8.0-openjdk.x86_64#生成jpssudo yum install java-1.8.0-openjdk-devel.x86_64sudo alternatives --config java 安装hadoophttp://www.powerxing.com/install-hadoop-cluster/ 12">
+<meta name="twitter:description" content="升级Java版本Hadoop2.X版本需要JDK1.8版本，故首要任务就先升级JDK 1234sudo yum install java-1.8.0-openjdk.x86_64#生成jpssudo yum install java-1.8.0-openjdk-devel.x86_64sudo alternatives --config java">
   
     <link rel="alternative" href="/atom.xml" title="郭颂" type="application/atom+xml">
   
@@ -176,7 +176,9 @@
 </div>
 
 
-            <h3 id="升级Java版本"><a href="#升级Java版本" class="headerlink" title="升级Java版本"></a>升级Java版本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install java-1.8.0-openjdk.x86_64</span><br><span class="line">#生成jps</span><br><span class="line">sudo yum install java-1.8.0-openjdk-devel.x86_64</span><br><span class="line"></span><br><span class="line">sudo alternatives --config java</span><br></pre></td></tr></table></figure>
+            <h3 id="升级Java版本"><a href="#升级Java版本" class="headerlink" title="升级Java版本"></a>升级Java版本</h3><p>Hadoop2.X版本需要JDK1.8版本，故首要任务就先升级JDK</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install java-1.8.0-openjdk.x86_64</span><br><span class="line">#生成jps</span><br><span class="line">sudo yum install java-1.8.0-openjdk-devel.x86_64</span><br><span class="line">sudo alternatives --config java</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <h3 id="安装hadoop"><a href="#安装hadoop" class="headerlink" title="安装hadoop"></a>安装hadoop</h3><p><a href="http://www.powerxing.com/install-hadoop-cluster/" target="_blank" rel="external">http://www.powerxing.com/install-hadoop-cluster/</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hdfs namenode -format       # 首次运行需要执行初始化，之后不需要</span><br><span class="line">start-dfs.sh</span><br><span class="line">start-yarn.sh</span><br><span class="line">mr-jobhistory-daemon.sh start historyserver</span><br></pre></td></tr></table></figure>
 <h3 id="安装zookeeper"><a href="#安装zookeeper" class="headerlink" title="安装zookeeper"></a>安装zookeeper</h3><p><a href="http://blog.csdn.net/huwei2003/article/details/49101269" target="_blank" rel="external">http://blog.csdn.net/huwei2003/article/details/49101269</a></p>
