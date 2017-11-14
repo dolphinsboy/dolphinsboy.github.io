@@ -147,6 +147,88 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-01-05-mysqlda-xiao-can-shu-she-zhi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016-01-05-mysqlda-xiao-can-shu-she-zhi/">mysql大小参数设置</a>
+    </h1>
+  
+
+        
+        <a href="/2016-01-05-mysqlda-xiao-can-shu-she-zhi/" class="archive-article-date">
+  	<time datetime="2016-01-05T02:22:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+            
+<div id="toc">
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制"><span class="toc-text">MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制</span></a></li></ol>
+</div>
+
+
+            <h2 id="MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制"><a href="#MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制" class="headerlink" title="MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制"></a>MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制</h2><p>&gt;<br>It is strongly recommended that you always use the same setting for the lower_case_table_names system variable on both master and slave. In particular, when a case-sensitive file system is used, setting this variable to 1 on the slave, but to a different value on the master, can cause two types of problems: Names of databases are not converted to lowercase; in addition, when using row-based replication names of tables are also not converted. Either of these problems can cause replication to fail. This is a known issue, which is fixed in MySQL 5.6.</p>
+<p>否则会出现同步错误：<br>&gt;<br>Last_SQL_Errno: 1146<br>Last_SQL_Error: Error executing row event: ‘Table’ 10futu.commentAZXI’ doesn’t exist</p>
+<p><a href="http://dev.mysql.com/doc/refman/5.5/en/replication-features-variables.html" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.5/en/replication-features-variables.html</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MySQL/" class="article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016-01-05-mysqlda-xiao-can-shu-she-zhi/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2015-12-29-pt-online-schema-changeshi-yong-fang-fa" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -864,83 +946,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2015-10-22-redisnei-cun-shi-yong-qing-kuang-tong-ji/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-2015-10-15-mo-ni-mysql-ioxian-cheng" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015-10-15-mo-ni-mysql-ioxian-cheng/">模拟MySQL IO线程</a>
-    </h1>
-  
-
-        
-        <a href="/2015-10-15-mo-ni-mysql-ioxian-cheng/" class="archive-article-date">
-  	<time datetime="2015-10-15T12:30:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-10-15</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>近期在看mydumper以及mysqlbinlog api的代码，发现MySQL从库同步这块也不是想象中那么复杂，故将其中的代码抽离出来，完成此篇博文。</p>
-<p>在网上搜到沃趣科技的博客<a href="http://www.woqutech.com/?p=1757" target="_blank" rel="external">MYSQL BINLOG相关源码浅析</a>，值得推荐，本文重点在于IO线程这块。</p>
-        
-          <a class="article-more-a" href="/2015-10-15-mo-ni-mysql-ioxian-cheng/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL内核/" class="article-tag-list-link color3">MySQL内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2015-10-15-mo-ni-mysql-ioxian-cheng/">展开全文 >></a>
         </p>
       
 
