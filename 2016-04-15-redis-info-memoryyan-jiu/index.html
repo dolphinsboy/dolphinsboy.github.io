@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,21 +180,22 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#info-memory输出信息"><span class="toc-text">info memory输出信息</span></a></li></ol>
 </div>
 
 
-            <h2 id="info-memory输出信息"><a href="#info-memory输出信息" class="headerlink" title="info memory输出信息"></a>info memory输出信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">info memory</span><br><span class="line">  Memory</span><br><span class="line">used_memory:5198608840</span><br><span class="line">used_memory_human:4.84G</span><br><span class="line">used_memory_rss:11156660224</span><br><span class="line">used_memory_peak:9816601560</span><br><span class="line">used_memory_peak_human:9.14G</span><br><span class="line">used_memory_lua:36864</span><br><span class="line">mem_fragmentation_ratio:2.15</span><br><span class="line">mem_allocator:libc</span><br></pre></td></tr></table></figure>
+                <h2 id="info-memory输出信息"><a href="#info-memory输出信息" class="headerlink" title="info memory输出信息"></a>info memory输出信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">info memory</span><br><span class="line">  Memory</span><br><span class="line">used_memory:5198608840</span><br><span class="line">used_memory_human:4.84G</span><br><span class="line">used_memory_rss:11156660224</span><br><span class="line">used_memory_peak:9816601560</span><br><span class="line">used_memory_peak_human:9.14G</span><br><span class="line">used_memory_lua:36864</span><br><span class="line">mem_fragmentation_ratio:2.15</span><br><span class="line">mem_allocator:libc</span><br></pre></td></tr></table></figure>
 <p><a href="http://www.cnblogs.com/mushroom/p/4738170.html" target="_blank" rel="external">http://www.cnblogs.com/mushroom/p/4738170.html</a></p>
 <p>对应的代码：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Memory */</span></span><br><span class="line"><span class="keyword">if</span> (allsections || defsections || !strcasecmp(section,<span class="string">"memory"</span>)) &#123;</span><br><span class="line"><span class="keyword">char</span> hmem[<span class="number">64</span>];</span><br><span class="line"><span class="keyword">char</span> peak_hmem[<span class="number">64</span>];</span><br><span class="line"><span class="keyword">size_t</span> zmalloc_used = zmalloc_used_memory();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Peak memory is updated from time to time by serverCron() so it</span></span><br><span class="line"><span class="comment">* may happen that the instantaneous value is slightly bigger than</span></span><br><span class="line"><span class="comment">* the peak value. This may confuse users, so we update the peak</span></span><br><span class="line"><span class="comment">* if found smaller than the current memory usage. */</span></span><br><span class="line"><span class="keyword">if</span> (zmalloc_used &gt; server.stat_peak_memory)</span><br><span class="line">server.stat_peak_memory = zmalloc_used;</span><br><span class="line"></span><br><span class="line">bytesToHuman(hmem,zmalloc_used);</span><br><span class="line">bytesToHuman(peak_hmem,server.stat_peak_memory);</span><br><span class="line"><span class="keyword">if</span> (sections++) info = sdscat(info,<span class="string">"\r\n"</span>);</span><br><span class="line">info = sdscatprintf(info,</span><br><span class="line"><span class="string">"# Memory\r\n"</span></span><br><span class="line"><span class="string">"used_memory:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_human:%s\r\n"</span></span><br><span class="line"><span class="string">"used_memory_rss:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_peak:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_peak_human:%s\r\n"</span></span><br><span class="line"><span class="string">"used_memory_lua:%lld\r\n"</span></span><br><span class="line"><span class="string">"mem_fragmentation_ratio:%.2f\r\n"</span></span><br><span class="line"><span class="string">"mem_allocator:%s\r\n"</span>,</span><br><span class="line">zmalloc_used,</span><br><span class="line">hmem,</span><br><span class="line">server.resident_set_size,</span><br><span class="line">server.stat_peak_memory,</span><br><span class="line">peak_hmem,</span><br><span class="line">((<span class="keyword">long</span> <span class="keyword">long</span>)lua_gc(server.lua,LUA_GCCOUNT,<span class="number">0</span>))*<span class="number">1024L</span>L,</span><br><span class="line">zmalloc_get_fragmentation_ratio(server.resident_set_size),</span><br><span class="line">ZMALLOC_LIB</span><br><span class="line">);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>used_memory</strong></p>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -443,11 +456,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

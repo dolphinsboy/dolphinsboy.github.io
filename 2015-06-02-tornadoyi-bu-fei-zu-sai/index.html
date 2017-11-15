@@ -63,6 +63,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -117,6 +121,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -132,12 +140,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -171,14 +183,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、背景"><span class="toc-text">1、背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Tornado异步非阻塞调研文档"><span class="toc-text">2、Tornado异步非阻塞调研文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-介绍Tornado的资料"><span class="toc-text">3. 介绍Tornado的资料</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-线上实战"><span class="toc-text">4. 线上实战</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Tornado和Django性能对比"><span class="toc-text">5. Tornado和Django性能对比</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-siege-测试Django-API"><span class="toc-text">5.1 siege 测试Django API</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-siege-测试Tornado-API"><span class="toc-text">5.2 siege 测试Tornado API</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-测试结论"><span class="toc-text">5.3 测试结论</span></a></li></ol></li></ol>
 </div>
 
 
-            <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部平台提供HTTP API对日常经常使用的MySQL运维操作进行封装，经过多人积累，目前平台共有 117 个 HTTP 接口,涵盖到 MySQL 操作、MySQL 实例 元数据、授权、MySQL 状态、MySQL 集群拓扑结构、主从复制、DNS、体检巡检、参数变更、短信邮件报警、监控、表结构修改等。在线上实际运行的过程，经常出现API夯住的问题。</p>
+                <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部平台提供HTTP API对日常经常使用的MySQL运维操作进行封装，经过多人积累，目前平台共有 117 个 HTTP 接口,涵盖到 MySQL 操作、MySQL 实例 元数据、授权、MySQL 状态、MySQL 集群拓扑结构、主从复制、DNS、体检巡检、参数变更、短信邮件报警、监控、表结构修改等。在线上实际运行的过程，经常出现API夯住的问题。</p>
 <p>平台的API接口基于Facebook的Tornado实现，Tornado本身是支持异步非阻塞的，但是我们在开发的时候并没有使用这一特性，故进行出现单个端口夯住导致其他请求查询实践过程。</p>
 <a id="more"></a>
 <h3 id="2、Tornado异步非阻塞调研文档"><a href="#2、Tornado异步非阻塞调研文档" class="headerlink" title="2、Tornado异步非阻塞调研文档"></a>2、Tornado异步非阻塞调研文档</h3><p>基于下面两个博客，对现有的API进行改造，实现支持异步非阻塞功能</p>
@@ -200,8 +213,8 @@
 <h4 id="5-2-siege-测试Tornado-API"><a href="#5-2-siege-测试Tornado-API" class="headerlink" title="5.2 siege 测试Tornado API"></a>5.2 siege 测试Tornado API</h4><p><img src="/images/tornado.jpg" alt="Tornado API测试结果"></p>
 <h4 id="5-3-测试结论"><a href="#5-3-测试结论" class="headerlink" title="5.3 测试结论"></a>5.3 测试结论</h4><p>从上面的结果上可以看到tornado的明显更为稳定，响应时间也比较快，django在高并发的情况下完全超时。</p>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -462,11 +475,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

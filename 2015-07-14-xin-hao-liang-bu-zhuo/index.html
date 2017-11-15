@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,14 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、背景"><span class="toc-text">1、背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、信号量"><span class="toc-text">2、信号量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#SIGKILL是否可以扑捉？"><span class="toc-text"> SIGKILL是否可以扑捉？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#SIGTERM"><span class="toc-text"> SIGTERM</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#进行kill进程的话，还是使用kill-15的方式。"><span class="toc-text">进行kill进程的话，还是使用kill -15的方式。</span></a></li></ol>
 </div>
 
 
-            <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压缩过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。</p>
+                <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压缩过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。</p>
 <p>由此引发一个问题就是如何找出被kill程序对应的源程序呢？</p>
 <h3 id="2、信号量"><a href="#2、信号量" class="headerlink" title="2、信号量"></a>2、信号量</h3><blockquote>
 <p>kill -9 和 kill -15的区别？？</p>
@@ -191,8 +204,8 @@
 <p>根据ppid查看对应的进程为：</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@typhoeus79 20150714]# readlink /proc/24840/exe</span><br><span class="line">/bin/bash</span><br><span class="line">[root@typhoeus79 20150714]# readlink /proc/24840/cwd/</span><br><span class="line">[root@typhoeus79 20150714]# readlink /proc/24840/cwd</span><br><span class="line">/data1/guosong/opdir/20150714</span><br></pre></td></tr></table></figure>
 <h3 id="进行kill进程的话，还是使用kill-15的方式。"><a href="#进行kill进程的话，还是使用kill-15的方式。" class="headerlink" title="进行kill进程的话，还是使用kill -15的方式。"></a><font color="red">进行kill进程的话，还是使用kill -15的方式。</font></h3>
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -453,11 +466,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

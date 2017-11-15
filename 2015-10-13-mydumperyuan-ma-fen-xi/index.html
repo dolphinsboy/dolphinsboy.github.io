@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,14 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#0、前言"><span class="toc-text">0、前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、编译安装"><span class="toc-text">1、编译安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、参数解析"><span class="toc-text">2、参数解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、main函数"><span class="toc-text">3、main函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-start-dump"><span class="toc-text">4.start_dump</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-长连接处理"><span class="toc-text">4.1 长连接处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-加锁"><span class="toc-text">4.2 加锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-记录同步点"><span class="toc-text">4.3 记录同步点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-4-产生3个消息队列"><span class="toc-text">4.4 产生3个消息队列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-5-dump-database"><span class="toc-text">4.5 dump_database</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-6-dump-table"><span class="toc-text">4.6 dump_table</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-7-dump-schema"><span class="toc-text">4.7 dump_schema</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-8-process-queue"><span class="toc-text">4.8 process_queue</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5、引用"><span class="toc-text">5、引用</span></a></li></ol>
 </div>
 
 
-            <h3 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h3><p>记录和研究mydumper的过程，包括使用方法、源码研究以及源码中涉及的模块库函数。</p>
+                <h3 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h3><p>记录和研究mydumper的过程，包括使用方法、源码研究以及源码中涉及的模块库函数。</p>
 <a id="more"></a>
 <h3 id="1、编译安装"><a href="#1、编译安装" class="headerlink" title="1、编译安装"></a>1、编译安装</h3><p>使用的版本是<a href="https://launchpadlibrarian.net/185032423/mydumper-0.6.2.tar.gz" target="_blank" rel="external"><strong>mydumper-0.6.2</strong></a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cmake -DCMAKE_BUILD_TYPE=Debug .</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
@@ -224,8 +237,8 @@
 <li><a href="http://gtk-doc-cn.googlecode.com/svn/docs/glib/index.html" target="_blank" rel="external">GLIB参考手册</a></li>
 </ol>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -486,11 +499,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

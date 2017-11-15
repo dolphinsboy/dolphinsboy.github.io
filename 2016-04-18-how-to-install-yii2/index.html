@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,14 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Install-From-Archived-File"><span class="toc-text">1. Install From Archived File</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Call-to-undefined-function-mb-strlen"><span class="toc-text">2. Call to undefined function mb_strlen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-The-directory-is-not-writable-by-the-Web-process"><span class="toc-text">3. The directory is not writable by the Web process</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Class-‘PDO’-not-found"><span class="toc-text">4. Class ‘PDO’ not found</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Yii2-Gii-Forbidden-code-403-You-are-not-allowed-to-access-this-page"><span class="toc-text">5. Yii2 Gii Forbidden code 403 You are not allowed to access this page</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Yii2-Programing-Style"><span class="toc-text">6. Yii2 Programing Style</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Reference"><span class="toc-text">7. Reference</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Tree-Manager"><span class="toc-text">8. Tree Manager</span></a></li></ol>
 </div>
 
 
-            <h2 id="1-Install-From-Archived-File"><a href="#1-Install-From-Archived-File" class="headerlink" title="1. Install From Archived File"></a>1. Install From Archived File</h2><p>Edit file /var/www/basic/config/web.php, set cookieValidationKey</p>
+                <h2 id="1-Install-From-Archived-File"><a href="#1-Install-From-Archived-File" class="headerlink" title="1. Install From Archived File"></a>1. Install From Archived File</h2><p>Edit file /var/www/basic/config/web.php, set cookieValidationKey</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;cookieValidationKey&apos; =&gt; &apos;chuchujie&apos;</span><br></pre></td></tr></table></figure>
 <h2 id="2-Call-to-undefined-function-mb-strlen"><a href="#2-Call-to-undefined-function-mb-strlen" class="headerlink" title="2. Call to undefined function mb_strlen"></a>2. Call to undefined function mb_strlen</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fatal error: Call to undefined function mb_strlen()</span><br></pre></td></tr></table></figure>
 <p>yum install php55-mbstring module.</p>
@@ -193,8 +206,8 @@
 <h2 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7. Reference"></a>7. Reference</h2><p><a href="https://github.com/forecho/awesome-yii2" target="_blank" rel="external">https://github.com/forecho/awesome-yii2</a></p>
 <h2 id="8-Tree-Manager"><a href="#8-Tree-Manager" class="headerlink" title="8. Tree Manager"></a>8. Tree Manager</h2><p><a href="http://demos.krajee.com/tree-manager#comment-2288987974" target="_blank" rel="external">http://demos.krajee.com/tree-manager#comment-2288987974</a></p>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -455,11 +468,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

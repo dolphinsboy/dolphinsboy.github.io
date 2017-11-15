@@ -67,6 +67,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -121,6 +125,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -136,12 +144,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -175,14 +187,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、MetaTable-Lock"><span class="toc-text">一、MetaTable Lock</span></a></li></ol>
 </div>
 
 
-            <h2 id="一、MetaTable-Lock"><a href="#一、MetaTable-Lock" class="headerlink" title="一、MetaTable Lock"></a>一、MetaTable Lock</h2><p><strong>1、问题现象:</strong><br><img src="/images/processlist.png" alt="img"></p>
+                <h2 id="一、MetaTable-Lock"><a href="#一、MetaTable-Lock" class="headerlink" title="一、MetaTable Lock"></a>一、MetaTable Lock</h2><p><strong>1、问题现象:</strong><br><img src="/images/processlist.png" alt="img"></p>
 <p><strong>2、问题追查:</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> INNODB_TRX\G</span><br><span class="line">*************************** <span class="number">1.</span> <span class="keyword">row</span> ***************************</span><br><span class="line">trx_id: <span class="number">119520700800</span></span><br><span class="line">trx_state: RUNNING</span><br><span class="line">trx_started: <span class="number">2016</span><span class="number">-03</span><span class="number">-16</span> <span class="number">04</span>:<span class="number">45</span>:<span class="number">25</span></span><br><span class="line">trx_requested_lock_id: <span class="literal">NULL</span></span><br><span class="line">trx_wait_started: <span class="literal">NULL</span></span><br><span class="line">trx_weight: <span class="number">0</span></span><br><span class="line">trx_mysql_thread_id: <span class="number">17427746</span></span><br><span class="line">trx_query: <span class="literal">NULL</span></span><br><span class="line">trx_operation_state: <span class="literal">NULL</span></span><br><span class="line">trx_tables_in_use: <span class="number">0</span></span><br><span class="line">trx_tables_locked: <span class="number">0</span></span><br><span class="line">trx_lock_structs: <span class="number">0</span></span><br><span class="line">trx_lock_memory_bytes: <span class="number">360</span></span><br><span class="line">trx_rows_locked: <span class="number">0</span></span><br><span class="line">trx_rows_modified: <span class="number">0</span></span><br><span class="line">trx_concurrency_tickets: <span class="number">0</span></span><br><span class="line">trx_isolation_level: REPEATABLE <span class="keyword">READ</span></span><br><span class="line">trx_unique_checks: <span class="number">1</span></span><br><span class="line">trx_foreign_key_checks: <span class="number">1</span></span><br><span class="line">trx_last_foreign_key_error: <span class="literal">NULL</span></span><br><span class="line">trx_adaptive_hash_latched: <span class="number">0</span></span><br><span class="line">trx_adaptive_hash_timeout: <span class="number">10000</span></span><br><span class="line">trx_is_read_only: <span class="number">0</span></span><br><span class="line">trx_autocommit_non_locking: <span class="number">0</span></span><br></pre></td></tr></table></figure>
 <p><strong>3、上面的thread对应的查询语句</strong><br><img src="/images/metalock_query1.png" alt="img"></p>
@@ -201,8 +214,8 @@
 <p>回滚事务alter table操作成功:<br><img src="/images/metalock2.png" alt="img"></p>
 <p><strong>6、改进方案</strong><br>1、开启事务(set autocommit=0)，一定要显示的commit或者rollback，且事务里面不要包括太多的语句。<br>2、对于只是Select的查询，一定不要加事务，Innodb引擎是MVCC模式，加事务不起到任何作用。</p>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -463,11 +476,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

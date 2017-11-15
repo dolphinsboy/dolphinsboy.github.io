@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,14 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0、前言"><span class="toc-text">0、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1、GTID限制"><span class="toc-text">1、GTID限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在GTID下pt-slave-restart如何使用？"><span class="toc-text">2、在GTID下pt-slave-restart如何使用？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1、手动处理的方式："><span class="toc-text">2.1、手动处理的方式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2、pt-slave-restart使用方法"><span class="toc-text">2.2、pt-slave-restart使用方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。"><span class="toc-text">dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。-1"><span class="toc-text">dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、在GTID下xtrbackup如何备份？"><span class="toc-text">3、在GTID下xtrbackup如何备份？</span></a></li></ol>
 </div>
 
 
-            <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>介绍GTID限制、在同步中断情况下处理方式、使用xtrabackup的方式等。</p>
+                <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>介绍GTID限制、在同步中断情况下处理方式、使用xtrabackup的方式等。</p>
 <a id="more"></a>
 <h2 id="1、GTID限制"><a href="#1、GTID限制" class="headerlink" title="1、GTID限制"></a>1、GTID限制</h2><p><a href="https://dev.mysql.com/doc/refman/5.6/en/replication-gtids-restrictions.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/replication-gtids-restrictions.html</a></p>
 <p><strong>限制</strong>：</p>
@@ -212,8 +225,8 @@
 <p>参考文档：<br><a href="https://www.percona.com/blog/2013/05/09/how-to-create-a-new-or-repair-a-broken-gtid-based-slave-with-percona-xtrabackup/" target="_blank" rel="external">https://www.percona.com/blog/2013/05/09/how-to-create-a-new-or-repair-a-broken-gtid-based-slave-with-percona-xtrabackup/</a></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">slave1 &gt; SET GLOBAL gtid_purged="c777888a-b6df-11e2-a604-080027635ef5:1-4";</span><br><span class="line">slave1 &gt; CHANGE MASTER TO MASTER_HOST="10.0.1.1",</span><br><span class="line">master_user="msandbox", master_password="msandbox", MASTER_AUTO_POSITION = 1;</span><br></pre></td></tr></table></figure>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -474,11 +487,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

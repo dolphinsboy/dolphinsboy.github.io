@@ -62,6 +62,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -116,6 +120,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -131,12 +139,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -170,14 +182,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、Graphite安装"><span class="toc-text">1、Graphite安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、Graphite入门介绍"><span class="toc-text">2、Graphite入门介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Grafana"><span class="toc-text">3. Grafana</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-DEV-00"><span class="toc-text">4. DEV-00</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Grafana和Metric对应关系"><span class="toc-text">5. Grafana和Metric对应关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Graphite-web问题汇总"><span class="toc-text">6. Graphite-web问题汇总</span></a></li></ol>
 </div>
 
 
-            <h2 id="1、Graphite安装"><a href="#1、Graphite安装" class="headerlink" title="1、Graphite安装"></a>1、Graphite安装</h2><p>主要是参考<a href="http://graphite.wikidot.com/installation" target="_blank" rel="external">http://graphite.wikidot.com/installation</a>，不过中间遇到很多问题，主要列出这些问题。</p>
+                <h2 id="1、Graphite安装"><a href="#1、Graphite安装" class="headerlink" title="1、Graphite安装"></a>1、Graphite安装</h2><p>主要是参考<a href="http://graphite.wikidot.com/installation" target="_blank" rel="external">http://graphite.wikidot.com/installation</a>，不过中间遇到很多问题，主要列出这些问题。</p>
 <p>使用源码安装，安装AWS EC2上，python版本为2.6，话说在AWS上安装软件还是非常方便的，至少不应考虑被墙的问题。</p>
 <a id="more"></a>
 <ul>
@@ -230,8 +243,8 @@
 <p>Grafana也是调用graphite的接口实现的，通过下面的graphite API接口可以看到问题所在:</p>
 <p><a href="http://kan.culiu.org:9090/render/?width=1602&amp;height=745&amp;from=-15mins&amp;target=perSecond(mysql.shop.4000.m.rds.shangcheng-m1.com_select" target="_blank" rel="external">http://kan.culiu.org:9090/render/?width=1602&amp;height=745&amp;from=-15mins&amp;target=perSecond(mysql.shop.4000.m.rds.shangcheng-m1.com_select)</a>)</p>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -492,11 +505,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

@@ -62,6 +62,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -116,6 +120,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -131,12 +139,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -170,22 +182,23 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、线程安全概念"><span class="toc-text">1、线程安全概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、-POSIX-1中不能保证线程安全的函数"><span class="toc-text">2、 POSIX.1中不能保证线程安全的函数</span></a></li></ol>
 </div>
 
 
-            <h2 id="1、线程安全概念"><a href="#1、线程安全概念" class="headerlink" title="1、线程安全概念"></a>1、线程安全概念</h2><blockquote>
+                <h2 id="1、线程安全概念"><a href="#1、线程安全概念" class="headerlink" title="1、线程安全概念"></a>1、线程安全概念</h2><blockquote>
 <p>If a function can be safely called by multiple threads at the same time, we say that the function is thread-safe.</p>
 <p>如果一个函数在同一时刻可以被多个线程安全地调用，就称该函数是线程安全的。</p>
 </blockquote>
 <a id="more"></a>
 <h2 id="2、-POSIX-1中不能保证线程安全的函数"><a href="#2、-POSIX-1中不能保证线程安全的函数" class="headerlink" title="2、 POSIX.1中不能保证线程安全的函数"></a>2、 POSIX.1中不能保证线程安全的函数</h2><p><img src="/images/thread_not_safe.png =700x500" alt="thread\_not\_safe"></p>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -446,11 +459,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

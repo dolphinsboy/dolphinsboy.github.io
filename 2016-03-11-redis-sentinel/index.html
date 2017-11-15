@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,14 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、Redis哨兵搭建测试"><span class="toc-text">1、Redis哨兵搭建测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-Redis主从信息"><span class="toc-text">1.1 Redis主从信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-哨兵配置"><span class="toc-text">1.2 哨兵配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、Sentinel基本操作"><span class="toc-text">2、Sentinel基本操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Sentinel-masters"><span class="toc-text">2.1 Sentinel masters</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Sentinel-Slaves"><span class="toc-text">2.2 Sentinel Slaves</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-Sentinel-get-master-addr-by-name"><span class="toc-text">2.3 Sentinel get-master-addr-by-name</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-Sentinel-failover"><span class="toc-text">2.4 Sentinel failover</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-订阅哨兵的消息"><span class="toc-text">2.5 订阅哨兵的消息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-模拟故障，手动kill主库的进程"><span class="toc-text">2.6 模拟故障，手动kill主库的进程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-Sentinel客户端"><span class="toc-text">2.7 Sentinel客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-8-故障通知以及配置修改"><span class="toc-text">2.8 故障通知以及配置修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-9-哨兵切换过程"><span class="toc-text">2.9 哨兵切换过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-10-后续处理"><span class="toc-text">2.10 后续处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-11-问题"><span class="toc-text">2.11 问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、参考资料"><span class="toc-text">3、参考资料</span></a></li></ol>
 </div>
 
 
-            <h2 id="1、Redis哨兵搭建测试"><a href="#1、Redis哨兵搭建测试" class="headerlink" title="1、Redis哨兵搭建测试"></a>1、Redis哨兵搭建测试</h2><h3 id="1-1-Redis主从信息"><a href="#1-1-Redis主从信息" class="headerlink" title="1.1 Redis主从信息"></a>1.1 Redis主从信息</h3><p><strong>主从信息:</strong></p>
+                <h2 id="1、Redis哨兵搭建测试"><a href="#1、Redis哨兵搭建测试" class="headerlink" title="1、Redis哨兵搭建测试"></a>1、Redis哨兵搭建测试</h2><h3 id="1-1-Redis主从信息"><a href="#1-1-Redis主从信息" class="headerlink" title="1.1 Redis主从信息"></a>1.1 Redis主从信息</h3><p><strong>主从信息:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis主库:10.30.6.184(service-test2)</span><br><span class="line">redis从库1:10.30.6.183(service-test3)</span><br><span class="line">redis从库2:10.30.6.217（service-test1）</span><br></pre></td></tr></table></figure>
 <p><strong>redis部署的目录结构:</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">├── bin</span><br><span class="line">│   ├── redis-benchmark</span><br><span class="line">│   ├── redis-check-aof</span><br><span class="line">│   ├── redis-check-dump</span><br><span class="line">│   ├── redis-cli</span><br><span class="line">│   ├── redis-sentinel</span><br><span class="line">│   ├── redis-server</span><br><span class="line">│   └── redis-trib.rb</span><br><span class="line">├── conf</span><br><span class="line">│   ├── r3050.conf</span><br><span class="line">│   └── sentinel.conf</span><br><span class="line">├── data</span><br><span class="line">│   ├── appendonly.aof</span><br><span class="line">│   └── r3050.rdb</span><br><span class="line">├── log</span><br><span class="line">│   └── r3050.log</span><br><span class="line">└── tmp</span><br><span class="line">└── redis3050.pid</span><br></pre></td></tr></table></figure>
@@ -242,8 +255,8 @@
 <li><a href="http://debugo.com/redis-sentinel/" target="_blank" rel="external">http://debugo.com/redis-sentinel/</a></li>
 </ul>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -504,11 +517,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,14 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、前言"><span class="toc-text">1、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、GLIB的多线程"><span class="toc-text">2、GLIB的多线程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、任务多线程实现demo"><span class="toc-text">3、任务多线程实现demo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、静态库编译"><span class="toc-text">4、静态库编译</span></a></li></ol>
 </div>
 
 
-            <h2 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h2><p>在mydumper以及myloader中使用到GLib库的功能，前面分析mydumper源码的时候，已经给出参数解析的demo以及mydumper实现过程。mysqldump以及mydumper最大的不同之处就mydumper是多线程的，效率更高。本文就是研究这个多线程是如何实现的，并给出相关demo进行源码的测试以及验证。</p>
+                <h2 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h2><p>在mydumper以及myloader中使用到GLib库的功能，前面分析mydumper源码的时候，已经给出参数解析的demo以及mydumper实现过程。mysqldump以及mydumper最大的不同之处就mydumper是多线程的，效率更高。本文就是研究这个多线程是如何实现的，并给出相关demo进行源码的测试以及验证。</p>
 <a id="more"></a>
 <h2 id="2、GLIB的多线程"><a href="#2、GLIB的多线程" class="headerlink" title="2、GLIB的多线程"></a>2、GLIB的多线程</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"> include &lt;glib.h&gt;</span><br><span class="line"></span><br><span class="line"> define MAX_THREAD <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="function">gpointer <span class="title">gthread_func</span><span class="params">(gpointer data)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">gint i, num;</span><br><span class="line"></span><br><span class="line">num = GPOINTER_TO_INT(data);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; MAX_THREAD - num; i++)</span><br><span class="line">g_printf(<span class="string">"Thread No. %d, of %d\n"</span>, i, num);</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">gint <span class="title">main</span><span class="params">(gint argc, gchar* argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">GThread *my_thread[MAX_THREAD];</span><br><span class="line">gint i;</span><br><span class="line"></span><br><span class="line">g_printf(<span class="string">"Create thread.\n"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i &lt; MAX_THREAD; i++)</span><br><span class="line">&#123;</span><br><span class="line">my_thread[i] = g_thread_new(<span class="literal">NULL</span>, gthread_func,</span><br><span class="line">GINT_TO_POINTER(i));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">g_printf(<span class="string">"End create thread.\n"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>( i = <span class="number">0</span>; i &lt; MAX_THREAD; i++)</span><br><span class="line">&#123;</span><br><span class="line">g_thread_join(my_thread[i]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">g_printf(<span class="string">"End join thread.\n"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>参照<a href="http://www.d3.dion.ne.jp/~fut_nis/Other/GLib_program_04.pdf" target="_blank" rel="external">http://www.d3.dion.ne.jp/~fut_nis/Other/GLib_program_04.pdf</a>进行实现，并对其中已经废弃的函数进行修改。</p>
@@ -195,8 +208,8 @@
 <p>第一句使用是让pkg-config找到新编译的glib库及头文件，后两句是通过pkg-config分别获取头文件地址和库地址。</p>
 <p>此外，也可将–prefix/lib/pkgconfig下的文件拷贝到/lib/pkgconfig下，让pkg-config自动搜索到，但会覆盖之前已安装在标准目录下的的glib的相关文件。</p>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -457,11 +470,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,14 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-前言"><span class="toc-text">1.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-REGISTER-SLAVE"><span class="toc-text">2. REGISTER_SLAVE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-BinlogDUMP"><span class="toc-text">3.BinlogDUMP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-读取EVENT"><span class="toc-text">4.读取EVENT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Demo"><span class="toc-text">5.Demo</span></a></li></ol>
 </div>
 
 
-            <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>近期在看mydumper以及mysqlbinlog api的代码，发现MySQL从库同步这块也不是想象中那么复杂，故将其中的代码抽离出来，完成此篇博文。</p>
+                <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>近期在看mydumper以及mysqlbinlog api的代码，发现MySQL从库同步这块也不是想象中那么复杂，故将其中的代码抽离出来，完成此篇博文。</p>
 <p>在网上搜到沃趣科技的博客<a href="http://www.woqutech.com/?p=1757" target="_blank" rel="external">MYSQL BINLOG相关源码浅析</a>，值得推荐，本文重点在于IO线程这块。</p>
 <a id="more"></a>
 <h2 id="2-REGISTER-SLAVE"><a href="#2-REGISTER-SLAVE" class="headerlink" title="2. REGISTER_SLAVE"></a>2. REGISTER_SLAVE</h2><p>从库注册流程，需要发送包信息包括如下:<br><a href="http://dev.mysql.com/doc/internals/en/com-register-slave.html" target="_blank" rel="external">http://dev.mysql.com/doc/internals/en/com-register-slave.html</a></p>
@@ -190,8 +203,8 @@
 <p>这里面比较简单，设置固定的binlog同步点。</p>
 <h2 id="4-读取EVENT"><a href="#4-读取EVENT" class="headerlink" title="4.读取EVENT"></a>4.读取EVENT</h2><h2 id="5-Demo"><a href="#5-Demo" class="headerlink" title="5.Demo"></a>5.Demo</h2><p>代码已经放在Git上<a href="https://github.com/dolphinsboy/code_for_c/blob/master/glib/binlog.c" target="_blank" rel="external"><strong>binlog.c</strong></a>，编译放在<a href="https://github.com/dolphinsboy/code_for_c/blob/master/glib/makefile" target="_blank" rel="external"><strong>makefile</strong></a>中。</p>
 
-      
-
+            
+        
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
@@ -452,11 +465,11 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Hadoop</a>
+                <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
               </li>
             
             <div class="clearfix"></div>
