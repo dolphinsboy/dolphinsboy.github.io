@@ -165,29 +165,65 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
+            <article id="post-2015-05-18-tcpdumpjie-xi-sql" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    <% if (post.link || post.title){ %>
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
-        <% if (!post.noDate){ %>
-        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
-        <% } %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tcpdump解析SQL
+    </h1>
+  
+
+        
+        <a href="/2015-05-18-tcpdumpjie-xi-sql/" class="archive-article-date">
+  	<time datetime="2015-05-18T09:51:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-05-18</time>
+</a>
+        
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
+        
+            
+                
+<div id="toc">
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、背景"><span class="toc-text">1、背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、tcpdump详解"><span class="toc-text">2、tcpdump详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#报文的层次图"><span class="toc-text">报文的层次图</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、SQL解析"><span class="toc-text">3、SQL解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、开源分析tcpdump包"><span class="toc-text">4、开源分析tcpdump包</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-pyshark"><span class="toc-text">4.1 pyshark</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-python分析报文结构过程"><span class="toc-text">4.2 python分析报文结构过程</span></a></li></ol></li></ol>
+</div>
 
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link) { %>
-          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
-        <% } %>
-      <% } else { %>
-            <%- partial('toc') %>
-            <%- post.content %>
-      <% } %>
 
-      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
+                <h2 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h2><p>公司内部使用到MytriggerQ的自研软件，其主要功能是从MySQL的blackhole从库中读取更新的binlog，将每条更新的SQL转换成一条消息存储到内存中，供其他程序通过GET协议消费。</p>
+<p>由于机房网络调整，涉及到很多MytriggerQ的实例，且这些东西几经转手，需要查看是否存在流量，如果存在，需要给出来源的IP以及相关的命令。MytriggerQ自身不提供任何流量查询功能，没有记录相关日志，故能想到的最直接办法就是tcpdump抓包分析。</p>
+<h2 id="2、tcpdump详解"><a href="#2、tcpdump详解" class="headerlink" title="2、tcpdump详解"></a>2、tcpdump详解</h2><p>神一样的文章，值得推荐<br><a href="http://roclinux.cn/?p=2474" target="_blank" rel="external">http://roclinux.cn/?p=2474</a></p>
+<p>在上面的文章中分析包括UDP包的IP报文，故在此基础上，本人再加上一个TCP包的分析过程，具体参照百度网盘中的pdf文档<a href="http://pan.baidu.com/s/1o6OLcjo" target="_blank" rel="external">http://pan.baidu.com/s/1o6OLcjo</a>。</p>
+<a id="more"></a>
+<p><strong>TCP的分析过程主要涉及导下面几个结构图:</strong></p>
+<h3 id="报文的层次图"><a href="#报文的层次图" class="headerlink" title="报文的层次图"></a>报文的层次图</h3><p><img src="/images/application.png" alt="报文的层次图"></p>
+<p><strong>IP报文包头的结构图</strong></p>
+<p><img src="/images/ip_segment.png =500x500" alt="IP报文包头的结构图"></p>
+<p>图引用来源<a href="http://www.tcpipguide.com/free/t_IPDatagramGeneralFormat.htm" target="_blank" rel="external">http://www.tcpipguide.com/free/t_IPDatagramGeneralFormat.htm</a></p>
+<blockquote>
+<p>记忆点：IP报文包头长度20个字节</p>
+</blockquote>
+<p><strong>TCP报文包头的结构图</strong></p>
+<p><img src="/images/tcp_segment.png =500x500" alt="TCP报文包头的结构图"></p>
+<p>图引用来源<a href="http://www.tcpipguide.com/free/t_TCPMessageSegmentFormat-3.htm" target="_blank" rel="external">http://www.tcpipguide.com/free/t_TCPMessageSegmentFormat-3.htm</a></p>
+<blockquote>
+<p>记忆点：TCP报文中不包括可选项也是20个字节，可选项的长度是由Dataoffset确定，故TCP首部长度 = 20个字节 + Dataoffset</p>
+</blockquote>
+<h2 id="3、SQL解析"><a href="#3、SQL解析" class="headerlink" title="3、SQL解析"></a>3、SQL解析</h2><p>通过上面对于tcpdump分析，如果按照结构进行分析，可能非常麻烦。<br>公司内部之前有同事写的一个分析MySQL流量的情况，其主要也是通过tcpdump抓包分析，分析结果给出来源IP、目标IP以及相关SQL命令。</p>
+<p><a href="https://www.percona.com/blog/2008/11/07/poor-mans-query-logging/" target="_blank" rel="external">https://www.percona.com/blog/2008/11/07/poor-mans-query-logging/</a><br><a href="http://jetpackweb.com/blog/2009/09/16/unobstrusive-viewing-of-mysql-queries-with-tcpdump/" target="_blank" rel="external">http://jetpackweb.com/blog/2009/09/16/unobstrusive-viewing-of-mysql-queries-with-tcpdump/</a></p>
+<h2 id="4、开源分析tcpdump包"><a href="#4、开源分析tcpdump包" class="headerlink" title="4、开源分析tcpdump包"></a>4、开源分析tcpdump包</h2><p>通过强大的Wireshark图形工具可以分析。<br>如果想按照报文结构格式解析报文，应该如何实现呢？</p>
+<h3 id="4-1-pyshark"><a href="#4-1-pyshark" class="headerlink" title="4.1 pyshark"></a>4.1 pyshark</h3><p>通过pyshark的Python包可以分许TCP报文包头的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">delta: Delta (difference) time between the current packet and the previous captured packet</span><br><span class="line">destination: The Layer 3 (IP, IPv6) destination address</span><br><span class="line">info: A brief application layer summary (e.g. ‘HTTP GET /resource_folder/page.html’)</span><br><span class="line">ip id: IP Identification field used for uniquely identifying packets from a host</span><br><span class="line">length: Length of the packet in bytes</span><br><span class="line">no: Index number of the packet in the list</span><br><span class="line">protocol: The highest layer protocol recognized in the packet</span><br><span class="line">source:  Layer 3 (IP, IPV6) source address</span><br><span class="line">stream: Index of the TCP stream this packet is a part of (TCP packets only)</span><br><span class="line">summary_line: All the summary attributes in one tab-delimited string</span><br><span class="line">time: Absolute time between the current packet and the first packet</span><br><span class="line">window: The TCP window size (TCP packets only)</span><br></pre></td></tr></table></figure>
+<p>pyshark具体的文档链接：<br><a href="http://thepacketgeek.com/pyshark-using-the-packet-object/" target="_blank" rel="external">http://thepacketgeek.com/pyshark-using-the-packet-object/</a></p>
+<p>但是对于Data的部分找不到对应的属性，故无法满足需求。</p>
+<h3 id="4-2-python分析报文结构过程"><a href="#4-2-python分析报文结构过程" class="headerlink" title="4.2 python分析报文结构过程"></a>4.2 python分析报文结构过程</h3><p>主要是参照github上的源码<br><a href="https://github.com/TimothyFitz/MyPorkDetector" target="_blank" rel="external">https://github.com/TimothyFitz/MyPorkDetector</a></p>
+<p>tcpip.py：给出如果从tcpdump的二进制包中按照结构获取对应的属性信息<br>sql_parser.py：将报文中的数据信息转换成对应的SQL语句</p>
+
+            
+        
+      
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -197,20 +233,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    <% if(theme.alipay) {%>
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.alipay%>">
+                      <img class="reward-img" src="/images/alipay.jpg">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    <% } %>
-                    <% if(theme.weixin) {%>
+                    
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.weixin%>">
+                      <img class="reward-img" src="/images/weixin.jpg">
                       <span class="reward-type">微信</span>
                     </div>
-                    <% } %>
+                    
                   </div>
                 </span>
               </span>
@@ -218,87 +254,143 @@
           </div>
           </a>
         </div>
-      <% } %>
+      
     </div>
     <div class="article-info article-info-index">
-      <%if(post.top){%>
-        <div class="article-pop-out tagcloud">
-          <i class="icon-tuding"></i>
-          <a class="article-tag-list-link color3">置顶</a>
-        </div>
-      <% } %>
-      <%- partial('post/tag') %>
-      <%- partial('post/category') %>
-      <% if (index && theme.show_all_link){ %>
-        <p class="article-more-link">
-          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
-        </p>
-      <% } %>
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Linux-Tools/" class="article-tag-list-link color2">Linux Tools</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
-      <% if (!index && theme.share_jia){ %>
-        <%- partial('post/share') %>
-      <% } %>
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-05-18-tcpdumpjie-xi-sql/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-<% if (!index){ %>
-  <%- partial('post/nav') %>
-<% } %>
-<%- partial('_partial/aside') %>
 
-
-<% if (!index && post.comments){ %>
-  <% if (theme.duoshuo){ %>
-  <%- partial('post/duoshuo', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
   
-  <% if (theme.wangyiyun){ %>
-  <%- partial('post/wangyiyun', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
+<nav id="article-nav">
+  
+    <a href="/2015-05-27-unixxin-hao-ce-shi-chao-shi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          使用信号量实现超时
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015-05-15-c-typedefyong-fa/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C typedef用法</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-  <% if (theme.changyan_appid && theme.changyan_conf){ %>
-  <%- partial('post/changyan', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
 
-  <% if (theme.disqus || config.disqus_shortname){ %>
-    <section id="comments">
-      <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </section>
-  <% } %>
 
-  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
-  <%- partial('post/gitment', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
-<% } %>
+
+  
+  
+  
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "http://dolphinsboy.github.io/2015-05-18-tcpdumpjie-xi-sql/", 
+    sourceId: "2015-05-18-tcpdumpjie-xi-sql",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+  
+
+  
+
+  
+
 
           </div>
         </div>

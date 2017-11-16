@@ -161,29 +161,54 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
+            <article id="post-2016-08-25-innodb-buffer-dump-and-load" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    <% if (post.link || post.title){ %>
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
-        <% if (!post.noDate){ %>
-        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
-        <% } %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      innodb buffer dump and load
+    </h1>
+  
+
+        
+        <a href="/2016-08-25-innodb-buffer-dump-and-load/" class="archive-article-date">
+  	<time datetime="2016-08-25T07:18:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-25</time>
+</a>
+        
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
+        
+            
+                
+<div id="toc">
+  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#预热Innodb-Buffer-Pool"><span class="toc-text">预热Innodb Buffer Pool</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dump"><span class="toc-text">Dump</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Load"><span class="toc-text">Load</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#相关参考"><span class="toc-text">相关参考</span></a></li></ol>
+</div>
 
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link) { %>
-          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
-        <% } %>
-      <% } else { %>
-            <%- partial('toc') %>
-            <%- post.content %>
-      <% } %>
 
-      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
+                <h1 id="预热Innodb-Buffer-Pool"><a href="#预热Innodb-Buffer-Pool" class="headerlink" title="预热Innodb Buffer Pool"></a>预热Innodb Buffer Pool</h1><p>针对线上运行的MySQL Server，如果重启不设置预热的话直接提供服务，会产生很多Disk IO导致性能严重下降。</p>
+<p>在MySQL5.6 版本之后引入Buffer Pool的dump以及load功能。</p>
+<h2 id="Dump"><a href="#Dump" class="headerlink" title="Dump"></a>Dump</h2><p>扫描Buffer Pool将相关table_id以及page_id写入文件中(默认在data目录下ib_buffer_pool文件中)。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> innodb_buffer_pool_dump_at_shutdown = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>ib_buffer_pool内容如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@service-test1 data]<span class="comment"># head -n 10 ib_buffer_pool</span></span><br><span class="line">92,17682</span><br><span class="line">92,131631</span><br><span class="line">92,61826</span><br><span class="line">92,65080</span><br><span class="line">92,111759</span><br><span class="line">92,114364</span><br><span class="line">92,96410</span><br><span class="line">92,131632</span><br><span class="line">92,94495</span><br><span class="line">92,131633</span><br></pre></td></tr></table></figure>
+<h1 id="Load"><a href="#Load" class="headerlink" title="Load"></a>Load</h1><p>动态实现load</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> innodb_buffer_pool_load_now=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2016-08-25 16:23:06 7fdd367fc700 InnoDB: Loading buffer pool(s) from .//ib_buffer_pool</span><br><span class="line">2016-08-25 16:23:36 7fdd367fc700 InnoDB: Buffer pool(s) load completed at 160825 16:23:36</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global status like '%load%';</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line">| Variable_name                  | Value                    |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line">| Innodb_buffer_pool_load_status | Loaded 16769/54873 pages |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line"></span><br><span class="line">mysql&gt; show global status like '%load%';</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br><span class="line">| Variable_name                  | Value                                            |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br><span class="line">| Com_load                       | 0                                                |</span><br><span class="line">| Com_preload_keys               | 0                                                |</span><br><span class="line">| Innodb_buffer_pool_load_status | Buffer pool(s) <span class="keyword">load</span> completed <span class="keyword">at</span> <span class="number">160825</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">36</span> |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br></pre></td></tr></table></figure>
+<p>Load过程不影响启动，不是一定得load完成之后才响应相关请求。Load中如果发现对应的table_id以及page_id已经在buffer中，将直接跳过。</p>
+<h1 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h1><ul>
+<li><p><a href="https://blog.marceloaltmann.com/en-warm-up-innodb-buffer-pool-pt-esquentando-o-innodb-buffer-pool/" target="_blank" rel="external">https://blog.marceloaltmann.com/en-warm-up-innodb-buffer-pool-pt-esquentando-o-innodb-buffer-pool/</a></p>
+</li>
+<li><p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-preload-buffer-pool.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/innodb-preload-buffer-pool.html</a></p>
+</li>
+</ul>
+
+            
+        
+      
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -193,20 +218,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    <% if(theme.alipay) {%>
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.alipay%>">
+                      <img class="reward-img" src="/images/alipay.jpg">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    <% } %>
-                    <% if(theme.weixin) {%>
+                    
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.weixin%>">
+                      <img class="reward-img" src="/images/weixin.jpg">
                       <span class="reward-type">微信</span>
                     </div>
-                    <% } %>
+                    
                   </div>
                 </span>
               </span>
@@ -214,87 +239,143 @@
           </div>
           </a>
         </div>
-      <% } %>
+      
     </div>
     <div class="article-info article-info-index">
-      <%if(post.top){%>
-        <div class="article-pop-out tagcloud">
-          <i class="icon-tuding"></i>
-          <a class="article-tag-list-link color3">置顶</a>
-        </div>
-      <% } %>
-      <%- partial('post/tag') %>
-      <%- partial('post/category') %>
-      <% if (index && theme.show_all_link){ %>
-        <p class="article-more-link">
-          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
-        </p>
-      <% } %>
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MySQL/" class="article-tag-list-link color1">MySQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
-      <% if (!index && theme.share_jia){ %>
-        <%- partial('post/share') %>
-      <% } %>
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2016-08-25-innodb-buffer-dump-and-load/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-<% if (!index){ %>
-  <%- partial('post/nav') %>
-<% } %>
-<%- partial('_partial/aside') %>
 
-
-<% if (!index && post.comments){ %>
-  <% if (theme.duoshuo){ %>
-  <%- partial('post/duoshuo', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
   
-  <% if (theme.wangyiyun){ %>
-  <%- partial('post/wangyiyun', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
+<nav id="article-nav">
+  
+    <a href="/2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          mysql添加新的操作命令
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016-04-18-how-to-install-yii2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">How to install Yii2</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-  <% if (theme.changyan_appid && theme.changyan_conf){ %>
-  <%- partial('post/changyan', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
 
-  <% if (theme.disqus || config.disqus_shortname){ %>
-    <section id="comments">
-      <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </section>
-  <% } %>
 
-  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
-  <%- partial('post/gitment', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
-<% } %>
+
+  
+  
+  
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "http://dolphinsboy.github.io/2016-08-25-innodb-buffer-dump-and-load/", 
+    sourceId: "2016-08-25-innodb-buffer-dump-and-load",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+  
+
+  
+
+  
+
 
           </div>
         </div>

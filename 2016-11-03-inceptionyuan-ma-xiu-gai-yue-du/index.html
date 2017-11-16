@@ -161,29 +161,44 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
+            <article id="post-2016-11-03-inceptionyuan-ma-xiu-gai-yue-du" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    <% if (post.link || post.title){ %>
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
-        <% if (!post.noDate){ %>
-        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
-        <% } %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Inception源码修改阅读
+    </h1>
+  
+
+        
+        <a href="/2016-11-03-inceptionyuan-ma-xiu-gai-yue-du/" class="archive-article-date">
+  	<time datetime="2016-11-03T08:59:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-03</time>
+</a>
+        
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
+        
+            
+                
+<div id="toc">
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Inception介绍"><span class="toc-text">1.Inception介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-增加Inception关键字相关命令"><span class="toc-text">2. 增加Inception关键字相关命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-修改lex-h增加INCEPTION关键字"><span class="toc-text">2.1 修改lex.h增加INCEPTION关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-修改sql-cmd-h增加新的SQL-COMMAND"><span class="toc-text">2.2 修改sql_cmd.h增加新的SQL_COMMAND</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-3-修改sql-yacc-yy添加相关token"><span class="toc-text">2.3 修改sql_yacc.yy添加相关token</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#INCEPTION命令包括如下三种"><span class="toc-text">INCEPTION命令包括如下三种:</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义错误码"><span class="toc-text">自定义错误码</span></a></li></ol>
+</div>
 
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link) { %>
-          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
-        <% } %>
-      <% } else { %>
-            <%- partial('toc') %>
-            <%- post.content %>
-      <% } %>
 
-      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
+                <h2 id="1-Inception介绍"><a href="#1-Inception介绍" class="headerlink" title="1.Inception介绍"></a>1.Inception介绍</h2><p>去哪儿开源的<a href="https://github.com/mysql-inception/inception" target="_blank" rel="external">Inception</a>是一个集审核、执行、备份以及生成回滚语句集一身的MySQL自动化运维工具，其是基于MySQL5.6.10版本进行修改的。本博文主要研究其修改以及增加的相关代码。</p>
+<h2 id="2-增加Inception关键字相关命令"><a href="#2-增加Inception关键字相关命令" class="headerlink" title="2. 增加Inception关键字相关命令"></a>2. 增加Inception关键字相关命令</h2><h3 id="2-1-修改lex-h增加INCEPTION关键字"><a href="#2-1-修改lex-h增加INCEPTION关键字" class="headerlink" title="2.1 修改lex.h增加INCEPTION关键字"></a>2.1 修改lex.h增加INCEPTION关键字</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> SYMBOL symbols[] = &#123;</span><br><span class="line">...</span><br><span class="line">&#123; <span class="string">"INCEPTION"</span>,        SYM(INCEPTION_SYM)&#125;,</span><br><span class="line">&#123; <span class="string">"INCEPTION_MAGIC_START"</span>,            SYM(INCEPTION_START_SYM)&#125;,</span><br><span class="line">&#123; <span class="string">"INCEPTION_MAGIC_COMMIT"</span>,            SYM(INCEPTION_COMMIT_SYM)&#125;,</span><br><span class="line">...</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*增加Inception命令类型*/</span></span><br><span class="line">uint inception_cmd_type;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-修改sql-cmd-h增加新的SQL-COMMAND"><a href="#2-2-修改sql-cmd-h增加新的SQL-COMMAND" class="headerlink" title="2.2 修改sql_cmd.h增加新的SQL_COMMAND"></a>2.2 修改sql_cmd.h增加新的SQL_COMMAND</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> enum_sql_command &#123;</span><br><span class="line">...</span><br><span class="line">SQLCOM_INCEPTION_START, SQLCOM_INCEPTION_COMMIT,</span><br><span class="line">SQLCOM_INCEPTION,</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-3-修改sql-yacc-yy添加相关token"><a href="#2-3-修改sql-yacc-yy添加相关token" class="headerlink" title="2.3 修改sql_yacc.yy添加相关token"></a>2.3 修改sql_yacc.yy添加相关token</h2><p><strong>添加token</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%token  INCEPTION_START_SYM           <span class="comment">/* SQL-2003-R */</span></span><br><span class="line">%token  INCEPTION_COMMIT_SYM          <span class="comment">/* SQL-2003-R */</span></span><br><span class="line">%token  INCEPTION_SYM</span><br></pre></td></tr></table></figure>
+<p><strong>解析INCEPTION_相关命令</strong></p>
+<h4 id="INCEPTION命令包括如下三种"><a href="#INCEPTION命令包括如下三种" class="headerlink" title="INCEPTION命令包括如下三种:"></a>INCEPTION命令包括如下三种:</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">inception_magic_start</span><br><span class="line">inception_magic_commit</span><br><span class="line">inception get variables;</span><br><span class="line">inception get variables 'variable_name';</span><br><span class="line">inception <span class="keyword">set</span> [<span class="keyword">session</span>] variables_name=<span class="keyword">value</span>;</span><br><span class="line">inception get osc_percent '当前执行的SQL语句以及一些基本信息生成的SHA1哈希值';</span><br><span class="line">inception get processlist;</span><br></pre></td></tr></table></figure>
+<h2 id="自定义错误码"><a href="#自定义错误码" class="headerlink" title="自定义错误码"></a>自定义错误码</h2>
+            
+        
+      
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -193,20 +208,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    <% if(theme.alipay) {%>
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.alipay%>">
+                      <img class="reward-img" src="/images/alipay.jpg">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    <% } %>
-                    <% if(theme.weixin) {%>
+                    
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.weixin%>">
+                      <img class="reward-img" src="/images/weixin.jpg">
                       <span class="reward-type">微信</span>
                     </div>
-                    <% } %>
+                    
                   </div>
                 </span>
               </span>
@@ -214,87 +229,143 @@
           </div>
           </a>
         </div>
-      <% } %>
+      
     </div>
     <div class="article-info article-info-index">
-      <%if(post.top){%>
-        <div class="article-pop-out tagcloud">
-          <i class="icon-tuding"></i>
-          <a class="article-tag-list-link color3">置顶</a>
-        </div>
-      <% } %>
-      <%- partial('post/tag') %>
-      <%- partial('post/category') %>
-      <% if (index && theme.show_all_link){ %>
-        <p class="article-more-link">
-          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
-        </p>
-      <% } %>
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/MySQL源码阅读/" class="article-tag-list-link color5">MySQL源码阅读</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
-      <% if (!index && theme.share_jia){ %>
-        <%- partial('post/share') %>
-      <% } %>
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2016-11-03-inceptionyuan-ma-xiu-gai-yue-du/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-<% if (!index){ %>
-  <%- partial('post/nav') %>
-<% } %>
-<%- partial('_partial/aside') %>
 
-
-<% if (!index && post.comments){ %>
-  <% if (theme.duoshuo){ %>
-  <%- partial('post/duoshuo', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
   
-  <% if (theme.wangyiyun){ %>
-  <%- partial('post/wangyiyun', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
+<nav id="article-nav">
+  
+    <a href="/2016-12-22-mysql-group-replication/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          MySQL Group Replication
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">mysql添加新的操作命令</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-  <% if (theme.changyan_appid && theme.changyan_conf){ %>
-  <%- partial('post/changyan', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
 
-  <% if (theme.disqus || config.disqus_shortname){ %>
-    <section id="comments">
-      <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </section>
-  <% } %>
 
-  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
-  <%- partial('post/gitment', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
-<% } %>
+
+  
+  
+  
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "http://dolphinsboy.github.io/2016-11-03-inceptionyuan-ma-xiu-gai-yue-du/", 
+    sourceId: "2016-11-03-inceptionyuan-ma-xiu-gai-yue-du",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+  
+
+  
+
+  
+
 
           </div>
         </div>

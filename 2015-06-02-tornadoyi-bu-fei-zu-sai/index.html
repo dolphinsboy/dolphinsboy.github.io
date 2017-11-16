@@ -164,29 +164,58 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
+            <article id="post-2015-06-02-tornadoyi-bu-fei-zu-sai" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    <% if (post.link || post.title){ %>
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
-        <% if (!post.noDate){ %>
-        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
-        <% } %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tornado异步非阻塞
+    </h1>
+  
+
+        
+        <a href="/2015-06-02-tornadoyi-bu-fei-zu-sai/" class="archive-article-date">
+  	<time datetime="2015-06-02T06:57:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-06-02</time>
+</a>
+        
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
+        
+            
+                
+<div id="toc">
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、背景"><span class="toc-text">1、背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、Tornado异步非阻塞调研文档"><span class="toc-text">2、Tornado异步非阻塞调研文档</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-介绍Tornado的资料"><span class="toc-text">3. 介绍Tornado的资料</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-线上实战"><span class="toc-text">4. 线上实战</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Tornado和Django性能对比"><span class="toc-text">5. Tornado和Django性能对比</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-siege-测试Django-API"><span class="toc-text">5.1 siege 测试Django API</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-siege-测试Tornado-API"><span class="toc-text">5.2 siege 测试Tornado API</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-测试结论"><span class="toc-text">5.3 测试结论</span></a></li></ol></li></ol>
+</div>
 
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link) { %>
-          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
-        <% } %>
-      <% } else { %>
-            <%- partial('toc') %>
-            <%- post.content %>
-      <% } %>
 
-      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
+                <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部平台提供HTTP API对日常经常使用的MySQL运维操作进行封装，经过多人积累，目前平台共有 117 个 HTTP 接口,涵盖到 MySQL 操作、MySQL 实例 元数据、授权、MySQL 状态、MySQL 集群拓扑结构、主从复制、DNS、体检巡检、参数变更、短信邮件报警、监控、表结构修改等。在线上实际运行的过程，经常出现API夯住的问题。</p>
+<p>平台的API接口基于Facebook的Tornado实现，Tornado本身是支持异步非阻塞的，但是我们在开发的时候并没有使用这一特性，故进行出现单个端口夯住导致其他请求查询实践过程。</p>
+<a id="more"></a>
+<h3 id="2、Tornado异步非阻塞调研文档"><a href="#2、Tornado异步非阻塞调研文档" class="headerlink" title="2、Tornado异步非阻塞调研文档"></a>2、Tornado异步非阻塞调研文档</h3><p>基于下面两个博客，对现有的API进行改造，实现支持异步非阻塞功能</p>
+<p><a href="http://www.tuicool.com/articles/36ZzA3" target="_blank" rel="external">tornado异步非阻塞</a></p>
+<p><a href="http://lbolla.info/blog/2013/01/22/blocking-tornado" target="_blank" rel="external">Blocking tasks in Tornado</a></p>
+<p><strong>下面给出之前本人写的《MySQLAPI 阻塞问题解决方案调研》的pdf文档</strong>，参照百度网盘的链接<br><a href="http://pan.baidu.com/s/1sjxA4KP" target="_blank" rel="external">http://pan.baidu.com/s/1sjxA4KP</a></p>
+<p>里面的关于<strong>《Apache+WSGI+Tornado的配置》</strong>文档为内部的链接，外网无法访问，故参照下面的链接<br><a href="http://pan.baidu.com/s/1dDq7yY9" target="_blank" rel="external">http://pan.baidu.com/s/1dDq7yY9</a></p>
+<h3 id="3-介绍Tornado的资料"><a href="#3-介绍Tornado的资料" class="headerlink" title="3. 介绍Tornado的资料"></a>3. 介绍Tornado的资料</h3><p>本人学习的Tornado入门资料主要是《Introduction to Tornado》</p>
+<p>英文版本的链接：<a href="http://maemual-share.qiniudn.com/Oreilly.Introduction.to.Tornado.Mar.2012.pdf" target="_blank" rel="external">http://maemual-share.qiniudn.com/Oreilly.Introduction.to.Tornado.Mar.2012.pdf</a></p>
+<p>中文版本的链接:<a href="http://mirrors.segmentfault.com/itt2zh/index.html" target="_blank" rel="external">http://mirrors.segmentfault.com/itt2zh/index.html</a></p>
+<p>中文版本的翻译看过，整体感觉还不错的，值得推荐，主要还是多敲上面的demo吧</p>
+<h3 id="4-线上实战"><a href="#4-线上实战" class="headerlink" title="4. 线上实战"></a>4. 线上实战</h3><p>参照上面的博客，给内部系统的SaltAPI(对于salt-master上的API进行封装，便于其他服务调用，而依赖于salt-master机器)，构建一个装饰器，使用上面的异步非阻塞功能</p>
+<figure class="highlight python"><figcaption><span>tornado异步非阻塞功能</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unblock</span><span class="params">(f)</span>:</span></span><br><span class="line"><span class="meta">@tornado.web.asynchronous</span></span><br><span class="line"><span class="meta">@wraps(f)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">self = args[<span class="number">0</span>]</span><br><span class="line">logger.debug(<span class="string">"step1: get %s request"</span> % self.request.uri)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">callback</span><span class="params">(future)</span>:</span></span><br><span class="line">self.write(future.result())</span><br><span class="line">self.finish()</span><br><span class="line"></span><br><span class="line">EXECUTOR = ThreadPoolExecutor(max_workers=<span class="number">500</span>)</span><br><span class="line"></span><br><span class="line">ret_sub = EXECUTOR.submit(partial(f, *args, **kwargs))</span><br><span class="line"></span><br><span class="line">ret_sub.add_done_callback(</span><br><span class="line"><span class="keyword">lambda</span> future: tornado.ioloop.IOLoop.instance().add_callback(</span><br><span class="line">partial(callback, future)))</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">ret_sub.result(timeout=<span class="number">10</span>)</span><br><span class="line"><span class="keyword">except</span> TimeoutError:</span><br><span class="line">ret = &#123;&#125;</span><br><span class="line">ret[<span class="string">'status'</span>] = <span class="number">-1</span></span><br><span class="line">ret[<span class="string">'msg'</span>] = <span class="string">"Timeout(&gt;10s), request=%s"</span> % self.request.uri</span><br><span class="line">self.write(json.dumps(ret))</span><br><span class="line">self.finish()</span><br><span class="line"><span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+<p>一开始的时候将 <strong>EXECUTOR = ThreadPoolExecutor(max_workers=500)</strong>作为一个全局变量，当在多个并发下(&gt;=2)情况下，会导致crash，异常信息为Assertion failed: ok (mailbox.cpp:79)，出现原因可能是因为把这个EXECUTOR作为一个全局表量，导致被重复的submit，详细原因还得再查查。</p>
+<p>按照上面的代码修改后，通过siege测试完成pass。</p>
+<h3 id="5-Tornado和Django性能对比"><a href="#5-Tornado和Django性能对比" class="headerlink" title="5. Tornado和Django性能对比"></a>5. Tornado和Django性能对比</h3><p>通过后台Salt执行获取某个ip机器上某个端口的mysql配置文件信息。<br>构造一个测试例子文件：</p>
+<figure class="highlight html"><figcaption><span>siege测试API并发量</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">siege -c 100 -r 2 -f salt</span><br><span class="line"></span><br><span class="line">[root@typhoeus81 test]# more salt</span><br><span class="line">http://sinadbp.mars.grid.sina.com.cn/sinasalt/get_mysql_conf/tgt=10.13.2.70</span><br></pre></td></tr></table></figure>
+<h4 id="5-1-siege-测试Django-API"><a href="#5-1-siege-测试Django-API" class="headerlink" title="5.1 siege 测试Django API"></a>5.1 siege 测试Django API</h4><p><img src="/images/django.jpg" alt="Django API测试结果"></p>
+<h4 id="5-2-siege-测试Tornado-API"><a href="#5-2-siege-测试Tornado-API" class="headerlink" title="5.2 siege 测试Tornado API"></a>5.2 siege 测试Tornado API</h4><p><img src="/images/tornado.jpg" alt="Tornado API测试结果"></p>
+<h4 id="5-3-测试结论"><a href="#5-3-测试结论" class="headerlink" title="5.3 测试结论"></a>5.3 测试结论</h4><p>从上面的结果上可以看到tornado的明显更为稳定，响应时间也比较快，django在高并发的情况下完全超时。</p>
+
+            
+        
+      
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -196,20 +225,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    <% if(theme.alipay) {%>
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.alipay%>">
+                      <img class="reward-img" src="/images/alipay.jpg">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    <% } %>
-                    <% if(theme.weixin) {%>
+                    
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.weixin%>">
+                      <img class="reward-img" src="/images/weixin.jpg">
                       <span class="reward-type">微信</span>
                     </div>
-                    <% } %>
+                    
                   </div>
                 </span>
               </span>
@@ -217,87 +246,143 @@
           </div>
           </a>
         </div>
-      <% } %>
+      
     </div>
     <div class="article-info article-info-index">
-      <%if(post.top){%>
-        <div class="article-pop-out tagcloud">
-          <i class="icon-tuding"></i>
-          <a class="article-tag-list-link color3">置顶</a>
-        </div>
-      <% } %>
-      <%- partial('post/tag') %>
-      <%- partial('post/category') %>
-      <% if (index && theme.show_all_link){ %>
-        <p class="article-more-link">
-          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
-        </p>
-      <% } %>
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Python-Tornado/" class="article-tag-list-link color5">Python Tornado</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
-      <% if (!index && theme.share_jia){ %>
-        <%- partial('post/share') %>
-      <% } %>
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-06-02-tornadoyi-bu-fei-zu-sai/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-<% if (!index){ %>
-  <%- partial('post/nav') %>
-<% } %>
-<%- partial('_partial/aside') %>
 
-
-<% if (!index && post.comments){ %>
-  <% if (theme.duoshuo){ %>
-  <%- partial('post/duoshuo', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
   
-  <% if (theme.wangyiyun){ %>
-  <%- partial('post/wangyiyun', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
+<nav id="article-nav">
+  
+    <a href="/2015-06-03-elkda-jian-guo-cheng/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          ELK搭建过程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015-05-27-iotong-ji/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">IO统计</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-  <% if (theme.changyan_appid && theme.changyan_conf){ %>
-  <%- partial('post/changyan', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
 
-  <% if (theme.disqus || config.disqus_shortname){ %>
-    <section id="comments">
-      <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </section>
-  <% } %>
 
-  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
-  <%- partial('post/gitment', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
-<% } %>
+
+  
+  
+  
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "http://dolphinsboy.github.io/2015-06-02-tornadoyi-bu-fei-zu-sai/", 
+    sourceId: "2015-06-02-tornadoyi-bu-fei-zu-sai",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+  
+
+  
+
+  
+
 
           </div>
         </div>

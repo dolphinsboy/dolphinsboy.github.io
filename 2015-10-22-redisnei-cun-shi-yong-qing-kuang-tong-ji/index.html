@@ -161,29 +161,77 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
+            <article id="post-2015-10-22-redisnei-cun-shi-yong-qing-kuang-tong-ji" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    <% if (post.link || post.title){ %>
+    
       <header class="article-header">
-        <%- partial('post/title', {class_name: 'article-title'}) %>
-        <% if (!post.noDate){ %>
-        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
-        <% } %>
+        
+  
+    <h1 class="article-title" itemprop="name">
+      redis内存使用情况统计
+    </h1>
+  
+
+        
+        <a href="/2015-10-22-redisnei-cun-shi-yong-qing-kuang-tong-ji/" class="archive-article-date">
+  	<time datetime="2015-10-22T15:24:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-10-22</time>
+</a>
+        
       </header>
-    <% } %>
+    
     <div class="article-entry" itemprop="articleBody">
+        
+            
+                
+<div id="toc">
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis-rdb文件内存使用情况分析"><span class="toc-text">redis rdb文件内存使用情况分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、生成rdb文件"><span class="toc-text">1、生成rdb文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、分析rdb文件"><span class="toc-text">2、分析rdb文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、使用map-reduce服务数据分析"><span class="toc-text">3、使用map-reduce服务数据分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、下载并分析结果"><span class="toc-text">4、下载并分析结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#针对购物车的统计"><span class="toc-text">针对购物车的统计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、需求"><span class="toc-text">1、需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、使用HIVE来进行操作"><span class="toc-text">2、使用HIVE来进行操作</span></a></li></ol></li></ol>
+</div>
 
-      <% if (post.excerpt && index){ %>
-        <%- post.excerpt %>
-        <% if (theme.excerpt_link) { %>
-          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
-        <% } %>
-      <% } else { %>
-            <%- partial('toc') %>
-            <%- post.content %>
-      <% } %>
 
-      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
+                <h2 id="redis-rdb文件内存使用情况分析"><a href="#redis-rdb文件内存使用情况分析" class="headerlink" title="redis rdb文件内存使用情况分析"></a>redis rdb文件内存使用情况分析</h2><h3 id="1、生成rdb文件"><a href="#1、生成rdb文件" class="headerlink" title="1、生成rdb文件"></a>1、生成rdb文件</h3><p>通过bgsave命令生成rdb文件，如果存在rdb，则跳过此步</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h xxx -p xxx bgsave</span><br></pre></td></tr></table></figure>
+<h3 id="2、分析rdb文件"><a href="#2、分析rdb文件" class="headerlink" title="2、分析rdb文件"></a>2、分析rdb文件</h3><p>需安装rdb：点击此处连接<br><a href="https://github.com/sripathikrishnan/redis-rdb-tools#generate-memory-report" target="_blank" rel="external">redis-rdb-tools</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdb -c memory /var/redis/6379/dump.rdb &gt; memory.csv</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>使用上面的工具进行分析，分析结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">database,type,key,size_in_bytes,encoding,num_elements,len_largest_element</span><br><span class="line">0,set,&quot;uv_filter_151020_10005138312&quot;,1440523,hashtable,13975,32</span><br><span class="line">0,set,&quot;uv_filter_151021_100117706&quot;,1360332,hashtable,13074,32</span><br><span class="line">0,set,&quot;uv_filter_151020_1000329580&quot;,1284149,hashtable,12218,32</span><br><span class="line">0,set,&quot;uv_filter_151020_100030831&quot;,1228394,hashtable,11591,32</span><br><span class="line">0,set,&quot;uv_filter_151020_10007780250&quot;,1194260,hashtable,11208,32</span><br></pre></td></tr></table></figure>
+<p>基于第4列进行汇总。按照上面的例子，前缀都是相同的，故需要进行合并。<br>线上的业务总共6个分片，每个rdb文件完后的结果为1G+，将这些文件上传到AWS S3上面。</p>
+<h3 id="3、使用map-reduce服务数据分析"><a href="#3、使用map-reduce服务数据分析" class="headerlink" title="3、使用map-reduce服务数据分析"></a>3、使用map-reduce服务数据分析</h3><p>将如下程序（mapper.py、reducer.py、run.sh）放在hadoop服务器（data-dev-00）</p>
+<p>map程序，分析上面的csv文件，获取k-v。</p>
+<p>mapper.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> coding:utf8</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">qps_dic = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">infs = line[:<span class="number">-1</span>].split(<span class="string">','</span>)</span><br><span class="line">_key =  infs[<span class="number">2</span>]</span><br><span class="line">_key = _key.replace(<span class="string">"\""</span>, <span class="string">''</span>)</span><br><span class="line">_key = <span class="string">''</span>.join(_key.split(<span class="string">':'</span>)[<span class="number">0</span>])</span><br><span class="line">_key = <span class="string">'_'</span>.join(_key.split(<span class="string">'_'</span>)[:<span class="number">-1</span>])</span><br><span class="line">_key = re.sub(<span class="string">r"\d+"</span>,<span class="string">"N"</span>, _key)</span><br><span class="line">_value = int(infs[<span class="number">3</span>])</span><br><span class="line"><span class="keyword">if</span> _key <span class="keyword">not</span> <span class="keyword">in</span> qps_dic:</span><br><span class="line">qps_dic[_key] = <span class="number">0</span></span><br><span class="line">qps_dic[_key] += _value</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line"><span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> qps_dic.items():</span><br><span class="line"><span class="keyword">print</span> <span class="string">"%s\t%d"</span>%(k,v)</span><br></pre></td></tr></table></figure>
+<p>处理点：</p>
+<ul>
+<li>按照逗号分隔，对前缀进行处理，将数字类转换成特殊字符N</li>
+<li>内部进行汇总，故构建一个字典统计</li>
+<li>输出按照tab键分隔</li>
+</ul>
+<p>reduce程序进行结果合并</p>
+<p>reducer.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"> coding:utf8</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">emit</span><span class="params">(_key, _value)</span>:</span></span><br><span class="line"><span class="keyword">print</span> _key + <span class="string">"\t"</span> + <span class="string">"\t"</span>.join(map(str,_value))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>  __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">current_key = <span class="keyword">None</span></span><br><span class="line">current_vals = []</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:</span><br><span class="line">infs = line[:<span class="number">-1</span>].split(<span class="string">'\t'</span>,<span class="number">1</span>)</span><br><span class="line"><span class="keyword">if</span> len(infs) == <span class="number">1</span>:</span><br><span class="line">(_key,_value) = (infs[<span class="number">0</span>],<span class="string">'0'</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">(_key, _value) = infs</span><br><span class="line"><span class="keyword">if</span> _key != current_key <span class="keyword">and</span> current_key != <span class="keyword">None</span>:</span><br><span class="line">emit(current_key, current_vals)</span><br><span class="line">current_vals = []</span><br><span class="line">current_key = _key</span><br><span class="line">_values = map(float,_value.split(<span class="string">'\t'</span>))</span><br><span class="line"><span class="keyword">if</span> len(current_vals) == <span class="number">0</span>:</span><br><span class="line">current_vals = _values</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">current_vals = [x + y <span class="keyword">for</span> x, y <span class="keyword">in</span> zip(_values, current_vals)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> current_key != <span class="keyword">None</span>:</span><br><span class="line">emit(current_key, current_vals)</span><br></pre></td></tr></table></figure>
+<p>通过hadoop的streaming进行分析:</p>
+<p>run.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"> !/bin/sh</span><br><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/java/latest</span><br><span class="line">/home/hadoop/bin/hadoop jar /home/hadoop/contrib/streaming/hadoop-streaming.jar \</span><br><span class="line">-D mapred.reduce.tasks=5 \</span><br><span class="line">-D  mapred.job.map.capacity=100 \</span><br><span class="line">-input s3://logs.culiu.org/redis_analysis/\ <span class="comment">#s3 路径，这个可以自己上传路径修改</span></span><br><span class="line">-output s3://forall/yangyh/redis_analysis \ <span class="comment">#s3 路径，分析后保存路径</span></span><br><span class="line">-mapper <span class="string">"python mapper.py"</span> \</span><br><span class="line">-reducer <span class="string">"python reducer.py"</span> \</span><br><span class="line">-file <span class="string">"mapper.py"</span> \</span><br><span class="line">-file <span class="string">"reducer.py"</span> \</span><br></pre></td></tr></table></figure>
+<h3 id="4、下载并分析结果"><a href="#4、下载并分析结果" class="headerlink" title="4、下载并分析结果"></a>4、下载并分析结果</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws s3 cp s3://xx.xx ./ --recursive</span><br></pre></td></tr></table></figure>
+<p>分析完得到的结果是5个部分： (自己汇总即可)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">part-00000  part-00001  part-00002  part-00003  part-00004  _SUCCESS</span><br></pre></td></tr></table></figure>
+<p>得到memory排序结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sort -rn -k2 part-0000*|awk &apos;&#123;print $1,$2/1024/1024,&quot;M&quot;&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="针对购物车的统计"><a href="#针对购物车的统计" class="headerlink" title="针对购物车的统计"></a>针对购物车的统计</h2><h3 id="1、需求"><a href="#1、需求" class="headerlink" title="1、需求"></a>1、需求</h3><p>根据购物车里面的商品数目，按照100为步长给出如下统计：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[ec2-user@dev-00 ~]$ aws s3 ls s3://forall/guosong/redis_analysis/users/</span><br><span class="line">2016-05-03 12:01:30          0</span><br><span class="line">2016-05-03 12:03:28     627442 user_100_200.log</span><br><span class="line">2016-05-03 12:03:48     136347 user_200_300.log</span><br><span class="line">2016-05-03 12:03:55      50394 user_300_400.log</span><br><span class="line">2016-05-03 12:04:01      23317 user_400_500.log</span><br><span class="line">2016-05-03 12:04:07      12995 user_500_600.log</span><br><span class="line">2016-05-03 12:04:13       7649 user_600_700.log</span><br><span class="line">2016-05-03 12:04:19       4831 user_700_800.log</span><br><span class="line">2016-05-03 12:04:25       3305 user_800_900.log</span><br><span class="line">2016-05-03 12:04:43       2318 user_900_1000.log</span><br></pre></td></tr></table></figure>
+<p>user_100_200是指购物车里面的商品数据超过100且小于200的</p>
+<h3 id="2、使用HIVE来进行操作"><a href="#2、使用HIVE来进行操作" class="headerlink" title="2、使用HIVE来进行操作"></a>2、使用HIVE来进行操作</h3><p>构建userid的表：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; show create table temp_user_id;</span><br><span class="line">OK</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="string">`temp_user_id`</span>(</span><br><span class="line"><span class="string">`user_id`</span> <span class="built_in">bigint</span>)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> <span class="keyword">DELIMITED</span></span><br><span class="line"><span class="keyword">FIELDS</span> <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">'\t'</span></span><br><span class="line"><span class="keyword">LINES</span> <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">'\n'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> INPUTFORMAT</span><br><span class="line"><span class="string">'org.apache.hadoop.mapred.TextInputFormat'</span></span><br><span class="line">OUTPUTFORMAT</span><br><span class="line"><span class="string">'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'</span></span><br><span class="line">LOCATION</span><br><span class="line"><span class="string">'s3://XA:Cie8QoAPiN@forall/weihl/u/m'</span>;</span><br></pre></td></tr></table></figure></p>
+<p><strong>数据存放在S3上</strong></p>
+<p>构建userid和内存之间的映射表<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">hive&gt; show create table temp_user_memory;</span><br><span class="line">OK</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> <span class="string">`temp_user_memory`</span>(</span><br><span class="line"><span class="string">`user_id`</span> <span class="built_in">bigint</span>,</span><br><span class="line"><span class="string">`msize`</span> <span class="keyword">double</span>)</span><br><span class="line"><span class="keyword">ROW</span> <span class="keyword">FORMAT</span> <span class="keyword">DELIMITED</span></span><br><span class="line"><span class="keyword">FIELDS</span> <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">'\t'</span></span><br><span class="line"><span class="keyword">LINES</span> <span class="keyword">TERMINATED</span> <span class="keyword">BY</span> <span class="string">'\n'</span></span><br><span class="line"><span class="keyword">STORED</span> <span class="keyword">AS</span> INPUTFORMAT</span><br><span class="line"><span class="string">'org.apache.hadoop.mapred.TextInputFormat'</span></span><br><span class="line">OUTPUTFORMAT</span><br><span class="line"><span class="string">'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'</span></span><br><span class="line">LOCATION</span><br><span class="line"><span class="string">'s3://AKIAPL:CieDj48QoAPiN@forall/weihl/u/i'</span>;</span><br></pre></td></tr></table></figure></p>
+<p><strong>写HiveSQL</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@bd-master-00 guosong]$ more r.sql</span><br><span class="line"><span class="keyword">use</span> tmp;</span><br><span class="line"><span class="keyword">select</span></span><br><span class="line"><span class="keyword">sum</span>(t2.msize)</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">(<span class="keyword">select</span></span><br><span class="line"><span class="keyword">distinct</span></span><br><span class="line">t1.user_id</span><br><span class="line"><span class="keyword">from</span></span><br><span class="line">temp_user_id t1) t3</span><br><span class="line"><span class="keyword">inner</span> <span class="keyword">join</span></span><br><span class="line">temp_user_memory t2</span><br><span class="line"><span class="keyword">on</span></span><br><span class="line">t3.user_id = t2.user_id;</span><br></pre></td></tr></table></figure>
+<p><strong>运行HiveSQL</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hive -f sum.sql</span><br></pre></td></tr></table></figure>
+<p>hive输出结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@bd-master-00 guosong]$ hive -f sum.sql</span><br><span class="line"></span><br><span class="line">Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties</span><br><span class="line">OK</span><br><span class="line">Time taken: 0.043 seconds</span><br><span class="line">Query ID = hadoop_20160503181212_571d477d-2610-4a50-abf6-779eeb7b026a</span><br><span class="line">Total jobs = 1</span><br><span class="line">Launching Job 1 out of 1</span><br><span class="line">Number of reduce tasks determined at compile time: 1</span><br><span class="line">In order to change the average load for a reducer (in bytes):</span><br><span class="line">set hive.exec.reducers.bytes.per.reducer=&lt;number&gt;</span><br><span class="line">In order to limit the maximum number of reducers:</span><br><span class="line">set hive.exec.reducers.max=&lt;number&gt;</span><br><span class="line">In order to set a constant number of reducers:</span><br><span class="line">set mapreduce.job.reduces=&lt;number&gt;</span><br><span class="line">Starting Job = job_1460542469374_69993, Tracking URL = http://ip-10-30-24-68.cn-north-1.compute.internal:20888/proxy/application_1460542469374_69993/</span><br><span class="line">Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1460542469374_69993</span><br><span class="line">Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1</span><br><span class="line">2016-05-03 18:12:46,948 Stage-1 map = 0%,  reduce = 0%</span><br><span class="line">2016-05-03 18:12:59,349 Stage-1 map = 13%,  reduce = 0%, Cumulative CPU 8.03 sec</span><br><span class="line">2016-05-03 18:13:02,455 Stage-1 map = 27%,  reduce = 0%, Cumulative CPU 11.29 sec</span><br><span class="line">2016-05-03 18:13:05,600 Stage-1 map = 40%,  reduce = 0%, Cumulative CPU 14.51 sec</span><br><span class="line">2016-05-03 18:13:07,666 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 16.76 sec</span><br><span class="line">2016-05-03 18:13:15,947 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 18.58 sec</span><br><span class="line">MapReduce Total cumulative CPU time: 18 seconds 580 msec</span><br><span class="line">Ended Job = job_1460542469374_69993</span><br><span class="line">MapReduce Jobs Launched:</span><br><span class="line">Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 18.58 sec   HDFS Read: 692 HDFS Write: 16 SUCCESS</span><br><span class="line">Total MapReduce CPU Time Spent: 18 seconds 580 msec</span><br><span class="line">OK</span><br><span class="line">9.8070625201E10</span><br><span class="line">Time taken: 39.05 seconds, Fetched: 1 row(s)</span><br></pre></td></tr></table></figure>
+
+            
+        
+      
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -193,20 +241,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    <% if(theme.alipay) {%>
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.alipay%>">
+                      <img class="reward-img" src="/images/alipay.jpg">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    <% } %>
-                    <% if(theme.weixin) {%>
+                    
+                    
                     <div class="reward-box-item">
-                      <img class="reward-img" src="<%= theme.weixin%>">
+                      <img class="reward-img" src="/images/weixin.jpg">
                       <span class="reward-type">微信</span>
                     </div>
-                    <% } %>
+                    
                   </div>
                 </span>
               </span>
@@ -214,87 +262,143 @@
           </div>
           </a>
         </div>
-      <% } %>
+      
     </div>
     <div class="article-info article-info-index">
-      <%if(post.top){%>
-        <div class="article-pop-out tagcloud">
-          <i class="icon-tuding"></i>
-          <a class="article-tag-list-link color3">置顶</a>
-        </div>
-      <% } %>
-      <%- partial('post/tag') %>
-      <%- partial('post/category') %>
-      <% if (index && theme.show_all_link){ %>
-        <p class="article-more-link">
-          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
-        </p>
-      <% } %>
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Redis运维/" class="article-tag-list-link color3">Redis运维</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
-      <% if (!index && theme.share_jia){ %>
-        <%- partial('post/share') %>
-      <% } %>
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-10-22-redisnei-cun-shi-yong-qing-kuang-tong-ji/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-<% if (!index){ %>
-  <%- partial('post/nav') %>
-<% } %>
-<%- partial('_partial/aside') %>
 
-
-<% if (!index && post.comments){ %>
-  <% if (theme.duoshuo){ %>
-  <%- partial('post/duoshuo', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
   
-  <% if (theme.wangyiyun){ %>
-  <%- partial('post/wangyiyun', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
+<nav id="article-nav">
+  
+    <a href="/2015-11-10-graphite/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Graphite
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015-10-15-mo-ni-mysql-ioxian-cheng/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">模拟MySQL IO线程</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
 
-  <% if (theme.changyan_appid && theme.changyan_conf){ %>
-  <%- partial('post/changyan', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
 
-  <% if (theme.disqus || config.disqus_shortname){ %>
-    <section id="comments">
-      <div id="disqus_thread"></div>
-        <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
 
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    </section>
-  <% } %>
 
-  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
-  <%- partial('post/gitment', {
-      key: post.slug,
-      title: post.title,
-      url: config.url+url_for(post.path)
-    }) %>
-  <% } %>
-<% } %>
+
+  
+  
+  
+  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: "http://dolphinsboy.github.io/2015-10-22-redisnei-cun-shi-yong-qing-kuang-tong-ji/", 
+    sourceId: "2015-10-22-redisnei-cun-shi-yong-qing-kuang-tong-ji",
+    productKey: "true",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+  
+
+  
+
+  
+
 
           </div>
         </div>
