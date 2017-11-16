@@ -147,6 +147,87 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2017-11-16-Hexo-相关问题记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017-11-16-Hexo-相关问题记录/">2017-11-16_Hexo_相关问题记录</a>
+    </h1>
+  
+
+        
+        <a href="/2017-11-16-Hexo-相关问题记录/" class="archive-article-date">
+  	<time datetime="2017-11-16T03:48:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+
+      
+            
+<div id="toc">
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#代码高亮"><span class="toc-text">代码高亮</span></a></li></ol>
+</div>
+
+
+            <h3 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h3><p>参考链接: <a href="http://jcmels.top/2016/04/11/code-highlight/" target="_blank" rel="external">http://jcmels.top/2016/04/11/code-highlight/</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017-11-16-Hexo-相关问题记录/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2017-11-16-LeetCode-L83-从有序链表中删除重复的数据" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -912,103 +993,6 @@
 
 
   
-    <article id="post-2016-08-25-innodb-buffer-dump-and-load" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016-08-25-innodb-buffer-dump-and-load/">innodb buffer dump and load</a>
-    </h1>
-  
-
-        
-        <a href="/2016-08-25-innodb-buffer-dump-and-load/" class="archive-article-date">
-  	<time datetime="2016-08-25T07:18:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-
-      
-            
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#预热Innodb-Buffer-Pool"><span class="toc-text">预热Innodb Buffer Pool</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dump"><span class="toc-text">Dump</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Load"><span class="toc-text">Load</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#相关参考"><span class="toc-text">相关参考</span></a></li></ol>
-</div>
-
-
-            <h1 id="预热Innodb-Buffer-Pool"><a href="#预热Innodb-Buffer-Pool" class="headerlink" title="预热Innodb Buffer Pool"></a>预热Innodb Buffer Pool</h1><p>针对线上运行的MySQL Server，如果重启不设置预热的话直接提供服务，会产生很多Disk IO导致性能严重下降。</p>
-<p>在MySQL5.6 版本之后引入Buffer Pool的dump以及load功能。</p>
-<h2 id="Dump"><a href="#Dump" class="headerlink" title="Dump"></a>Dump</h2><p>扫描Buffer Pool将相关table_id以及page_id写入文件中(默认在data目录下ib_buffer_pool文件中)。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> innodb_buffer_pool_dump_at_shutdown = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<p>ib_buffer_pool内容如下:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@service-test1 data]<span class="comment"># head -n 10 ib_buffer_pool</span></span><br><span class="line">92,17682</span><br><span class="line">92,131631</span><br><span class="line">92,61826</span><br><span class="line">92,65080</span><br><span class="line">92,111759</span><br><span class="line">92,114364</span><br><span class="line">92,96410</span><br><span class="line">92,131632</span><br><span class="line">92,94495</span><br><span class="line">92,131633</span><br></pre></td></tr></table></figure>
-<h1 id="Load"><a href="#Load" class="headerlink" title="Load"></a>Load</h1><p>动态实现load</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> innodb_buffer_pool_load_now=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2016-08-25 16:23:06 7fdd367fc700 InnoDB: Loading buffer pool(s) from .//ib_buffer_pool</span><br><span class="line">2016-08-25 16:23:36 7fdd367fc700 InnoDB: Buffer pool(s) load completed at 160825 16:23:36</span><br></pre></td></tr></table></figure>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global status like '%load%';</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line">| Variable_name                  | Value                    |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line">| Innodb_buffer_pool_load_status | Loaded 16769/54873 pages |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line"></span><br><span class="line">mysql&gt; show global status like '%load%';</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br><span class="line">| Variable_name                  | Value                                            |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br><span class="line">| Com_load                       | 0                                                |</span><br><span class="line">| Com_preload_keys               | 0                                                |</span><br><span class="line">| Innodb_buffer_pool_load_status | Buffer pool(s) <span class="keyword">load</span> completed <span class="keyword">at</span> <span class="number">160825</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">36</span> |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br></pre></td></tr></table></figure>
-<p>Load过程不影响启动，不是一定得load完成之后才响应相关请求。Load中如果发现对应的table_id以及page_id已经在buffer中，将直接跳过。</p>
-<h1 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h1><ul>
-<li><p><a href="https://blog.marceloaltmann.com/en-warm-up-innodb-buffer-pool-pt-esquentando-o-innodb-buffer-pool/" target="_blank" rel="external">https://blog.marceloaltmann.com/en-warm-up-innodb-buffer-pool-pt-esquentando-o-innodb-buffer-pool/</a></p>
-</li>
-<li><p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-preload-buffer-pool.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/innodb-preload-buffer-pool.html</a></p>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL/" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016-08-25-innodb-buffer-dump-and-load/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1112,6 +1096,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">LeetCode</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
               </li>
             
             <div class="clearfix"></div>

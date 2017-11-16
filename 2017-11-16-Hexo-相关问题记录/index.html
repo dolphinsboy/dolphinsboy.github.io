@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://dolphinsboy.github.io">
-  <title>mysql大小参数设置 | 郭颂</title>
+  <title>2017-11-16_Hexo_相关问题记录 | 郭颂</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制&amp;gt;It is strongly recommended that you always use the same setting for the lower_case_table_names system variable on both master and slave. In particul">
+  <meta name="description" content="代码高亮参考链接: http://jcmels.top/2016/04/11/code-highlight/">
+<meta name="keywords" content="Hexo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql大小参数设置">
-<meta property="og:url" content="http://dolphinsboy.github.io/2016-01-05-mysqlda-xiao-can-shu-she-zhi/index.html">
+<meta property="og:title" content="2017-11-16_Hexo_相关问题记录">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-16-Hexo-相关问题记录/index.html">
 <meta property="og:site_name" content="郭颂">
-<meta property="og:description" content="MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制&amp;gt;It is strongly recommended that you always use the same setting for the lower_case_table_names system variable on both master and slave. In particul">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:description" content="代码高亮参考链接: http://jcmels.top/2016/04/11/code-highlight/">
+<meta property="og:updated_time" content="2017-11-16T03:54:24.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql大小参数设置">
-<meta name="twitter:description" content="MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制&amp;gt;It is strongly recommended that you always use the same setting for the lower_case_table_names system variable on both master and slave. In particul">
+<meta name="twitter:title" content="2017-11-16_Hexo_相关问题记录">
+<meta name="twitter:description" content="代码高亮参考链接: http://jcmels.top/2016/04/11/code-highlight/">
   
     <link rel="alternative" href="/atom.xml" title="郭颂" type="application/atom+xml">
   
@@ -149,20 +150,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2016-01-05-mysqlda-xiao-can-shu-she-zhi" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-2017-11-16-Hexo-相关问题记录" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      mysql大小参数设置
+      2017-11-16_Hexo_相关问题记录
     </h1>
   
 
         
-        <a href="/2016-01-05-mysqlda-xiao-can-shu-she-zhi/" class="archive-article-date">
-  	<time datetime="2016-01-05T02:22:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-05</time>
+        <a href="/2017-11-16-Hexo-相关问题记录/" class="archive-article-date">
+  	<time datetime="2017-11-16T03:48:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-16</time>
 </a>
         
       </header>
@@ -172,13 +173,11 @@
       
             
 <div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制"><span class="toc-text">MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#代码高亮"><span class="toc-text">代码高亮</span></a></li></ol>
 </div>
 
 
-            <h2 id="MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制"><a href="#MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制" class="headerlink" title="MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制"></a>MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制</h2><p>&gt;<br>It is strongly recommended that you always use the same setting for the lower_case_table_names system variable on both master and slave. In particular, when a case-sensitive file system is used, setting this variable to 1 on the slave, but to a different value on the master, can cause two types of problems: Names of databases are not converted to lowercase; in addition, when using row-based replication names of tables are also not converted. Either of these problems can cause replication to fail. This is a known issue, which is fixed in MySQL 5.6.</p>
-<p>否则会出现同步错误：<br>&gt;<br>Last_SQL_Errno: 1146<br>Last_SQL_Error: Error executing row event: ‘Table’ 10futu.commentAZXI’ doesn’t exist</p>
-<p><a href="http://dev.mysql.com/doc/refman/5.5/en/replication-features-variables.html" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.5/en/replication-features-variables.html</a></p>
+            <h3 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h3><p>参考链接: <a href="http://jcmels.top/2016/04/11/code-highlight/" target="_blank" rel="external">http://jcmels.top/2016/04/11/code-highlight/</a></p>
 
       
 
@@ -218,18 +217,18 @@
     <div class="article-info article-info-index">
       
       
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL/" class="article-tag-list-link color1">MySQL</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Hexo</a>
         		</li>
       		
 		</ul>
 	</div>
 
+      
 
       
 
@@ -279,7 +278,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2016-01-05-mysqlda-xiao-can-shu-she-zhi/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2017-11-16-Hexo-相关问题记录/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -293,18 +292,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2016-01-15-redisxiang-guan-lian-jie/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          redis相关链接
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">pt-online-schema-change使用方法</div>
+    <a href="/2017-11-16-LeetCode-L83-从有序链表中删除重复的数据/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">L83_从有序链表中删除重复的数据</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -335,8 +325,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2016-01-05-mysqlda-xiao-can-shu-she-zhi/", 
-    sourceId: "2016-01-05-mysqlda-xiao-can-shu-she-zhi",
+    url: "http://dolphinsboy.github.io/2017-11-16-Hexo-相关问题记录/", 
+    sourceId: "2017-11-16-Hexo-相关问题记录",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };
