@@ -60,10 +60,6 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
-				<li><a href="/tags">标签</a></li>
-	        
-				<li><a href="/categories">分类</a></li>
-	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -118,10 +114,6 @@
 			
 				
 			
-				
-			
-				
-			
 			
 			
 			<nav class="header-nav">
@@ -137,16 +129,12 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 70%">
+				<ul style="width: 50%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/archives">归档</a></li>
-		        
-					<li style="width: 25%"><a href="/tags">标签</a></li>
-		        
-					<li style="width: 25%"><a href="/categories">分类</a></li>
+					<li style="width: 50%"><a href="/archives">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -180,15 +168,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
+
+      
             
-                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#预热Innodb-Buffer-Pool"><span class="toc-text">预热Innodb Buffer Pool</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Dump"><span class="toc-text">Dump</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Load"><span class="toc-text">Load</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#相关参考"><span class="toc-text">相关参考</span></a></li></ol>
 </div>
 
 
-                <h1 id="预热Innodb-Buffer-Pool"><a href="#预热Innodb-Buffer-Pool" class="headerlink" title="预热Innodb Buffer Pool"></a>预热Innodb Buffer Pool</h1><p>针对线上运行的MySQL Server，如果重启不设置预热的话直接提供服务，会产生很多Disk IO导致性能严重下降。</p>
+            <h1 id="预热Innodb-Buffer-Pool"><a href="#预热Innodb-Buffer-Pool" class="headerlink" title="预热Innodb Buffer Pool"></a>预热Innodb Buffer Pool</h1><p>针对线上运行的MySQL Server，如果重启不设置预热的话直接提供服务，会产生很多Disk IO导致性能严重下降。</p>
 <p>在MySQL5.6 版本之后引入Buffer Pool的dump以及load功能。</p>
 <h2 id="Dump"><a href="#Dump" class="headerlink" title="Dump"></a>Dump</h2><p>扫描Buffer Pool将相关table_id以及page_id写入文件中(默认在data目录下ib_buffer_pool文件中)。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> innodb_buffer_pool_dump_at_shutdown = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
@@ -206,8 +194,8 @@
 </li>
 </ul>
 
-            
-        
+      
+
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">

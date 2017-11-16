@@ -6,18 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://dolphinsboy.github.io">
-  <title>LeetCode_L83_从有序链表中删除重复的数据 | 郭颂</title>
+  <title>L83_从有序链表中删除重复的数据 | 郭颂</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="题目描述12345Given a sorted linked list, delete all duplicates such that each element appear only once.For example,Given 1-&amp;gt;1-&amp;gt;2, return 1-&amp;gt;2.Given 1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;3, return 1-&amp;gt;2-&amp;gt;3">
 <meta name="keywords" content="LeetCode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="LeetCode_L83_从有序链表中删除重复的数据">
+<meta property="og:title" content="L83_从有序链表中删除重复的数据">
 <meta property="og:url" content="http://dolphinsboy.github.io/2017-11-16-LeetCode-L83-从有序链表中删除重复的数据/index.html">
 <meta property="og:site_name" content="郭颂">
 <meta property="og:description" content="题目描述12345Given a sorted linked list, delete all duplicates such that each element appear only once.For example,Given 1-&amp;gt;1-&amp;gt;2, return 1-&amp;gt;2.Given 1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;3, return 1-&amp;gt;2-&amp;gt;3">
-<meta property="og:updated_time" content="2017-11-16T03:35:42.000Z">
+<meta property="og:updated_time" content="2017-11-16T03:38:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="LeetCode_L83_从有序链表中删除重复的数据">
+<meta name="twitter:title" content="L83_从有序链表中删除重复的数据">
 <meta name="twitter:description" content="题目描述12345Given a sorted linked list, delete all duplicates such that each element appear only once.For example,Given 1-&amp;gt;1-&amp;gt;2, return 1-&amp;gt;2.Given 1-&amp;gt;1-&amp;gt;2-&amp;gt;3-&amp;gt;3, return 1-&amp;gt;2-&amp;gt;3">
   
     <link rel="alternative" href="/atom.xml" title="郭颂" type="application/atom+xml">
@@ -60,10 +60,6 @@
 				<li><a href="/">主页</a></li>
 	        
 				<li><a href="/archives">归档</a></li>
-	        
-				<li><a href="/tags">标签</a></li>
-	        
-				<li><a href="/categories">分类</a></li>
 	        
 			</ul>
 		</nav>
@@ -119,10 +115,6 @@
 			
 				
 			
-				
-			
-				
-			
 			
 			
 			<nav class="header-nav">
@@ -138,16 +130,12 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 70%">
+				<ul style="width: 50%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/archives">归档</a></li>
-		        
-					<li style="width: 25%"><a href="/tags">标签</a></li>
-		        
-					<li style="width: 25%"><a href="/categories">分类</a></li>
+					<li style="width: 50%"><a href="/archives">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -169,7 +157,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      LeetCode_L83_从有序链表中删除重复的数据
+      L83_从有序链表中删除重复的数据
     </h1>
   
 
@@ -181,15 +169,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
+
+      
             
-                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解题思路"><span class="toc-text">解题思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go-循环实现"><span class="toc-text">Go 循环实现</span></a></li></ol>
 </div>
 
 
-                <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given a sorted linked list, delete all duplicates such that each element appear only once.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given 1-&gt;1-&gt;2, return 1-&gt;2.</span><br><span class="line">Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.</span><br></pre></td></tr></table></figure>
+            <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given a sorted linked list, delete all duplicates such that each element appear only once.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given 1-&gt;1-&gt;2, return 1-&gt;2.</span><br><span class="line">Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.</span><br></pre></td></tr></table></figure>
 <p>从有序链表中删除重复的数据</p>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
 <li>使用两个指针prev，next变量链表</li>
@@ -201,8 +189,8 @@
 <h3 id="Go-循环实现"><a href="#Go-循环实现" class="headerlink" title="Go 循环实现"></a>Go 循环实现</h3><p>增加Insert以及printNode两个函数便于测试。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * Definition for singly-linked list.</span><br><span class="line">*/</span><br><span class="line">type ListNode struct &#123;</span><br><span class="line">     Val int</span><br><span class="line">     Next *ListNode</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Insert(vals...int) *ListNode&#123;</span><br><span class="line">    var head *ListNode</span><br><span class="line">    current := head</span><br><span class="line">    for _,v := range vals &#123;</span><br><span class="line">        n := new(ListNode)</span><br><span class="line">        n.Val = v</span><br><span class="line"></span><br><span class="line">        if head == nil &#123;</span><br><span class="line">            head = n</span><br><span class="line">            current = head</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            current.Next = n</span><br><span class="line">            current = n</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return head</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func printNode(head *ListNode)  &#123;</span><br><span class="line">    for head!=nil  &#123;</span><br><span class="line">        fmt.Println(head.Val)</span><br><span class="line">        head = head.Next</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func deleteDuplicates(head *ListNode) *ListNode &#123;</span><br><span class="line"></span><br><span class="line">    if head == nil&#123;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">    prev := head</span><br><span class="line">    next := head.Next</span><br><span class="line"></span><br><span class="line">    for next !=nil  &#123;</span><br><span class="line">        if next.Val == prev.Val &#123;</span><br><span class="line">            prev.Next = next.Next</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            prev = next</span><br><span class="line">        &#125;</span><br><span class="line">        next = next.Next</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return head</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main()  &#123;</span><br><span class="line">    //1-&gt;1-&gt;2-&gt;3-&gt;3</span><br><span class="line">    head :=Insert(1,1,2,3,3)</span><br><span class="line">    deleteDuplicates(head)</span><br><span class="line">    printNode(head)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-            
-        
+      
+
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">

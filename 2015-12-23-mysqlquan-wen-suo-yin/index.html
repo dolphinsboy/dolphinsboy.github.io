@@ -60,10 +60,6 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
-				<li><a href="/tags">标签</a></li>
-	        
-				<li><a href="/categories">分类</a></li>
-	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -118,10 +114,6 @@
 			
 				
 			
-				
-			
-				
-			
 			
 			
 			<nav class="header-nav">
@@ -137,16 +129,12 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 70%">
+				<ul style="width: 50%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/archives">归档</a></li>
-		        
-					<li style="width: 25%"><a href="/tags">标签</a></li>
-		        
-					<li style="width: 25%"><a href="/categories">分类</a></li>
+					<li style="width: 50%"><a href="/archives">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -180,22 +168,22 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
+
+      
             
-                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#categories-‘MySQL’"><span class="toc-text">categories: [‘MySQL’]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0、全文索引"><span class="toc-text">0、全文索引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1、全文索引"><span class="toc-text">1、全文索引</span></a></li></ol>
 </div>
 
 
-                <p>=======</p>
+            <p>=======</p>
 <h2 id="categories-‘MySQL’"><a href="#categories-‘MySQL’" class="headerlink" title="categories: [‘MySQL’]"></a>categories: [‘MySQL’]</h2><h2 id="0、全文索引"><a href="#0、全文索引" class="headerlink" title="0、全文索引"></a>0、全文索引</h2><p>说明全文索引使用情况，文件组织格式、使用方式等。<br><a id="more"></a></p>
 <h2 id="1、全文索引"><a href="#1、全文索引" class="headerlink" title="1、全文索引"></a>1、全文索引</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_1.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_2.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_3.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_4.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_5.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_6.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED.ibd</span><br><span class="line">FTS_000000000000004b_CONFIG.ibd</span><br><span class="line">FTS_000000000000004b_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_DELETED.ibd</span><br></pre></td></tr></table></figure>
 <p>之前没有对全文索引研究过，一开始对这个ibd文件感到奇怪，原来使用到全文索引。</p>
 <p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html</a></p>
 
-            
-        
+      
+
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">

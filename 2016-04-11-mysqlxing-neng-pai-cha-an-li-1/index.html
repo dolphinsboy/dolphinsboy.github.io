@@ -65,10 +65,6 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
-				<li><a href="/tags">标签</a></li>
-	        
-				<li><a href="/categories">分类</a></li>
-	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -123,10 +119,6 @@
 			
 				
 			
-				
-			
-				
-			
 			
 			
 			<nav class="header-nav">
@@ -142,16 +134,12 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 70%">
+				<ul style="width: 50%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/archives">归档</a></li>
-		        
-					<li style="width: 25%"><a href="/tags">标签</a></li>
-		        
-					<li style="width: 25%"><a href="/categories">分类</a></li>
+					<li style="width: 50%"><a href="/archives">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -185,15 +173,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
+
+      
             
-                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、简单查询问题排查"><span class="toc-text">1、简单查询问题排查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题1-Lock-time是否包括innodb-wait-lock呢？"><span class="toc-text">问题1-Lock_time是否包括innodb wait lock呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、在慢查询里面看到Commit提交慢"><span class="toc-text">2、在慢查询里面看到Commit提交慢</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-COMMIT的时候做了哪些操作呢？"><span class="toc-text">2.1 COMMIT的时候做了哪些操作呢？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-查看redo-log更新的情况"><span class="toc-text">2.2 查看redo log更新的情况</span></a></li></ol></li></ol>
 </div>
 
 
-                <h2 id="1、简单查询问题排查"><a href="#1、简单查询问题排查" class="headerlink" title="1、简单查询问题排查"></a>1、简单查询问题排查</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  Scores: V/M = 0.14</span><br><span class="line">  Attribute    pct   total     min     max     avg     95%  stddev  median</span><br><span class="line">  ============ === ======= ======= ======= ======= ======= ======= =======</span><br><span class="line">  Count          2       5</span><br><span class="line">  Exec time      4     27s      4s      6s      5s      6s   878ms      6s</span><br><span class="line">  <span class="keyword">Lock</span> <span class="keyword">time</span>      <span class="number">4</span>   <span class="number">246</span>us    <span class="number">43</span>us    <span class="number">64</span>us    <span class="number">49</span>us    <span class="number">63</span>us     <span class="number">7</span>us    <span class="number">44</span>us</span><br><span class="line">  <span class="keyword">Rows</span> sent      <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span></span><br><span class="line">  <span class="keyword">Rows</span> examine   <span class="number">0</span>       <span class="number">5</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">0</span>       <span class="number">1</span></span><br><span class="line">  <span class="keyword">Query</span> <span class="keyword">size</span>     <span class="number">3</span>     <span class="number">583</span>     <span class="number">116</span>     <span class="number">117</span>  <span class="number">116.60</span>  <span class="number">112.70</span>       <span class="number">0</span>  <span class="number">112.70</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="string">`cc_product_skus`</span> <span class="keyword">SET</span> <span class="string">`stock`</span>=<span class="string">'578'</span> <span class="keyword">WHERE</span> ( <span class="string">`id`</span> = <span class="string">'20081272'</span> ) <span class="keyword">AND</span> ( <span class="string">`product_id`</span> = <span class="string">'100122171387'</span> ) <span class="keyword">LIMIT</span> <span class="number">1</span>\G</span><br><span class="line">  Converted <span class="keyword">for</span> <span class="keyword">EXPLAIN</span></span><br><span class="line">  <span class="keyword">EXPLAIN</span> <span class="comment">/*!50100 PARTITIONS*/</span></span><br><span class="line"><span class="keyword">select</span>  <span class="string">`stock`</span>=<span class="string">'578'</span> <span class="keyword">from</span> <span class="string">`cc_product_skus`</span> <span class="keyword">where</span>  ( <span class="string">`id`</span> = <span class="string">'20081272'</span> ) <span class="keyword">AND</span> ( <span class="string">`product_id`</span> = <span class="string">'100122171387'</span> )  <span class="keyword">LIMIT</span> <span class="number">1</span> \G</span><br></pre></td></tr></table></figure>
+            <h2 id="1、简单查询问题排查"><a href="#1、简单查询问题排查" class="headerlink" title="1、简单查询问题排查"></a>1、简单查询问题排查</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  Scores: V/M = 0.14</span><br><span class="line">  Attribute    pct   total     min     max     avg     95%  stddev  median</span><br><span class="line">  ============ === ======= ======= ======= ======= ======= ======= =======</span><br><span class="line">  Count          2       5</span><br><span class="line">  Exec time      4     27s      4s      6s      5s      6s   878ms      6s</span><br><span class="line">  <span class="keyword">Lock</span> <span class="keyword">time</span>      <span class="number">4</span>   <span class="number">246</span>us    <span class="number">43</span>us    <span class="number">64</span>us    <span class="number">49</span>us    <span class="number">63</span>us     <span class="number">7</span>us    <span class="number">44</span>us</span><br><span class="line">  <span class="keyword">Rows</span> sent      <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span></span><br><span class="line">  <span class="keyword">Rows</span> examine   <span class="number">0</span>       <span class="number">5</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">0</span>       <span class="number">1</span></span><br><span class="line">  <span class="keyword">Query</span> <span class="keyword">size</span>     <span class="number">3</span>     <span class="number">583</span>     <span class="number">116</span>     <span class="number">117</span>  <span class="number">116.60</span>  <span class="number">112.70</span>       <span class="number">0</span>  <span class="number">112.70</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="string">`cc_product_skus`</span> <span class="keyword">SET</span> <span class="string">`stock`</span>=<span class="string">'578'</span> <span class="keyword">WHERE</span> ( <span class="string">`id`</span> = <span class="string">'20081272'</span> ) <span class="keyword">AND</span> ( <span class="string">`product_id`</span> = <span class="string">'100122171387'</span> ) <span class="keyword">LIMIT</span> <span class="number">1</span>\G</span><br><span class="line">  Converted <span class="keyword">for</span> <span class="keyword">EXPLAIN</span></span><br><span class="line">  <span class="keyword">EXPLAIN</span> <span class="comment">/*!50100 PARTITIONS*/</span></span><br><span class="line"><span class="keyword">select</span>  <span class="string">`stock`</span>=<span class="string">'578'</span> <span class="keyword">from</span> <span class="string">`cc_product_skus`</span> <span class="keyword">where</span>  ( <span class="string">`id`</span> = <span class="string">'20081272'</span> ) <span class="keyword">AND</span> ( <span class="string">`product_id`</span> = <span class="string">'100122171387'</span> )  <span class="keyword">LIMIT</span> <span class="number">1</span> \G</span><br></pre></td></tr></table></figure>
 <p>通过pt-query-digest的可以看出上面简单的update语句耗时会在4s-6s之间。</p>
 <h3 id="问题1-Lock-time是否包括innodb-wait-lock呢？"><a href="#问题1-Lock-time是否包括innodb-wait-lock呢？" class="headerlink" title="问题1-Lock_time是否包括innodb wait lock呢？"></a>问题1-Lock_time是否包括innodb wait lock呢？</h3><p><a href="http://lists.mysql.com/commits/115766" target="_blank" rel="external">http://lists.mysql.com/commits/115766</a><br>MySQL 5.5.6版本之后已经改进这个问题。</p>
 <p>目前线上使用MySQL 5.6.19版本，且通过下面的实验进行验证：</p>
@@ -222,8 +210,8 @@
 <p><strong>Handler情况</strong></p>
 <p><img src="/images/shangcheng_handler.png" alt="handler"></p>
 
-            
-        
+      
+
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">

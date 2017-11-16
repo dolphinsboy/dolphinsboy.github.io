@@ -63,10 +63,6 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
-				<li><a href="/tags">标签</a></li>
-	        
-				<li><a href="/categories">分类</a></li>
-	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -121,10 +117,6 @@
 			
 				
 			
-				
-			
-				
-			
 			
 			
 			<nav class="header-nav">
@@ -140,16 +132,12 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 70%">
+				<ul style="width: 50%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/archives">归档</a></li>
-		        
-					<li style="width: 25%"><a href="/tags">标签</a></li>
-		        
-					<li style="width: 25%"><a href="/categories">分类</a></li>
+					<li style="width: 50%"><a href="/archives">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -183,15 +171,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
+
+      
             
-                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0、前言"><span class="toc-text">0、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1、iotop"><span class="toc-text">1、iotop</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1、基本使用"><span class="toc-text">1.1、基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2、-o参数"><span class="toc-text">1.2、-o参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、pidstat"><span class="toc-text">2、pidstat</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1、基本使用"><span class="toc-text">2.1、基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2、针对单个进程的io"><span class="toc-text">2.2、针对单个进程的io</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3、"><span class="toc-text">2.3、</span></a></li></ol></li></ol>
 </div>
 
 
-                <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>上一篇介绍iostat相关使用说明，这里介绍iotop以及pidstat，发现使用最多io的进程以及线程。和之前写的<a href="#/blog/iotong-ji.html">IO统计</a>，那里使用dmesg -c命令，这次是python写的iotop工具。</p>
+            <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>上一篇介绍iostat相关使用说明，这里介绍iotop以及pidstat，发现使用最多io的进程以及线程。和之前写的<a href="#/blog/iotong-ji.html">IO统计</a>，那里使用dmesg -c命令，这次是python写的iotop工具。</p>
 <p>&gt;<br>iotop  watches  I/O  usage information output by the Linux kernel (requires 2.6.20 or later) and displays a table of current I/O usage by processes or threads on the system.</p>
 <p>可以看到进程以及线程的io情况。</p>
 <a id="more"></a>
@@ -208,8 +196,8 @@
 <p>其他的功能参照man iotop功能。</p>
 <h2 id="2、pidstat"><a href="#2、pidstat" class="headerlink" title="2、pidstat"></a>2、pidstat</h2><h3 id="2-1、基本使用"><a href="#2-1、基本使用" class="headerlink" title="2.1、基本使用"></a>2.1、基本使用</h3><h3 id="2-2、针对单个进程的io"><a href="#2-2、针对单个进程的io" class="headerlink" title="2.2、针对单个进程的io"></a>2.2、针对单个进程的io</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@mysql-db-009 ec2-user]<span class="comment"># pidstat -d -p 3819 1</span></span><br><span class="line">Linux 4.1.7-15.23.amzn1.x86_64 (mysql-db-009)   12/07/2015      _x86_64_        (8 CPU)</span><br><span class="line"></span><br><span class="line">11:30:33 AM       PID   kB_rd/s   kB_wr/s kB_ccwr/s  Command</span><br><span class="line">11:30:34 AM      3819    536.00   9316.00      0.00  mysqld</span><br><span class="line">11:30:35 AM      3819    752.00  14140.00      0.00  mysqld</span><br><span class="line">11:30:36 AM      3819    628.00   3556.00      0.00  mysqld</span><br><span class="line">11:30:37 AM      3819    724.00   6268.00      0.00  mysqld</span><br><span class="line">11:30:38 AM      3819   1348.00   8552.00      0.00  mysqld</span><br><span class="line">11:30:39 AM      3819    500.00  15776.00      0.00  mysqld</span><br><span class="line">11:30:40 AM      3819    720.00   7180.00      0.00  mysqld</span><br><span class="line">11:30:41 AM      3819    696.00  15932.00      0.00  mysqld</span><br><span class="line">11:30:42 AM      3819   1112.00   8064.00      0.00  mysqld</span><br><span class="line">11:30:43 AM      3819    824.00  16348.00      0.00  mysqld</span><br><span class="line">11:30:44 AM      3819    740.00   6044.00      0.00  mysqld</span><br><span class="line">11:30:45 AM      3819   1704.00   2688.00      0.00  mysqld</span><br><span class="line">11:30:46 AM      3819    536.00   6892.00      0.00  mysqld</span><br></pre></td></tr></table></figure>
 <h3 id="2-3、"><a href="#2-3、" class="headerlink" title="2.3、"></a>2.3、</h3>
-            
-        
+      
+
       
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">

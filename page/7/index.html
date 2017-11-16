@@ -56,10 +56,6 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
-				<li><a href="/tags">标签</a></li>
-	        
-				<li><a href="/categories">分类</a></li>
-	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,10 +110,6 @@
 			
 				
 			
-				
-			
-				
-			
 			
 			
 			<nav class="header-nav">
@@ -133,16 +125,12 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 70%">
+				<ul style="width: 50%">
 				
 				
-					<li style="width: 25%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
 		        
-					<li style="width: 25%"><a href="/archives">归档</a></li>
-		        
-					<li style="width: 25%"><a href="/tags">标签</a></li>
-		        
-					<li style="width: 25%"><a href="/categories">分类</a></li>
+					<li style="width: 50%"><a href="/archives">归档</a></li>
 		        
 				</ul>
 			</nav>
@@ -178,13 +166,17 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
-                   <h2 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h2><p>公司内部使用到MytriggerQ的自研软件，其主要功能是从MySQL的blackhole从库中读取更新的binlog，将每条更新的SQL转换成一条消息存储到内存中，供其他程序通过GET协议消费。</p>
+
+      
+        <h2 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h2><p>公司内部使用到MytriggerQ的自研软件，其主要功能是从MySQL的blackhole从库中读取更新的binlog，将每条更新的SQL转换成一条消息存储到内存中，供其他程序通过GET协议消费。</p>
 <p>由于机房网络调整，涉及到很多MytriggerQ的实例，且这些东西几经转手，需要查看是否存在流量，如果存在，需要给出来源的IP以及相关的命令。MytriggerQ自身不提供任何流量查询功能，没有记录相关日志，故能想到的最直接办法就是tcpdump抓包分析。</p>
 <h2 id="2、tcpdump详解"><a href="#2、tcpdump详解" class="headerlink" title="2、tcpdump详解"></a>2、tcpdump详解</h2><p>神一样的文章，值得推荐<br><a href="http://roclinux.cn/?p=2474" target="_blank" rel="external">http://roclinux.cn/?p=2474</a></p>
 <p>在上面的文章中分析包括UDP包的IP报文，故在此基础上，本人再加上一个TCP包的分析过程，具体参照百度网盘中的pdf文档<a href="http://pan.baidu.com/s/1o6OLcjo" target="_blank" rel="external">http://pan.baidu.com/s/1o6OLcjo</a>。</p>
-            
         
+          <a class="article-more-a" href="/2015-05-18-tcpdumpjie-xi-sql/#more">更多 >></a>
+        
+      
+
       
     </div>
     <div class="article-info article-info-index">
@@ -254,11 +246,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
-                   <h2 id="1、typedef用法"><a href="#1、typedef用法" class="headerlink" title="1、typedef用法"></a>1、typedef用法</h2><p><a href="http://www.361way.com/typedef/560.html" target="_blank" rel="external">http://www.361way.com/typedef/560.html</a><br><a href="http://www.cnblogs.com/xrcun/archive/2013/05/24/3097149.html" target="_blank" rel="external">http://www.cnblogs.com/xrcun/archive/2013/05/24/3097149.html</a></p>
+
+      
+        <h2 id="1、typedef用法"><a href="#1、typedef用法" class="headerlink" title="1、typedef用法"></a>1、typedef用法</h2><p><a href="http://www.361way.com/typedef/560.html" target="_blank" rel="external">http://www.361way.com/typedef/560.html</a><br><a href="http://www.cnblogs.com/xrcun/archive/2013/05/24/3097149.html" target="_blank" rel="external">http://www.cnblogs.com/xrcun/archive/2013/05/24/3097149.html</a></p>
 <h2 id="2、C语言执行python脚本"><a href="#2、C语言执行python脚本" class="headerlink" title="2、C语言执行python脚本"></a>2、C语言执行python脚本</h2>
-            
         
+          <a class="article-more-a" href="/2015-05-15-c-typedefyong-fa/#more">更多 >></a>
+        
+      
+
       
     </div>
     <div class="article-info article-info-index">
@@ -328,10 +324,14 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
+
+      
+        <h4 id="APUE-7-8例子出现如下用法"><a href="#APUE-7-8例子出现如下用法" class="headerlink" title="APUE 7-8例子出现如下用法"></a>APUE 7-8例子出现如下用法</h4><figure class="highlight c"><figcaption><span>宏定义的井号用法</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> doit(name) pr_limits( name, name)</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pr_limits</span><span class="params">(<span class="keyword">char</span> *, <span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
         
-                   <h4 id="APUE-7-8例子出现如下用法"><a href="#APUE-7-8例子出现如下用法" class="headerlink" title="APUE 7-8例子出现如下用法"></a>APUE 7-8例子出现如下用法</h4><figure class="highlight c"><figcaption><span>宏定义的井号用法</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> doit(name) pr_limits( name, name)</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pr_limits</span><span class="params">(<span class="keyword">char</span> *, <span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
-            
+          <a class="article-more-a" href="/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/#more">更多 >></a>
         
+      
+
       
     </div>
     <div class="article-info article-info-index">
@@ -401,11 +401,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
-                   <p><a href="http://www.dwheeler.com/program-library/Program-Library-HOWTO/" target="_blank" rel="external">Program-Library-HOWTO</a></p>
+
+      
+        <p><a href="http://www.dwheeler.com/program-library/Program-Library-HOWTO/" target="_blank" rel="external">Program-Library-HOWTO</a></p>
 <p><a href="http://bbs.chinaunix.net/thread-2037617-1-1.html" target="_blank" rel="external">静态库、共享库、动态库的创建和使用</a></p>
-            
         
+          <a class="article-more-a" href="/2015-05-15-cheng-xu-ku/#more">更多 >></a>
+        
+      
+
       
     </div>
     <div class="article-info article-info-index">
@@ -475,12 +479,16 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
-                   <h3 id="1-正文段"><a href="#1-正文段" class="headerlink" title="1. 正文段"></a>1. 正文段</h3><p>CPU执行的机器指令部分。通常，正文段是可共享的。正文段常常是只读的，以防止程序由于意外而修改其自身的指令。</p>
+
+      
+        <h3 id="1-正文段"><a href="#1-正文段" class="headerlink" title="1. 正文段"></a>1. 正文段</h3><p>CPU执行的机器指令部分。通常，正文段是可共享的。正文段常常是只读的，以防止程序由于意外而修改其自身的指令。</p>
 <h3 id="2-初始化数据段"><a href="#2-初始化数据段" class="headerlink" title="2. 初始化数据段"></a>2. 初始化数据段</h3><p>程序需明确赋值的变量。</p>
 <h3 id="3-非初始化数据段"><a href="#3-非初始化数据段" class="headerlink" title="3. 非初始化数据段"></a>3. 非初始化数据段</h3><p>bss：block started by symbol 由符合开始的地方。</p>
-            
         
+          <a class="article-more-a" href="/2015-05-14-ccheng-xu-cun-chu-kong-jian/#more">更多 >></a>
+        
+      
+
       
     </div>
     <div class="article-info article-info-index">
@@ -550,14 +558,18 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
-                   <h3 id="GDB概述"><a href="#GDB概述" class="headerlink" title="GDB概述"></a>GDB概述</h3><p>GDB主要帮忙你完成下面四个方面的功能：</p>
+
+      
+        <h3 id="GDB概述"><a href="#GDB概述" class="headerlink" title="GDB概述"></a>GDB概述</h3><p>GDB主要帮忙你完成下面四个方面的功能：</p>
 <p>1、启动你的程序，可以按照你的自定义的要求随心所欲的运行程序。</p>
 <p>2、可让被调试的程序在你所指定的调置的断点处停住。（断点可以是条件表达式）</p>
 <p>3、当程序被停住时，可以检查此时你的程序中所发生的事。</p>
 <p>4、动态的改变你程序的执行环境。</p>
-            
         
+          <a class="article-more-a" href="/2015-05-11-learning-gdb/#more">更多 >></a>
+        
+      
+
       
     </div>
     <div class="article-info article-info-index">
@@ -627,10 +639,14 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
+
+      
+        <h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><figure class="highlight python"><figcaption><span>setattr & getattr</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Object</span><span class="params">()</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, n, v)</span>:</span></span><br><span class="line"><span class="keyword">if</span> n == <span class="string">'age'</span>:</span><br><span class="line">self.__dict__[n] = v</span><br><span class="line"><span class="keyword">print</span> <span class="string">'setattr'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, n)</span>:</span></span><br><span class="line"><span class="keyword">if</span> n == <span class="string">'age'</span>:</span><br><span class="line"><span class="keyword">return</span> self.__dict__[n]</span><br><span class="line"></span><br><span class="line">obj = Object()</span><br><span class="line">obj.age = <span class="number">2</span></span><br><span class="line"><span class="keyword">print</span> obj.age</span><br></pre></td></tr></table></figure>
         
-                   <h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><figure class="highlight python"><figcaption><span>setattr & getattr</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Object</span><span class="params">()</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, n, v)</span>:</span></span><br><span class="line"><span class="keyword">if</span> n == <span class="string">'age'</span>:</span><br><span class="line">self.__dict__[n] = v</span><br><span class="line"><span class="keyword">print</span> <span class="string">'setattr'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, n)</span>:</span></span><br><span class="line"><span class="keyword">if</span> n == <span class="string">'age'</span>:</span><br><span class="line"><span class="keyword">return</span> self.__dict__[n]</span><br><span class="line"></span><br><span class="line">obj = Object()</span><br><span class="line">obj.age = <span class="number">2</span></span><br><span class="line"><span class="keyword">print</span> obj.age</span><br></pre></td></tr></table></figure>
-            
+          <a class="article-more-a" href="/2015-05-04-python-operator-overload/#more">更多 >></a>
         
+      
+
       
     </div>
     <div class="article-info article-info-index">
@@ -700,8 +716,9 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-        
-                   <h3 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h3><ul>
+
+      
+        <h3 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h3><ul>
 <li>姓名：郭颂</li>
 <li>微博：@小郭学路</li>
 <li>QQ：253876250</li>
@@ -710,8 +727,11 @@
 <li>2011.4——2013.6 百度MySQL DBA</li>
 <li>2013.6——至今     新浪MySQL DBA</li>
 </ul>
-            
         
+          <a class="article-more-a" href="/2015-05-02-introduction/#more">更多 >></a>
+        
+      
+
       
     </div>
     <div class="article-info article-info-index">
