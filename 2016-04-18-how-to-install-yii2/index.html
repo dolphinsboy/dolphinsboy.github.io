@@ -161,54 +161,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2016-04-18-how-to-install-yii2" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      How to install Yii2
-    </h1>
-  
-
-        
-        <a href="/2016-04-18-how-to-install-yii2/" class="archive-article-date">
-  	<time datetime="2016-04-18T12:05:53.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-18</time>
-</a>
-        
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+        <% if (!post.noDate){ %>
+        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
+        <% } %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-        
-            
-                
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Install-From-Archived-File"><span class="toc-text">1. Install From Archived File</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Call-to-undefined-function-mb-strlen"><span class="toc-text">2. Call to undefined function mb_strlen</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-The-directory-is-not-writable-by-the-Web-process"><span class="toc-text">3. The directory is not writable by the Web process</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Class-‘PDO’-not-found"><span class="toc-text">4. Class ‘PDO’ not found</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Yii2-Gii-Forbidden-code-403-You-are-not-allowed-to-access-this-page"><span class="toc-text">5. Yii2 Gii Forbidden code 403 You are not allowed to access this page</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Yii2-Programing-Style"><span class="toc-text">6. Yii2 Programing Style</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Reference"><span class="toc-text">7. Reference</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-Tree-Manager"><span class="toc-text">8. Tree Manager</span></a></li></ol>
-</div>
 
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
+        <% } %>
+      <% } else { %>
+            <%- partial('toc') %>
+            <%- post.content %>
+      <% } %>
 
-                <h2 id="1-Install-From-Archived-File"><a href="#1-Install-From-Archived-File" class="headerlink" title="1. Install From Archived File"></a>1. Install From Archived File</h2><p>Edit file /var/www/basic/config/web.php, set cookieValidationKey</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;cookieValidationKey&apos; =&gt; &apos;chuchujie&apos;</span><br></pre></td></tr></table></figure>
-<h2 id="2-Call-to-undefined-function-mb-strlen"><a href="#2-Call-to-undefined-function-mb-strlen" class="headerlink" title="2. Call to undefined function mb_strlen"></a>2. Call to undefined function mb_strlen</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fatal error: Call to undefined function mb_strlen()</span><br></pre></td></tr></table></figure>
-<p>yum install php55-mbstring module.</p>
-<p>Version is import.</p>
-<h2 id="3-The-directory-is-not-writable-by-the-Web-process"><a href="#3-The-directory-is-not-writable-by-the-Web-process" class="headerlink" title="3. The directory is not writable by the Web process"></a>3. The directory is not writable by the Web process</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ec2-user 13898  0.0  0.1 393312 20952 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13900  0.0  0.1 395592 22116 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13901  0.0  0.1 393048 20048 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13975  0.0  0.1 392024 19528 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14493  0.0  0.1 396096 23296 ?        S    19:48   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14494  0.0  0.1 392024 19396 ?        S    19:48   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14495  0.0  0.0 389784 14824 ?        S    19:48   0:00 /usr/sbin/httpd</span><br></pre></td></tr></table></figure>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R ec2-user.ec2-user /var/www/basic</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.g-loaded.eu/2008/12/09/making-a-directory-writable-by-the-webserver/" target="_blank" rel="external">http://www.g-loaded.eu/2008/12/09/making-a-directory-writable-by-the-webserver/</a></p>
-<h2 id="4-Class-‘PDO’-not-found"><a href="#4-Class-‘PDO’-not-found" class="headerlink" title="4. Class ‘PDO’ not found"></a>4. Class ‘PDO’ not found</h2><p>could not find driver Caused by: PDOException</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install php55-pdo.x86_64 -y</span><br><span class="line">yum install php-ZendFramework-Db-Adapter-Pdo-Mysql.noarch -y</span><br></pre></td></tr></table></figure>
-<h2 id="5-Yii2-Gii-Forbidden-code-403-You-are-not-allowed-to-access-this-page"><a href="#5-Yii2-Gii-Forbidden-code-403-You-are-not-allowed-to-access-this-page" class="headerlink" title="5. Yii2 Gii Forbidden code 403 You are not allowed to access this page"></a>5. Yii2 Gii Forbidden code 403 You are not allowed to access this page</h2><p>Edit config/web.php</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$config[<span class="string">'modules'</span>][<span class="string">'gii'</span>] = [</span><br><span class="line"><span class="string">'class'</span> =&gt; <span class="string">'yii\gii\Module'</span>,</span><br><span class="line"><span class="string">'allowedIPs'</span> =&gt; [<span class="string">'127.0.0.1'</span>, <span class="string">'::1'</span>, <span class="string">'10.3xxxx'</span>],</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
-<p>Due to company vpn , choose the ip by Apache access log.</p>
-<p><a href="http://jeepxiaozi.github.io/yii2xue-xi-bi-ji-xi-lie-6-generating-code-with-giishi-yong-giisheng-cheng-dai-ma.html" target="_blank" rel="external">http://jeepxiaozi.github.io/yii2xue-xi-bi-ji-xi-lie-6-generating-code-with-giishi-yong-giisheng-cheng-dai-ma.html</a></p>
-<h2 id="6-Yii2-Programing-Style"><a href="#6-Yii2-Programing-Style" class="headerlink" title="6. Yii2 Programing Style"></a>6. Yii2 Programing Style</h2><p><a href="https://github.com/yii2-chinesization/yii2-zh-cn/blob/master/internals-zh-CN/core-code-style.md" target="_blank" rel="external">https://github.com/yii2-chinesization/yii2-zh-cn/blob/master/internals-zh-CN/core-code-style.md</a></p>
-<h2 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7. Reference"></a>7. Reference</h2><p><a href="https://github.com/forecho/awesome-yii2" target="_blank" rel="external">https://github.com/forecho/awesome-yii2</a></p>
-<h2 id="8-Tree-Manager"><a href="#8-Tree-Manager" class="headerlink" title="8. Tree Manager"></a>8. Tree Manager</h2><p><a href="http://demos.krajee.com/tree-manager#comment-2288987974" target="_blank" rel="external">http://demos.krajee.com/tree-manager#comment-2288987974</a></p>
-
-            
-        
-      
+      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -218,20 +193,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    
+                    <% if(theme.alipay) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
+                      <img class="reward-img" src="<%= theme.alipay%>">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    
-                    
+                    <% } %>
+                    <% if(theme.weixin) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
+                      <img class="reward-img" src="<%= theme.weixin%>">
                       <span class="reward-type">微信</span>
                     </div>
-                    
+                    <% } %>
                   </div>
                 </span>
               </span>
@@ -239,143 +214,87 @@
           </div>
           </a>
         </div>
-      
+      <% } %>
     </div>
     <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/PHP/" class="article-tag-list-link color4">PHP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <%if(post.top){%>
+        <div class="article-pop-out tagcloud">
+          <i class="icon-tuding"></i>
+          <a class="article-tag-list-link color3">置顶</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+      <% } %>
+      <%- partial('post/tag') %>
+      <%- partial('post/category') %>
+      <% if (index && theme.show_all_link){ %>
+        <p class="article-more-link">
+          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
+        </p>
+      <% } %>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2016-04-18-how-to-install-yii2/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
+      <% if (!index && theme.share_jia){ %>
+        <%- partial('post/share') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2016-08-25-innodb-buffer-dump-and-load/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          innodb buffer dump and load
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016-04-15-redis-info-memoryyan-jiu/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Redis info memory研究</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
+<% if (!index){ %>
+  <%- partial('post/nav') %>
+<% } %>
+<%- partial('_partial/aside') %>
 
 
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+<% if (!index && post.comments){ %>
+  <% if (theme.duoshuo){ %>
+  <%- partial('post/duoshuo', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2016-04-18-how-to-install-yii2/", 
-    sourceId: "2016-04-18-how-to-install-yii2",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
+  <% if (theme.wangyiyun){ %>
+  <%- partial('post/wangyiyun', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.changyan_appid && theme.changyan_conf){ %>
+  <%- partial('post/changyan', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.disqus || config.disqus_shortname){ %>
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
 
-  
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  <% } %>
 
+  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
+  <%- partial('post/gitment', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
+<% } %>
 
           </div>
         </div>

@@ -161,76 +161,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-12-07-iostat" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Linux IO相关-iostat
-    </h1>
-  
-
-        
-        <a href="/2015-12-07-iostat/" class="archive-article-date">
-  	<time datetime="2015-12-07T07:34:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-12-07</time>
-</a>
-        
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+        <% if (!post.noDate){ %>
+        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
+        <% } %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-        
-            
-                
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0、前言"><span class="toc-text">0、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1、iostat"><span class="toc-text">1、iostat</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-基本使用"><span class="toc-text">1.1 基本使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-x参数"><span class="toc-text">1.2 -x参数</span></a></li></ol></li></ol>
-</div>
 
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
+        <% } %>
+      <% } else { %>
+            <%- partial('toc') %>
+            <%- post.content %>
+      <% } %>
 
-                <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>给出Linux各种IO相关的工具介绍，例如iostat、dstat、iotop、pidstat等</p>
-<a id="more"></a>
-<h2 id="1、iostat"><a href="#1、iostat" class="headerlink" title="1、iostat"></a>1、iostat</h2><h3 id="1-1-基本使用"><a href="#1-1-基本使用" class="headerlink" title="1.1 基本使用"></a>1.1 基本使用</h3><p>这篇博客介绍的非常不错，推荐<a href="http://www.orczhou.com/index.php/2010/03/iostat-detail/" target="_blank" rel="external">http://www.orczhou.com/index.php/2010/03/iostat-detail/</a></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iostat -d -k 1 10</span><br></pre></td></tr></table></figure>
-<p>参数 -d 表示，显示设备（磁盘）使用状态；-k某些使用block为单位的列强制使用Kilobytes为单位；1 10表示，数据显示每隔1秒刷新一次，共显示10次。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@mysql-db-009 ec2-user]<span class="comment"># iostat -d -k 1 10</span></span><br><span class="line">Linux 4.1.7-15.23.amzn1.x86_64 (mysql-db-009)   12/07/2015      _x86_64_        (8 CPU)</span><br><span class="line"></span><br><span class="line">Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn</span><br><span class="line">xvda              1.47        21.85         1.19      76408       4156</span><br><span class="line">xvdc              0.12         0.48         0.00       1693          4</span><br><span class="line">xvdb            714.66      3094.85      6764.03   10824977   23658812</span><br><span class="line"></span><br><span class="line">Device:            tps    kB_read/s    kB_wrtn/s    kB_read    kB_wrtn</span><br><span class="line">xvda              0.00         0.00         0.00          0          0</span><br><span class="line">xvdc              0.00         0.00         0.00          0          0</span><br><span class="line">xvdb            577.00      1268.00      6428.00       1268       6428</span><br></pre></td></tr></table></figure>
-<p><font color="blue"><strong>tps</strong></font><br>该设备每秒的传输次数。一次传输意味着一次IO，多个逻辑请求可能会被合并成一次IO请求。一次传输请求的大小是未知的。</p>
-<blockquote>
-<p>Indicate  the  number of transfers per second that were issued to the device. A transfer is an I/O request to the device. Multiple logical requests can be combined into a single I/O request to the device. A transfer is of indeterminate size.</p>
-</blockquote>
-<p><font color="blue"> <strong>kB_read/s:</strong> </font> 每秒从设备（drive expressed）读取的数据量</p>
-<p><font color="blue"> <strong>kB_wrtn/s:</strong> </font> 每秒从设备（drive expressed）写入的数据量</p>
-<p><font color="blue"> <strong>kB_read/s:</strong> </font> 每秒读取的数据量总量</p>
-<p><font color="blue"> <strong>kB_wrtn/s:</strong> </font> 每秒写入的数据量总量</p>
-<p>&gt;<br>kB_read/s<br>Indicate the amount of data read from the device expressed in kilobytes per second.<br>kB_wrtn/s<br>Indicate the amount of data written to the device expressed in kilobytes per second.<br>kB_read<br>The total number of kilobytes read.<br>kB_wrtn<br>The total number of kilobytes written.</p>
-<p>通过参数-m可以将KB转换为MB</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@mysql-db-009 ec2-user]<span class="comment"># iostat -d -m 1 10</span></span><br><span class="line">Linux 4.1.7-15.23.amzn1.x86_64 (mysql-db-009)   12/07/2015      _x86_64_        (8 CPU)</span><br><span class="line"></span><br><span class="line">Device:            tps    MB_read/s    MB_wrtn/s    MB_read    MB_wrtn</span><br><span class="line">xvda              1.26         0.02         0.00         77          4</span><br><span class="line">xvdc              0.10         0.00         0.00          1          0</span><br><span class="line">xvdb            705.84         2.70         7.04      11759      30646</span><br></pre></td></tr></table></figure>
-<h3 id="1-2-x参数"><a href="#1-2-x参数" class="headerlink" title="1.2 -x参数"></a>1.2 -x参数</h3><p>使用-x参数可以获取更多统计信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@mysql-db-009 ec2-user]<span class="comment"># iostat -d -x -m 1 10</span></span><br><span class="line">Linux 4.1.7-15.23.amzn1.x86_64 (mysql-db-009)   12/07/2015      _x86_64_        (8 CPU)</span><br><span class="line"></span><br><span class="line">Device:         rrqm/s   wrqm/s     r/s     w/s    rMB/s    wMB/s avgrq-sz avgqu-sz   await  svctm  %util</span><br><span class="line">xvda              0.00     0.07    0.89    0.09     0.01     0.00    30.27     0.00    0.98   0.37   0.04</span><br><span class="line">xvdc              0.00     0.00    0.07    0.00     0.00     0.00     7.99     0.00    0.40   0.40   0.00</span><br><span class="line">xvdb              0.00   335.16  159.50  537.92     2.35     7.69    29.50     0.54    0.77   0.55  38.57</span><br></pre></td></tr></table></figure>
-<p><font color="blue"> <strong>rrqm/s:</strong> </font> 每秒这个设备相关的读取请求有多少被Merge了（当系统调用需要读取数据的时候，VFS将请求发到各个FS，如果FS发现不同的读取请求读取的是相同Block的数据，FS会将这个请求合并Merge）</p>
-<p><font color="blue"> <strong>wrqm/s:</strong> </font>：每秒这个设备相关的写入请求有多少被Merge了。</p>
-<p><font color="blue"> <strong>r/s</strong> </font>和<font color="blue"> <strong>w/s</strong> </font>合起来就IOPS。</p>
-<p>&gt;<br>rrqm/s<br>The number of read requests merged per second that were queued to the device.<br>&gt;<br>wrqm/s<br>The number of write requests merged per second that were queued to the device.</p>
-<blockquote>
-<p>r/s<br>The number of read requests that were issued to the device per second.</p>
-<p>w/s<br>The number of write requests that were issued to the device per second.</p>
-</blockquote>
-<p><font color="blue"> <strong>await：</strong> </font>每一个IO请求的处理的平均时间（单位是毫秒）。这里可以理解为IO的响应时间，一般地系统IO响应时间应该低于5ms，如果大于10ms就比较大了。</p>
-<p><font color="blue"> <strong>avgrq-sz：</strong> </font>块设备的平均大小。</p>
-<p><font color="blue"> <strong>avgqu-sz：</strong> </font>IO队列大小。</p>
-<p><font color="blue"> <strong>svctm：</strong> </font><font color="red">废弃</font>。</p>
-<p><font color="blue"> <strong>%util:</strong></font>在统计时间内所有处理IO时间，除以总共统计时间。例如，如果统计间隔1秒，该设备有0.8秒在处理IO，而0.2秒闲置，那么该设备的%util = 0.8/1 = 80%，所以该参数暗示了设备的繁忙程度。一般地，如果该参数是100%表示设备已经接近满负荷运行了（当然如果是多磁盘，即使%util是100%，因为磁盘的并发能力，所以磁盘使用未必就到了瓶颈）。</p>
-<blockquote>
-<p>avgrq-sz<br>The average size (in sectors) of the requests that were issued to the device.</p>
-<p>avgqu-sz<br>The average queue length of the requests that were issued to the device.</p>
-<p>svctm<br>The average service time (in milliseconds) for I/O requests that were issued to the device. Warning! Do not trust this field any more. This field  will be removed in a future sysstat version.</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">util = (r/s + w/s)*svctm/1000</span><br></pre></td></tr></table></figure>
-<p><strong>util的数值不准确</strong><br><a href="http://yoshinorimatsunobu.blogspot.jp/2009/07/iostat-rs-ws-svctm-util-on-linux.html" target="_blank" rel="external">http://yoshinorimatsunobu.blogspot.jp/2009/07/iostat-rs-ws-svctm-util-on-linux.html</a></p>
-
-            
-        
-      
+      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -240,20 +193,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    
+                    <% if(theme.alipay) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
+                      <img class="reward-img" src="<%= theme.alipay%>">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    
-                    
+                    <% } %>
+                    <% if(theme.weixin) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
+                      <img class="reward-img" src="<%= theme.weixin%>">
                       <span class="reward-type">微信</span>
                     </div>
-                    
+                    <% } %>
                   </div>
                 </span>
               </span>
@@ -261,143 +214,87 @@
           </div>
           </a>
         </div>
-      
+      <% } %>
     </div>
     <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Linux-Tools/" class="article-tag-list-link color2">Linux Tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <%if(post.top){%>
+        <div class="article-pop-out tagcloud">
+          <i class="icon-tuding"></i>
+          <a class="article-tag-list-link color3">置顶</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+      <% } %>
+      <%- partial('post/tag') %>
+      <%- partial('post/category') %>
+      <% if (index && theme.show_all_link){ %>
+        <p class="article-more-link">
+          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
+        </p>
+      <% } %>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-12-07-iostat/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
+      <% if (!index && theme.share_jia){ %>
+        <%- partial('post/share') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2015-12-07-linux-ioxiang-guan-iotop/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Linux IO相关-iotop&amp;pidstat
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015-12-05-glib-threadpian/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Glib Thread篇</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
+<% if (!index){ %>
+  <%- partial('post/nav') %>
+<% } %>
+<%- partial('_partial/aside') %>
 
 
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+<% if (!index && post.comments){ %>
+  <% if (theme.duoshuo){ %>
+  <%- partial('post/duoshuo', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-12-07-iostat/", 
-    sourceId: "2015-12-07-iostat",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
+  <% if (theme.wangyiyun){ %>
+  <%- partial('post/wangyiyun', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.changyan_appid && theme.changyan_conf){ %>
+  <%- partial('post/changyan', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.disqus || config.disqus_shortname){ %>
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
 
-  
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  <% } %>
 
+  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
+  <%- partial('post/gitment', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
+<% } %>
 
           </div>
         </div>

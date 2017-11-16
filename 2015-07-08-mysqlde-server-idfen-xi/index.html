@@ -164,57 +164,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-07-08-mysqlde-server-idfen-xi" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      MySQL的server_id出现相同情况的案例分析
-    </h1>
-  
-
-        
-        <a href="/2015-07-08-mysqlde-server-idfen-xi/" class="archive-article-date">
-  	<time datetime="2015-07-08T03:32:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-07-08</time>
-</a>
-        
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+        <% if (!post.noDate){ %>
+        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
+        <% } %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-        
-            
-                
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-问题"><span class="toc-text">1.问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-主从server-id相同"><span class="toc-text">1.1 主从server_id相同</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-两个从库之间存在server-id相同"><span class="toc-text">1.2.两个从库之间存在server_id相同</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-源码分析"><span class="toc-text">2.源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-从库server-id相同的情况"><span class="toc-text">2.1 从库server_id相同的情况</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-主从server-id相同的情况"><span class="toc-text">2.2 主从server_id相同的情况</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-gdb调试MySQL"><span class="toc-text">3.gdb调试MySQL</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#待补充"><span class="toc-text">(待补充)</span></a></li></ol>
-</div>
 
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
+        <% } %>
+      <% } else { %>
+            <%- partial('toc') %>
+            <%- post.content %>
+      <% } %>
 
-                <h3 id="1-问题"><a href="#1-问题" class="headerlink" title="1.问题"></a>1.问题</h3><p>经常会问到主从server_id相同会怎么样？从库之间server_id相同会怎么样？A-&gt;B-&gt;C结构下，如果A和C的server_id相同又会怎么样？</p>
-<h4 id="1-1-主从server-id相同"><a href="#1-1-主从server-id相同" class="headerlink" title="1.1 主从server_id相同"></a>1.1 主从server_id相同</h4><p>启动start slave 之后，出现错误：</p>
-<blockquote>
-<p>Last_IO_Errno: 1593<br>Fatal error: The slave I/O thread stops because master and slave have equal MySQL server ids; these ids must be different for replication to work (or the –replicate-same-server-id option must be used on slave but this does not always make sense; please check the manual before using it).</p>
-</blockquote>
-<h4 id="1-2-两个从库之间存在server-id相同"><a href="#1-2-两个从库之间存在server-id相同" class="headerlink" title="1.2.两个从库之间存在server_id相同"></a>1.2.两个从库之间存在server_id相同</h4><p>主库上的Binlog Dump线程会替换成新的从库ip，且Binlog Dump的Time时间是变化，主库没有任何写入。<br><img src="/images/binlogdump.png" alt="存在相同的server_id的Binlog Dump状态"></p>
-<a id="more"></a>
-<p>另一个从库的状态是出现一个<font color="red">非常大的延迟</font>。<br><img src="/images/slaveinfo.png" alt="从库的状态"></p>
-<h3 id="2-源码分析"><a href="#2-源码分析" class="headerlink" title="2.源码分析"></a>2.源码分析</h3><h4 id="2-1-从库server-id相同的情况"><a href="#2-1-从库server-id相同的情况" class="headerlink" title="2.1 从库server_id相同的情况"></a>2.1 从库server_id相同的情况</h4><p>彭立勋的博客<a href="http://www.penglixun.com/tech/database/mysql_multi_slave_same_serverid.html" target="_blank" rel="external">MySQL多个Slave同一server_id的冲突原因分析</a> ，这里给出代码的解释，如果从库之间的server_id出现相同的情况，从库进行COM_REGISTER_SLAVE的时候会到hash表中按照server_id为key进行先删除已经存在的slave，然后再重新注册。由于从库都有重试的机制，故其中断又重新导致其他的被kill掉，然后再反复，故我们看到的现象就是出现server_id的两个从库同步状态是时断时续的。</p>
-<h4 id="2-2-主从server-id相同的情况"><a href="#2-2-主从server-id相同的情况" class="headerlink" title="2.2 主从server_id相同的情况"></a>2.2 主从server_id相同的情况</h4><p>sql/sql_parse.cc</p>
-<figure class="highlight c"><figcaption><span>解析start slave的命令</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3101</span>   <span class="keyword">case</span> SQLCOM_SLAVE_START:</span><br><span class="line"><span class="number">3102</span>   &#123;</span><br><span class="line"><span class="number">3103</span>     mysql_mutex_lock(&amp;LOCK_active_mi);</span><br><span class="line"><span class="number">3104</span>     <span class="keyword">if</span> (active_mi != <span class="literal">NULL</span>)</span><br><span class="line"><span class="number">3105</span>       res= start_slave(thd, active_mi, <span class="number">1</span> <span class="comment">/* net report*/</span>);</span><br><span class="line"><span class="number">3106</span>     <span class="keyword">else</span></span><br><span class="line"><span class="number">3107</span>       my_message(ER_SLAVE_CONFIGURATION, ER(ER_SLAVE_CONFIGURATION),</span><br><span class="line"><span class="number">3108</span>                  MYF(<span class="number">0</span>));</span><br><span class="line"><span class="number">3109</span>     mysql_mutex_unlock(&amp;LOCK_active_mi);</span><br><span class="line"><span class="number">3110</span>     <span class="keyword">break</span>;</span><br><span class="line"><span class="number">3111</span>   &#125;</span><br></pre></td></tr></table></figure>
-<p>sql/rpl_slave.cc中的get_master_version_and_clock函数</p>
-<blockquote>
-<p>start_slave() -&gt; start_slave_threads() -&gt; handle_slave_io() -&gt; get_master_version_and_clock()</p>
-</blockquote>
-<figure class="highlight c"><figcaption><span>判断主从server_id是否相同的地方</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1919</span>   <span class="keyword">if</span> (!mysql_real_query(mysql,</span><br><span class="line"><span class="number">1920</span>                         STRING_WITH_LEN(<span class="string">"SHOW VARIABLES LIKE 'SERVER_ID'"</span>)) &amp;&amp;</span><br><span class="line"><span class="number">1921</span>       (master_res= mysql_store_result(mysql)) &amp;&amp;</span><br><span class="line"><span class="number">1922</span>       (master_row= mysql_fetch_row(master_res)))</span><br><span class="line"><span class="number">1923</span>   &#123;</span><br><span class="line"><span class="number">1924</span>     <span class="keyword">if</span> ((::server_id == (mi-&gt;master_id= strtoul(master_row[<span class="number">1</span>], <span class="number">0</span>, <span class="number">10</span>))) &amp;&amp;</span><br><span class="line"><span class="number">1925</span>         !mi-&gt;rli-&gt;replicate_same_server_id)</span><br><span class="line"><span class="number">1926</span>     &#123;</span><br><span class="line"><span class="number">1927</span>       errmsg= <span class="string">"The slave I/O thread stops because master and slave have equal \</span></span><br><span class="line"><span class="string">1928 MySQL server ids; these ids must be different for replication to work (or \</span></span><br><span class="line"><span class="string">1929 the --replicate-same-server-id option must be used on slave but this does \</span></span><br><span class="line"><span class="string">1930 not always make sense; please check the manual before using it)."</span>;</span><br><span class="line"><span class="number">1931</span>       err_code= ER_SLAVE_FATAL_ERROR;</span><br><span class="line"><span class="number">1932</span>       <span class="built_in">sprintf</span>(err_buff, ER(err_code), errmsg);</span><br><span class="line"><span class="number">1933</span>       <span class="keyword">goto</span> err;</span><br><span class="line"><span class="number">1934</span>     &#125;</span><br></pre></td></tr></table></figure>
-<h2 id="3-gdb调试MySQL"><a href="#3-gdb调试MySQL" class="headerlink" title="3.gdb调试MySQL"></a>3.gdb调试MySQL</h2><p>安装的时候使用 -DWITH_DEBUG=bool, 参照这个<a href="https://dev.mysql.com/doc/refman/5.5/en/compiling-for-debugging.html" target="_blank" rel="external">Compiling MySQL for Debugging</a></p>
-<p>gdb运行的时候，需要指定特定的配置文件，使用的方式如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb --args ./bin/mysqld --defaults-file=/data1/guosong/mysql5616/etc/my5616.cnf</span><br></pre></td></tr></table></figure>
-<p>更多参照这个链接<a href="https://dev.mysql.com/doc/refman/5.5/en/debugging-server.html" target="_blank" rel="external">Debugging a MySQL Server</a></p>
-<h3 id="待补充"><a href="#待补充" class="headerlink" title="(待补充)"></a><font color="red">(待补充)</font></h3>
-            
-        
-      
+      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -224,20 +196,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    
+                    <% if(theme.alipay) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
+                      <img class="reward-img" src="<%= theme.alipay%>">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    
-                    
+                    <% } %>
+                    <% if(theme.weixin) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
+                      <img class="reward-img" src="<%= theme.weixin%>">
                       <span class="reward-type">微信</span>
                     </div>
-                    
+                    <% } %>
                   </div>
                 </span>
               </span>
@@ -245,143 +217,87 @@
           </div>
           </a>
         </div>
-      
+      <% } %>
     </div>
     <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL内核/" class="article-tag-list-link color3">MySQL内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <%if(post.top){%>
+        <div class="article-pop-out tagcloud">
+          <i class="icon-tuding"></i>
+          <a class="article-tag-list-link color3">置顶</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+      <% } %>
+      <%- partial('post/tag') %>
+      <%- partial('post/category') %>
+      <% if (index && theme.show_all_link){ %>
+        <p class="article-more-link">
+          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
+        </p>
+      <% } %>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-07-08-mysqlde-server-idfen-xi/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
+      <% if (!index && theme.share_jia){ %>
+        <%- partial('post/share') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2015-07-14-xin-hao-liang-bu-zhuo/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          信号量扑捉
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015-06-23-xian-cheng-an-quan/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">线程安全</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
+<% if (!index){ %>
+  <%- partial('post/nav') %>
+<% } %>
+<%- partial('_partial/aside') %>
 
 
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+<% if (!index && post.comments){ %>
+  <% if (theme.duoshuo){ %>
+  <%- partial('post/duoshuo', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-07-08-mysqlde-server-idfen-xi/", 
-    sourceId: "2015-07-08-mysqlde-server-idfen-xi",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
+  <% if (theme.wangyiyun){ %>
+  <%- partial('post/wangyiyun', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.changyan_appid && theme.changyan_conf){ %>
+  <%- partial('post/changyan', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.disqus || config.disqus_shortname){ %>
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
 
-  
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  <% } %>
 
+  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
+  <%- partial('post/gitment', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
+<% } %>
 
           </div>
         </div>

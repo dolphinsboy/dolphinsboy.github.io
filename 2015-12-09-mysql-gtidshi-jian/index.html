@@ -161,73 +161,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-12-09-mysql-gtidshi-jian" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      mysql_gtid实践
-    </h1>
-  
-
-        
-        <a href="/2015-12-09-mysql-gtidshi-jian/" class="archive-article-date">
-  	<time datetime="2015-12-09T05:40:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-12-09</time>
-</a>
-        
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+        <% if (!post.noDate){ %>
+        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
+        <% } %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-        
-            
-                
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#0、前言"><span class="toc-text">0、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1、GTID限制"><span class="toc-text">1、GTID限制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在GTID下pt-slave-restart如何使用？"><span class="toc-text">2、在GTID下pt-slave-restart如何使用？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1、手动处理的方式："><span class="toc-text">2.1、手动处理的方式：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2、pt-slave-restart使用方法"><span class="toc-text">2.2、pt-slave-restart使用方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。"><span class="toc-text">dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。-1"><span class="toc-text">dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、在GTID下xtrbackup如何备份？"><span class="toc-text">3、在GTID下xtrbackup如何备份？</span></a></li></ol>
-</div>
 
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
+        <% } %>
+      <% } else { %>
+            <%- partial('toc') %>
+            <%- post.content %>
+      <% } %>
 
-                <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>介绍GTID限制、在同步中断情况下处理方式、使用xtrabackup的方式等。</p>
-<a id="more"></a>
-<h2 id="1、GTID限制"><a href="#1、GTID限制" class="headerlink" title="1、GTID限制"></a>1、GTID限制</h2><p><a href="https://dev.mysql.com/doc/refman/5.6/en/replication-gtids-restrictions.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/replication-gtids-restrictions.html</a></p>
-<p><strong>限制</strong>：</p>
-<ul>
-<li>CREATE TABLE … SELECT statements</li>
-<li>Temporary tables</li>
-<li>Preventing execution of unsupported statements.</li>
-</ul>
-<blockquote>
-<p>sql_slave_skip_counter 不在支持</p>
-</blockquote>
-<ul>
-<li>GTID mode and mysqldump</li>
-<li>GTID mode and mysql_upgrade</li>
-</ul>
-<h2 id="2、在GTID下pt-slave-restart如何使用？"><a href="#2、在GTID下pt-slave-restart如何使用？" class="headerlink" title="2、在GTID下pt-slave-restart如何使用？"></a>2、在GTID下pt-slave-restart如何使用？</h2><p>对于操作用户的权限需求必须有SUPER privilege(s)权限。</p>
-<h3 id="2-1、手动处理的方式："><a href="#2-1、手动处理的方式：" class="headerlink" title="2.1、手动处理的方式："></a>2.1、手动处理的方式：</h3><p><a href="http://imysql.cn/tag/gtid" target="_blank" rel="external">http://imysql.cn/tag/gtid</a></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">stop</span> <span class="keyword">slave</span>;</span><br><span class="line"><span class="keyword">set</span> gtid_next=<span class="string">'cc5b5f77-91a6-11e5-834b-02b39697b809:4500'</span>;</span><br><span class="line"><span class="keyword">begin</span>;<span class="keyword">commit</span>;</span><br><span class="line"><span class="keyword">set</span> gtid_next=<span class="string">"AUTOMATIC"</span>;</span><br><span class="line"><span class="keyword">start</span> <span class="keyword">slave</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="2-2、pt-slave-restart使用方法"><a href="#2-2、pt-slave-restart使用方法" class="headerlink" title="2.2、pt-slave-restart使用方法"></a>2.2、pt-slave-restart使用方法</h3><p><a href="https://www.percona.com/doc/percona-toolkit/2.2/pt-slave-restart.html" target="_blank" rel="external">https://www.percona.com/doc/percona-toolkit/2.2/pt-slave-restart.html</a></p>
-<p>&gt;<br>GLOBAL TRANSACTION IDS<br>As of Percona Toolkit 2.2.8, pt-slave-restart supports Global Transaction IDs introduced in MySQL 5.6.5. It’s important to keep in mind that:</p>
-<blockquote>
-<p>pt-slave-restart will not skip transactions when multiple replication threads are being used (slave_parallel_workers &gt; 0). pt-slave-restart does not know what the GTID event is of the failed transaction of a specific slave thread.<br>The default behavior is to skip the next transaction from the slave’s master. Writes can originate on different servers, each with their own UUID.<br>See –master-uuid.</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pt-slave-restart -uroot -pxxx -S /home/guosong/mysql5627/tmp/mysql5627.sock</span><br></pre></td></tr></table></figure>
-<p>通过PTDEBUG=1开启pt-slave-restart的日志，修改原有代码打印GTID_NEXT</p>
-<h2 id="dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。"><a href="#dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。" class="headerlink" title="dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。"></a>dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。</h2><p><strong>RDS上从库出现错误需要跳过的处理方式</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CALL mysql.rds_skip_repl_error;</span><br></pre></td></tr></table></figure>
-<p><strong>RDS kill连接</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> rds_kill(<span class="keyword">id</span>);</span><br></pre></td></tr></table></figure>
-<h2 id="dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。-1"><a href="#dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。-1" class="headerlink" title="dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。"></a>dev-00上我的pt-slave-restart，已经修改，不需要使用用户名和密码，只需要host以及port即可。</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; 42d27cbafc625665f68177fd142c0eec4f564361</span><br><span class="line">[guosong@dev-00 pt-tools]$ ./pt-slave-restart -h 10.30.7.220 -P 5627</span><br><span class="line">2015-12-09T16:26:41 P=5627,h=10.30.7.220 relay-bin.000012         448 1062</span><br><span class="line">  pt_slave_restart:5108 20978 SET GTID_NEXT=<span class="string">'cc5b5f77-91a6-11e5-834b-02b39697b809:38'</span></span><br></pre></td></tr></table></figure>
-<h2 id="3、在GTID下xtrbackup如何备份？"><a href="#3、在GTID下xtrbackup如何备份？" class="headerlink" title="3、在GTID下xtrbackup如何备份？"></a>3、在GTID下xtrbackup如何备份？</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --defaults-file=/data1/mysql7500/etc/my7500.cnf --user=root --password=xxx /data1/backup/ --socket=/data1/mysql7500/tmp/mysql7500.sock</span><br><span class="line"></span><br><span class="line">innobackupex --defaults-file=/data1/mysql7500/etc/my7500.cnf --user=root --password=xx --apply-log /data1/backup/mysql7500</span><br></pre></td></tr></table></figure>
-<p>查看xtrabackup_binlog_info 文件多一列：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql-bin.000010        334810306       542ef021-9a64-11e5-bc49-025d3d22c211:1-24368</span><br></pre></td></tr></table></figure>
-<p>参考文档：<br><a href="https://www.percona.com/blog/2013/05/09/how-to-create-a-new-or-repair-a-broken-gtid-based-slave-with-percona-xtrabackup/" target="_blank" rel="external">https://www.percona.com/blog/2013/05/09/how-to-create-a-new-or-repair-a-broken-gtid-based-slave-with-percona-xtrabackup/</a></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">slave1 &gt; SET GLOBAL gtid_purged="c777888a-b6df-11e2-a604-080027635ef5:1-4";</span><br><span class="line">slave1 &gt; CHANGE MASTER TO MASTER_HOST="10.0.1.1",</span><br><span class="line">master_user="msandbox", master_password="msandbox", MASTER_AUTO_POSITION = 1;</span><br></pre></td></tr></table></figure>
-
-            
-        
-      
+      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -237,20 +193,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    
+                    <% if(theme.alipay) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
+                      <img class="reward-img" src="<%= theme.alipay%>">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    
-                    
+                    <% } %>
+                    <% if(theme.weixin) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
+                      <img class="reward-img" src="<%= theme.weixin%>">
                       <span class="reward-type">微信</span>
                     </div>
-                    
+                    <% } %>
                   </div>
                 </span>
               </span>
@@ -258,143 +214,87 @@
           </div>
           </a>
         </div>
-      
+      <% } %>
     </div>
     <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL/" class="article-tag-list-link color1">MySQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <%if(post.top){%>
+        <div class="article-pop-out tagcloud">
+          <i class="icon-tuding"></i>
+          <a class="article-tag-list-link color3">置顶</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+      <% } %>
+      <%- partial('post/tag') %>
+      <%- partial('post/category') %>
+      <% if (index && theme.show_all_link){ %>
+        <p class="article-more-link">
+          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
+        </p>
+      <% } %>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-12-09-mysql-gtidshi-jian/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
+      <% if (!index && theme.share_jia){ %>
+        <%- partial('post/share') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2015-12-21-mysqlxing-neng-ce-shi/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          mysql性能测试
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015-12-07-linux-ioxiang-guan-iotop/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Linux IO相关-iotop&amp;pidstat</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
+<% if (!index){ %>
+  <%- partial('post/nav') %>
+<% } %>
+<%- partial('_partial/aside') %>
 
 
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+<% if (!index && post.comments){ %>
+  <% if (theme.duoshuo){ %>
+  <%- partial('post/duoshuo', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-12-09-mysql-gtidshi-jian/", 
-    sourceId: "2015-12-09-mysql-gtidshi-jian",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
+  <% if (theme.wangyiyun){ %>
+  <%- partial('post/wangyiyun', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.changyan_appid && theme.changyan_conf){ %>
+  <%- partial('post/changyan', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.disqus || config.disqus_shortname){ %>
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
 
-  
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  <% } %>
 
+  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
+  <%- partial('post/gitment', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
+<% } %>
 
           </div>
         </div>

@@ -165,68 +165,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-06-16-jian-kong-cacti" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      监控相关
-    </h1>
-  
-
-        
-        <a href="/2015-06-16-jian-kong-cacti/" class="archive-article-date">
-  	<time datetime="2015-06-16T08:28:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-06-16</time>
-</a>
-        
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+        <% if (!post.noDate){ %>
+        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
+        <% } %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-        
-            
-                
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#介绍"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Cacti"><span class="toc-text"> 1. Cacti </span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Zabbix"><span class="toc-text"> 2. Zabbix </span></a></li></ol>
-</div>
 
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
+        <% } %>
+      <% } else { %>
+            <%- partial('toc') %>
+            <%- post.content %>
+      <% } %>
 
-                <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本文记录一些开源监控的软件使用方法，目前包括Cacti、Zabbix。</p>
-<h2 id="1-Cacti"><a href="#1-Cacti" class="headerlink" title=" 1. Cacti "></a><font color="green"> 1. Cacti </font></h2><p><img src="/images/cacti.png" alt="Cacti的图"></p>
-<p>对于图上的m单位表示啥意思呢？</p>
-<p>在数据比较接近0的时候，会出现这m单位。事实上，这里的单位 m 表示微，即需要除以1000。100m表示0.1。Cacti中使用如下单位：M（兆）、K（千）、m（微）。<br>默认下，Cacti是每隔五分钟采集一次数据，数据展示的是每秒的值。<br><a id="more"></a></p>
-<p><img src="/images/cacti2.png" alt="Cacti的图2"><br>单秒的QPS为250左右。</p>
-<p>Cacti参考链接：</p>
-<p><a href="http://yjever.lofter.com/post/1cc2b267_3263d95" target="_blank" rel="external">使用Cacti监控MySQL</a></p>
-<h2 id="2-Zabbix"><a href="#2-Zabbix" class="headerlink" title=" 2. Zabbix "></a><font color="orange"> 2. Zabbix </font></h2><p>####<font color="orange"> 2.1 PHP安装</font>### </p>
-<figure class="highlight html"><figcaption><span>PHP源码安装configure</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr/local/php  --enable-fpm --with-mcrypt \</span><br><span class="line">--enable-mbstring --disable-pdo --with-curl --disable-debug  --disable-rpath \</span><br><span class="line">--enable-inline-optimization --with-bz2  --with-zlib --enable-sockets \</span><br><span class="line">--enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex \</span><br><span class="line">--with-mhash --enable-zip --with-pcre-regex  \</span><br><span class="line">--with-gd --with-jpeg-dir --enable-bcmath   --enable-gd-native-ttf --with-freetype-dir=/usr/lib64/ \</span><br><span class="line">--with-gettext --enable-pdo \</span><br><span class="line">--with-mysql=/data1/guosong/mysql5616 \</span><br><span class="line">--with-mysqli=mysqlnd \</span><br><span class="line">--with-pdo-mysql=mysqlnd</span><br></pre></td></tr></table></figure>
-<p>###<font color="orange"> 2.2 php-fpm安装</font>###<br>PHP5.6版本已经支持，只需要在编译的时候开启即可，–enable-fpm</p>
-<p>nginx本身不能处理PHP，它只是个web服务器，当接收到请求后，如果是php请求，则发给php解释器处理，并把结果返回给客户端。</p>
-<p>nginx一般是把请求发fastcgi管理进程处理，fascgi管理进程选择cgi子进程处理结果并返回被nginx</p>
-<p>php-fpm配置的参考链接：</p>
-<p>1、 <a href="http://www.4wei.cn/archives/1002061" target="_blank" rel="external">php-fpm - 启动参数及重要配置详解</a></p>
-<p>2、 <a href="http://www.nginx.cn/231.html" target="_blank" rel="external">nginx php-fpm安装配置</a></p>
-<p>3、 <a href="http://gediminasm.org/post/compile-php" target="_blank" rel="external">Compile php on your own</a></p>
-<p>php-fpm启动方式：</p>
-<blockquote>
-<p>/usr/local/php/sbin/php-fpm -c /etc/php.ini  -y /usr/local/php/etc/php-fpm.conf -D</p>
-</blockquote>
-<p>指定php.ini文件以及php-fpm.conf文件</p>
-<p>###<font color="orange"> 2.3 Nginx配置</font>###<br><figure class="highlight html"><figcaption><span>Nginx配置访问php-fpm</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">listen       80;</span><br><span class="line">server_name  localhost;</span><br><span class="line"></span><br><span class="line">location ~ \.php$ &#123;</span><br><span class="line">root           /data1/zabbix-2.4.5/zabbix;</span><br><span class="line">fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">fastcgi_index  index.php;</span><br><span class="line">fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;</span><br><span class="line">include        fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">root    /data1/zabbix-2.4.5/zabbix;</span><br><span class="line">index   index.php;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>一开始没有设置 location /导致图片出不来，后来加上这个就可以了。因为第一个location设置只访问以php结尾的，对于其他格式的默认是拒绝的。</p>
-<p>###<font color="orange"> 2.4 Zabbix安装</font>###<br><figure class="highlight html"><figcaption><span>Zabbix源码安装</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/data1/zabbix-2.4.5 --enable-server --enable-agent --with-mysql --with-net-snmp --with-libcurl --with-libxml2</span><br></pre></td></tr></table></figure></p>
-<p>启动server之后，检查配置环境：<br><img src="/images/php_zabbix.png =600x400" alt="zabbix的PHP环境"></p>
-<p>必须保证上面的都是ok才可以。<br>对于always_populate_raw_post_data关闭的处理方式如下：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">always_populate_raw_post_data = -1</span><br><span class="line">gettext = On</span><br></pre></td></tr></table></figure>
-<p>附件给出php.ini文件链接<a href="http://pan.baidu.com/s/1eQcZ7JO" target="_blank" rel="external">http://pan.baidu.com/s/1eQcZ7JO</a></p>
-<font color="red">遇到最多的问题是gb的问题，通过安装一些devel包解决，对于FreeType support通过重新编译PHP解决</font>
-
-
-
-            
-        
-      
+      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -236,20 +197,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    
+                    <% if(theme.alipay) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
+                      <img class="reward-img" src="<%= theme.alipay%>">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    
-                    
+                    <% } %>
+                    <% if(theme.weixin) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
+                      <img class="reward-img" src="<%= theme.weixin%>">
                       <span class="reward-type">微信</span>
                     </div>
-                    
+                    <% } %>
                   </div>
                 </span>
               </span>
@@ -257,143 +218,87 @@
           </div>
           </a>
         </div>
-      
+      <% } %>
     </div>
     <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/监控相关/" class="article-tag-list-link color5">监控相关</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <%if(post.top){%>
+        <div class="article-pop-out tagcloud">
+          <i class="icon-tuding"></i>
+          <a class="article-tag-list-link color3">置顶</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+      <% } %>
+      <%- partial('post/tag') %>
+      <%- partial('post/category') %>
+      <% if (index && theme.show_all_link){ %>
+        <p class="article-more-link">
+          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
+        </p>
+      <% } %>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-06-16-jian-kong-cacti/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
+      <% if (!index && theme.share_jia){ %>
+        <%- partial('post/share') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2015-06-23-xian-cheng-an-quan/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          线程安全
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015-06-12-octopressde-gitwen-ti/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">octopress的git问题</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
+<% if (!index){ %>
+  <%- partial('post/nav') %>
+<% } %>
+<%- partial('_partial/aside') %>
 
 
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+<% if (!index && post.comments){ %>
+  <% if (theme.duoshuo){ %>
+  <%- partial('post/duoshuo', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-06-16-jian-kong-cacti/", 
-    sourceId: "2015-06-16-jian-kong-cacti",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
+  <% if (theme.wangyiyun){ %>
+  <%- partial('post/wangyiyun', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.changyan_appid && theme.changyan_conf){ %>
+  <%- partial('post/changyan', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.disqus || config.disqus_shortname){ %>
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
 
-  
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  <% } %>
 
+  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
+  <%- partial('post/gitment', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
+<% } %>
 
           </div>
         </div>

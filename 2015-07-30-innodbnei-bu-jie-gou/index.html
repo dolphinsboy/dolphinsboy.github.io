@@ -161,60 +161,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-07-30-innodbnei-bu-jie-gou" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Innodb内部结构
-    </h1>
-  
-
-        
-        <a href="/2015-07-30-innodbnei-bu-jie-gou/" class="archive-article-date">
-  	<time datetime="2015-07-30T06:12:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-07-30</time>
-</a>
-        
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+        <% if (!post.noDate){ %>
+        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
+        <% } %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-        
-            
-                
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、资料来源"><span class="toc-text">1、资料来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、Innodb记录结构"><span class="toc-text">2、Innodb记录结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-text">参考资料</span></a></li></ol>
-</div>
 
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
+        <% } %>
+      <% } else { %>
+            <%- partial('toc') %>
+            <%- post.content %>
+      <% } %>
 
-                <h2 id="1、资料来源"><a href="#1、资料来源" class="headerlink" title="1、资料来源"></a>1、资料来源</h2><ul>
-<li><p>逐篇阅读Jeremy Cole大拿的blog<a href="http://blog.jcole.us/innodb/" target="_blank" rel="external">http://blog.jcole.us/innodb/</a>进行记录汇总。</p>
-</li>
-<li><p>官方的Internals <a href="https://dev.mysql.com/doc/internals/en/index.html" target="_blank" rel="external">https://dev.mysql.com/doc/internals/en/index.html</a></p>
-</li>
-</ul>
-<p>两个结合在一起看。</p>
-<a id="more"></a>
-<h2 id="2、Innodb记录结构"><a href="#2、Innodb记录结构" class="headerlink" title="2、Innodb记录结构"></a>2、Innodb记录结构</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`test4`</span> (</span><br><span class="line"><span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line"><span class="string">`data`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'1'</span>,</span><br><span class="line"><span class="string">`data2`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8</span><br></pre></td></tr></table></figure>
-<p>表t包括6个列，而不是3个列，额外的看不到的列是row ID、transaction ID以及rollback pointer。</p>
-<p>插入如下记录：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+<span class="comment">-------+------+--------+</span></span><br><span class="line">| id    | data | data2  |</span><br><span class="line">+<span class="comment">-------+------+--------+</span></span><br><span class="line">|     1 |    0 | NULL   |</span><br><span class="line">|     2 |    0 | b      |</span><br><span class="line">|     3 |    0 | b      |</span><br><span class="line">|     4 |    0 | b      |</span><br><span class="line">|    10 |    1 | NULL   |</span><br><span class="line">|    11 |    2 | TTTTT  |</span><br><span class="line">+<span class="comment">-------+------+--------+</span></span><br></pre></td></tr></table></figure>
-<p>使用hexdump -C 读取ibd文件，下面一个片段：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">0000c000  8e 35 7e a9 00 00 00 03  ff ff ff ff ff ff ff ff  |.5~.............|</span><br><span class="line">0000c010  00 00 00 00 69 d8 c7 00  45 bf 00 00 00 00 00 00  |....i...E.......|</span><br><span class="line">0000c020  00 00 00 00 01 1a 00 02  01 26 80 08 00 00 00 00  |.........&amp;......|</span><br><span class="line">0000c030  01 0c 00 02 00 05 00 06  00 00 00 00 00 00 00 00  |................|</span><br><span class="line">0000c040  00 00 00 00 00 00 00 00  01 f7 00 00 01 1a 00 00  |................|</span><br><span class="line">0000c050  00 02 00 f2 00 00 01 1a  00 00 00 02 00 32 01 00  |.............2..|</span><br><span class="line">0000c060  02 00 1b 69 6e 66 69 6d  75 6d 00 07 00 0b 00 00  |...infimum......|</span><br><span class="line">0000c070  73 75 70 72 65 6d 75 6d  01 00 00 10 00 1c 80 00  |supremum........|</span><br><span class="line">0000c080  00 01 00 00 00 00 82 6b  99 00 00 01 40 00 84 80  |.......k....@...|</span><br><span class="line">0000c090  00 00 00 01 00 00 00 18  00 1d 80 00 00 02 00 00  |................|</span><br><span class="line">0000c0a0  00 00 82 6b 99 00 00 01  40 00 91 80 00 00 00 62  |...k....@......b|</span><br><span class="line">0000c0b0  01 00 00 00 20 00 1d 80  00 00 03 00 00 00 00 82  |.... ...........|</span><br><span class="line">0000c0c0  6b 99 00 00 01 40 00 9e  80 00 00 00 62 01 00 00  |k....@......b...|</span><br><span class="line">0000c0d0  00 28 00 1c 80 00 00 04  00 00 00 00 82 6b 99 00  |.(...........k..|</span><br><span class="line">0000c0e0  00 01 40 00 ab 80 00 00  00 62 01 00 00 30 00 1c  |..@......b...0..|</span><br><span class="line">0000c0f0  80 00 00 0a 00 00 00 00  82 91 ae 00 00 01 9b 00  |................|</span><br><span class="line">0000c100  84 80 00 00 01 05 00 00  00 38 ff 64 80 00 00 0b  |.........8.d....|</span><br><span class="line">0000c110  00 00 00 00 82 93 b0 00  00 01 9d 00 84 80 00 00  |................|</span><br><span class="line">0000c120  02 54 54 54 54 54 00 00  00 00 00 00 00 00 00 00  |.TTTTT..........|</span><br><span class="line">0000c130  00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00  |................|</span><br></pre></td></tr></table></figure>
-<p>如何找到记录的开始位置：</p>
-<font color="red"> infimum和supremum是两个具体的英文单词 </font><br>对应的16个进制为<br>infimum <font color="green"> 69 6e 66 69 6d 75 6d </font><br>supremum  <font color="green"> 73 75 70 72 65 6d 75 6d</font>
-
-<p>28个字节</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> binascii</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'i'</span>)</span><br><span class="line"><span class="string">'69'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'n'</span>)</span><br><span class="line"><span class="string">'6e'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'f'</span>)</span><br><span class="line"><span class="string">'66'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'i'</span>)</span><br><span class="line"><span class="string">'69'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'m'</span>)</span><br><span class="line"><span class="string">'6d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'u'</span>)</span><br><span class="line"><span class="string">'75'</span></span><br><span class="line">&gt;&gt;&gt;hex(<span class="number">1024</span>*<span class="number">3</span>)</span><br><span class="line"><span class="string">'0xc00'</span></span><br></pre></td></tr></table></figure>
-<p>使用姜承尧的脚本进行分析<a href="http://code.google.com/p/david-mysql-tools/source/browse/trunk/py_innodb_page_type/" target="_blank" rel="external">http://code.google.com/p/david-mysql-tools/source/browse/trunk/py_innodb_page_type/</a></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">page offset 00000000, page type <span class="tag">&lt;<span class="name">File</span> <span class="attr">Space</span> <span class="attr">Header</span>&gt;</span></span><br><span class="line">page offset 00000001, page type <span class="tag">&lt;<span class="name">Insert</span> <span class="attr">Buffer</span> <span class="attr">Bitmap</span>&gt;</span></span><br><span class="line">page offset 00000002, page type <span class="tag">&lt;<span class="name">File</span> <span class="attr">Segment</span> <span class="attr">inode</span>&gt;</span></span><br><span class="line">page offset 00000003, page type <span class="tag">&lt;<span class="name">B-tree</span> <span class="attr">Node</span>&gt;</span>, page level <span class="tag">&lt;<span class="name">0000</span>&gt;</span></span><br><span class="line">page offset 00000000, page type <span class="tag">&lt;<span class="name">Freshly</span> <span class="attr">Allocated</span> <span class="attr">Page</span>&gt;</span></span><br><span class="line">page offset 00000000, page type <span class="tag">&lt;<span class="name">Freshly</span> <span class="attr">Allocated</span> <span class="attr">Page</span>&gt;</span></span><br><span class="line">Total number of page: 6:</span><br><span class="line">Freshly Allocated Page: 2</span><br><span class="line">Insert Buffer Bitmap: 1</span><br><span class="line">File Space Header: 1</span><br><span class="line">B-tree Node: 1</span><br><span class="line">File Segment inode: 1</span><br></pre></td></tr></table></figure>
-<p>总共6个page，文件大小是96KB，innodb单个页面大小为16KB，故也是6个page</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1、<a href="http://www.cnblogs.com/zhoujinyi/archive/2012/10/17/2726462.html" target="_blank" rel="external">http://www.cnblogs.com/zhoujinyi/archive/2012/10/17/2726462.html</a></p>
-
-            
-        
-      
+      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -224,20 +193,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    
+                    <% if(theme.alipay) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
+                      <img class="reward-img" src="<%= theme.alipay%>">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    
-                    
+                    <% } %>
+                    <% if(theme.weixin) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
+                      <img class="reward-img" src="<%= theme.weixin%>">
                       <span class="reward-type">微信</span>
                     </div>
-                    
+                    <% } %>
                   </div>
                 </span>
               </span>
@@ -245,143 +214,87 @@
           </div>
           </a>
         </div>
-      
+      <% } %>
     </div>
     <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Innodb内核/" class="article-tag-list-link color4">Innodb内核</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <%if(post.top){%>
+        <div class="article-pop-out tagcloud">
+          <i class="icon-tuding"></i>
+          <a class="article-tag-list-link color3">置顶</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+      <% } %>
+      <%- partial('post/tag') %>
+      <%- partial('post/category') %>
+      <% if (index && theme.show_all_link){ %>
+        <p class="article-more-link">
+          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
+        </p>
+      <% } %>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-07-30-innodbnei-bu-jie-gou/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
+      <% if (!index && theme.share_jia){ %>
+        <%- partial('post/share') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2015-08-04-epollmo-xing/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Epoll模型
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015-07-29-mackuai-jie-jian-tu-biao/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Mac快捷键图标</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
+<% if (!index){ %>
+  <%- partial('post/nav') %>
+<% } %>
+<%- partial('_partial/aside') %>
 
 
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+<% if (!index && post.comments){ %>
+  <% if (theme.duoshuo){ %>
+  <%- partial('post/duoshuo', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-07-30-innodbnei-bu-jie-gou/", 
-    sourceId: "2015-07-30-innodbnei-bu-jie-gou",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
+  <% if (theme.wangyiyun){ %>
+  <%- partial('post/wangyiyun', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.changyan_appid && theme.changyan_conf){ %>
+  <%- partial('post/changyan', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.disqus || config.disqus_shortname){ %>
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
 
-  
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  <% } %>
 
+  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
+  <%- partial('post/gitment', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
+<% } %>
 
           </div>
         </div>

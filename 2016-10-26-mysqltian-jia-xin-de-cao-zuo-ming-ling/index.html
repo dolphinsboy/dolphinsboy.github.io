@@ -161,57 +161,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      mysql添加新的操作命令
-    </h1>
-  
-
-        
-        <a href="/2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling/" class="archive-article-date">
-  	<time datetime="2016-10-26T06:33:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-26</time>
-</a>
-        
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+        <% if (!post.noDate){ %>
+        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
+        <% } %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-        
-            
-                
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、添加新的SQL命令（以SHOW-DISK-USAGE为例）"><span class="toc-text">一、添加新的SQL命令（以SHOW DISK_USAGE为例）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、修改lex-h添加相关Token"><span class="toc-text">1、修改lex.h添加相关Token</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、修改sql-lex-h添加相关新命令"><span class="toc-text">2、修改sql_lex.h添加相关新命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-修改sql-yacc-yy添加相关token"><span class="toc-text">3.修改sql_yacc.yy添加相关token</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-修改sql-parser-cc添加SHOW-DISK-USAGE命令的case"><span class="toc-text">4.修改sql_parser.cc添加SHOW DISK_USAGE命令的case</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-在sql-show-cc中添加mysqld-show-disk-usage"><span class="toc-text">5.在sql_show.cc中添加mysqld_show_disk_usage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-通过bison以及gen-lex-hash生成相关语法"><span class="toc-text">6. 通过bison以及gen_lex_hash生成相关语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-make-install遇到错误"><span class="toc-text">7. make install遇到错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-测试"><span class="toc-text">8.测试</span></a></li></ol></li></ol>
-</div>
 
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
+        <% } %>
+      <% } else { %>
+            <%- partial('toc') %>
+            <%- post.content %>
+      <% } %>
 
-                <h2 id="一、添加新的SQL命令（以SHOW-DISK-USAGE为例）"><a href="#一、添加新的SQL命令（以SHOW-DISK-USAGE为例）" class="headerlink" title="一、添加新的SQL命令（以SHOW DISK_USAGE为例）"></a>一、添加新的SQL命令（以SHOW DISK_USAGE为例）</h2><h3 id="1、修改lex-h添加相关Token"><a href="#1、修改lex-h添加相关Token" class="headerlink" title="1、修改lex.h添加相关Token"></a>1、修改lex.h添加相关Token</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> SYMBOL symbols[] = &#123;</span><br><span class="line">...</span><br><span class="line">&#123; <span class="string">"DISK"</span>,     SYM(DISK_SYM)&#125;,</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/* Reason for Modification: */</span></span><br><span class="line"><span class="comment">/* Tokens for the SHOW DISK_USAGE command*/</span></span><br><span class="line">&#123;<span class="string">"DISK_USAGE"</span>, SYM(DISK_USAGE_SYM)&#125;,</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br><span class="line">&#123; <span class="string">"DISTINCT"</span>,     SYM(DISTINCT)&#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h3 id="2、修改sql-lex-h添加相关新命令"><a href="#2、修改sql-lex-h添加相关新命令" class="headerlink" title="2、修改sql_lex.h添加相关新命令"></a>2、修改sql_lex.h添加相关新命令</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> enum_sql_command &#123;</span><br><span class="line">...</span><br><span class="line">SQLCOM_SHOW_TRIGGERS,</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION: */</span></span><br><span class="line"><span class="comment">/*Reason for this modification: */</span></span><br><span class="line"><span class="comment">/*Add SQLCOM_SHOW_DISK_USAGE reference*/</span></span><br><span class="line">SQLCOM_SHOW_DISK_USAGE,</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<h3 id="3-修改sql-yacc-yy添加相关token"><a href="#3-修改sql-yacc-yy添加相关token" class="headerlink" title="3.修改sql_yacc.yy添加相关token"></a>3.修改sql_yacc.yy添加相关token</h3><p><strong>添加token</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">%token  DISK_SYM</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reasion for this modification:/*</span></span><br><span class="line"><span class="comment">/*Add DISK_USAGE_SYM */</span></span><br><span class="line">%token DISK_USAGE_SYM</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br><span class="line">%token  DISTINCT                      <span class="comment">/* SQL-2003-R */</span></span><br></pre></td></tr></table></figure>
-<p><strong>解析SHOW DISK_USAGE命令</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">show:</span><br><span class="line">SHOW</span><br><span class="line">&#123;</span><br><span class="line">LEX *lex=Lex;</span><br><span class="line">lex-&gt;wild=<span class="number">0</span>;</span><br><span class="line">lex-&gt;lock_option= TL_READ;</span><br><span class="line">mysql_init_select(lex);</span><br><span class="line">lex-&gt;current_select-&gt;parsing_place= SELECT_LIST;</span><br><span class="line">bzero((<span class="keyword">char</span>*) &amp;lex-&gt;create_info,<span class="keyword">sizeof</span>(lex-&gt;create_info));</span><br><span class="line">&#125;</span><br><span class="line">show_param</span><br><span class="line">&#123;&#125;</span><br><span class="line">;</span><br><span class="line"></span><br><span class="line">show_param:</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for this modification:*/</span></span><br><span class="line"><span class="comment">/*Add show disk usage symbol parsing*/</span></span><br><span class="line">DISK_USAGE_SYM</span><br><span class="line">&#123;</span><br><span class="line">LEX *lex = Lex;</span><br><span class="line">lex-&gt;sql_command = SQLCOM_SHOW_DISK_USAGE;</span><br><span class="line">&#125;</span><br><span class="line">| DATABASES wild_and_where</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
-<p>&gt;<br>注意是在show databases 前面添加，故在DATABASES前面需要添加 | 这个竖线</p>
-<h3 id="4-修改sql-parser-cc添加SHOW-DISK-USAGE命令的case"><a href="#4-修改sql-parser-cc添加SHOW-DISK-USAGE命令的case" class="headerlink" title="4.修改sql_parser.cc添加SHOW DISK_USAGE命令的case"></a>4.修改sql_parser.cc添加SHOW DISK_USAGE命令的case</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> SQLCOM_SHOW_AUTHORS:</span><br><span class="line">res= mysqld_show_authors(thd);</span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for this modification*/</span></span><br><span class="line"><span class="comment">/*Add SQLCOM_SHOW_DISK_USAGE case statement*/</span></span><br><span class="line"><span class="keyword">case</span> SQLCOM_SHOW_DISK_USAGE:</span><br><span class="line">&#123;</span><br><span class="line">res = mysqld_show_disk_usage(thd);</span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
-<p>添加函数声明，目前修改sql_priv.h文件添加</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for Modification*/</span></span><br><span class="line"><span class="comment">/*Declared mysqld_show_disk_usage function*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">mysqld_show_disk_usage</span><span class="params">(THD *thd)</span></span>;</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
-<h3 id="5-在sql-show-cc中添加mysqld-show-disk-usage"><a href="#5-在sql-show-cc中添加mysqld-show-disk-usage" class="headerlink" title="5.在sql_show.cc中添加mysqld_show_disk_usage"></a>5.在sql_show.cc中添加mysqld_show_disk_usage</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for Modification*/</span></span><br><span class="line"><span class="comment">/*Add show disk uage method*/</span></span><br><span class="line"><span class="comment">/***************************************************************************</span></span><br><span class="line"><span class="comment">**List all database disk usage</span></span><br><span class="line"><span class="comment">***************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">mysqld_show_disk_usage</span><span class="params">(THD *thd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">List&lt;Item&gt; field_list;</span><br><span class="line">Protocol *protocol = thd-&gt;protocol;</span><br><span class="line">DBUG_ENTER(<span class="string">"mysqld_show_disk_usage"</span>);</span><br><span class="line"></span><br><span class="line">field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"Database"</span>,<span class="number">50</span>));</span><br><span class="line">field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"Size_in_bytes"</span>, <span class="number">30</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(protocol-&gt;send_fields(&amp;field_list,</span><br><span class="line">¦   ¦   ¦   Protocol::SEND_NUM_ROWS | Protocol::SEND_EOF))</span><br><span class="line">¦   DBUG_RETURN(TRUE);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*send test data*/</span></span><br><span class="line">protocol-&gt;prepare_for_resend();</span><br><span class="line">protocol-&gt;store(<span class="string">"test_row"</span>, system_charset_info);</span><br><span class="line">protocol-&gt;store(<span class="string">"1024"</span>, system_charset_info);</span><br><span class="line"><span class="keyword">if</span>(protocol-&gt;write())</span><br><span class="line">¦ DBUG_RETURN(TRUE);</span><br><span class="line"></span><br><span class="line">my_eof(thd);</span><br><span class="line">DBUG_RETURN(FALSE);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*END GUSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
-<h3 id="6-通过bison以及gen-lex-hash生成相关语法"><a href="#6-通过bison以及gen-lex-hash生成相关语法" class="headerlink" title="6. 通过bison以及gen_lex_hash生成相关语法"></a>6. 通过bison以及gen_lex_hash生成相关语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bison -y -p MYSQL -d sql_yacc.yy</span><br><span class="line">[guosong@dev-00 11:18:52 sql]$ll y.tab.</span><br><span class="line">y.tab.c  y.tab.h</span><br></pre></td></tr></table></figure>
-<p>使用y.tab.c和y.tab.h替换sql_yacc.cc和sql_yacc.h</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv y.tab.c sql_yacc.cc</span><br><span class="line">mv y.tab.h sql_yacc.h</span><br></pre></td></tr></table></figure>
-<p>通过gen_lex_hash命令生成新的lex_hash.h文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> 在源码的sql目录下</span><br><span class="line">./gen_lex_hash &gt; lex_hash.h</span><br></pre></td></tr></table></figure>
-<h3 id="7-make-install遇到错误"><a href="#7-make-install遇到错误" class="headerlink" title="7. make install遇到错误"></a>7. make install遇到错误</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">../include/my_global.h:482:53: error: size of array ‘compile_time_assert’ is negative</span><br><span class="line">__attribute__ ((unused));</span><br></pre></td></tr></table></figure>
-<p>修改mysqld.cc文件</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for Modification*/</span></span><br><span class="line"><span class="comment">/*Solve make error*/</span></span><br><span class="line">compile_time_assert(<span class="keyword">sizeof</span>(com_status_vars)/<span class="keyword">sizeof</span>(com_status_vars[<span class="number">0</span>]) - <span class="number">1</span> ==</span><br><span class="line">¦   ¦   ¦   ¦   ¦SQLCOM_END + <span class="number">8</span><span class="number">-1</span>);</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
-<h3 id="8-测试"><a href="#8-测试" class="headerlink" title="8.测试"></a>8.测试</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; \s</span><br><span class="line"><span class="comment">--------------</span></span><br><span class="line">mysql  Ver 14.14 Distrib 5.5.42, for Linux (x86_64) using readline 5.1</span><br><span class="line"></span><br><span class="line">Connection id:          1</span><br><span class="line">Current database:</span><br><span class="line">Current user:           root@127.0.0.1</span><br><span class="line">SSL:                    Not in <span class="keyword">use</span></span><br><span class="line"><span class="keyword">Current</span> pager:          stdout</span><br><span class="line"><span class="keyword">Using</span> <span class="keyword">outfile</span>:          <span class="string">''</span></span><br><span class="line"><span class="keyword">Using</span> delimiter:        ;</span><br><span class="line">Server version:         5.1.45-debug-Guosong Modification Source distribution</span><br><span class="line">Protocol version:       10</span><br><span class="line">Connection:             127.0.0.1 via TCP/IP</span><br><span class="line">Server characterset:    utf8</span><br><span class="line">Db     characterset:    utf8</span><br><span class="line">Client characterset:    utf8</span><br><span class="line">Conn.  characterset:    utf8</span><br><span class="line">TCP port:               5145</span><br><span class="line">Uptime:                 14 sec</span><br><span class="line"></span><br><span class="line">Threads: 1  Questions: 5  Slow queries: 0  Opens: 15  <span class="keyword">Flush</span> <span class="keyword">tables</span>: <span class="number">1</span>  <span class="keyword">Open</span> <span class="keyword">tables</span>: <span class="number">8</span>  Queries per <span class="keyword">second</span> <span class="keyword">avg</span>: <span class="number">0.357</span></span><br><span class="line"><span class="comment">--------------</span></span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">show</span> DISK_USAGE;</span><br><span class="line">+<span class="comment">----------+---------------+</span></span><br><span class="line">| Database | Size_in_bytes |</span><br><span class="line">+<span class="comment">----------+---------------+</span></span><br><span class="line">| test_row | 1024          |</span><br><span class="line">+<span class="comment">----------+---------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
-
-            
-        
-      
+      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -221,20 +193,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    
+                    <% if(theme.alipay) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
+                      <img class="reward-img" src="<%= theme.alipay%>">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    
-                    
+                    <% } %>
+                    <% if(theme.weixin) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
+                      <img class="reward-img" src="<%= theme.weixin%>">
                       <span class="reward-type">微信</span>
                     </div>
-                    
+                    <% } %>
                   </div>
                 </span>
               </span>
@@ -242,143 +214,87 @@
           </div>
           </a>
         </div>
-      
+      <% } %>
     </div>
     <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL源码/" class="article-tag-list-link color3">MySQL源码</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <%if(post.top){%>
+        <div class="article-pop-out tagcloud">
+          <i class="icon-tuding"></i>
+          <a class="article-tag-list-link color3">置顶</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+      <% } %>
+      <%- partial('post/tag') %>
+      <%- partial('post/category') %>
+      <% if (index && theme.show_all_link){ %>
+        <p class="article-more-link">
+          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
+        </p>
+      <% } %>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
+      <% if (!index && theme.share_jia){ %>
+        <%- partial('post/share') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2016-11-03-inceptionyuan-ma-xiu-gai-yue-du/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Inception源码修改阅读
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2016-08-25-innodb-buffer-dump-and-load/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">innodb buffer dump and load</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
+<% if (!index){ %>
+  <%- partial('post/nav') %>
+<% } %>
+<%- partial('_partial/aside') %>
 
 
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+<% if (!index && post.comments){ %>
+  <% if (theme.duoshuo){ %>
+  <%- partial('post/duoshuo', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling/", 
-    sourceId: "2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
+  <% if (theme.wangyiyun){ %>
+  <%- partial('post/wangyiyun', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.changyan_appid && theme.changyan_conf){ %>
+  <%- partial('post/changyan', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.disqus || config.disqus_shortname){ %>
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
 
-  
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  <% } %>
 
+  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
+  <%- partial('post/gitment', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
+<% } %>
 
           </div>
         </div>

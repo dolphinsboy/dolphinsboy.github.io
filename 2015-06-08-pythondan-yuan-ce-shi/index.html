@@ -164,62 +164,29 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-06-08-pythondan-yuan-ce-shi" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %> <%if(index){%> article-index<%}%>" itemscope itemprop="blogPost">
   <div class="article-inner">
-    
+    <% if (post.link || post.title){ %>
       <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Python单元测试
-    </h1>
-  
-
-        
-        <a href="/2015-06-08-pythondan-yuan-ce-shi/" class="archive-article-date">
-  	<time datetime="2015-06-08T08:48:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-06-08</time>
-</a>
-        
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+        <% if (!post.noDate){ %>
+        <%- partial('post/date', {class_name: 'archive-article-date', date_format: null}) %>
+        <% } %>
       </header>
-    
+    <% } %>
     <div class="article-entry" itemprop="articleBody">
-        
-            
-                
-<div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-背景"><span class="toc-text">1.背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Python单元测试"><span class="toc-text">2. Python单元测试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-Demo1——来自博客1"><span class="toc-text">2.1 Demo1——来自博客1</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-测试套件-test-unit"><span class="toc-text">2.2 测试套件(test unit)</span></a></li></ol>
-</div>
 
+      <% if (post.excerpt && index){ %>
+        <%- post.excerpt %>
+        <% if (theme.excerpt_link) { %>
+          <a class="article-more-a" href="<%- url_for(post.path) %>#more"><%= theme.excerpt_link %> >></a>
+        <% } %>
+      <% } else { %>
+            <%- partial('toc') %>
+            <%- post.content %>
+      <% } %>
 
-                <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>公司内部使用Salt进行配置管理工作，通过Salt-master的client执行相关命令，鉴于内部其他系统会使用到Salt服务，为了避免每个都ssh到Salt-master执行命令，故之前负责Salt的同学使用django框架对这些常用的命令进行HTTP API的封装。</p>
-<p>目前总共32个接口，现在由于各种问题，需要迁移到Tornado的框架中。32个接口手动测试有点麻烦，故此研究一下python单元测试，这些可以为了后续对代码的改进，避免重复手动测试工作。</p>
-<a id="more"></a>
-<h3 id="2-Python单元测试"><a href="#2-Python单元测试" class="headerlink" title="2. Python单元测试"></a>2. Python单元测试</h3><p>主要是看了如下几个博客：</p>
-<p>(1). <a href="http://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/00140137128705556022982cfd844b38d050add8565dcb9000" target="_blank" rel="external">廖雪峰博客的单元测试</a></p>
-<p>(2). <a href="http://pyunit.sourceforge.net/pyunit_cn.html" target="_blank" rel="external">Python单元测试框架</a></p>
-<p>(3). <a href="https://docs.python.org/2/library/unittest.html" target="_blank" rel="external">python2.7手册</a></p>
-<p>(4). <a href="https://www.ibm.com/developerworks/cn/linux/l-pyunit/" target="_blank" rel="external">Python自动单元测试框架</a></p>
-<p>(5). <a href="http://www.drdobbs.com/testing/unit-testing-with-python/240165163" target="_blank" rel="external">Unit Testing with Python</a></p>
-<h4 id="2-1-Demo1——来自博客1"><a href="#2-1-Demo1——来自博客1" class="headerlink" title="2.1 Demo1——来自博客1"></a>2.1 Demo1——来自博客1</h4><figure class="highlight python"><figcaption><span>Dict类</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> !/usr/bin/env python</span><br><span class="line"> -*- coding:utf8 -*-</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dict</span><span class="params">(dict)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, **kw)</span>:</span></span><br><span class="line">super(Dict, self).__init__(**kw)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, key)</span>:</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line"><span class="keyword">return</span> self[key]</span><br><span class="line"><span class="keyword">except</span> KeyError:</span><br><span class="line"><span class="keyword">raise</span> AttributeError(<span class="string">r"'Dict' object has no attribute '%s'"</span> % key);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, key, value)</span>:</span></span><br><span class="line">self[key] = value</span><br></pre></td></tr></table></figure>
-<p>Dict类，这个类的行为和dict一致，但是可以通过属性来访问，保存为mydict.py。</p>
-<figure class="highlight python"><figcaption><span>单元测试</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"> !/usr/bin/env python</span><br><span class="line"> -*-coding:utf8 -*-</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mydict <span class="keyword">import</span> Dict</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestDict</span><span class="params">(unittest.TestCase)</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">测试类，从unittest.TestCase继承</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">以test开头的方法就是测试方法，</span></span><br><span class="line"><span class="string">不以test开头的方法不被认为是测试方法，</span></span><br><span class="line"><span class="string">测试的时候不会被执行。</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_init</span><span class="params">(self)</span>:</span></span><br><span class="line">d = Dict(a=<span class="number">1</span>, b= <span class="string">'test'</span>);</span><br><span class="line">self.assertEquals(d.a, <span class="number">1</span>)</span><br><span class="line">self.assertEquals(d.b, <span class="string">'test'</span>)</span><br><span class="line">self.assertTrue(isinstance(d, dict))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_key</span><span class="params">(self)</span>:</span></span><br><span class="line">d = Dict()</span><br><span class="line">d[<span class="string">'key'</span>] = <span class="string">'value'</span></span><br><span class="line">self.assertEquals(d.key, <span class="string">'value'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_attr</span><span class="params">(self)</span>:</span></span><br><span class="line">d = Dict()</span><br><span class="line">d.key = <span class="string">'value'</span></span><br><span class="line">self.assertTrue(<span class="string">'key'</span> <span class="keyword">in</span> d)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_keyerror</span><span class="params">(self)</span>:</span></span><br><span class="line">d = Dict()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> self.assertRaises(KeyError):</span><br><span class="line">value = d[<span class="string">'empty'</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_attrerror</span><span class="params">(self)</span>:</span></span><br><span class="line">d = Dict()</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> self.assertRaises(AttributeError):</span><br><span class="line">value = d.empty</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">unittest.main()</span><br></pre></td></tr></table></figure>
-<p>unitest.TestCase提供很多内置的条件判断，如下图，只需要调用这些方法就可以断言输出是否符合预期。<br><img src="/images/test_assert.png" alt="TestCase的断言表达式"></p>
-<p>另一种重要的断言就是期望抛出指定类型的Error，例如上面的后面两个测试用例。<br><img src="/images/test_exception.png" alt="TestCase的异常断言判断"></p>
-<p>两个截图都来自<a href="https://docs.python.org/2/library/unittest.html" target="_blank" rel="external">链接3</a></p>
-<p>可以将这个test.py当做正常的脚本使用main进行操作。<br>另一种更常见的方法是通过命令行参数-m unittest直接运行单元测试：</p>
-<figure class="highlight html"><figcaption><span>通过命令行参数运行单元测试</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">guosongdeMacBook-Air:20150608 guosong$ python -m unittest test</span><br><span class="line">.....</span><br><span class="line">----------------------------------------------------------------------</span><br><span class="line">Ran 5 tests in 0.000s</span><br><span class="line"></span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
-<p><strong>注意：脚本名称后面不同加.py后缀，否则出现错误。</strong></p>
-<p><strong>setUp 和 tearDown</strong><br>如果想在执行每个测试用例的时候，在开始和结束的时候，执行一些操作，可以使用setUp和tearDown两个函数来实现，具体代码如下：</p>
-<figure class="highlight python"><figcaption><span>TestDict类中重写setUp和tearDown函数</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></span><br><span class="line"> 打印当前执行测试case的方法名</span><br><span class="line"><span class="keyword">print</span> <span class="string">'setUp..., test_case_name = %s'</span> % self._testMethodName</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tearDown</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="keyword">print</span> <span class="string">'tearDown..., done'</span></span><br></pre></td></tr></table></figure>
-<p>如果setUp执行成功，那么无论runTest是否成功，tearDown方法都将被执行。<br>上面的实现方式称为固件。</p>
-<p>在<a href="http://pyunit.sourceforge.net/pyunit_cn.html" target="_blank" rel="external">博客2</a>中介绍通过覆盖runTest 方法实现的方式，不过一般都不常用，具体可以参照<a href="http://pyunit.sourceforge.net/pyunit_cn.html" target="_blank" rel="external">博客2</a>。</p>
-<h3 id="2-2-测试套件-test-unit"><a href="#2-2-测试套件-test-unit" class="headerlink" title="2.2 测试套件(test unit)"></a>2.2 测试套件(test unit)</h3><p><strong>测试Widget类</strong><br><figure class="highlight python"><figcaption><span>测试Widget类</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, x=<span class="number">50</span>, y=<span class="number">50</span>)</span>:</span></span><br><span class="line">self.name = name</span><br><span class="line">self.x = x</span><br><span class="line">self.y = y</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">size</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="keyword">return</span> (self.x, self.y)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">resize</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">self.x = x</span><br><span class="line">self.y = y</span><br></pre></td></tr></table></figure></p>
-<p><strong>测试用例</strong><br><figure class="highlight python"><figcaption><span>测试用例</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> widget <span class="keyword">import</span> Widget</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WidgetTestCase</span><span class="params">(unittest.TestCase)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setUp</span><span class="params">(self)</span>:</span></span><br><span class="line">self.widget = Widget(<span class="string">"The widget"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tearDown</span><span class="params">(self)</span>:</span></span><br><span class="line">self.widget.dispose()</span><br><span class="line">self.widget = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testDefaultSize</span><span class="params">(self)</span>:</span></span><br><span class="line"> <span class="keyword">assert</span> self.widget.size() == (<span class="number">50</span>,<span class="number">50</span>), <span class="string">'incorrect default size'</span></span><br><span class="line">size = self.widget.size()</span><br><span class="line">self.assertEquals(size,</span><br><span class="line">(<span class="number">50</span>,<span class="number">50</span>),</span><br><span class="line"><span class="string">'incorrect default size'</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">testResize</span><span class="params">(self)</span>:</span></span><br><span class="line">self.widget.resize(<span class="number">100</span>, <span class="number">150</span>)</span><br><span class="line">size = self.widget.size()</span><br><span class="line"></span><br><span class="line">self.assertEquals(size,</span><br><span class="line">(<span class="number">100</span>,<span class="number">150</span>),</span><br><span class="line"><span class="string">'wrong size after resize'</span>)</span><br></pre></td></tr></table></figure></p>
-<p><strong>测试组件</strong><br><figure class="highlight python"><figcaption><span>测试组件suite</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">suite</span><span class="params">()</span>:</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">测试用例实例可以根据它们所测试的特性组合起来,</span></span><br><span class="line"><span class="string">这个机制称为测试套件</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">suite = unittest.TestSuite()</span><br><span class="line">suite.addTest(WidgetTestCase(<span class="string">"testDefaultSize"</span>))</span><br><span class="line">suite.addTest(WidgetTestCase(<span class="string">"testResize"</span>))</span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">makeSuite方法创建一个由测试用例类内所有测试用例组成的测试套件</span></span><br><span class="line"><span class="string">makeSuite(testCaseClass, prefix='test',</span></span><br><span class="line"><span class="string">sortUsing=&lt;built-in function cmp&gt;,</span></span><br><span class="line"><span class="string">suiteClass=&lt;class 'unittest.suite.TestSuite'&gt;)</span></span><br><span class="line"><span class="string">makeSuite会做排序，基于内置的cmp函数</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"> suite = unittest.makeSuit(WidgetTestCase, <span class="string">'test'</span>)</span><br><span class="line"><span class="keyword">return</span> suite</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">suite = suite()</span><br><span class="line">runner = unittest.TextTestRunner()</span><br><span class="line">runner.run(suite)</span><br></pre></td></tr></table></figure></p>
-
-            
-        
-      
+      <% if ((theme.reward_type === 2 || (theme.reward_type === 1 && post.reward)) && !index){ %>
         <div class="page-reward">
           <a href="javascript:;" class="page-reward-btn tooltip-top">
             <div class="tooltip tooltip-east">
@@ -229,20 +196,20 @@
             <span class="tooltip-content">
               <span class="tooltip-text">
                 <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <p class="reward-p"><i class="icon icon-quo-left"></i><%= theme.reward_wording%><i class="icon icon-quo-right"></i></p>
                   <div class="reward-box">
-                    
+                    <% if(theme.alipay) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/alipay.jpg">
+                      <img class="reward-img" src="<%= theme.alipay%>">
                       <span class="reward-type">支付宝</span>
                     </div>
-                    
-                    
+                    <% } %>
+                    <% if(theme.weixin) {%>
                     <div class="reward-box-item">
-                      <img class="reward-img" src="/images/weixin.jpg">
+                      <img class="reward-img" src="<%= theme.weixin%>">
                       <span class="reward-type">微信</span>
                     </div>
-                    
+                    <% } %>
                   </div>
                 </span>
               </span>
@@ -250,143 +217,87 @@
           </div>
           </a>
         </div>
-      
+      <% } %>
     </div>
     <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Test/" class="article-tag-list-link color5">Test</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
+      <%if(post.top){%>
+        <div class="article-pop-out tagcloud">
+          <i class="icon-tuding"></i>
+          <a class="article-tag-list-link color3">置顶</a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
+      <% } %>
+      <%- partial('post/tag') %>
+      <%- partial('post/category') %>
+      <% if (index && theme.show_all_link){ %>
+        <p class="article-more-link">
+          <a class="article-more-a" href="<%- url_for(post.path) %>"><%= theme.show_all_link %> >></a>
+        </p>
+      <% } %>
 
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-06-08-pythondan-yuan-ce-shi/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
+      <% if (!index && theme.share_jia){ %>
+        <%- partial('post/share') %>
+      <% } %>
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2015-06-12-supervisordpei-zhi-shi-yong-zong-jie/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          supervisord配置使用总结
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2015-06-03-elkda-jian-guo-cheng/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">ELK搭建过程</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
+<% if (!index){ %>
+  <%- partial('post/nav') %>
+<% } %>
+<%- partial('_partial/aside') %>
 
 
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
+<% if (!index && post.comments){ %>
+  <% if (theme.duoshuo){ %>
+  <%- partial('post/duoshuo', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
   
-  
-  
-  <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-<script>
-  var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-06-08-pythondan-yuan-ce-shi/", 
-    sourceId: "2015-06-08-pythondan-yuan-ce-shi",
-    productKey: "true",
-    target: "cloud-tie-wrapper"
-  };
-</script>
-<script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
-  
+  <% if (theme.wangyiyun){ %>
+  <%- partial('post/wangyiyun', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.changyan_appid && theme.changyan_conf){ %>
+  <%- partial('post/changyan', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
 
-  
+  <% if (theme.disqus || config.disqus_shortname){ %>
+    <section id="comments">
+      <div id="disqus_thread"></div>
+        <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<%= theme.disqus || config.disqus_shortname %>'; // required: replace example with your forum shortname
 
-  
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+  <% } %>
 
+  <% if (theme.gitment_owner && theme.gitment_repo &&theme.gitment_oauth && theme.gitment_oauth.client_id && theme.gitment_oauth.client_secret){ %>
+  <%- partial('post/gitment', {
+      key: post.slug,
+      title: post.title,
+      url: config.url+url_for(post.path)
+    }) %>
+  <% } %>
+<% } %>
 
           </div>
         </div>
