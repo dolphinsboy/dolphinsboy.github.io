@@ -147,6 +147,83 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2015-05-04-python-operator-overload" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015-05-04-python-operator-overload/">python类操作符重载</a>
+    </h1>
+  
+
+        
+        <a href="/2015-05-04-python-operator-overload/" class="archive-article-date">
+  	<time datetime="2015-05-04T09:24:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-05-04</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+
+      
+        <h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><figure class="highlight python"><figcaption><span>setattr & getattr</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Object</span><span class="params">()</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__setattr__</span><span class="params">(self, n, v)</span>:</span></span><br><span class="line"><span class="keyword">if</span> n == <span class="string">'age'</span>:</span><br><span class="line">self.__dict__[n] = v</span><br><span class="line"><span class="keyword">print</span> <span class="string">'setattr'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__getattr__</span><span class="params">(self, n)</span>:</span></span><br><span class="line"><span class="keyword">if</span> n == <span class="string">'age'</span>:</span><br><span class="line"><span class="keyword">return</span> self.__dict__[n]</span><br><span class="line"></span><br><span class="line">obj = Object()</span><br><span class="line">obj.age = <span class="number">2</span></span><br><span class="line"><span class="keyword">print</span> obj.age</span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2015-05-04-python-operator-overload/#more">更多 >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Python/" class="article-tag-list-link color2">Python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2015-05-04-python-operator-overload/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2015-05-02-introduction" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -328,6 +405,10 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

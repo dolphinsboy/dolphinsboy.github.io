@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://dolphinsboy.github.io">
-  <title>模拟MySQL IO线程 | 郭颂</title>
+  <title>L101_Symmetric_Tree | 郭颂</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.前言近期在看mydumper以及mysqlbinlog api的代码，发现MySQL从库同步这块也不是想象中那么复杂，故将其中的代码抽离出来，完成此篇博文。 在网上搜到沃趣科技的博客MYSQL BINLOG相关源码浅析，值得推荐，本文重点在于IO线程这块。">
+  <meta name="description" content="题目描述123456789101112131415161718Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).For example, this binary tree [1,2,2,3,4,4,3] is symmetric:    1   / \  2">
+<meta name="keywords" content="-LeetCode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="模拟MySQL IO线程">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-10-15-mo-ni-mysql-ioxian-cheng/index.html">
+<meta property="og:title" content="L101_Symmetric_Tree">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-17-L101-Symmetric-Tree/index.html">
 <meta property="og:site_name" content="郭颂">
-<meta property="og:description" content="1.前言近期在看mydumper以及mysqlbinlog api的代码，发现MySQL从库同步这块也不是想象中那么复杂，故将其中的代码抽离出来，完成此篇博文。 在网上搜到沃趣科技的博客MYSQL BINLOG相关源码浅析，值得推荐，本文重点在于IO线程这块。">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:description" content="题目描述123456789101112131415161718Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).For example, this binary tree [1,2,2,3,4,4,3] is symmetric:    1   / \  2">
+<meta property="og:updated_time" content="2017-11-17T06:24:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="模拟MySQL IO线程">
-<meta name="twitter:description" content="1.前言近期在看mydumper以及mysqlbinlog api的代码，发现MySQL从库同步这块也不是想象中那么复杂，故将其中的代码抽离出来，完成此篇博文。 在网上搜到沃趣科技的博客MYSQL BINLOG相关源码浅析，值得推荐，本文重点在于IO线程这块。">
+<meta name="twitter:title" content="L101_Symmetric_Tree">
+<meta name="twitter:description" content="题目描述123456789101112131415161718Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).For example, this binary tree [1,2,2,3,4,4,3] is symmetric:    1   / \  2">
   
     <link rel="alternative" href="/atom.xml" title="郭颂" type="application/atom+xml">
   
@@ -149,20 +150,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-2015-10-15-mo-ni-mysql-ioxian-cheng" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-2017-11-17-L101-Symmetric-Tree" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      模拟MySQL IO线程
+      L101_Symmetric_Tree
     </h1>
   
 
         
-        <a href="/2015-10-15-mo-ni-mysql-ioxian-cheng/" class="archive-article-date">
-  	<time datetime="2015-10-15T12:30:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-10-15</time>
+        <a href="/2017-11-17-L101-Symmetric-Tree/" class="archive-article-date">
+  	<time datetime="2017-11-17T06:18:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-17</time>
 </a>
         
       </header>
@@ -172,24 +173,14 @@
       
             
 <div id="toc">
-  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-前言"><span class="toc-text">1.前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-REGISTER-SLAVE"><span class="toc-text">2. REGISTER_SLAVE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-BinlogDUMP"><span class="toc-text">3.BinlogDUMP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-读取EVENT"><span class="toc-text">4.读取EVENT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Demo"><span class="toc-text">5.Demo</span></a></li></ol>
+  <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解题思路"><span class="toc-text">解题思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Go实现-递归"><span class="toc-text">Go实现-递归</span></a></li></ol>
 </div>
 
 
-            <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h2><p>近期在看mydumper以及mysqlbinlog api的代码，发现MySQL从库同步这块也不是想象中那么复杂，故将其中的代码抽离出来，完成此篇博文。</p>
-<p>在网上搜到沃趣科技的博客<a href="http://www.woqutech.com/?p=1757" target="_blank" rel="external">MYSQL BINLOG相关源码浅析</a>，值得推荐，本文重点在于IO线程这块。</p>
-<a id="more"></a>
-<h2 id="2-REGISTER-SLAVE"><a href="#2-REGISTER-SLAVE" class="headerlink" title="2. REGISTER_SLAVE"></a>2. REGISTER_SLAVE</h2><p>从库注册流程，需要发送包信息包括如下:<br><a href="http://dev.mysql.com/doc/internals/en/com-register-slave.html" target="_blank" rel="external">http://dev.mysql.com/doc/internals/en/com-register-slave.html</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1              [15] COM_REGISTER_SLAVE</span><br><span class="line">4              server-id</span><br><span class="line">1              slaves hostname length</span><br><span class="line">string[$len]   slaves hostname</span><br><span class="line">1              slaves user len</span><br><span class="line">string[$len]   slaves user</span><br><span class="line">1              slaves password len</span><br><span class="line">string[$len]   slaves password</span><br><span class="line">2              slaves mysql-port</span><br><span class="line">4              replication rank</span><br><span class="line">4              master-id</span><br></pre></td></tr></table></figure>
-<p>对应的代码：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">register_slave</span><span class="params">(MYSQL *conn)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">uchar buf[<span class="number">1024</span>];</span><br><span class="line">uchar *pos = buf;</span><br><span class="line">uchar *unix_sock = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">long</span> default_start_pos = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> server_id = <span class="number">1</span>;</span><br><span class="line"><span class="comment">//4bytes server-id</span></span><br><span class="line">int4store(pos, server_id); pos+= <span class="number">4</span>;</span><br><span class="line">pos= net_store_data(pos, (uchar*) hostname, <span class="built_in">strlen</span>(hostname));</span><br><span class="line">pos= net_store_data(pos, (uchar*) username, <span class="built_in">strlen</span>(username));</span><br><span class="line">pos= net_store_data(pos, (uchar*) passwd, <span class="built_in">strlen</span>(passwd));</span><br><span class="line">int2store(pos, (uint16) port);</span><br><span class="line"></span><br><span class="line">pos += <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">int4store(pos, <span class="comment">/* rpl_recovery_rank */</span> <span class="number">0</span>);</span><br><span class="line">pos += <span class="number">4</span>;</span><br><span class="line">int4store(pos, <span class="number">0</span>);</span><br><span class="line">pos += <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (simple_command(conn, COM_REGISTER_SLAVE, buf, (<span class="keyword">size_t</span>)(pos - buf), <span class="number">0</span>))</span><br><span class="line"><span class="keyword">return</span> ERR_FAIL;</span><br><span class="line"><span class="keyword">return</span> ERR_OK;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这步执行之后，只能在主库上看到一个连接。</p>
-<h2 id="3-BinlogDUMP"><a href="#3-BinlogDUMP" class="headerlink" title="3.BinlogDUMP"></a>3.BinlogDUMP</h2><p>发起BinlogDump命令，需要包括如下信息：<br><a href="http://dev.mysql.com/doc/internals/en/com-binlog-dump.html" target="_blank" rel="external">http://dev.mysql.com/doc/internals/en/com-binlog-dump.html</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1              [12] COM_BINLOG_DUMP</span><br><span class="line">4              binlog-pos</span><br><span class="line">2              flags</span><br><span class="line">4              server-id</span><br><span class="line">string[EOF]    binlog-filename</span><br></pre></td></tr></table></figure>
-<p>对应的代码：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">start_dump</span><span class="params">(MYSQL *conn)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *binlog_name = <span class="string">"mysql-bin.000002"</span>;</span><br><span class="line"><span class="keyword">size_t</span> offset = <span class="number">107</span>;</span><br><span class="line"></span><br><span class="line">uchar buf[<span class="number">1024</span>];</span><br><span class="line"><span class="keyword">char</span> *binlog_pos;</span><br><span class="line">ushort binlog_flags = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> server_id = mysql_thread_id(conn) <span class="number">-1000</span>;</span><br><span class="line"><span class="keyword">size_t</span> binlog_name_length;</span><br><span class="line">conn-&gt;status = MYSQL_STATUS_READY;</span><br><span class="line">int4store(buf, offset);</span><br><span class="line">int2store(buf + <span class="number">4</span>, binlog_flags);</span><br><span class="line">int4store(buf + <span class="number">6</span>, server_id);</span><br><span class="line"></span><br><span class="line">binlog_name_length = <span class="built_in">strlen</span>(binlog_name);</span><br><span class="line"></span><br><span class="line"><span class="built_in">memcpy</span>(buf + <span class="number">10</span>, binlog_name, binlog_name_length);</span><br><span class="line"></span><br><span class="line">simple_command(conn, COM_BINLOG_DUMP, buf, binlog_name_length + <span class="number">10</span>, <span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里面比较简单，设置固定的binlog同步点。</p>
-<h2 id="4-读取EVENT"><a href="#4-读取EVENT" class="headerlink" title="4.读取EVENT"></a>4.读取EVENT</h2><h2 id="5-Demo"><a href="#5-Demo" class="headerlink" title="5.Demo"></a>5.Demo</h2><p>代码已经放在Git上<a href="https://github.com/dolphinsboy/code_for_c/blob/master/glib/binlog.c" target="_blank" rel="external"><strong>binlog.c</strong></a>，编译放在<a href="https://github.com/dolphinsboy/code_for_c/blob/master/glib/makefile" target="_blank" rel="external"><strong>makefile</strong></a>中。</p>
+            <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/symmetric-tree/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).</span><br><span class="line"></span><br><span class="line">For example, this binary tree [1,2,2,3,4,4,3] is symmetric:</span><br><span class="line"></span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   2</span><br><span class="line"> / \ / \</span><br><span class="line">3  4 4  3</span><br><span class="line">But the following [1,2,2,null,3,null,3] is not:</span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   2</span><br><span class="line">   \   \</span><br><span class="line">   3    3</span><br><span class="line">Note:</span><br><span class="line">Bonus points if you could solve it both recursively and iteratively.</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>此题目可以转化为<a href="https://leetcode.com/problems/same-tree/" target="_blank" rel="external">L100_Same_Tree</a>的解题思路。<br>L100是判断两颗树是否相同，比较Left和Right是否相同，对两个数进行中序遍历。<br>此题目可以对root的Left进行中左右遍历，对root的Right进行中右左遍历。</p>
+<h3 id="Go实现-递归"><a href="#Go实现-递归" class="headerlink" title="Go实现-递归"></a>Go实现-递归</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">judge</span><span class="params">(left *TreeNode, right *TreeNode)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> left == <span class="literal">nil</span> &amp;&amp; right == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (left == <span class="literal">nil</span> &amp;&amp; right !=<span class="literal">nil</span>) || (left !=<span class="literal">nil</span> &amp;&amp; right == <span class="literal">nil</span>)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> left.Val == right.Val &#123;</span><br><span class="line">        <span class="keyword">return</span> judge(left.Left, right.Right) &amp;&amp; judge(left.Right, right.Left)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isSymmetric</span><span class="params">(root *TreeNode)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> judge(root.Left, root.Right)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>NOTE:如果root节点为nil，返回值为true</p>
 
       
 
@@ -229,18 +220,18 @@
     <div class="article-info article-info-index">
       
       
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/MySQL内核/" class="article-tag-list-link color3">MySQL内核</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">-LeetCode</a>
         		</li>
       		
 		</ul>
 	</div>
 
+      
 
       
 
@@ -290,7 +281,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2015-10-15-mo-ni-mysql-ioxian-cheng/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://dolphinsboy.github.io/2017-11-17-L101-Symmetric-Tree/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -304,18 +295,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2015-10-22-redisnei-cun-shi-yong-qing-kuang-tong-ji/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          redis内存使用情况统计
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015-10-13-mydumperyuan-ma-fen-xi/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">mydumper源码分析</div>
+    <a href="/2017-11-17-L100-SameTree/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">L100_SameTree</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -346,8 +328,8 @@
   <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
 <script>
   var cloudTieConfig = {
-    url: "http://dolphinsboy.github.io/2015-10-15-mo-ni-mysql-ioxian-cheng/", 
-    sourceId: "2015-10-15-mo-ni-mysql-ioxian-cheng",
+    url: "http://dolphinsboy.github.io/2017-11-17-L101-Symmetric-Tree/", 
+    sourceId: "2017-11-17-L101-Symmetric-Tree",
     productKey: "true",
     target: "cloud-tie-wrapper"
   };
