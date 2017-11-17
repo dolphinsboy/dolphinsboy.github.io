@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,15 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#redis-rdb文件内存使用情况分析"><span class="toc-text">redis rdb文件内存使用情况分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、生成rdb文件"><span class="toc-text">1、生成rdb文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、分析rdb文件"><span class="toc-text">2、分析rdb文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、使用map-reduce服务数据分析"><span class="toc-text">3、使用map-reduce服务数据分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4、下载并分析结果"><span class="toc-text">4、下载并分析结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#针对购物车的统计"><span class="toc-text">针对购物车的统计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、需求"><span class="toc-text">1、需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、使用HIVE来进行操作"><span class="toc-text">2、使用HIVE来进行操作</span></a></li></ol></li></ol>
 </div>
 
 
-            <h2 id="redis-rdb文件内存使用情况分析"><a href="#redis-rdb文件内存使用情况分析" class="headerlink" title="redis rdb文件内存使用情况分析"></a>redis rdb文件内存使用情况分析</h2><h3 id="1、生成rdb文件"><a href="#1、生成rdb文件" class="headerlink" title="1、生成rdb文件"></a>1、生成rdb文件</h3><p>通过bgsave命令生成rdb文件，如果存在rdb，则跳过此步</p>
+                <h2 id="redis-rdb文件内存使用情况分析"><a href="#redis-rdb文件内存使用情况分析" class="headerlink" title="redis rdb文件内存使用情况分析"></a>redis rdb文件内存使用情况分析</h2><h3 id="1、生成rdb文件"><a href="#1、生成rdb文件" class="headerlink" title="1、生成rdb文件"></a>1、生成rdb文件</h3><p>通过bgsave命令生成rdb文件，如果存在rdb，则跳过此步</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h xxx -p xxx bgsave</span><br></pre></td></tr></table></figure>
 <h3 id="2、分析rdb文件"><a href="#2、分析rdb文件" class="headerlink" title="2、分析rdb文件"></a>2、分析rdb文件</h3><p>需安装rdb：点击此处连接<br><a href="https://github.com/sripathikrishnan/redis-rdb-tools#generate-memory-report" target="_blank" rel="external">redis-rdb-tools</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rdb -c memory /var/redis/6379/dump.rdb &gt; memory.csv</span><br></pre></td></tr></table></figure>
@@ -217,7 +229,8 @@
 <p>hive输出结果：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@bd-master-00 guosong]$ hive -f sum.sql</span><br><span class="line"></span><br><span class="line">Logging initialized using configuration in file:/etc/hive/conf.dist/hive-log4j.properties</span><br><span class="line">OK</span><br><span class="line">Time taken: 0.043 seconds</span><br><span class="line">Query ID = hadoop_20160503181212_571d477d-2610-4a50-abf6-779eeb7b026a</span><br><span class="line">Total jobs = 1</span><br><span class="line">Launching Job 1 out of 1</span><br><span class="line">Number of reduce tasks determined at compile time: 1</span><br><span class="line">In order to change the average load for a reducer (in bytes):</span><br><span class="line">set hive.exec.reducers.bytes.per.reducer=&lt;number&gt;</span><br><span class="line">In order to limit the maximum number of reducers:</span><br><span class="line">set hive.exec.reducers.max=&lt;number&gt;</span><br><span class="line">In order to set a constant number of reducers:</span><br><span class="line">set mapreduce.job.reduces=&lt;number&gt;</span><br><span class="line">Starting Job = job_1460542469374_69993, Tracking URL = http://ip-10-30-24-68.cn-north-1.compute.internal:20888/proxy/application_1460542469374_69993/</span><br><span class="line">Kill Command = /usr/lib/hadoop/bin/hadoop job  -kill job_1460542469374_69993</span><br><span class="line">Hadoop job information for Stage-1: number of mappers: 1; number of reducers: 1</span><br><span class="line">2016-05-03 18:12:46,948 Stage-1 map = 0%,  reduce = 0%</span><br><span class="line">2016-05-03 18:12:59,349 Stage-1 map = 13%,  reduce = 0%, Cumulative CPU 8.03 sec</span><br><span class="line">2016-05-03 18:13:02,455 Stage-1 map = 27%,  reduce = 0%, Cumulative CPU 11.29 sec</span><br><span class="line">2016-05-03 18:13:05,600 Stage-1 map = 40%,  reduce = 0%, Cumulative CPU 14.51 sec</span><br><span class="line">2016-05-03 18:13:07,666 Stage-1 map = 100%,  reduce = 0%, Cumulative CPU 16.76 sec</span><br><span class="line">2016-05-03 18:13:15,947 Stage-1 map = 100%,  reduce = 100%, Cumulative CPU 18.58 sec</span><br><span class="line">MapReduce Total cumulative CPU time: 18 seconds 580 msec</span><br><span class="line">Ended Job = job_1460542469374_69993</span><br><span class="line">MapReduce Jobs Launched:</span><br><span class="line">Stage-Stage-1: Map: 1  Reduce: 1   Cumulative CPU: 18.58 sec   HDFS Read: 692 HDFS Write: 16 SUCCESS</span><br><span class="line">Total MapReduce CPU Time Spent: 18 seconds 580 msec</span><br><span class="line">OK</span><br><span class="line">9.8070625201E10</span><br><span class="line">Time taken: 39.05 seconds, Fetched: 1 row(s)</span><br></pre></td></tr></table></figure>
 
-      
+            
+        
 
       
         <div class="page-reward">
@@ -488,10 +501,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

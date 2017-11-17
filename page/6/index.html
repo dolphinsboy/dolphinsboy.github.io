@@ -56,6 +56,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -110,6 +114,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -125,12 +133,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -166,9 +178,8 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="本博文说明"><a href="#本博文说明" class="headerlink" title="本博文说明"></a>本博文说明</h2><p>记录平时学习和使用Go遇到的小问题点，本博文包括如下：</p>
+        
+                   <h2 id="本博文说明"><a href="#本博文说明" class="headerlink" title="本博文说明"></a>本博文说明</h2><p>记录平时学习和使用Go遇到的小问题点，本博文包括如下：</p>
 <ol>
 <li>创建自定义包</li>
 <li>如何写benchmark以及测试用例</li>
@@ -179,10 +190,8 @@
 <li>Go访问MySQL</li>
 <li>类和方法</li>
 </ol>
+            
         
-          <a class="article-more-a" href="/2015-07-27-goyu-fa-hui-zong/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -253,14 +262,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="1、环境搭建"><a href="#1、环境搭建" class="headerlink" title="1、环境搭建"></a>1、环境搭建</h2><p>参照下面的博客完成在Intellij IDEA中配置golang<br><a href="http://aigo.iteye.com/blog/2214136" target="_blank" rel="external">IntelliJ IDEA 14安装Golang插件go-lang-idea-plugin</a>。</p>
+        
+                   <h2 id="1、环境搭建"><a href="#1、环境搭建" class="headerlink" title="1、环境搭建"></a>1、环境搭建</h2><p>参照下面的博客完成在Intellij IDEA中配置golang<br><a href="http://aigo.iteye.com/blog/2214136" target="_blank" rel="external">IntelliJ IDEA 14安装Golang插件go-lang-idea-plugin</a>。</p>
 <p>由于系统上之前已经安装好go和IDEA，现在将两者结合起来，本博客记录整个配置的过程。</p>
+            
         
-          <a class="article-more-a" href="/2015-07-22-zai-intellij-ideazhong-pei-zhi-golang/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -331,13 +337,10 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="1-Using-MySQL-with-Java-Percona-Live-2015"><a href="#1-Using-MySQL-with-Java-Percona-Live-2015" class="headerlink" title="1. Using MySQL with Java [Percona Live 2015]"></a>1. Using MySQL with Java [Percona Live 2015]</h2>
         
-          <a class="article-more-a" href="/2015-07-20-using-mysql-with-java/#more">更多 >></a>
+                   <h2 id="1-Using-MySQL-with-Java-Percona-Live-2015"><a href="#1-Using-MySQL-with-Java-Percona-Live-2015" class="headerlink" title="1. Using MySQL with Java [Percona Live 2015]"></a>1. Using MySQL with Java [Percona Live 2015]</h2>
+            
         
-      
 
       
     </div>
@@ -408,18 +411,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压缩过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。</p>
+        
+                   <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压缩过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。</p>
 <p>由此引发一个问题就是如何找出被kill程序对应的源程序呢？</p>
 <h3 id="2、信号量"><a href="#2、信号量" class="headerlink" title="2、信号量"></a>2、信号量</h3><blockquote>
 <p>kill -9 和 kill -15的区别？？</p>
 </blockquote>
 <p>kill -9 对应的信号量是SIGKILL， kill -15对应的信号量是SIGTERM</p>
+            
         
-          <a class="article-more-a" href="/2015-07-14-xin-hao-liang-bu-zhuo/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -490,18 +490,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1-问题"><a href="#1-问题" class="headerlink" title="1.问题"></a>1.问题</h3><p>经常会问到主从server_id相同会怎么样？从库之间server_id相同会怎么样？A-&gt;B-&gt;C结构下，如果A和C的server_id相同又会怎么样？</p>
+        
+                   <h3 id="1-问题"><a href="#1-问题" class="headerlink" title="1.问题"></a>1.问题</h3><p>经常会问到主从server_id相同会怎么样？从库之间server_id相同会怎么样？A-&gt;B-&gt;C结构下，如果A和C的server_id相同又会怎么样？</p>
 <h4 id="1-1-主从server-id相同"><a href="#1-1-主从server-id相同" class="headerlink" title="1.1 主从server_id相同"></a>1.1 主从server_id相同</h4><p>启动start slave 之后，出现错误：</p>
 <blockquote>
 <p>Last_IO_Errno: 1593<br>Fatal error: The slave I/O thread stops because master and slave have equal MySQL server ids; these ids must be different for replication to work (or the –replicate-same-server-id option must be used on slave but this does not always make sense; please check the manual before using it).</p>
 </blockquote>
 <h4 id="1-2-两个从库之间存在server-id相同"><a href="#1-2-两个从库之间存在server-id相同" class="headerlink" title="1.2.两个从库之间存在server_id相同"></a>1.2.两个从库之间存在server_id相同</h4><p>主库上的Binlog Dump线程会替换成新的从库ip，且Binlog Dump的Time时间是变化，主库没有任何写入。<br><img src="/images/binlogdump.png" alt="存在相同的server_id的Binlog Dump状态"></p>
+            
         
-          <a class="article-more-a" href="/2015-07-08-mysqlde-server-idfen-xi/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -572,16 +569,13 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="1、线程安全概念"><a href="#1、线程安全概念" class="headerlink" title="1、线程安全概念"></a>1、线程安全概念</h2><blockquote>
+        
+                   <h2 id="1、线程安全概念"><a href="#1、线程安全概念" class="headerlink" title="1、线程安全概念"></a>1、线程安全概念</h2><blockquote>
 <p>If a function can be safely called by multiple threads at the same time, we say that the function is thread-safe.</p>
 <p>如果一个函数在同一时刻可以被多个线程安全地调用，就称该函数是线程安全的。</p>
 </blockquote>
+            
         
-          <a class="article-more-a" href="/2015-06-23-xian-cheng-an-quan/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -652,16 +646,13 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本文记录一些开源监控的软件使用方法，目前包括Cacti、Zabbix。</p>
+        
+                   <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本文记录一些开源监控的软件使用方法，目前包括Cacti、Zabbix。</p>
 <h2 id="1-Cacti"><a href="#1-Cacti" class="headerlink" title=" 1. Cacti "></a><font color="green"> 1. Cacti </font></h2><p><img src="/images/cacti.png" alt="Cacti的图"></p>
 <p>对于图上的m单位表示啥意思呢？</p>
 <p>在数据比较接近0的时候，会出现这m单位。事实上，这里的单位 m 表示微，即需要除以1000。100m表示0.1。Cacti中使用如下单位：M（兆）、K（千）、m（微）。<br>默认下，Cacti是每隔五分钟采集一次数据，数据展示的是每秒的值。<br>
+            
         
-          <a class="article-more-a" href="/2015-06-16-jian-kong-cacti/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -732,14 +723,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h2><p>对于octopress来说常用的命令是:</p>
+        
+                   <h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h2><p>对于octopress来说常用的命令是:</p>
 <figure class="highlight html"><figcaption><span>octoprocess常用命令</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rake new_post['xxxx']</span><br><span class="line">rake preview</span><br><span class="line">rake deploy</span><br><span class="line"></span><br><span class="line">git status</span><br><span class="line">git add .</span><br><span class="line">git commit -m 'xxxx'</span><br><span class="line">git push origin source</span><br></pre></td></tr></table></figure>
+            
         
-          <a class="article-more-a" href="/2015-06-12-octopressde-gitwen-ti/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -810,14 +798,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>之前搭建公司内部的API系统，tornado server的守护进程使用supervisord进行管理，故当时就supervisord进行学习，并整理成相关文档。</p>
+        
+                   <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>之前搭建公司内部的API系统，tornado server的守护进程使用supervisord进行管理，故当时就supervisord进行学习，并整理成相关文档。</p>
 <h3 id="2-supervisord总结文档"><a href="#2-supervisord总结文档" class="headerlink" title="2. supervisord总结文档"></a>2. supervisord总结文档</h3><p>这里不在重复贴出，给出个百度网盘的链接:<br><a href="http://pan.baidu.com/s/1qWoPFm0" target="_blank" rel="external">使用supervisor守护Python进程.pdf</a></p>
+            
         
-          <a class="article-more-a" href="/2015-06-12-supervisordpei-zhi-shi-yong-zong-jie/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -888,14 +873,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>公司内部使用Salt进行配置管理工作，通过Salt-master的client执行相关命令，鉴于内部其他系统会使用到Salt服务，为了避免每个都ssh到Salt-master执行命令，故之前负责Salt的同学使用django框架对这些常用的命令进行HTTP API的封装。</p>
+        
+                   <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>公司内部使用Salt进行配置管理工作，通过Salt-master的client执行相关命令，鉴于内部其他系统会使用到Salt服务，为了避免每个都ssh到Salt-master执行命令，故之前负责Salt的同学使用django框架对这些常用的命令进行HTTP API的封装。</p>
 <p>目前总共32个接口，现在由于各种问题，需要迁移到Tornado的框架中。32个接口手动测试有点麻烦，故此研究一下python单元测试，这些可以为了后续对代码的改进，避免重复手动测试工作。</p>
+            
         
-          <a class="article-more-a" href="/2015-06-08-pythondan-yuan-ce-shi/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -1054,10 +1036,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

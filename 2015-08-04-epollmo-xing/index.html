@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,15 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、Epoll模型讲解（转）"><span class="toc-text">1、Epoll模型讲解（转）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、结合APUE上介绍"><span class="toc-text">2、结合APUE上介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、参考资料"><span class="toc-text">3、参考资料</span></a></li></ol>
 </div>
 
 
-            <h2 id="1、Epoll模型讲解（转）"><a href="#1、Epoll模型讲解（转）" class="headerlink" title="1、Epoll模型讲解（转）"></a>1、Epoll模型讲解（转）</h2><p>首先我们来定义流的概念，一个流可以是文件，socket，pipe等等可以进行I/O操作的内核对象。不管是文件，还是套接字，还是管道，我们都可以把他们看作流。</p>
+                <h2 id="1、Epoll模型讲解（转）"><a href="#1、Epoll模型讲解（转）" class="headerlink" title="1、Epoll模型讲解（转）"></a>1、Epoll模型讲解（转）</h2><p>首先我们来定义流的概念，一个流可以是文件，socket，pipe等等可以进行I/O操作的内核对象。不管是文件，还是套接字，还是管道，我们都可以把他们看作流。</p>
 <p>之后我们来讨论I/O的操作，通过read，我们可以从流中读入数据；通过write，我们可以往流写入数据。现在假定一个情形，我们需要从流中读数据，但是流中还没有数据，（典型的例子为，客户端要从socket读如数据，但是服务器还没有把数据传回来），这时候该怎么办？</p>
 <a id="more"></a>
 <p><strong><font color="red">阻塞 Epoll</font></strong>：阻塞是个什么概念呢？比如某个时候你在等快递，但是你不知道快递什么时候过来，而且你没有别的事可以干（或者说接下来的事要等快递来了才能做）,那么你可以去睡觉了，因为你知道快递把货送来时一定会给你打个电话（假定一定能叫醒你)。</p>
@@ -204,7 +216,8 @@
 <h2 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h2><p>1、<a href="http://blog.csdn.net/mango_song/article/details/42643971" target="_blank" rel="external">我读过最好的Epoll模型讲解</a></p>
 <p>2、<a href="http://blog.csdn.net/ctthuangcheng/article/details/9332655" target="_blank" rel="external">UNIX环境高级编程——epoll函数使用详解</a></p>
 
-      
+            
+        
 
       
         <div class="page-reward">
@@ -475,10 +488,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

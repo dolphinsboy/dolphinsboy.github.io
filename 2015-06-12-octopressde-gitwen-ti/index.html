@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,15 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-背景"><span class="toc-text">1. 背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-问题解决方案"><span class="toc-text">2. 问题解决方案</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-处理过程"><span class="toc-text">3.处理过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-重新拉源代码"><span class="toc-text">3.1 重新拉源代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-手动从master再拉一份deploy文件"><span class="toc-text">3.2 手动从master再拉一份deploy文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-重新deploy"><span class="toc-text">3.3 重新deploy</span></a></li></ol></li></ol>
 </div>
 
 
-            <h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h2><p>对于octopress来说常用的命令是:</p>
+                <h2 id="1-背景"><a href="#1-背景" class="headerlink" title="1. 背景"></a>1. 背景</h2><p>对于octopress来说常用的命令是:</p>
 <figure class="highlight html"><figcaption><span>octoprocess常用命令</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">rake new_post['xxxx']</span><br><span class="line">rake preview</span><br><span class="line">rake deploy</span><br><span class="line"></span><br><span class="line">git status</span><br><span class="line">git add .</span><br><span class="line">git commit -m 'xxxx'</span><br><span class="line">git push origin source</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <p>但是今天缺遇到一个问题：</p>
@@ -189,7 +201,8 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#  Pushing generated _deploy website</span><br><span class="line">remote: Invalid username or password.</span><br><span class="line">fatal: Authentication failed for 'https://github.com/dolphinsboy/dolphinsboy.github.io/'</span><br></pre></td></tr></table></figure>
 <p>原因是3.2步骤设置成通过http访问的了，修改_deploy/.git/config中url参数为ssh方式即可。<br>至此解决我的问题。</p>
 
-      
+            
+        
 
       
         <div class="page-reward">
@@ -460,10 +473,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

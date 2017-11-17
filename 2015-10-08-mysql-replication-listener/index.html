@@ -60,6 +60,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -114,6 +118,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -129,12 +137,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -168,15 +180,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-mysql-replication-listener背景介绍"><span class="toc-text">1. mysql-replication-listener背景介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-安装编译"><span class="toc-text">2. 安装编译</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-安装"><span class="toc-text">2.1 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-安装遇到的问题"><span class="toc-text">2.2 安装遇到的问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-测试"><span class="toc-text">2.3 测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-源码分析"><span class="toc-text">3. 源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-代码分析"><span class="toc-text">3.1 代码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-1-读取本地binlog文件的实现"><span class="toc-text">3.1.1 读取本地binlog文件的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-2-读取mysql服务器binlog文件的实现"><span class="toc-text">3.1.2 读取mysql服务器binlog文件的实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-3-目录结构"><span class="toc-text">3.1.3 目录结构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3备注"><span class="toc-text">3.3备注</span></a></li></ol></li></ol></li></ol>
 </div>
 
 
-            <h2 id="1-mysql-replication-listener背景介绍"><a href="#1-mysql-replication-listener背景介绍" class="headerlink" title="1. mysql-replication-listener背景介绍"></a>1. mysql-replication-listener背景介绍</h2><p>同步binlog的C++ API，最开始发现是在MHA作者的博客看到的<a href="http://yoshinorimatsunobu.blogspot.jp/2011/10/making-slave-pre-fetching-work-better.html" target="_blank" rel="external">Making slave pre-fetching work better with SSD</a> 加速SQL线程预取数据的作用。</p>
+                <h2 id="1-mysql-replication-listener背景介绍"><a href="#1-mysql-replication-listener背景介绍" class="headerlink" title="1. mysql-replication-listener背景介绍"></a>1. mysql-replication-listener背景介绍</h2><p>同步binlog的C++ API，最开始发现是在MHA作者的博客看到的<a href="http://yoshinorimatsunobu.blogspot.jp/2011/10/making-slave-pre-fetching-work-better.html" target="_blank" rel="external">Making slave pre-fetching work better with SSD</a> 加速SQL线程预取数据的作用。</p>
 <p>本文记录自己测试过程以及一些源码分析。<br><a href="https://code.launchpad.net/mysql-replication-listener" target="_blank" rel="external">mysql-replication-listener代码位置</a></p>
 <a id="more"></a>
 <h2 id="2-安装编译"><a href="#2-安装编译" class="headerlink" title="2. 安装编译"></a>2. 安装编译</h2><h3 id="2-1-安装"><a href="#2-1-安装" class="headerlink" title="2.1 安装"></a>2.1 安装</h3><p>参照README文件</p>
@@ -292,7 +304,8 @@
 <li>存在一个python版本的<a href="https://code.launchpad.net/~mkindahl/mysql-replicant-python/trunk" target="_blank" rel="external">https://code.launchpad.net/~mkindahl/mysql-replicant-python/trunk</a></li>
 </ul>
 
-      
+            
+        
 
       
         <div class="page-reward">
@@ -563,10 +576,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

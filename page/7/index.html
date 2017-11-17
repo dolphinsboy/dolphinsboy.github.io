@@ -56,6 +56,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -110,6 +114,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -125,12 +133,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -166,14 +178,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。</p>
+        
+                   <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。</p>
 <h3 id="2、ELK搭建过程文档"><a href="#2、ELK搭建过程文档" class="headerlink" title="2、ELK搭建过程文档"></a>2、ELK搭建过程文档</h3><p>之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:</p>
+            
         
-          <a class="article-more-a" href="/2015-06-03-elkda-jian-guo-cheng/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -244,14 +253,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部平台提供HTTP API对日常经常使用的MySQL运维操作进行封装，经过多人积累，目前平台共有 117 个 HTTP 接口,涵盖到 MySQL 操作、MySQL 实例 元数据、授权、MySQL 状态、MySQL 集群拓扑结构、主从复制、DNS、体检巡检、参数变更、短信邮件报警、监控、表结构修改等。在线上实际运行的过程，经常出现API夯住的问题。</p>
+        
+                   <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部平台提供HTTP API对日常经常使用的MySQL运维操作进行封装，经过多人积累，目前平台共有 117 个 HTTP 接口,涵盖到 MySQL 操作、MySQL 实例 元数据、授权、MySQL 状态、MySQL 集群拓扑结构、主从复制、DNS、体检巡检、参数变更、短信邮件报警、监控、表结构修改等。在线上实际运行的过程，经常出现API夯住的问题。</p>
 <p>平台的API接口基于Facebook的Tornado实现，Tornado本身是支持异步非阻塞的，但是我们在开发的时候并没有使用这一特性，故进行出现单个端口夯住导致其他请求查询实践过程。</p>
+            
         
-          <a class="article-more-a" href="/2015-06-02-tornadoyi-bu-fei-zu-sai/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -322,15 +328,12 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>线上一台Salt Master的机器压力特别大<br><img src="/images/dstat.jpg" alt="dstat的结果图"></p>
+        
+                   <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>线上一台Salt Master的机器压力特别大<br><img src="/images/dstat.jpg" alt="dstat的结果图"></p>
 <p>故需要找出哪个进程在进行写操作，需要按照进程的维度统计出现IOPS的工具，故google的目录3中的一些参考资料</p>
 <h3 id="2、实现方式"><a href="#2、实现方式" class="headerlink" title="2、实现方式"></a>2、实现方式</h3><p>主要参照3节中第一个链接<br><a href="http://www.xaprb.com/blog/2009/08/23/how-to-find-per-process-io-statistics-on-linux/" target="_blank" rel="external">how-to-find-per-process-io-statistics-on-linux</a></p>
+            
         
-          <a class="article-more-a" href="/2015-05-27-iotong-ji/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -401,13 +404,10 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1-C语言版本"><a href="#1-C语言版本" class="headerlink" title="1. C语言版本"></a>1. C语言版本</h3><figure class="highlight c"><figcaption><span>使用信号量实现超时功能-C版本</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"> include <span class="string">"apue.h"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sig_alm</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">if</span> (signal(SIGALRM, sig_alm) == SIG_ERR)</span><br><span class="line">err_sys(<span class="string">"signal error"</span>);</span><br><span class="line"></span><br><span class="line">alarm(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"pid = %d\n"</span>, getpid());</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i&lt; <span class="number">20</span>; i++)&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"i = %d\n"</span>,i);</span><br><span class="line">sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sig_alm</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (signo == SIGALRM)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"received SIGALRM\n"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"pid=%d\n"</span>, getpid());</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
-          <a class="article-more-a" href="/2015-05-27-unixxin-hao-ce-shi-chao-shi/#more">更多 >></a>
+                   <h3 id="1-C语言版本"><a href="#1-C语言版本" class="headerlink" title="1. C语言版本"></a>1. C语言版本</h3><figure class="highlight c"><figcaption><span>使用信号量实现超时功能-C版本</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"> include <span class="string">"apue.h"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sig_alm</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">if</span> (signal(SIGALRM, sig_alm) == SIG_ERR)</span><br><span class="line">err_sys(<span class="string">"signal error"</span>);</span><br><span class="line"></span><br><span class="line">alarm(<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"pid = %d\n"</span>, getpid());</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> ( i = <span class="number">0</span>; i&lt; <span class="number">20</span>; i++)&#123;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"i = %d\n"</span>,i);</span><br><span class="line">sleep(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sig_alm</span><span class="params">(<span class="keyword">int</span> signo)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"><span class="keyword">if</span> (signo == SIGALRM)</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"received SIGALRM\n"</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"pid=%d\n"</span>, getpid());</span><br><span class="line"><span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            
         
-      
 
       
     </div>
@@ -482,16 +482,13 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h2><p>公司内部使用到MytriggerQ的自研软件，其主要功能是从MySQL的blackhole从库中读取更新的binlog，将每条更新的SQL转换成一条消息存储到内存中，供其他程序通过GET协议消费。</p>
+        
+                   <h2 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h2><p>公司内部使用到MytriggerQ的自研软件，其主要功能是从MySQL的blackhole从库中读取更新的binlog，将每条更新的SQL转换成一条消息存储到内存中，供其他程序通过GET协议消费。</p>
 <p>由于机房网络调整，涉及到很多MytriggerQ的实例，且这些东西几经转手，需要查看是否存在流量，如果存在，需要给出来源的IP以及相关的命令。MytriggerQ自身不提供任何流量查询功能，没有记录相关日志，故能想到的最直接办法就是tcpdump抓包分析。</p>
 <h2 id="2、tcpdump详解"><a href="#2、tcpdump详解" class="headerlink" title="2、tcpdump详解"></a>2、tcpdump详解</h2><p>神一样的文章，值得推荐<br><a href="http://roclinux.cn/?p=2474" target="_blank" rel="external">http://roclinux.cn/?p=2474</a></p>
 <p>在上面的文章中分析包括UDP包的IP报文，故在此基础上，本人再加上一个TCP包的分析过程，具体参照百度网盘中的pdf文档<a href="http://pan.baidu.com/s/1o6OLcjo" target="_blank" rel="external">http://pan.baidu.com/s/1o6OLcjo</a>。</p>
+            
         
-          <a class="article-more-a" href="/2015-05-18-tcpdumpjie-xi-sql/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -562,14 +559,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="1、typedef用法"><a href="#1、typedef用法" class="headerlink" title="1、typedef用法"></a>1、typedef用法</h2><p><a href="http://www.361way.com/typedef/560.html" target="_blank" rel="external">http://www.361way.com/typedef/560.html</a><br><a href="http://www.cnblogs.com/xrcun/archive/2013/05/24/3097149.html" target="_blank" rel="external">http://www.cnblogs.com/xrcun/archive/2013/05/24/3097149.html</a></p>
+        
+                   <h2 id="1、typedef用法"><a href="#1、typedef用法" class="headerlink" title="1、typedef用法"></a>1、typedef用法</h2><p><a href="http://www.361way.com/typedef/560.html" target="_blank" rel="external">http://www.361way.com/typedef/560.html</a><br><a href="http://www.cnblogs.com/xrcun/archive/2013/05/24/3097149.html" target="_blank" rel="external">http://www.cnblogs.com/xrcun/archive/2013/05/24/3097149.html</a></p>
 <h2 id="2、C语言执行python脚本"><a href="#2、C语言执行python脚本" class="headerlink" title="2、C语言执行python脚本"></a>2、C语言执行python脚本</h2>
+            
         
-          <a class="article-more-a" href="/2015-05-15-c-typedefyong-fa/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -640,13 +634,10 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h4 id="APUE-7-8例子出现如下用法"><a href="#APUE-7-8例子出现如下用法" class="headerlink" title="APUE 7-8例子出现如下用法"></a>APUE 7-8例子出现如下用法</h4><figure class="highlight c"><figcaption><span>宏定义的井号用法</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> doit(name) pr_limits( name, name)</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pr_limits</span><span class="params">(<span class="keyword">char</span> *, <span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
         
-          <a class="article-more-a" href="/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/#more">更多 >></a>
+                   <h4 id="APUE-7-8例子出现如下用法"><a href="#APUE-7-8例子出现如下用法" class="headerlink" title="APUE 7-8例子出现如下用法"></a>APUE 7-8例子出现如下用法</h4><figure class="highlight c"><figcaption><span>宏定义的井号用法</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> doit(name) pr_limits( name, name)</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pr_limits</span><span class="params">(<span class="keyword">char</span> *, <span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
+            
         
-      
 
       
     </div>
@@ -717,14 +708,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <p><a href="http://www.dwheeler.com/program-library/Program-Library-HOWTO/" target="_blank" rel="external">Program-Library-HOWTO</a></p>
+        
+                   <p><a href="http://www.dwheeler.com/program-library/Program-Library-HOWTO/" target="_blank" rel="external">Program-Library-HOWTO</a></p>
 <p><a href="http://bbs.chinaunix.net/thread-2037617-1-1.html" target="_blank" rel="external">静态库、共享库、动态库的创建和使用</a></p>
+            
         
-          <a class="article-more-a" href="/2015-05-15-cheng-xu-ku/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -795,15 +783,12 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="1-正文段"><a href="#1-正文段" class="headerlink" title="1. 正文段"></a>1. 正文段</h3><p>CPU执行的机器指令部分。通常，正文段是可共享的。正文段常常是只读的，以防止程序由于意外而修改其自身的指令。</p>
+        
+                   <h3 id="1-正文段"><a href="#1-正文段" class="headerlink" title="1. 正文段"></a>1. 正文段</h3><p>CPU执行的机器指令部分。通常，正文段是可共享的。正文段常常是只读的，以防止程序由于意外而修改其自身的指令。</p>
 <h3 id="2-初始化数据段"><a href="#2-初始化数据段" class="headerlink" title="2. 初始化数据段"></a>2. 初始化数据段</h3><p>程序需明确赋值的变量。</p>
 <h3 id="3-非初始化数据段"><a href="#3-非初始化数据段" class="headerlink" title="3. 非初始化数据段"></a>3. 非初始化数据段</h3><p>bss：block started by symbol 由符合开始的地方。</p>
+            
         
-          <a class="article-more-a" href="/2015-05-14-ccheng-xu-cun-chu-kong-jian/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -874,17 +859,14 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="GDB概述"><a href="#GDB概述" class="headerlink" title="GDB概述"></a>GDB概述</h3><p>GDB主要帮忙你完成下面四个方面的功能：</p>
+        
+                   <h3 id="GDB概述"><a href="#GDB概述" class="headerlink" title="GDB概述"></a>GDB概述</h3><p>GDB主要帮忙你完成下面四个方面的功能：</p>
 <p>1、启动你的程序，可以按照你的自定义的要求随心所欲的运行程序。</p>
 <p>2、可让被调试的程序在你所指定的调置的断点处停住。（断点可以是条件表达式）</p>
 <p>3、当程序被停住时，可以检查此时你的程序中所发生的事。</p>
 <p>4、动态的改变你程序的执行环境。</p>
+            
         
-          <a class="article-more-a" href="/2015-05-11-learning-gdb/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -1043,10 +1025,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

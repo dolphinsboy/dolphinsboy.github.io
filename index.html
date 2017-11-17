@@ -56,6 +56,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -110,6 +114,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -125,12 +133,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -166,14 +178,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/symmetric-tree/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).</span><br><span class="line"></span><br><span class="line">For example, this binary tree [1,2,2,3,4,4,3] is symmetric:</span><br><span class="line"></span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   2</span><br><span class="line"> / \ / \</span><br><span class="line">3  4 4  3</span><br><span class="line">But the following [1,2,2,null,3,null,3] is not:</span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   2</span><br><span class="line">   \   \</span><br><span class="line">   3    3</span><br><span class="line">Note:</span><br><span class="line">Bonus points if you could solve it both recursively and iteratively.</span><br></pre></td></tr></table></figure>
+        
+                   <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/symmetric-tree/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).</span><br><span class="line"></span><br><span class="line">For example, this binary tree [1,2,2,3,4,4,3] is symmetric:</span><br><span class="line"></span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   2</span><br><span class="line"> / \ / \</span><br><span class="line">3  4 4  3</span><br><span class="line">But the following [1,2,2,null,3,null,3] is not:</span><br><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   2</span><br><span class="line">   \   \</span><br><span class="line">   3    3</span><br><span class="line">Note:</span><br><span class="line">Bonus points if you could solve it both recursively and iteratively.</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>此题目可以转化为<a href="https://leetcode.com/problems/same-tree/" target="_blank" rel="external">L100_Same_Tree</a>的解题思路。<br>L100是判断两颗树是否相同，比较Left和Right是否相同，对两个数进行中序遍历。<br>此题目可以对root的Left进行中左右遍历，对root的Right进行中右左遍历。</p>
+            
         
-          <a class="article-more-a" href="/2017-11-17-L101-Symmetric-Tree/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -244,13 +253,10 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/same-tree/description/" target="_blank" rel="external">题目描述</a></h3><p>判断两个二叉树是否相同</p>
         
-          <a class="article-more-a" href="/2017-11-17-L100-SameTree/#more">更多 >></a>
+                   <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/same-tree/description/" target="_blank" rel="external">题目描述</a></h3><p>判断两个二叉树是否相同</p>
+            
         
-      
 
       
     </div>
@@ -321,14 +327,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/merge-sorted-array/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2. </span><br><span class="line">The number of elements initialized in nums1 and nums2 are m and n respectively.</span><br></pre></td></tr></table></figure>
+        
+                   <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/merge-sorted-array/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2. </span><br><span class="line">The number of elements initialized in nums1 and nums2 are m and n respectively.</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>nums1有足够的空间可以容纳2个数组的数据，故解题思路前提是不额外申请空间。<br>遍历nums2数据对nums1进行插入排序。</p>
+            
         
-          <a class="article-more-a" href="/2017-11-16-L83-Merge-Sorted-Array/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -399,17 +402,18 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#代码高亮"><span class="toc-text">代码高亮</span></a></li></ol>
 </div>
 
 
-            <h3 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h3><p>参考链接: <a href="http://jcmels.top/2016/04/11/code-highlight/" target="_blank" rel="external">http://jcmels.top/2016/04/11/code-highlight/</a></p>
+                <h3 id="代码高亮"><a href="#代码高亮" class="headerlink" title="代码高亮"></a>代码高亮</h3><p>参考链接: <a href="http://jcmels.top/2016/04/11/code-highlight/" target="_blank" rel="external">http://jcmels.top/2016/04/11/code-highlight/</a></p>
 
-      
+            
+        
 
       
     </div>
@@ -480,9 +484,8 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-list/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given a sorted linked list, delete all duplicates such that each element appear only once.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given 1-&gt;1-&gt;2, return 1-&gt;2.</span><br><span class="line">Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.</span><br></pre></td></tr></table></figure>
+        
+                   <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/remove-duplicates-from-sorted-list/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given a sorted linked list, delete all duplicates such that each element appear only once.</span><br><span class="line"></span><br><span class="line">For example,</span><br><span class="line">Given 1-&gt;1-&gt;2, return 1-&gt;2.</span><br><span class="line">Given 1-&gt;1-&gt;2-&gt;3-&gt;3, return 1-&gt;2-&gt;3.</span><br></pre></td></tr></table></figure>
 <p>从有序链表中删除重复的数据</p>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
 <li>使用两个指针prev，next变量链表</li>
@@ -490,10 +493,8 @@
 <li>如果相同，将prev的next设置为next.next，删除next节点</li>
 <li>如果不同，将prev以及next都往后移动</li>
 </ul>
+            
         
-          <a class="article-more-a" href="/2017-11-16-LeetCode-L83-从有序链表中删除重复的数据/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -564,15 +565,12 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/plus-one" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given a non-negative integer represented as a non-empty array of digits, plus one to the integer.</span><br><span class="line"></span><br><span class="line">You may assume the integer do not contain any leading zero, except the number 0 itself.</span><br><span class="line"></span><br><span class="line">The digits are stored such that the most significant digit is at the head of the list.</span><br></pre></td></tr></table></figure>
+        
+                   <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/plus-one" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given a non-negative integer represented as a non-empty array of digits, plus one to the integer.</span><br><span class="line"></span><br><span class="line">You may assume the integer do not contain any leading zero, except the number 0 itself.</span><br><span class="line"></span><br><span class="line">The digits are stored such that the most significant digit is at the head of the list.</span><br></pre></td></tr></table></figure>
 <p>大体意思是给一个数组表示一个非负数，这个非负数加上1，结果还返回一个数组</p>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>倒叙遍历数组，判断是否需要进位。</p>
+            
         
-          <a class="article-more-a" href="/2017-11-14-Leetcode-L66-PlusOne/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -643,16 +641,13 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/3sum" target="_blank" rel="external">题目描述</a></h3><p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
+        
+                   <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/3sum" target="_blank" rel="external">题目描述</a></h3><p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
 <p>Note: The solution set must not contain duplicate triplets.</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">For example, given array S = [-1, 0, 1, 2, -1, -4],</span><br><span class="line"></span><br><span class="line">A solution set is:</span><br><span class="line">[</span><br><span class="line">  [-1, 0, 1],</span><br><span class="line">  [-1, -1, 2]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>首先将数组进行排序，排序后使用3个索引进行sum的判断</p>
+            
         
-          <a class="article-more-a" href="/2017-11-13-leetcode-L15-3sum/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -723,15 +718,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#简介"><span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#源码剖析"><span class="toc-text">源码剖析</span></a></li></ol>
 </div>
 
 
-            <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><blockquote>
+                <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><blockquote>
 <p>tcollector包括如下python学习点，强烈推荐阅读</p>
 </blockquote>
 <ul>
@@ -754,7 +749,8 @@
 <li>单元测试以及mock</li>
 </ul>
 <h3 id="源码剖析"><a href="#源码剖析" class="headerlink" title="源码剖析"></a>源码剖析</h3>
-      
+            
+        
 
       
     </div>
@@ -814,20 +810,21 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-根据机器名称获取instance"><span class="toc-text">1.根据机器名称获取instance</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-获取所有机器的信息"><span class="toc-text">2.获取所有机器的信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-通过instance-id获取机器信息"><span class="toc-text">3.通过instance_id获取机器信息</span></a></li></ol>
 </div>
 
 
-            <h2 id="1-根据机器名称获取instance"><a href="#1-根据机器名称获取instance" class="headerlink" title="1.根据机器名称获取instance"></a>1.根据机器名称获取instance</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line"></span><br><span class="line">instances = ec2.instances.filter(</span><br><span class="line">¦   ¦   Filters = [&#123;<span class="string">'Name'</span>: <span class="string">'tag-value'</span>, <span class="string">'Values'</span>:[<span class="string">'service-test1'</span>]&#125;])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> instance <span class="keyword">in</span> instances:</span><br><span class="line">¦   <span class="keyword">print</span> instance</span><br></pre></td></tr></table></figure>
+                <h2 id="1-根据机器名称获取instance"><a href="#1-根据机器名称获取instance" class="headerlink" title="1.根据机器名称获取instance"></a>1.根据机器名称获取instance</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line"></span><br><span class="line">instances = ec2.instances.filter(</span><br><span class="line">¦   ¦   Filters = [&#123;<span class="string">'Name'</span>: <span class="string">'tag-value'</span>, <span class="string">'Values'</span>:[<span class="string">'service-test1'</span>]&#125;])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> instance <span class="keyword">in</span> instances:</span><br><span class="line">¦   <span class="keyword">print</span> instance</span><br></pre></td></tr></table></figure>
 <h2 id="2-获取所有机器的信息"><a href="#2-获取所有机器的信息" class="headerlink" title="2.获取所有机器的信息"></a>2.获取所有机器的信息</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line">instances = ec2.instances.filter()</span><br><span class="line"><span class="keyword">for</span> instance <span class="keyword">in</span> instances:</span><br><span class="line"><span class="keyword">print</span> instance</span><br></pre></td></tr></table></figure>
 <h2 id="3-通过instance-id获取机器信息"><a href="#3-通过instance-id获取机器信息" class="headerlink" title="3.通过instance_id获取机器信息"></a>3.通过instance_id获取机器信息</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line">instance = ec2.Instance(<span class="string">'i-d8d0c8e1'</span>)</span><br><span class="line"><span class="keyword">print</span> instance.instance_type</span><br></pre></td></tr></table></figure>
 <p>通过方法1和方法3获取信息所需要时间差不多，方法2获取所需要时间多。</p>
 
-      
+            
+        
 
       
     </div>
@@ -898,14 +895,11 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
-        <h3 id="升级Java版本"><a href="#升级Java版本" class="headerlink" title="升级Java版本"></a>升级Java版本</h3><p>Hadoop2.X版本需要JDK1.8版本，故首要任务就先升级JDK</p>
+        
+                   <h3 id="升级Java版本"><a href="#升级Java版本" class="headerlink" title="升级Java版本"></a>升级Java版本</h3><p>Hadoop2.X版本需要JDK1.8版本，故首要任务就先升级JDK</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install java-1.8.0-openjdk.x86_64</span><br><span class="line">#生成jps</span><br><span class="line">sudo yum install java-1.8.0-openjdk-devel.x86_64</span><br><span class="line">sudo alternatives --config java</span><br></pre></td></tr></table></figure>
+            
         
-          <a class="article-more-a" href="/2016-12-23-zai-aws-ec2da-jian-hadoop2-dot-6ji-qun/#more">更多 >></a>
-        
-      
 
       
     </div>
@@ -1064,10 +1058,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

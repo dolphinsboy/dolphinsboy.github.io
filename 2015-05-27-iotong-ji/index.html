@@ -63,6 +63,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -117,6 +121,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -132,12 +140,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -171,15 +183,15 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、背景"><span class="toc-text">1、背景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、实现方式"><span class="toc-text">2、实现方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、参考资料"><span class="toc-text">3、参考资料</span></a></li></ol>
 </div>
 
 
-            <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>线上一台Salt Master的机器压力特别大<br><img src="/images/dstat.jpg" alt="dstat的结果图"></p>
+                <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>线上一台Salt Master的机器压力特别大<br><img src="/images/dstat.jpg" alt="dstat的结果图"></p>
 <p>故需要找出哪个进程在进行写操作，需要按照进程的维度统计出现IOPS的工具，故google的目录3中的一些参考资料</p>
 <h3 id="2、实现方式"><a href="#2、实现方式" class="headerlink" title="2、实现方式"></a>2、实现方式</h3><p>主要参照3节中第一个链接<br><a href="http://www.xaprb.com/blog/2009/08/23/how-to-find-per-process-io-statistics-on-linux/" target="_blank" rel="external">how-to-find-per-process-io-statistics-on-linux</a></p>
 <a id="more"></a>
@@ -192,7 +204,8 @@
 <p>效果图：<br><img src="/images/iodump.jpg" alt="iodump效果图"></p>
 <h3 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h3><p>(1)、<a href="http://www.xaprb.com/blog/2009/08/23/how-to-find-per-process-io-statistics-on-linux/" target="_blank" rel="external">http://www.xaprb.com/blog/2009/08/23/how-to-find-per-process-io-statistics-on-linux/</a><br>(2)、<a href="http://www.cnblogs.com/cloudstorage/archive/2012/11/11/2764623.html" target="_blank" rel="external">http://www.cnblogs.com/cloudstorage/archive/2012/11/11/2764623.html</a><br>(3)、<a href="http://www.ibm.com/developerworks/cn/aix/library/au-lsof.html" target="_blank" rel="external">http://www.ibm.com/developerworks/cn/aix/library/au-lsof.html</a><br>(4)、<a href="http://mp.weixin.qq.com/s?__biz=MzAwODI1NTczOQ==&amp;mid=207783961&amp;idx=1&amp;sn=c3f310f3250cef29a866b15542226305&amp;scene=2#rd" target="_blank" rel="external">http://mp.weixin.qq.com/s?__biz=MzAwODI1NTczOQ==&amp;mid=207783961&amp;idx=1&amp;sn=c3f310f3250cef29a866b15542226305&amp;scene=2#rd</a></p>
 
-      
+            
+        
 
       
         <div class="page-reward">
@@ -463,10 +476,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>

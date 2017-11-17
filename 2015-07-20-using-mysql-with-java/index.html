@@ -63,6 +63,10 @@
 	        
 				<li><a href="/archives">归档</a></li>
 	        
+				<li><a href="/tags">标签</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
@@ -117,6 +121,10 @@
 			
 				
 			
+				
+			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -132,12 +140,16 @@
 			</nav>
 
 			<nav class="header-menu js-header-menu">
-				<ul style="width: 50%">
+				<ul style="width: 70%">
 				
 				
-					<li style="width: 50%"><a href="/">主页</a></li>
+					<li style="width: 25%"><a href="/">主页</a></li>
 		        
-					<li style="width: 50%"><a href="/archives">归档</a></li>
+					<li style="width: 25%"><a href="/archives">归档</a></li>
+		        
+					<li style="width: 25%"><a href="/tags">标签</a></li>
+		        
+					<li style="width: 25%"><a href="/categories">分类</a></li>
 		        
 				</ul>
 			</nav>
@@ -171,22 +183,23 @@
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-
-      
+        
             
+                
 <div id="toc">
   <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Using-MySQL-with-Java-Percona-Live-2015"><span class="toc-text">1. Using MySQL with Java [Percona Live 2015]</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Demo"><span class="toc-text">2. Demo</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-IDEA配置"><span class="toc-text">3. IDEA配置</span></a></li></ol>
 </div>
 
 
-            <h2 id="1-Using-MySQL-with-Java-Percona-Live-2015"><a href="#1-Using-MySQL-with-Java-Percona-Live-2015" class="headerlink" title="1. Using MySQL with Java [Percona Live 2015]"></a>1. Using MySQL with Java [Percona Live 2015]</h2><a id="more"></a>
+                <h2 id="1-Using-MySQL-with-Java-Percona-Live-2015"><a href="#1-Using-MySQL-with-Java-Percona-Live-2015" class="headerlink" title="1. Using MySQL with Java [Percona Live 2015]"></a>1. Using MySQL with Java [Percona Live 2015]</h2><a id="more"></a>
 <h2 id="2-Demo"><a href="#2-Demo" class="headerlink" title="2. Demo"></a>2. Demo</h2><figure class="highlight java"><figcaption><span>使用文件的方式进行访问</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.sql.*;</span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span></span><br><span class="line"><span class="function"><span class="keyword">throws</span> SQLException, ClassNotFoundException, IOException </span>&#123;</span><br><span class="line">Class.forName(<span class="string">"com.mysql.jdbc.Driver"</span>);</span><br><span class="line"></span><br><span class="line">Properties prop = <span class="keyword">new</span> Properties();</span><br><span class="line">prop.load(Main.class.getClassLoader().getResourceAsStream(<span class="string">"db.properties"</span>));</span><br><span class="line">Connection conn = DriverManager.getConnection(</span><br><span class="line">prop.getProperty(<span class="string">"mysql.url"</span>),</span><br><span class="line">prop.getProperty(<span class="string">"mysql.user"</span>),</span><br><span class="line">prop.getProperty(<span class="string">"mysql.password"</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">Statement st = conn.createStatement();</span><br><span class="line"></span><br><span class="line">ResultSet rs = st.executeQuery(</span><br><span class="line"><span class="string">"SELECT concat('Hello from mysql', version()) As msg"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (rs.next()) &#123;</span><br><span class="line">System.out.println(rs.getString(<span class="string">"msg"</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">rs.close();</span><br><span class="line">st.close();</span><br><span class="line">conn.close();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="3-IDEA配置"><a href="#3-IDEA配置" class="headerlink" title="3. IDEA配置"></a>3. IDEA配置</h2><p>添加jdbc的jar包：</p>
 <p><img src="/images/idea_jar.png =600x600" alt="jdbc"></p>
 <p>代码是使用IntelliJ IDEA编写的，遇到找不到文件的情况，解决方案是将db.properties和java代码放置在同一个目录，并且进行下图设置：</p>
 <p><img src="/images/ResourceRoot.png =300x100" alt="ResourceRoot"></p>
 
-      
+            
+        
 
       
         <div class="page-reward">
@@ -457,10 +470,6 @@ getOwnMetadataKeys:function(t){return o(i(t),arguments.length<2?void 0:u(argumen
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">-LeetCode</a>
               </li>
             
             <div class="clearfix"></div>
