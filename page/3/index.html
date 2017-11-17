@@ -147,6 +147,121 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-2016-02-16-dns-apixiu-gai" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016-02-16-dns-apixiu-gai/">DNS 相关</a>
+    </h1>
+  
+
+        
+        <a href="/2016-02-16-dns-apixiu-gai/" class="archive-article-date">
+  	<time datetime="2016-02-16T09:01:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-02-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+
+      
+            
+<div id="toc">
+  <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、使用dnspython进行DNS的修改API封装遇到的各种问题"><span class="toc-text">1、使用dnspython进行DNS的修改API封装遇到的各种问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、DNS-Server搭建"><span class="toc-text">2、DNS Server搭建</span></a></li></ol>
+</div>
+
+
+            <h2 id="1、使用dnspython进行DNS的修改API封装遇到的各种问题"><a href="#1、使用dnspython进行DNS的修改API封装遇到的各种问题" class="headerlink" title="1、使用dnspython进行DNS的修改API封装遇到的各种问题"></a>1、使用dnspython进行DNS的修改API封装遇到的各种问题</h2><p>使用dnspython模块进行DNS的修改，DNS的server搭建方式是使用Bind。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> !/usr/bin/env python</span><br><span class="line"> -*-coding:utf8 -*-</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> dns.update</span><br><span class="line"><span class="keyword">import</span> dns.query</span><br><span class="line"><span class="keyword">import</span> dns.tsigkeyring</span><br><span class="line"><span class="keyword">import</span> dns.rdatatype</span><br><span class="line"><span class="keyword">import</span> traceback</span><br><span class="line"></span><br><span class="line">keyring = dns.tsigkeyring.from_text(&#123;</span><br><span class="line"><span class="string">'testkey'</span> : <span class="string">'yr8lRAyVpMNOrjd3BsKBlQ=='</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">update = dns.update.Update(<span class="string">'mysql.internal.test.com'</span>, keyring=keyring)</span><br><span class="line"></span><br><span class="line"> update.replace(<span class="string">'s4000i'</span>, <span class="number">60</span>, <span class="string">'A'</span>, <span class="string">'10.30.21.111'</span>)</span><br><span class="line">update.delete(<span class="string">'s4000i'</span>,<span class="string">'A'</span>, <span class="string">'10.30.21.111'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">response = dns.query.tcp(update, <span class="string">'10.30.8.227'</span>, timeout=<span class="number">10</span>)</span><br><span class="line"><span class="keyword">print</span> response</span><br><span class="line"><span class="keyword">except</span> Exception,e:</span><br><span class="line">traceback.print_exc()</span><br></pre></td></tr></table></figure>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>keyname需要和named.conf配置文件中对应。</li>
+<li>Update的参数是Domain</li>
+<li>update.replace第一个参数是主机名</li>
+</ul>
+<p><strong>问题</strong></p>
+<ul>
+<li>Key名称错误</li>
+</ul>
+<p>named-denied.log日志文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">16-Feb-2016 15:50:38.433 security: error: client 10.30.6.49#42571:</span><br><span class="line">request has invalid signature: TSIG keyname: tsig verify failure (BADKEY)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">File &quot;dns_test.py&quot;, line 22, in &lt;module&gt;</span><br><span class="line">response = dns.query.tcp(update, &apos;10.30.8.227&apos;, timeout=10)</span><br><span class="line">File &quot;/usr/local/lib/python2.6/site-packages/dns/query.py&quot;, line 323, in tcp</span><br><span class="line">one_rr_per_rrset=one_rr_per_rrset)</span><br><span class="line">File &quot;/usr/local/lib/python2.6/site-packages/dns/message.py&quot;, line 790, in from_wire</span><br><span class="line">reader.read()</span><br><span class="line">File &quot;/usr/local/lib/python2.6/site-packages/dns/message.py&quot;, line 731, in read</span><br><span class="line">self._get_section(self.message.additional, adcount)</span><br><span class="line">File &quot;/usr/local/lib/python2.6/site-packages/dns/message.py&quot;, line 683, in _get_section</span><br><span class="line">self.message.first)</span><br><span class="line">File &quot;/usr/local/lib/python2.6/site-packages/dns/tsig.py&quot;, line 163, in validate</span><br><span class="line">raise PeerBadKey</span><br><span class="line">PeerBadKey</span><br></pre></td></tr></table></figure>
+<p>原因在于Keyname指定不对。</p>
+<ul>
+<li>udp以及tcp的code状态为REFUSED</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">id 41185</span><br><span class="line">opcode UPDATE</span><br><span class="line">rcode REFUSED</span><br><span class="line">flags QR RA</span><br><span class="line">;ZONE</span><br><span class="line">mysql.internal.test.com. IN SOA</span><br><span class="line">;PREREQ</span><br><span class="line">;UPDATE</span><br><span class="line">;ADDITIONAL</span><br></pre></td></tr></table></figure>
+<p>原因在于allow-update的设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">zone &quot;mysql.internal.test.com&quot; IN &#123;</span><br><span class="line">type master;</span><br><span class="line">file &quot;mysql.internal.test.com.zone&quot;;</span><br><span class="line">allow-update &#123; key testkey; &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>journal open failed: unexpected errorr 日志文件的错误</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">16-Feb-2016 16:11:04.313 update: info: client 10.30.6.49#26678:</span><br><span class="line">updating zone &apos;mysql.internal.test.com/IN&apos;: deleting rrset at &apos;s4000i.mysql.internal.test.com&apos; A</span><br><span class="line">16-Feb-2016 16:11:04.313 update: info: client 10.30.6.49#26678:</span><br><span class="line">updating zone &apos;mysql.internal.test.com/IN&apos;: adding an RR at &apos;s4000i.mysql.internal.test.com&apos; A</span><br><span class="line">16-Feb-2016 16:11:04.313 update: info: client 10.30.6.49#26678:</span><br><span class="line">updating zone &apos;mysql.internal.test.com/IN&apos;: error: journal open failed: unexpected error</span><br></pre></td></tr></table></figure>
+<p>原因在于权限问题，修改/var/named/chroot/var/named目录权限为named.named。</p>
+<p><strong>Demo参考代码</strong><br><a href="https://github.com/pexip/os-dnspython" target="_blank" rel="external">https://github.com/pexip/os-dnspython</a></p>
+<h2 id="2、DNS-Server搭建"><a href="#2、DNS-Server搭建" class="headerlink" title="2、DNS Server搭建"></a>2、DNS Server搭建</h2><p>参考：<br><a href="http://blog.csdn.net/chen_jp/article/details/7855079" target="_blank" rel="external">http://blog.csdn.net/chen_jp/article/details/7855079</a><br><a href="https://www.digitalocean.com/community/tutorials/how-to-install-the-bind-dns-server-on-centos-6" target="_blank" rel="external">https://www.digitalocean.com/community/tutorials/how-to-install-the-bind-dns-server-on-centos-6</a></p>
+<p>主从模式<br><a href="https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-centos-7" target="_blank" rel="external">https://www.digitalocean.com/community/tutorials/how-to-configure-bind-as-a-private-network-dns-server-on-centos-7</a></p>
+<p><strong>DNS的server进程</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/named -u named -4 -t /var/named/chroot</span><br></pre></td></tr></table></figure>
+<p><strong>DNS本地缓存</strong></p>
+<p>我们使用Dnsmasq完成机器本地的缓存，DNS的TTL时间设置为60秒。</p>
+<p><a href="http://www.freeoa.net/osuport/servap/dnsmasq-use-intro-refer_2480.html" target="_blank" rel="external">http://www.freeoa.net/osuport/servap/dnsmasq-use-intro-refer_2480.html</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/DNS/" class="article-tag-list-link color4">DNS</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016-02-16-dns-apixiu-gai/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-2016-02-16-gdbduo-jin-cheng-diao-shi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -934,86 +1049,9 @@
 
 
   
-    <article id="post-2015-12-07-iostat" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015-12-07-iostat/">Linux IO相关-iostat</a>
-    </h1>
-  
-
-        
-        <a href="/2015-12-07-iostat/" class="archive-article-date">
-  	<time datetime="2015-12-07T07:34:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2015-12-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-
-      
-        <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>给出Linux各种IO相关的工具介绍，例如iostat、dstat、iotop、pidstat等</p>
-        
-          <a class="article-more-a" href="/2015-12-07-iostat/#more">更多 >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Linux-Tools/" class="article-tag-list-link color2">Linux Tools</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2015-12-07-iostat/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
