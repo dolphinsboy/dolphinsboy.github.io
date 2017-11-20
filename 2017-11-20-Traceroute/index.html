@@ -94,19 +94,19 @@
 
 
 
-<meta name="description" content="背景用户反馈使用移动4G以及wifi访问公司业务有问题，使用电信没有问题，故需要获取用户网络相关访问信息。traceroute工具是第一选择。 traceroute使用说明通过traceroute可以知道信息从计算机到互联网另一端的访问路径。traceroute通过发送小的数据包到目的设备直到其返回，来测量其需多长时间。一条路径上的每个设备traceroute要测3次。输出结果中包括每次的测试时间">
+<meta name="description" content="背景用户反馈使用移动4G以及wifi访问公司业务有问题，使用电信没有问题，故需要获取用户网络相关访问信息。traceroute工具是第一选择。">
 <meta name="keywords" content="Linux Tools">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Traceroute">
 <meta property="og:url" content="http://dolphinsboy.github.io/2017-11-20-Traceroute/index.html">
 <meta property="og:site_name" content="郭颂">
-<meta property="og:description" content="背景用户反馈使用移动4G以及wifi访问公司业务有问题，使用电信没有问题，故需要获取用户网络相关访问信息。traceroute工具是第一选择。 traceroute使用说明通过traceroute可以知道信息从计算机到互联网另一端的访问路径。traceroute通过发送小的数据包到目的设备直到其返回，来测量其需多长时间。一条路径上的每个设备traceroute要测3次。输出结果中包括每次的测试时间">
+<meta property="og:description" content="背景用户反馈使用移动4G以及wifi访问公司业务有问题，使用电信没有问题，故需要获取用户网络相关访问信息。traceroute工具是第一选择。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/tencent_cloud_traceroute.jpg">
-<meta property="og:updated_time" content="2017-11-20T09:51:38.000Z">
+<meta property="og:updated_time" content="2017-11-20T09:55:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Traceroute">
-<meta name="twitter:description" content="背景用户反馈使用移动4G以及wifi访问公司业务有问题，使用电信没有问题，故需要获取用户网络相关访问信息。traceroute工具是第一选择。 traceroute使用说明通过traceroute可以知道信息从计算机到互联网另一端的访问路径。traceroute通过发送小的数据包到目的设备直到其返回，来测量其需多长时间。一条路径上的每个设备traceroute要测3次。输出结果中包括每次的测试时间">
+<meta name="twitter:description" content="背景用户反馈使用移动4G以及wifi访问公司业务有问题，使用电信没有问题，故需要获取用户网络相关访问信息。traceroute工具是第一选择。">
 <meta name="twitter:image" content="http://dolphinsboy.github.io/images/tencent_cloud_traceroute.jpg">
 
 
@@ -343,10 +343,25 @@
 
       
         <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>用户反馈使用移动4G以及wifi访问公司业务有问题，使用电信没有问题，故需要获取用户网络相关访问信息。<br>traceroute工具是第一选择。</p>
+<a id="more"></a>
 <h3 id="traceroute使用说明"><a href="#traceroute使用说明" class="headerlink" title="traceroute使用说明"></a>traceroute使用说明</h3><p>通过traceroute可以知道信息从计算机到互联网另一端的访问路径。<br>traceroute通过发送小的数据包到目的设备直到其返回，来测量其需多长时间。<br>一条路径上的每个设备traceroute要测3次。<br>输出结果中包括每次的测试时间、设备名称（有的话）以及其IP地址。</p>
 <h3 id="Traceroute-APP"><a href="#Traceroute-APP" class="headerlink" title="Traceroute APP"></a>Traceroute APP</h3><p>小白用户无法使用traceroute命令，况且需要在手机上traceroute，针对这个问题有traceroute APP。<br>推荐腾讯云诊断APP，可以将针对结果通过QQ和微信分享。</p>
-<p>如果是腾讯云诊断APP的结果展示:</p>
-<p><img src="/images/tencent_cloud_traceroute.jpg" alt="result"></p>
+<p>其诊断信息包括：</p>
+<ul>
+<li>Http </li>
+<li>Net</li>
+<li>Ping</li>
+<li>NSLookup</li>
+<li>TraceRoute</li>
+<li>Device信息</li>
+<li>PortScan</li>
+<li>Mtuscan</li>
+<li>Host</li>
+</ul>
+<p>如果是腾讯云诊断APP的结果展示:<br><img src="/images/tencent_cloud_traceroute.jpg" alt="result"></p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><a href="https://www.cnblogs.com/peida/archive/2013/03/07/2947326.html" target="_blank" rel="external">https://www.cnblogs.com/peida/archive/2013/03/07/2947326.html</a></li>
+</ul>
 
       
     </div>
@@ -519,7 +534,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#traceroute使用说明"><span class="nav-number">2.</span> <span class="nav-text">traceroute使用说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Traceroute-APP"><span class="nav-number">3.</span> <span class="nav-text">Traceroute APP</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#traceroute使用说明"><span class="nav-number">2.</span> <span class="nav-text">traceroute使用说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Traceroute-APP"><span class="nav-number">3.</span> <span class="nav-text">Traceroute APP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文档"><span class="nav-number">4.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
             
 
           </div>
