@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Binary Tree," />
 
 
 
@@ -94,17 +94,18 @@
 
 
 
-<meta name="description" content="APUE 7-8例子出现如下用法宏定义的井号用法12#define doit(name) pr_limits( name, name)static void pr_limits(char *, int)">
+<meta name="description" content="题目描述1234567891011Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.Example:    1   /  2Outpu">
+<meta name="keywords" content="LeetCode,Binary Tree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C宏定义的特殊用法">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/index.html">
+<meta property="og:title" content="L111 Minimum Depth of Binary Tree">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-22-L111-Minimum-Depth-of-Binary-Tree/index.html">
 <meta property="og:site_name" content="郭颂">
-<meta property="og:description" content="APUE 7-8例子出现如下用法宏定义的井号用法12#define doit(name) pr_limits( name, name)static void pr_limits(char *, int)">
+<meta property="og:description" content="题目描述1234567891011Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.Example:    1   /  2Outpu">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-13T07:47:24.000Z">
+<meta property="og:updated_time" content="2017-11-22T07:25:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C宏定义的特殊用法">
-<meta name="twitter:description" content="APUE 7-8例子出现如下用法宏定义的井号用法12#define doit(name) pr_limits( name, name)static void pr_limits(char *, int)">
+<meta name="twitter:title" content="L111 Minimum Depth of Binary Tree">
+<meta name="twitter:description" content="题目描述1234567891011Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.Example:    1   /  2Outpu">
 
 
 
@@ -133,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-11-22-L111-Minimum-Depth-of-Binary-Tree/"/>
 
 
 
 
 
-  <title>C宏定义的特殊用法 | 郭颂</title>
+  <title>L111 Minimum Depth of Binary Tree | 郭颂</title>
   
 
 
@@ -272,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-22-L111-Minimum-Depth-of-Binary-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -289,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C宏定义的特殊用法</h1>
+          <h1 class="post-title" itemprop="name headline">L111 Minimum Depth of Binary Tree</h1>
         
 
         <div class="post-meta">
@@ -301,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-05-15T17:15:12+08:00">
-                2015-05-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T15:19:51+08:00">
+                2017-11-22
               </time>
             
 
@@ -311,28 +312,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -361,9 +340,11 @@
       
 
       
-        <h4 id="APUE-7-8例子出现如下用法"><a href="#APUE-7-8例子出现如下用法" class="headerlink" title="APUE 7-8例子出现如下用法"></a>APUE 7-8例子出现如下用法</h4><figure class="highlight c"><figcaption><span>宏定义的井号用法</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> doit(name) pr_limits( name, name)</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pr_limits</span><span class="params">(<span class="keyword">char</span> *, <span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Given a binary tree, find its minimum depth.</span><br><span class="line">The minimum depth is the number of nodes along </span><br><span class="line">the shortest path from the root node down to the nearest leaf node.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line">    1</span><br><span class="line">   /</span><br><span class="line">  2</span><br><span class="line">Output:</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>和<a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/description/" target="_blank" rel="external">104</a>题目的<a href="https://dolphinsboy.github.io/2017-11-21-L104-Maximum-Depth-of-Binary-Tree">解题思路相同</a></p>
+<p>不同的是将depth设置为一个比较大的数，和level+1进行比较，如果出现更小的就替换。</p>
 <a id="more"></a>
-<h4 id="更多的特殊使用方法"><a href="#更多的特殊使用方法" class="headerlink" title="更多的特殊使用方法"></a>更多的特殊使用方法</h4><p><a href="http://www.trueeyu.com/?p=494" target="_blank" rel="external">#(井号)在C/C++的#define宏定义中的特殊用法</a></p>
+<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">travel</span><span class="params">(root *TreeNode, depth *<span class="keyword">int</span>, level <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> root==<span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Left == <span class="literal">nil</span> &amp;&amp; root.Right==<span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> *depth&gt;level+<span class="number">1</span> &#123;</span><br><span class="line">            *depth = level+<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    travel(root.Left, depth, level+<span class="number">1</span>)</span><br><span class="line">    travel(root.Right, depth, level+<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">minDepth</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> depth <span class="keyword">int</span></span><br><span class="line">    depth=<span class="number">10000</span></span><br><span class="line">    travel(root, &amp;depth, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> depth</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -379,6 +360,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
+          
+        </div>
+      
 
       
       
@@ -388,8 +377,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-05-15-cheng-xu-ku/" rel="next" title="静态库、共享库、动态库">
-                <i class="fa fa-chevron-left"></i> 静态库、共享库、动态库
+              <a href="/2017-11-21-L104-Maximum-Depth-of-Binary-Tree/" rel="next" title="L104 Maximum Depth of Binary Tree">
+                <i class="fa fa-chevron-left"></i> L104 Maximum Depth of Binary Tree
               </a>
             
           </div>
@@ -397,10 +386,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-05-15-c-typedefyong-fa/" rel="prev" title="C typedef用法">
-                C typedef用法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -534,7 +519,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#APUE-7-8例子出现如下用法"><span class="nav-number">1.</span> <span class="nav-text">APUE 7-8例子出现如下用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更多的特殊使用方法"><span class="nav-number">2.</span> <span class="nav-text">更多的特殊使用方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
             
 
           </div>
