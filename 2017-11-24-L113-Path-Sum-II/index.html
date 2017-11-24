@@ -94,18 +94,18 @@
 
 
 
-<meta name="description" content="题目描述1234567891011Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.Example:    1   /  2Outpu">
+<meta name="description" content="题目描述12345678910111213141516Given a binary tree and a sum, find all root-to-leaf paths where each path&amp;apos;s sum equals the given sum.For example:Given the below binary tree and sum = 22,">
 <meta name="keywords" content="LeetCode,Binary Tree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L111 Minimum Depth of Binary Tree">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-22-L111-Minimum-Depth-of-Binary-Tree/index.html">
+<meta property="og:title" content="L113 Path Sum II">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-24-L113-Path-Sum-II/index.html">
 <meta property="og:site_name" content="郭颂">
-<meta property="og:description" content="题目描述1234567891011Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.Example:    1   /  2Outpu">
+<meta property="og:description" content="题目描述12345678910111213141516Given a binary tree and a sum, find all root-to-leaf paths where each path&amp;apos;s sum equals the given sum.For example:Given the below binary tree and sum = 22,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-22T07:25:14.000Z">
+<meta property="og:updated_time" content="2017-11-24T02:56:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L111 Minimum Depth of Binary Tree">
-<meta name="twitter:description" content="题目描述1234567891011Given a binary tree, find its minimum depth.The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.Example:    1   /  2Outpu">
+<meta name="twitter:title" content="L113 Path Sum II">
+<meta name="twitter:description" content="题目描述12345678910111213141516Given a binary tree and a sum, find all root-to-leaf paths where each path&amp;apos;s sum equals the given sum.For example:Given the below binary tree and sum = 22,">
 
 
 
@@ -134,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-11-22-L111-Minimum-Depth-of-Binary-Tree/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-11-24-L113-Path-Sum-II/"/>
 
 
 
 
 
-  <title>L111 Minimum Depth of Binary Tree | 郭颂</title>
+  <title>L113 Path Sum II | 郭颂</title>
   
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-22-L111-Minimum-Depth-of-Binary-Tree/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-24-L113-Path-Sum-II/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L111 Minimum Depth of Binary Tree</h1>
+          <h1 class="post-title" itemprop="name headline">L113 Path Sum II</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-22T15:19:51+08:00">
-                2017-11-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-24T10:50:49+08:00">
+                2017-11-24
               </time>
             
 
@@ -340,11 +340,12 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Given a binary tree, find its minimum depth.</span><br><span class="line">The minimum depth is the number of nodes along </span><br><span class="line">the shortest path from the root node down to the nearest leaf node.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line">    1</span><br><span class="line">   /</span><br><span class="line">  2</span><br><span class="line">Output:</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>和<a href="https://leetcode.com/problems/maximum-depth-of-binary-tree/description/" target="_blank" rel="external">104</a>题目的<a href="https://dolphinsboy.github.io/2017-11-21-L104-Maximum-Depth-of-Binary-Tree">解题思路相同</a></p>
-<p>不同的是将depth设置为一个比较大的数，和level+1进行比较，如果出现更小的就替换。</p>
-<a id="more"></a>
-<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">travel</span><span class="params">(root *TreeNode, depth *<span class="keyword">int</span>, level <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> root==<span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Left == <span class="literal">nil</span> &amp;&amp; root.Right==<span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> *depth&gt;level+<span class="number">1</span> &#123;</span><br><span class="line">            *depth = level+<span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    travel(root.Left, depth, level+<span class="number">1</span>)</span><br><span class="line">    travel(root.Right, depth, level+<span class="number">1</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">minDepth</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> depth <span class="keyword">int</span></span><br><span class="line">    depth=<span class="number">10000</span></span><br><span class="line">    travel(root, &amp;depth, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> depth</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Given a binary tree and a sum, find all root-to-leaf paths where each path&apos;s sum equals the given sum.</span><br><span class="line"></span><br><span class="line">For example:</span><br><span class="line">Given the below binary tree and sum = 22,</span><br><span class="line">              5</span><br><span class="line">             / \</span><br><span class="line">            4   8</span><br><span class="line">           /   / \</span><br><span class="line">          11  13  4</span><br><span class="line">         /  \    / \</span><br><span class="line">        7    2  5   1</span><br><span class="line">return</span><br><span class="line">[</span><br><span class="line">   [5,4,11,2],</span><br><span class="line">   [5,8,4,5]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>题目和<a href="https://leetcode.com/problems/path-sum/" target="_blank" rel="external">L112 Path Sum</a>思路相同，通过DFS遍历获取路径。<br>不同的是需要通过数组保存路径。</p>
+<h3 id="Go-实现"><a href="#Go-实现" class="headerlink" title="Go 实现"></a>Go 实现</h3><h3 id="Python实现"><a href="#Python实现" class="headerlink" title="Python实现"></a>Python实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">__author__ = <span class="string">'guosong'</span></span><br><span class="line"><span class="comment"># Definition for a binary tree node.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span><span class="params">(object)</span>:</span></span><br><span class="line">     <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        self.val = x</span><br><span class="line">        self.left = <span class="keyword">None</span></span><br><span class="line">        self.right = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pathSum</span><span class="params">(self, root, sum)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :type sum: int</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        path = []</span><br><span class="line">        ret = []</span><br><span class="line"></span><br><span class="line">        self.dfs(root, sum, <span class="number">0</span>, path, ret)</span><br><span class="line">        <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initTree</span><span class="params">(self, root, nums, i, n)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> i &lt; n:</span><br><span class="line">            <span class="keyword">if</span> nums[i] == <span class="number">-1</span>:</span><br><span class="line">                root = <span class="keyword">None</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                node = TreeNode(nums[i])</span><br><span class="line">                root = node</span><br><span class="line">                root.left = self.initTree(root.left, nums, <span class="number">2</span>*i+<span class="number">1</span>, n)</span><br><span class="line">                root.right = self.initTree(root.right, nums, <span class="number">2</span>*i+<span class="number">2</span>, n)</span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dfs</span><span class="params">(self, root, target, s,path, ret)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        s += root.val</span><br><span class="line">        path = path + [root.val]</span><br><span class="line">        <span class="comment">#path.append(root.val)</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root.left <span class="keyword">and</span> <span class="keyword">not</span> root.right <span class="keyword">and</span> s == target:</span><br><span class="line">            ret.append(path)</span><br><span class="line">        self.dfs(root.left, target, s, path, ret)</span><br><span class="line">        self.dfs(root.right, target,s, path, ret)</span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line">nums = [<span class="number">5</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">11</span>,<span class="number">-1</span>,<span class="number">13</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">5</span>,<span class="number">1</span>]</span><br><span class="line">root = <span class="keyword">None</span></span><br><span class="line">root = s.initTree(root, nums,<span class="number">0</span>,len(nums))</span><br><span class="line"><span class="keyword">print</span> s.pathSum(root, <span class="number">22</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意点：path的追加方式不是通过path.append(root.val)，而是path=path+[root.val]的方式。</p>
+</blockquote>
 
       
     </div>
@@ -377,8 +378,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-11-21-L104-Maximum-Depth-of-Binary-Tree/" rel="next" title="L104 Maximum Depth of Binary Tree">
-                <i class="fa fa-chevron-left"></i> L104 Maximum Depth of Binary Tree
+              <a href="/2017-11-23-L112-Path-Sum/" rel="next" title="L112 Path Sum">
+                <i class="fa fa-chevron-left"></i> L112 Path Sum
               </a>
             
           </div>
@@ -386,10 +387,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-11-23-L112-Path-Sum/" rel="prev" title="L112 Path Sum">
-                L112 Path Sum <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -523,7 +520,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-实现"><span class="nav-number">3.</span> <span class="nav-text">Go 实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python实现"><span class="nav-number">4.</span> <span class="nav-text">Python实现</span></a></li></ol></div>
             
 
           </div>
