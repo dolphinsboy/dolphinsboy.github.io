@@ -76,7 +76,7 @@
 <meta property="og:site_name" content="郭颂">
 <meta property="og:description" content="题目描述1234Given an array of integers, every element appears twice except for one. Find that single one.Note:Your algorithm should have a linear runtime complexity. Could you implement it without using e">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-01T09:19:21.000Z">
+<meta property="og:updated_time" content="2017-12-01T09:23:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="L136_Single_Number">
 <meta name="twitter:description" content="题目描述1234Given an array of integers, every element appears twice except for one. Find that single one.Note:Your algorithm should have a linear runtime complexity. Could you implement it without using e">
@@ -339,6 +339,9 @@
 </li>
 </ul>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">singleNumber</span><span class="params">(nums []<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    ret := <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, v := <span class="keyword">range</span> nums&#123;</span><br><span class="line">        ret = ret ^ v</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>时间复杂度O(n),空间复杂度O(1)</p>
+</blockquote>
 
       
     </div>
