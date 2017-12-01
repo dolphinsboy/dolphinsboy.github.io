@@ -7,7 +7,7 @@
 
 <html class="theme-next muse use-motion" lang="zh-Hans">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
 <meta name="theme-color" content="#222">
@@ -41,32 +41,6 @@
   
   <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
 
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
 
 
 
@@ -135,7 +109,7 @@
 
 
 
-  <title>郭颂</title>
+  <title>郭颂</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -160,7 +134,7 @@
     
   
 
-  <div class="container sidebar-position-left 
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
    page-home 
  ">
     <div class="headband"></div>
@@ -256,6 +230,322 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-08-25-innodb-buffer-dump-and-load/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郭颂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-08-25-innodb-buffer-dump-and-load/" itemprop="url">innodb buffer dump and load</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-25T15:18:14+08:00">
+                2016-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="预热Innodb-Buffer-Pool"><a href="#预热Innodb-Buffer-Pool" class="headerlink" title="预热Innodb Buffer Pool"></a>预热Innodb Buffer Pool</h1><p>针对线上运行的MySQL Server，如果重启不设置预热的话直接提供服务，会产生很多Disk IO导致性能严重下降。</p>
+<p>在MySQL5.6 版本之后引入Buffer Pool的dump以及load功能。</p>
+<h2 id="Dump"><a href="#Dump" class="headerlink" title="Dump"></a>Dump</h2><p>扫描Buffer Pool将相关table_id以及page_id写入文件中(默认在data目录下ib_buffer_pool文件中)。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> innodb_buffer_pool_dump_at_shutdown = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>ib_buffer_pool内容如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@service-test1 data]<span class="comment"># head -n 10 ib_buffer_pool</span></span><br><span class="line">92,17682</span><br><span class="line">92,131631</span><br><span class="line">92,61826</span><br><span class="line">92,65080</span><br><span class="line">92,111759</span><br><span class="line">92,114364</span><br><span class="line">92,96410</span><br><span class="line">92,131632</span><br><span class="line">92,94495</span><br><span class="line">92,131633</span><br></pre></td></tr></table></figure>
+<h1 id="Load"><a href="#Load" class="headerlink" title="Load"></a>Load</h1><p>动态实现load</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">global</span> innodb_buffer_pool_load_now=<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2016-08-25 16:23:06 7fdd367fc700 InnoDB: Loading buffer pool(s) from .//ib_buffer_pool</span><br><span class="line">2016-08-25 16:23:36 7fdd367fc700 InnoDB: Buffer pool(s) load completed at 160825 16:23:36</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global status like '%load%';</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line">| Variable_name                  | Value                    |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line">| Innodb_buffer_pool_load_status | Loaded 16769/54873 pages |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------+</span></span><br><span class="line"></span><br><span class="line">mysql&gt; show global status like '%load%';</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br><span class="line">| Variable_name                  | Value                                            |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br><span class="line">| Com_load                       | 0                                                |</span><br><span class="line">| Com_preload_keys               | 0                                                |</span><br><span class="line">| Innodb_buffer_pool_load_status | Buffer pool(s) <span class="keyword">load</span> completed <span class="keyword">at</span> <span class="number">160825</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">36</span> |</span><br><span class="line">+<span class="comment">--------------------------------+--------------------------------------------------+</span></span><br></pre></td></tr></table></figure>
+<p>Load过程不影响启动，不是一定得load完成之后才响应相关请求。Load中如果发现对应的table_id以及page_id已经在buffer中，将直接跳过。</p>
+<h1 id="相关参考"><a href="#相关参考" class="headerlink" title="相关参考"></a>相关参考</h1><ul>
+<li><p><a href="https://blog.marceloaltmann.com/en-warm-up-innodb-buffer-pool-pt-esquentando-o-innodb-buffer-pool/" target="_blank" rel="external">https://blog.marceloaltmann.com/en-warm-up-innodb-buffer-pool-pt-esquentando-o-innodb-buffer-pool/</a></p>
+</li>
+<li><p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-preload-buffer-pool.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/innodb-preload-buffer-pool.html</a></p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-04-18-how-to-install-yii2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="郭颂">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-18-how-to-install-yii2/" itemprop="url">How to install Yii2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-18T20:05:53+08:00">
+                2016-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-Install-From-Archived-File"><a href="#1-Install-From-Archived-File" class="headerlink" title="1. Install From Archived File"></a>1. Install From Archived File</h2><p>Edit file /var/www/basic/config/web.php, set cookieValidationKey</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;cookieValidationKey&apos; =&gt; &apos;chuchujie&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="2-Call-to-undefined-function-mb-strlen"><a href="#2-Call-to-undefined-function-mb-strlen" class="headerlink" title="2. Call to undefined function mb_strlen"></a>2. Call to undefined function mb_strlen</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fatal error: Call to undefined function mb_strlen()</span><br></pre></td></tr></table></figure>
+<p>yum install php55-mbstring module.</p>
+<p>Version is import.</p>
+<h2 id="3-The-directory-is-not-writable-by-the-Web-process"><a href="#3-The-directory-is-not-writable-by-the-Web-process" class="headerlink" title="3. The directory is not writable by the Web process"></a>3. The directory is not writable by the Web process</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ec2-user 13898  0.0  0.1 393312 20952 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13900  0.0  0.1 395592 22116 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13901  0.0  0.1 393048 20048 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13975  0.0  0.1 392024 19528 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14493  0.0  0.1 396096 23296 ?        S    19:48   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14494  0.0  0.1 392024 19396 ?        S    19:48   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14495  0.0  0.0 389784 14824 ?        S    19:48   0:00 /usr/sbin/httpd</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R ec2-user.ec2-user /var/www/basic</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.g-loaded.eu/2008/12/09/making-a-directory-writable-by-the-webserver/" target="_blank" rel="external">http://www.g-loaded.eu/2008/12/09/making-a-directory-writable-by-the-webserver/</a></p>
+<h2 id="4-Class-‘PDO’-not-found"><a href="#4-Class-‘PDO’-not-found" class="headerlink" title="4. Class ‘PDO’ not found"></a>4. Class ‘PDO’ not found</h2><p>could not find driver Caused by: PDOException</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install php55-pdo.x86_64 -y</span><br><span class="line">yum install php-ZendFramework-Db-Adapter-Pdo-Mysql.noarch -y</span><br></pre></td></tr></table></figure>
+<h2 id="5-Yii2-Gii-Forbidden-code-403-You-are-not-allowed-to-access-this-page"><a href="#5-Yii2-Gii-Forbidden-code-403-You-are-not-allowed-to-access-this-page" class="headerlink" title="5. Yii2 Gii Forbidden code 403 You are not allowed to access this page"></a>5. Yii2 Gii Forbidden code 403 You are not allowed to access this page</h2><p>Edit config/web.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$config[<span class="string">'modules'</span>][<span class="string">'gii'</span>] = [</span><br><span class="line"><span class="string">'class'</span> =&gt; <span class="string">'yii\gii\Module'</span>,</span><br><span class="line"><span class="string">'allowedIPs'</span> =&gt; [<span class="string">'127.0.0.1'</span>, <span class="string">'::1'</span>, <span class="string">'10.3xxxx'</span>],</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>Due to company vpn , choose the ip by Apache access log.</p>
+<p><a href="http://jeepxiaozi.github.io/yii2xue-xi-bi-ji-xi-lie-6-generating-code-with-giishi-yong-giisheng-cheng-dai-ma.html" target="_blank" rel="external">http://jeepxiaozi.github.io/yii2xue-xi-bi-ji-xi-lie-6-generating-code-with-giishi-yong-giisheng-cheng-dai-ma.html</a></p>
+<h2 id="6-Yii2-Programing-Style"><a href="#6-Yii2-Programing-Style" class="headerlink" title="6. Yii2 Programing Style"></a>6. Yii2 Programing Style</h2><p><a href="https://github.com/yii2-chinesization/yii2-zh-cn/blob/master/internals-zh-CN/core-code-style.md" target="_blank" rel="external">https://github.com/yii2-chinesization/yii2-zh-cn/blob/master/internals-zh-CN/core-code-style.md</a></p>
+<h2 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7. Reference"></a>7. Reference</h2><p><a href="https://github.com/forecho/awesome-yii2" target="_blank" rel="external">https://github.com/forecho/awesome-yii2</a></p>
+<h2 id="8-Tree-Manager"><a href="#8-Tree-Manager" class="headerlink" title="8. Tree Manager"></a>8. Tree Manager</h2><p><a href="http://demos.krajee.com/tree-manager#comment-2288987974" target="_blank" rel="external">http://demos.krajee.com/tree-manager#comment-2288987974</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
     
       
 
@@ -1515,294 +1805,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-01-28-ioduo-lu-fu-yong/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭颂">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-01-28-ioduo-lu-fu-yong/" itemprop="url">IO多路复用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-28T16:14:17+08:00">
-                2016-01-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Unix/" itemprop="url" rel="index">
-                    <span itemprop="name">Unix</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://segmentfault.com/a/1190000003063859?utm_source=Weibo&amp;utm_medium=shareLink&amp;utm_campaign=socialShare&amp;from=timeline&amp;isappinstalled=0" target="_blank" rel="external">Linux IO模式及 select、poll、epoll详解</a></p>
-<p><strong>select/epoll的优势并不是对于单个连接能处理得更快，而是在于能处理更多的连接。</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-01-15-redisxiang-guan-lian-jie/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="郭颂">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-01-15-redisxiang-guan-lian-jie/" itemprop="url">redis相关链接</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-15T11:51:43+08:00">
-                2016-01-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Redis-AOF相关"><a href="#Redis-AOF相关" class="headerlink" title="Redis AOF相关"></a>Redis AOF相关</h1><ol>
-<li><a href="http://idning.github.io/redis-aof-replay.html#aof-replay" target="_blank" rel="external">AOF Replay</a></li>
-<li><a href="http://www.cnblogs.com/daoluanxiaozi/p/3664922.html" target="_blank" rel="external">AOF 代码详解</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1853,7 +1855,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">86</span>
+                <span class="site-state-item-count">88</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1875,7 +1877,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -2065,6 +2067,45 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
 
   
 
