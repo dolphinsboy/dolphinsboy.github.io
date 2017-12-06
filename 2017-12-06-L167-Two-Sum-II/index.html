@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Array," />
 
 
 
@@ -68,19 +68,18 @@
 
 
 
-<meta name="description" content="内存使用情况统计MySQL内存有两个组成部分，全局和线程级别的。下图是一个示例： 参考资料1、https://dev.mysql.com/doc/refman/5.5/en/memory-use.html2、https://www.percona.com/blog/2006/05/17/mysql-server-memory-usage/3、https://www.percona.com/blog">
+<meta name="description" content="题目描述12345678Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.The function twoSum should return indices of the tw">
+<meta name="keywords" content="LeetCode,Array">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL内存使用情况">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-08-10-mysqlnei-cun-shi-yong-qing-kuang/index.html">
+<meta property="og:title" content="L167 Two Sum II">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-06-L167-Two-Sum-II/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="内存使用情况统计MySQL内存有两个组成部分，全局和线程级别的。下图是一个示例： 参考资料1、https://dev.mysql.com/doc/refman/5.5/en/memory-use.html2、https://www.percona.com/blog/2006/05/17/mysql-server-memory-usage/3、https://www.percona.com/blog">
+<meta property="og:description" content="题目描述12345678Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.The function twoSum should return indices of the tw">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dolphinsboy.github.io/images/mysql_memory.png%20=500x600">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2017-12-06T09:09:47.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL内存使用情况">
-<meta name="twitter:description" content="内存使用情况统计MySQL内存有两个组成部分，全局和线程级别的。下图是一个示例： 参考资料1、https://dev.mysql.com/doc/refman/5.5/en/memory-use.html2、https://www.percona.com/blog/2006/05/17/mysql-server-memory-usage/3、https://www.percona.com/blog">
-<meta name="twitter:image" content="http://dolphinsboy.github.io/images/mysql_memory.png%20=500x600">
+<meta name="twitter:title" content="L167 Two Sum II">
+<meta name="twitter:description" content="题目描述12345678Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.The function twoSum should return indices of the tw">
 
 
 
@@ -109,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-08-10-mysqlnei-cun-shi-yong-qing-kuang/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-06-L167-Two-Sum-II/"/>
 
 
 
 
 
-  <title>MySQL内存使用情况 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L167 Two Sum II | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -248,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-08-10-mysqlnei-cun-shi-yong-qing-kuang/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-06-L167-Two-Sum-II/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -265,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL内存使用情况</h1>
+          <h1 class="post-title" itemprop="name headline">L167 Two Sum II</h1>
         
 
         <div class="post-meta">
@@ -277,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-10T15:59:42+08:00">
-                2015-08-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-06T17:02:30+08:00">
+                2017-12-06
               </time>
             
 
@@ -287,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL内核/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL内核</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -337,8 +314,14 @@
       
 
       
-        <h2 id="内存使用情况统计"><a href="#内存使用情况统计" class="headerlink" title="内存使用情况统计"></a>内存使用情况统计</h2><p>MySQL内存有两个组成部分，全局和线程级别的。<br>下图是一个示例：<br><img src="/images/mysql_memory.png =500x600" alt="/images/mysql_memory.png"></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1、<a href="https://dev.mysql.com/doc/refman/5.5/en/memory-use.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.5/en/memory-use.html</a><br>2、<a href="https://www.percona.com/blog/2006/05/17/mysql-server-memory-usage/" target="_blank" rel="external">https://www.percona.com/blog/2006/05/17/mysql-server-memory-usage/</a><br>3、<a href="https://www.percona.com/blog/2014/01/24/mysql-server-memory-usage-2/" target="_blank" rel="external">https://www.percona.com/blog/2014/01/24/mysql-server-memory-usage-2/</a></p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Given an array of integers that is already sorted in ascending order, find two numbers such that they add up to a specific target number.</span><br><span class="line"></span><br><span class="line">The function twoSum should return indices of the two numbers such that they add up to the target, where index1 must be less than index2. Please note that your returned answers (both index1 and index2) are not zero-based.</span><br><span class="line"></span><br><span class="line">You may assume that each input would have exactly one solution and you may not use the same element twice.</span><br><span class="line"></span><br><span class="line">Input: numbers=&#123;2, 7, 11, 15&#125;, target=9</span><br><span class="line">Output: index1=1, index2=2</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用两个索引，判断其和和target关系</li>
+<li>比target大，low++</li>
+<li>比target小，high–</li>
+</ul>
+<a id="more"></a>
+<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">twoSum</span><span class="params">(numbers []<span class="keyword">int</span>, target <span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    low := <span class="number">0</span></span><br><span class="line">    high := <span class="built_in">len</span>(numbers)<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> low&lt;high &#123;</span><br><span class="line">        sum := numbers[low] + numbers[high]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> sum &lt; target &#123;</span><br><span class="line">            low++</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> sum &gt; target &#123;</span><br><span class="line">            high--</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ret :=[]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    ret = <span class="built_in">append</span>(ret, low+<span class="number">1</span>)</span><br><span class="line">    ret = <span class="built_in">append</span>(ret, high+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    nums := []<span class="keyword">int</span>&#123;<span class="number">2</span>, <span class="number">7</span>, <span class="number">11</span>, <span class="number">15</span>&#125;</span><br><span class="line">    target := <span class="number">9</span></span><br><span class="line">    </span><br><span class="line">    fmt.Println(twoSum(nums, target))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -354,6 +337,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Array/" rel="tag"># Array</a>
+          
+        </div>
+      
 
       
       
@@ -363,8 +354,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-08-04-epollmo-xing/" rel="next" title="Epoll模型">
-                <i class="fa fa-chevron-left"></i> Epoll模型
+              <a href="/2017-12-06-L160-Intersection-of-Two-Linked-Lists/" rel="next" title="L160 Intersection of Two Linked Lists">
+                <i class="fa fa-chevron-left"></i> L160 Intersection of Two Linked Lists
               </a>
             
           </div>
@@ -372,10 +363,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-08-11-mysql-groupcommit/" rel="prev" title="MySQL GroupCommit">
-                MySQL GroupCommit <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -509,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#内存使用情况统计"><span class="nav-number">1.</span> <span class="nav-text">内存使用情况统计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
             
 
           </div>
