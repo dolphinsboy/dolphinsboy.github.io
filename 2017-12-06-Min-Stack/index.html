@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Stack," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="info memory输出信息12345678910info memory  Memoryused_memory:5198608840used_memory_human:4.84Gused_memory_rss:11156660224used_memory_peak:9816601560used_memory_peak_human:9.14Gused_memory_lua:36864mem_fra">
+<meta name="description" content="题目描述123456789101112131415Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.push(x) -- Push element x onto stack.pop() -- Removes the element on top of th">
+<meta name="keywords" content="LeetCode,Stack">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis info memory研究">
-<meta property="og:url" content="http://dolphinsboy.github.io/2016-04-15-redis-info-memoryyan-jiu/index.html">
+<meta property="og:title" content="Min Stack">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-06-Min-Stack/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="info memory输出信息12345678910info memory  Memoryused_memory:5198608840used_memory_human:4.84Gused_memory_rss:11156660224used_memory_peak:9816601560used_memory_peak_human:9.14Gused_memory_lua:36864mem_fra">
+<meta property="og:description" content="题目描述123456789101112131415Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.push(x) -- Push element x onto stack.pop() -- Removes the element on top of th">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2017-12-06T03:15:03.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis info memory研究">
-<meta name="twitter:description" content="info memory输出信息12345678910info memory  Memoryused_memory:5198608840used_memory_human:4.84Gused_memory_rss:11156660224used_memory_peak:9816601560used_memory_peak_human:9.14Gused_memory_lua:36864mem_fra">
+<meta name="twitter:title" content="Min Stack">
+<meta name="twitter:description" content="题目描述123456789101112131415Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.push(x) -- Push element x onto stack.pop() -- Removes the element on top of th">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2016-04-15-redis-info-memoryyan-jiu/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-06-Min-Stack/"/>
 
 
 
 
 
-  <title>Redis info memory研究 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Min Stack | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-04-15-redis-info-memoryyan-jiu/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-06-Min-Stack/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis info memory研究</h1>
+          <h1 class="post-title" itemprop="name headline">Min Stack</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-15T10:01:33+08:00">
-                2016-04-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-06T11:12:29+08:00">
+                2017-12-06
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,11 +314,13 @@
       
 
       
-        <h2 id="info-memory输出信息"><a href="#info-memory输出信息" class="headerlink" title="info memory输出信息"></a>info memory输出信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">info memory</span><br><span class="line">  Memory</span><br><span class="line">used_memory:5198608840</span><br><span class="line">used_memory_human:4.84G</span><br><span class="line">used_memory_rss:11156660224</span><br><span class="line">used_memory_peak:9816601560</span><br><span class="line">used_memory_peak_human:9.14G</span><br><span class="line">used_memory_lua:36864</span><br><span class="line">mem_fragmentation_ratio:2.15</span><br><span class="line">mem_allocator:libc</span><br></pre></td></tr></table></figure>
-<p><a href="http://www.cnblogs.com/mushroom/p/4738170.html" target="_blank" rel="external">http://www.cnblogs.com/mushroom/p/4738170.html</a></p>
-<p>对应的代码：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Memory */</span></span><br><span class="line"><span class="keyword">if</span> (allsections || defsections || !strcasecmp(section,<span class="string">"memory"</span>)) &#123;</span><br><span class="line"><span class="keyword">char</span> hmem[<span class="number">64</span>];</span><br><span class="line"><span class="keyword">char</span> peak_hmem[<span class="number">64</span>];</span><br><span class="line"><span class="keyword">size_t</span> zmalloc_used = zmalloc_used_memory();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Peak memory is updated from time to time by serverCron() so it</span></span><br><span class="line"><span class="comment">* may happen that the instantaneous value is slightly bigger than</span></span><br><span class="line"><span class="comment">* the peak value. This may confuse users, so we update the peak</span></span><br><span class="line"><span class="comment">* if found smaller than the current memory usage. */</span></span><br><span class="line"><span class="keyword">if</span> (zmalloc_used &gt; server.stat_peak_memory)</span><br><span class="line">server.stat_peak_memory = zmalloc_used;</span><br><span class="line"></span><br><span class="line">bytesToHuman(hmem,zmalloc_used);</span><br><span class="line">bytesToHuman(peak_hmem,server.stat_peak_memory);</span><br><span class="line"><span class="keyword">if</span> (sections++) info = sdscat(info,<span class="string">"\r\n"</span>);</span><br><span class="line">info = sdscatprintf(info,</span><br><span class="line"><span class="string">"# Memory\r\n"</span></span><br><span class="line"><span class="string">"used_memory:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_human:%s\r\n"</span></span><br><span class="line"><span class="string">"used_memory_rss:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_peak:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_peak_human:%s\r\n"</span></span><br><span class="line"><span class="string">"used_memory_lua:%lld\r\n"</span></span><br><span class="line"><span class="string">"mem_fragmentation_ratio:%.2f\r\n"</span></span><br><span class="line"><span class="string">"mem_allocator:%s\r\n"</span>,</span><br><span class="line">zmalloc_used,</span><br><span class="line">hmem,</span><br><span class="line">server.resident_set_size,</span><br><span class="line">server.stat_peak_memory,</span><br><span class="line">peak_hmem,</span><br><span class="line">((<span class="keyword">long</span> <span class="keyword">long</span>)lua_gc(server.lua,LUA_GCCOUNT,<span class="number">0</span>))*<span class="number">1024L</span>L,</span><br><span class="line">zmalloc_get_fragmentation_ratio(server.resident_set_size),</span><br><span class="line">ZMALLOC_LIB</span><br><span class="line">);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>used_memory</strong></p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.</span><br><span class="line"></span><br><span class="line">push(x) -- Push element x onto stack.</span><br><span class="line">pop() -- Removes the element on top of the stack.</span><br><span class="line">top() -- Get the top element.</span><br><span class="line">getMin() -- Retrieve the minimum element in the stack.</span><br><span class="line">Example:</span><br><span class="line">MinStack minStack = new MinStack();</span><br><span class="line">minStack.push(-2);</span><br><span class="line">minStack.push(0);</span><br><span class="line">minStack.push(-3);</span><br><span class="line">minStack.getMin();   --&gt; Returns -3.</span><br><span class="line">minStack.pop();</span><br><span class="line">minStack.top();      --&gt; Returns 0.</span><br><span class="line">minStack.getMin();   --&gt; Returns -2.</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用数组保存所有元素</li>
+<li>一个len记录stack中元素数目</li>
+</ul>
+<a id="more"></a>
+<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">type MinStack struct &#123;</span><br><span class="line">    stack []int</span><br><span class="line">    len int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/** initialize your data structure here. */</span><br><span class="line">func Constructor() MinStack &#123;</span><br><span class="line">    s := new(MinStack)</span><br><span class="line">    return *s</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (this *MinStack) Push(x int)  &#123;</span><br><span class="line">        this.stack = append(this.stack, x)</span><br><span class="line">        this.len++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (this *MinStack) Pop()  &#123;</span><br><span class="line">    this.len--</span><br><span class="line">    this.stack = this.stack[0:this.len]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (this *MinStack) Top() int &#123;</span><br><span class="line">    if this.len&gt;0&#123;</span><br><span class="line">        return this.stack[this.len-1]</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        panic(&quot;stack empty&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func (this *MinStack) GetMin() int &#123;</span><br><span class="line">    minVal := 2147483647</span><br><span class="line">    n := this.len-1</span><br><span class="line"></span><br><span class="line">    for n &gt;=0 &#123;</span><br><span class="line">        if this.stack[n] &lt; minVal&#123;</span><br><span class="line">            minVal = this.stack[n]</span><br><span class="line">        &#125;</span><br><span class="line">        n--</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    return minVal</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func main()  &#123;</span><br><span class="line"></span><br><span class="line">    s := new(MinStack)</span><br><span class="line">    s.Push(-2)</span><br><span class="line">    s.Push(0)</span><br><span class="line">    s.Push(-3)</span><br><span class="line">    fmt.Println(s.GetMin())</span><br><span class="line">    s.Pop()</span><br><span class="line">    fmt.Println(s.Top())</span><br><span class="line">    fmt.Println(s.GetMin())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -355,6 +336,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Stack/" rel="tag"># Stack</a>
+          
+        </div>
+      
 
       
       
@@ -364,8 +353,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016-04-11-mysqlxing-neng-pai-cha-an-li-1/" rel="next" title="MySQL性能排查案例1">
-                <i class="fa fa-chevron-left"></i> MySQL性能排查案例1
+              <a href="/2017-12-04-Linked-List-Cycle/" rel="next" title="Linked List Cycle">
+                <i class="fa fa-chevron-left"></i> Linked List Cycle
               </a>
             
           </div>
@@ -373,10 +362,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016-04-18-how-to-install-yii2/" rel="prev" title="How to install Yii2">
-                How to install Yii2 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -510,7 +495,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#info-memory输出信息"><span class="nav-number">1.</span> <span class="nav-text">info memory输出信息</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
             
 
           </div>
