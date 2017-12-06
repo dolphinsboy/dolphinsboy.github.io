@@ -244,6 +244,130 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-20-Traceroute/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017-11-20-Traceroute/" itemprop="url">Traceroute</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-20T17:37:59+08:00">
+                2017-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>用户反馈使用移动4G以及wifi访问公司业务有问题，使用电信没有问题，故需要获取用户网络相关访问信息。<br>traceroute工具是第一选择。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017-11-20-Traceroute/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-20-L110-Balanced-Binary-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1381,151 +1505,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-02-08-aws-boto3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017-02-08-aws-boto3/" itemprop="url">AWS boto3</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-08T16:45:43+08:00">
-                2017-02-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/AWS-API/" itemprop="url" rel="index">
-                    <span itemprop="name">AWS API</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1-根据机器名称获取instance"><a href="#1-根据机器名称获取instance" class="headerlink" title="1.根据机器名称获取instance"></a>1.根据机器名称获取instance</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line"></span><br><span class="line">instances = ec2.instances.filter(</span><br><span class="line">¦   ¦   Filters = [&#123;<span class="string">'Name'</span>: <span class="string">'tag-value'</span>, <span class="string">'Values'</span>:[<span class="string">'service-test1'</span>]&#125;])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> instance <span class="keyword">in</span> instances:</span><br><span class="line">¦   <span class="keyword">print</span> instance</span><br></pre></td></tr></table></figure>
-<h2 id="2-获取所有机器的信息"><a href="#2-获取所有机器的信息" class="headerlink" title="2.获取所有机器的信息"></a>2.获取所有机器的信息</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line">instances = ec2.instances.filter()</span><br><span class="line"><span class="keyword">for</span> instance <span class="keyword">in</span> instances:</span><br><span class="line"><span class="keyword">print</span> instance</span><br></pre></td></tr></table></figure>
-<h2 id="3-通过instance-id获取机器信息"><a href="#3-通过instance-id获取机器信息" class="headerlink" title="3.通过instance_id获取机器信息"></a>3.通过instance_id获取机器信息</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line">instance = ec2.Instance(<span class="string">'i-d8d0c8e1'</span>)</span><br><span class="line"><span class="keyword">print</span> instance.instance_type</span><br></pre></td></tr></table></figure>
-<p>通过方法1和方法3获取信息所需要时间差不多，方法2获取所需要时间多。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1576,7 +1555,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">92</span>
+                <span class="site-state-item-count">93</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
