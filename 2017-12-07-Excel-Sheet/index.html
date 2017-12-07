@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode," />
+  <meta name="keywords" content="LeetCode,String," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述12345Given a non-negative integer represented as a non-empty array of digits, plus one to the integer.You may assume the integer do not contain any leading zero, except the number 0 itself.The dig">
-<meta name="keywords" content="LeetCode">
+<meta name="description" content="题目描述L168. Excel Sheet Column Title1234567891011Given a positive integer, return its corresponding column title as appear in an Excel sheet.For example:    1 -&amp;gt; A    2 -&amp;gt; B    3 -&amp;gt; C    ...">
+<meta name="keywords" content="LeetCode,String">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L66_PlusOne">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-14-Leetcode-L66-PlusOne/index.html">
+<meta property="og:title" content="Excel Sheet">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-07-Excel-Sheet/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述12345Given a non-negative integer represented as a non-empty array of digits, plus one to the integer.You may assume the integer do not contain any leading zero, except the number 0 itself.The dig">
+<meta property="og:description" content="题目描述L168. Excel Sheet Column Title1234567891011Given a positive integer, return its corresponding column title as appear in an Excel sheet.For example:    1 -&amp;gt; A    2 -&amp;gt; B    3 -&amp;gt; C    ...">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-16T10:28:25.000Z">
+<meta property="og:updated_time" content="2017-12-07T06:49:32.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L66_PlusOne">
-<meta name="twitter:description" content="题目描述12345Given a non-negative integer represented as a non-empty array of digits, plus one to the integer.You may assume the integer do not contain any leading zero, except the number 0 itself.The dig">
+<meta name="twitter:title" content="Excel Sheet">
+<meta name="twitter:description" content="题目描述L168. Excel Sheet Column Title1234567891011Given a positive integer, return its corresponding column title as appear in an Excel sheet.For example:    1 -&amp;gt; A    2 -&amp;gt; B    3 -&amp;gt; C    ...">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-11-14-Leetcode-L66-PlusOne/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-07-Excel-Sheet/"/>
 
 
 
 
 
-  <title>L66_PlusOne | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Excel Sheet | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-14-Leetcode-L66-PlusOne/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-07-Excel-Sheet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L66_PlusOne</h1>
+          <h1 class="post-title" itemprop="name headline">Excel Sheet</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-14T18:30:32+08:00">
-                2017-11-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-07T14:46:02+08:00">
+                2017-12-07
               </time>
             
 
@@ -314,14 +314,14 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/plus-one" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given a non-negative integer represented as a non-empty array of digits, plus one to the integer.</span><br><span class="line"></span><br><span class="line">You may assume the integer do not contain any leading zero, except the number 0 itself.</span><br><span class="line"></span><br><span class="line">The digits are stored such that the most significant digit is at the head of the list.</span><br></pre></td></tr></table></figure>
-<p>大体意思是给一个数组表示一个非负数，这个非负数加上1，结果还返回一个数组</p>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>倒叙遍历数组，判断是否需要进位。</p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><h4 id="L168-Excel-Sheet-Column-Title"><a href="#L168-Excel-Sheet-Column-Title" class="headerlink" title="L168. Excel Sheet Column Title"></a><a href="https://leetcode.com/problems/excel-sheet-column-title/" target="_blank" rel="external">L168. Excel Sheet Column Title</a></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Given a positive integer, return its corresponding column title as appear in an Excel sheet.</span><br><span class="line"></span><br><span class="line">For example:</span><br><span class="line"></span><br><span class="line">    1 -&gt; A</span><br><span class="line">    2 -&gt; B</span><br><span class="line">    3 -&gt; C</span><br><span class="line">    ...</span><br><span class="line">    26 -&gt; Z</span><br><span class="line">    27 -&gt; AA</span><br><span class="line">    28 -&gt; AB</span><br></pre></td></tr></table></figure>
+<h4 id="L171-Excel-Sheet-Column-Number"><a href="#L171-Excel-Sheet-Column-Number" class="headerlink" title="L171. Excel Sheet Column Number"></a><a href="https://leetcode.com/problems/excel-sheet-column-number/description/" target="_blank" rel="external">L171. Excel Sheet Column Number</a></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Related to question [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/description/)</span><br><span class="line"></span><br><span class="line">Given a column title as appear in an Excel sheet, return its corresponding column number.</span><br><span class="line"></span><br><span class="line">For example:</span><br><span class="line"></span><br><span class="line">    A -&gt; 1</span><br><span class="line">    B -&gt; 2</span><br><span class="line">    C -&gt; 3</span><br><span class="line">    ...</span><br><span class="line">    Z -&gt; 26</span><br><span class="line">    AA -&gt; 27</span><br><span class="line">    AB -&gt; 28</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>26进制计算</li>
+<li>注意从1开始</li>
+</ul>
 <a id="more"></a>
-<h3 id="Go-版本"><a href="#Go-版本" class="headerlink" title="Go 版本"></a>Go 版本</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">plusOne</span><span class="params">(digits []<span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    n := <span class="built_in">len</span>(digits)</span><br><span class="line">    ret :=[]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    s :=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i:=n<span class="number">-1</span>; i&gt;=<span class="number">0</span>; i-- &#123;</span><br><span class="line">        s += digits[i]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> s&gt;<span class="number">9</span>&#123;</span><br><span class="line">            ret = <span class="built_in">append</span>(ret, s%<span class="number">10</span>)</span><br><span class="line">            s = s/<span class="number">10</span></span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            ret = <span class="built_in">append</span>(ret,s)</span><br><span class="line">            s = <span class="number">0</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> s &gt; <span class="number">0</span>&#123;</span><br><span class="line">        ret = <span class="built_in">append</span>(ret, s)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    n = <span class="built_in">len</span>(ret)</span><br><span class="line">    i:=<span class="number">0</span></span><br><span class="line">    j:=n<span class="number">-1</span></span><br><span class="line">    <span class="keyword">for</span> i&lt;j&#123;</span><br><span class="line">        ret[i], ret[j] = ret[j], ret[i]</span><br><span class="line">        i++</span><br><span class="line">        j--</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Python版本"><a href="#Python版本" class="headerlink" title="Python版本"></a>Python版本</h3><p>在Go的版本临时申请一个数组保存结果，通过append函数在尾部进行追加，最后返回这个数组的倒序结果。</p>
-<p>Python版本中不借助额外的空间，使用insert函数在头部插入。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">plusOne</span><span class="params">(self, digits)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type digits: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        n = len(digits) - <span class="number">1</span></span><br><span class="line">        carry = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> n&gt;=<span class="number">0</span>:</span><br><span class="line">            digits[n] += carry</span><br><span class="line">            <span class="keyword">if</span> digits[n] &gt; <span class="number">9</span>:</span><br><span class="line">                carry = digits[n]/<span class="number">10</span></span><br><span class="line">                digits[n] %= <span class="number">10</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                carry = <span class="number">0</span></span><br><span class="line">            n-=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> carry:</span><br><span class="line">            digits.insert(<span class="number">0</span>,<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">return</span> digits</span><br></pre></td></tr></table></figure>
+<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">convertToTitle</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    ret:=<span class="string">""</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> n&gt;<span class="number">0</span> &#123;</span><br><span class="line">        ret = <span class="keyword">string</span>(<span class="string">'A'</span>+(n<span class="number">-1</span>)%<span class="number">26</span>) + ret</span><br><span class="line">        n = (n<span class="number">-1</span>)/<span class="number">26</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">titleToNumber</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    ret := <span class="number">0</span></span><br><span class="line">    n := <span class="built_in">len</span>(s)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n;i++ &#123;</span><br><span class="line">        ret = ret*<span class="number">26</span> + <span class="keyword">int</span>(s[i] - <span class="string">'A'</span>) + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">26</span>))</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">27</span>))</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">28</span>))</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">52</span>))</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">53</span>))</span><br><span class="line"></span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"A"</span>))</span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"AA"</span>))</span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"AB"</span>))</span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"AZ"</span>))</span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"BA"</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -341,6 +341,8 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
+            <a href="/tags/String/" rel="tag"># String</a>
+          
         </div>
       
 
@@ -352,8 +354,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-11-13-leetcode-L15-3sum/" rel="next" title="L15_3sum">
-                <i class="fa fa-chevron-left"></i> L15_3sum
+              <a href="/2017-12-06-L169-Majority/" rel="next" title="L169 Majority Element">
+                <i class="fa fa-chevron-left"></i> L169 Majority Element
               </a>
             
           </div>
@@ -361,10 +363,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-11-16-LeetCode-L83-从有序链表中删除重复的数据/" rel="prev" title="L83_从有序链表中删除重复的数据">
-                L83_从有序链表中删除重复的数据 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -498,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go-版本"><span class="nav-number">3.</span> <span class="nav-text">Go 版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python版本"><span class="nav-number">4.</span> <span class="nav-text">Python版本</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#L168-Excel-Sheet-Column-Title"><span class="nav-number">1.1.</span> <span class="nav-text">L168. Excel Sheet Column Title</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#L171-Excel-Sheet-Column-Number"><span class="nav-number">1.2.</span> <span class="nav-text">L171. Excel Sheet Column Number</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
             
 
           </div>
