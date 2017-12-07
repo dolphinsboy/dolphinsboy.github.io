@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Math," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="参考资料1、MySQL/InnoDB和Group Commit(1)2、MySQL/InnoDB和Group Commit(2)3、MariaDB &amp;amp; Percona XtraDB Group Commit实现简要分析">
+<meta name="description" content="题目描述123Given an integer n, return the number of trailing zeroes in n!.Note: Your solution should be in logarithmic time complexity. 解题思路 先不考虑时间复杂度，最简单的方法是计算出n的阶乘值，然后再计算出尾部0的个数">
+<meta name="keywords" content="LeetCode,Math">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL GroupCommit">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-08-11-mysql-groupcommit/index.html">
+<meta property="og:title" content="L172 Factorial Trailing Zeroes">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-07-L172-Factorial-Trailing-Zeroes/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="参考资料1、MySQL/InnoDB和Group Commit(1)2、MySQL/InnoDB和Group Commit(2)3、MariaDB &amp;amp; Percona XtraDB Group Commit实现简要分析">
+<meta property="og:description" content="题目描述123Given an integer n, return the number of trailing zeroes in n!.Note: Your solution should be in logarithmic time complexity. 解题思路 先不考虑时间复杂度，最简单的方法是计算出n的阶乘值，然后再计算出尾部0的个数">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2017-12-07T08:13:08.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL GroupCommit">
-<meta name="twitter:description" content="参考资料1、MySQL/InnoDB和Group Commit(1)2、MySQL/InnoDB和Group Commit(2)3、MariaDB &amp;amp; Percona XtraDB Group Commit实现简要分析">
+<meta name="twitter:title" content="L172 Factorial Trailing Zeroes">
+<meta name="twitter:description" content="题目描述123Given an integer n, return the number of trailing zeroes in n!.Note: Your solution should be in logarithmic time complexity. 解题思路 先不考虑时间复杂度，最简单的方法是计算出n的阶乘值，然后再计算出尾部0的个数">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-08-11-mysql-groupcommit/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-07-L172-Factorial-Trailing-Zeroes/"/>
 
 
 
 
 
-  <title>MySQL GroupCommit | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L172 Factorial Trailing Zeroes | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-08-11-mysql-groupcommit/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-07-L172-Factorial-Trailing-Zeroes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL GroupCommit</h1>
+          <h1 class="post-title" itemprop="name headline">L172 Factorial Trailing Zeroes</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-11T11:16:32+08:00">
-                2015-08-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-07T15:13:01+08:00">
+                2017-12-07
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL内核/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL内核</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,7 +314,72 @@
       
 
       
-        <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1、<a href="http://www.orczhou.com/index.php/2010/08/time-to-group-commit-1/" target="_blank" rel="external">MySQL/InnoDB和Group Commit(1)</a><br>2、<a href="http://www.orczhou.com/index.php/2011/12/time-to-group-commit-2/" target="_blank" rel="external">MySQL/InnoDB和Group Commit(2)</a><br>3、<a href="http://hedengcheng.com/?p=112" target="_blank" rel="external">MariaDB &amp; Percona XtraDB Group Commit实现简要分析</a></p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/factorial-trailing-zeroes/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Given an integer n, return the number of trailing zeroes in n!.</span><br><span class="line"></span><br><span class="line">Note: Your solution should be in logarithmic time complexity.</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>先不考虑时间复杂度，最简单的方法是计算出n的阶乘值，然后再计算出尾部0的个数<a id="more"></a></li>
+<li>使用非O(n)的算法</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>N</th>
+<th>N的阶乘值</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+<tr>
+<td>5</td>
+<td>5*2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>5*2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10</td>
+<td>10,5*2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>11</td>
+<td>10,5*2</td>
+<td>2</td>
+</tr>
+<tr>
+<td>15</td>
+<td>10,15<em>2, 5</em>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>19</td>
+<td>10, 15<em>2, 5</em>4</td>
+<td>3</td>
+</tr>
+<tr>
+<td>20</td>
+<td>20,10,15<em>2, 5</em>4</td>
+<td>4</td>
+</tr>
+<tr>
+<td>30</td>
+<td>30,20,10,25=5<em>5(5</em>2,5<em>4),15</em>6,5*8</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Go实现-计算阶乘"><a href="#Go实现-计算阶乘" class="headerlink" title="Go实现-计算阶乘"></a>Go实现-计算阶乘</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">factorial</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">int</span></span>  &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> n==<span class="number">0</span> || n==<span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> n*factorial(n<span class="number">-1</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">trailingZeroes</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    f := factorial(n)</span><br><span class="line">    ret := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> f%<span class="number">10</span>==<span class="number">0</span> &#123;</span><br><span class="line">        f = f/<span class="number">10</span></span><br><span class="line">        ret++</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    fmt.Println(trailingZeroes(<span class="number">30</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>使用阶乘的方法计算，在30!的时候会出现数越界，导致其结果输出为0</p>
+</blockquote>
+<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">trailingZeroes</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    ret := <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> n&gt;<span class="number">0</span> &#123;</span><br><span class="line">        ret += n/<span class="number">5</span></span><br><span class="line">        n = n/<span class="number">5</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    nums := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">15</span>, <span class="number">20</span>,<span class="number">25</span>,<span class="number">30</span>&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,v := <span class="keyword">range</span> nums &#123;</span><br><span class="line">        fmt.Println(trailingZeroes(v))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -351,6 +395,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Math/" rel="tag"># Math</a>
+          
+        </div>
+      
 
       
       
@@ -360,8 +412,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-08-10-mysqlnei-cun-shi-yong-qing-kuang/" rel="next" title="MySQL内存使用情况">
-                <i class="fa fa-chevron-left"></i> MySQL内存使用情况
+              <a href="/2017-12-07-Excel-Sheet/" rel="next" title="Excel Sheet">
+                <i class="fa fa-chevron-left"></i> Excel Sheet
               </a>
             
           </div>
@@ -369,10 +421,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-08-12-pythonmo-kuai-hui-zong/" rel="prev" title="Python模块汇总">
-                Python模块汇总 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -506,7 +554,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现-计算阶乘"><span class="nav-number">3.</span> <span class="nav-text">Go实现-计算阶乘</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">4.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
             
 
           </div>
