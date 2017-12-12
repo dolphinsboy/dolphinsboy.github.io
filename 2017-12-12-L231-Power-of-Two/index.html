@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode,Array," />
+  <meta name="keywords" content="LeetCode,Bit," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述L121123456789101112131415Say you have an array for which the ith element is the price of a given stock on day i.If you were only permitted to complete at most one transaction (ie, buy one and sell">
-<meta name="keywords" content="LeetCode,Array">
+<meta name="description" content="题目描述1Given an integer, write a function to determine if it is a power of two. 解题思路 n=n/2，算n%2获取的商是否为1，1的话返回true，其他返回false 判断其是否是2的幂，例如8对应的二进制表示为：1000，7对应的二进制表示是0111，8&amp;amp;7==0 所以8是2的幂">
+<meta name="keywords" content="LeetCode,Bit">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Best Time to Buy and Sell Stock">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-30-Best-Time-to-Buy-and-Sell-Stock/index.html">
+<meta property="og:title" content="L231 Power of Two">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-12-L231-Power-of-Two/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述L121123456789101112131415Say you have an array for which the ith element is the price of a given stock on day i.If you were only permitted to complete at most one transaction (ie, buy one and sell">
+<meta property="og:description" content="题目描述1Given an integer, write a function to determine if it is a power of two. 解题思路 n=n/2，算n%2获取的商是否为1，1的话返回true，其他返回false 判断其是否是2的幂，例如8对应的二进制表示为：1000，7对应的二进制表示是0111，8&amp;amp;7==0 所以8是2的幂">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-30T12:22:48.000Z">
+<meta property="og:updated_time" content="2017-12-12T06:15:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Best Time to Buy and Sell Stock">
-<meta name="twitter:description" content="题目描述L121123456789101112131415Say you have an array for which the ith element is the price of a given stock on day i.If you were only permitted to complete at most one transaction (ie, buy one and sell">
+<meta name="twitter:title" content="L231 Power of Two">
+<meta name="twitter:description" content="题目描述1Given an integer, write a function to determine if it is a power of two. 解题思路 n=n/2，算n%2获取的商是否为1，1的话返回true，其他返回false 判断其是否是2的幂，例如8对应的二进制表示为：1000，7对应的二进制表示是0111，8&amp;amp;7==0 所以8是2的幂">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-11-30-Best-Time-to-Buy-and-Sell-Stock/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-12-L231-Power-of-Two/"/>
 
 
 
 
 
-  <title>Best Time to Buy and Sell Stock | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L231 Power of Two | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-30-Best-Time-to-Buy-and-Sell-Stock/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-12-L231-Power-of-Two/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Best Time to Buy and Sell Stock</h1>
+          <h1 class="post-title" itemprop="name headline">L231 Power of Two</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-30T20:12:01+08:00">
-                2017-11-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-12T14:07:17+08:00">
+                2017-12-12
               </time>
             
 
@@ -314,15 +314,14 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><h4 id="L121"><a href="#L121" class="headerlink" title="L121"></a><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock/description/" target="_blank" rel="external">L121</a></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Say you have an array for which the ith element is the price of a given stock on day i.</span><br><span class="line"></span><br><span class="line">If you were only permitted to complete at most one transaction </span><br><span class="line">(ie, buy one and sell one share of the stock), design an algorithm to find the maximum profit.</span><br><span class="line"></span><br><span class="line">Example 1:</span><br><span class="line">Input: [7, 1, 5, 3, 6, 4]</span><br><span class="line">Output: 5</span><br><span class="line"></span><br><span class="line">max. difference = 6-1 = 5 (not 7-1 = 6, as selling price needs to be larger than buying price)</span><br><span class="line">Example 2:</span><br><span class="line">Input: [7, 6, 4, 3, 1]</span><br><span class="line">Output: 0</span><br><span class="line"></span><br><span class="line">In this case, no transaction is done, i.e. max profit = 0.</span><br></pre></td></tr></table></figure>
-<p>找出数组中的和其前面的数据之差为正整数的最大值</p>
-<h4 id="L122"><a href="#L122" class="headerlink" title="L122"></a><a href="https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/description/" target="_blank" rel="external">L122</a></h4><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>O(n*2)的算法：2次循环遍历获取差值，与max进行比较</li>
-<li>O(n)的算法：记录最小值，将当期元素与最小值进行差值，然后与maxVal进行比较</li>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/power-of-two/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Given an integer, write a function to determine if it is a power of two.</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>n=n/2，算n%2获取的商是否为1，1的话返回true，其他返回false</li>
+<li>判断其是否是2的幂，例如8对应的二进制表示为：1000，7对应的二进制表示是0111，8&amp;7==0 所以8是2的幂</li>
 </ul>
 <a id="more"></a>
-<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><h4 id="O-n-2-时间复杂度"><a href="#O-n-2-时间复杂度" class="headerlink" title="O(n*2)时间复杂度"></a>O(n*2)时间复杂度</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxProfit</span><span class="params">(prices []<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    maxVal :=<span class="number">0</span></span><br><span class="line">    n := <span class="built_in">len</span>(prices)</span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">1</span>;i&lt;n;i++ &#123;</span><br><span class="line">        <span class="keyword">for</span> j:=<span class="number">0</span>;j&lt;i; j++ &#123;</span><br><span class="line">            delta := prices[i]- prices[j]</span><br><span class="line">            <span class="keyword">if</span> delta&gt;<span class="number">0</span> &amp;&amp; delta&gt;maxVal &#123;</span><br><span class="line">                maxVal = delta</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> maxVal</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="O-n-时间复杂度"><a href="#O-n-时间复杂度" class="headerlink" title="O(n)时间复杂度"></a>O(n)时间复杂度</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">maxProfit</span><span class="params">(prices []<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    maxVal :=<span class="number">0</span></span><br><span class="line">    n:=<span class="built_in">len</span>(prices)</span><br><span class="line">    <span class="keyword">if</span> n==<span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> maxVal</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    minElement := prices[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">1</span>;i&lt;<span class="built_in">len</span>(prices);i++&#123;</span><br><span class="line">        <span class="keyword">if</span> minElement&gt;prices[i] &#123;</span><br><span class="line">            minElement = prices[i]</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        delta:=prices[i]-minElement</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> delta &gt; <span class="number">0</span> &amp;&amp; delta&gt;maxVal&#123;</span><br><span class="line">            maxVal = delta</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> maxVal</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Go实现1"><a href="#Go实现1" class="headerlink" title="Go实现1"></a>Go实现1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">func isPowerOfTwo(n int) bool &#123;</span><br><span class="line">    if n&lt;=0 &#123;</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    for n%2 == 0 &#123;</span><br><span class="line">        n = n/2</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if n == 1&#123;</span><br><span class="line">        return true</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Go实现2"><a href="#Go实现2" class="headerlink" title="Go实现2"></a>Go实现2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func isPowerOfTwo(n int) bool &#123;</span><br><span class="line">    if n&lt;=0 &#123;</span><br><span class="line">        return false</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if n==1 &#123;</span><br><span class="line">        return true</span><br><span class="line">    &#125;</span><br><span class="line">    return n&amp;(n-1) == 0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -342,7 +341,7 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
-            <a href="/tags/Array/" rel="tag"># Array</a>
+            <a href="/tags/Bit/" rel="tag"># Bit</a>
           
         </div>
       
@@ -355,8 +354,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-11-30-L98-Validate-Binary-Search-Tree/" rel="next" title="L98 Validate Binary Search Tree">
-                <i class="fa fa-chevron-left"></i> L98 Validate Binary Search Tree
+              <a href="/2017-12-11-L225-Implement-Stack-using-Queues/" rel="next" title="L225 Implement Stack using Queues">
+                <i class="fa fa-chevron-left"></i> L225 Implement Stack using Queues
               </a>
             
           </div>
@@ -364,10 +363,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-12-01-L125-Valid-Palindrome/" rel="prev" title="L125 Valid Palindrome">
-                L125 Valid Palindrome <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -501,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#L121"><span class="nav-number">1.1.</span> <span class="nav-text">L121</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#L122"><span class="nav-number">1.2.</span> <span class="nav-text">L122</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#O-n-2-时间复杂度"><span class="nav-number">3.1.</span> <span class="nav-text">O(n*2)时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#O-n-时间复杂度"><span class="nav-number">4.</span> <span class="nav-text">O(n)时间复杂度</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现1"><span class="nav-number">3.</span> <span class="nav-text">Go实现1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现2"><span class="nav-number">4.</span> <span class="nav-text">Go实现2</span></a></li></ol></div>
             
 
           </div>
