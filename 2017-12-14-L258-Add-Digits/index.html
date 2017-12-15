@@ -76,10 +76,12 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="题目描述12345678Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.For example:Given num = 38, the process is like: 3 + 8 = 11, 1 + 1 = 2. Since 2 has only">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-14T13:48:51.000Z">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/L258.png">
+<meta property="og:updated_time" content="2017-12-15T06:26:20.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="L258 Add Digits">
 <meta name="twitter:description" content="题目描述12345678Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.For example:Given num = 38, the process is like: 3 + 8 = 11, 1 + 1 = 2. Since 2 has only">
+<meta name="twitter:image" content="http://dolphinsboy.github.io/images/L258.png">
 
 
 
@@ -317,9 +319,10 @@
         <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/add-digits/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Given a non-negative integer num, repeatedly add all its digits until the result has only one digit.</span><br><span class="line"></span><br><span class="line">For example:</span><br><span class="line"></span><br><span class="line">Given num = 38, the process is like: 3 + 8 = 11, 1 + 1 = 2. Since 2 has only one digit, return it.</span><br><span class="line"></span><br><span class="line">Follow up:</span><br><span class="line">Could you do it without any loop/recursion in O(1) runtime?</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
 <li>使用递归的方式，计算各个位数和s是否小于10，如果小于10返回，否则递归求s的各位数和</li>
-<li>使用数学公式<a href="https://en.wikipedia.org/wiki/Digital_root#Congruence_formula" target="_blank" rel="external">https://en.wikipedia.org/wiki/Digital_root#Congruence_formula</a><a id="more"></a>
+<li><strong>数根</strong>：使用数学公式<a href="https://en.wikipedia.org/wiki/Digital_root#Congruence_formula" target="_blank" rel="external">https://en.wikipedia.org/wiki/Digital_root#Congruence_formula</a><a id="more"></a>
 </li>
 </ul>
+<p><img src="/images/L258.png" alt="L258"></p>
 <h3 id="Go递归"><a href="#Go递归" class="headerlink" title="Go递归"></a>Go递归</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func addDigits(num int) int &#123;</span><br><span class="line">    s:=0</span><br><span class="line"></span><br><span class="line">    for num&gt;0 &#123;</span><br><span class="line">        s += num%10</span><br><span class="line">        num /= 10</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if s&lt;10 &#123;</span><br><span class="line">        return s</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        return addDigits(s)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="Go实现O-1-算法"><a href="#Go实现O-1-算法" class="headerlink" title="Go实现O(1)算法"></a>Go实现O(1)算法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func addDigits(num int) int &#123;</span><br><span class="line">    return 1 + (num - 1) % 9</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
