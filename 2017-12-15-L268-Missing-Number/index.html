@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Math,Arrary," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="0、前言经常使用pt-osc，需要哪些参数以及如何设置，这里给出个demo。">
+<meta name="description" content="题目描述12345678910Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.Example 1Input: [3,0,1]Output: 2Example 2Input: [9,6,4,2,3,5,7,0,1]O">
+<meta name="keywords" content="LeetCode,Math,Arrary">
 <meta property="og:type" content="article">
-<meta property="og:title" content="pt-online-schema-change使用方法">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/index.html">
+<meta property="og:title" content="L268 Missing Number">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-15-L268-Missing-Number/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="0、前言经常使用pt-osc，需要哪些参数以及如何设置，这里给出个demo。">
+<meta property="og:description" content="题目描述12345678910Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.Example 1Input: [3,0,1]Output: 2Example 2Input: [9,6,4,2,3,5,7,0,1]O">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2017-12-15T07:20:27.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="pt-online-schema-change使用方法">
-<meta name="twitter:description" content="0、前言经常使用pt-osc，需要哪些参数以及如何设置，这里给出个demo。">
+<meta name="twitter:title" content="L268 Missing Number">
+<meta name="twitter:description" content="题目描述12345678910Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.Example 1Input: [3,0,1]Output: 2Example 2Input: [9,6,4,2,3,5,7,0,1]O">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-15-L268-Missing-Number/"/>
 
 
 
 
 
-  <title>pt-online-schema-change使用方法 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L268 Missing Number | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-15-L268-Missing-Number/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">pt-online-schema-change使用方法</h1>
+          <h1 class="post-title" itemprop="name headline">L268 Missing Number</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-29T18:21:43+08:00">
-                2015-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-15T14:33:31+08:00">
+                2017-12-15
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,11 +314,15 @@
       
 
       
-        <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>经常使用pt-osc，需要哪些参数以及如何设置，这里给出个demo。</p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/missing-number/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.</span><br><span class="line"></span><br><span class="line">Example 1</span><br><span class="line"></span><br><span class="line">Input: [3,0,1]</span><br><span class="line">Output: 2</span><br><span class="line">Example 2</span><br><span class="line"></span><br><span class="line">Input: [9,6,4,2,3,5,7,0,1]</span><br><span class="line">Output: 8</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用额外数组表示每一个位，判断其是否为1</li>
+<li>计算总和，然后通过减法获取缺失的数</li>
+</ul>
 <a id="more"></a>
-<h2 id="1、封装的osc脚本"><a href="#1、封装的osc脚本" class="headerlink" title="1、封装的osc脚本"></a>1、封装的osc脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"> !/bin/sh</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">run_osc</span></span>()&#123;</span><br><span class="line"></span><br><span class="line">MAXSTER_IP=<span class="string">"xxx"</span></span><br><span class="line">PORT=xxx</span><br><span class="line"></span><br><span class="line">DB=<span class="string">"sxxx"</span></span><br><span class="line">TB=<span class="string">"cc_oxxx"</span></span><br><span class="line">SQL=<span class="string">"change order_type order_type tinyint nxxxx</span></span><br><span class="line"><span class="string">MAX_LAG=10</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">USER="</span>xxx<span class="string">"</span></span><br><span class="line"><span class="string">PASS="</span>xxx<span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">CHUNK_SIZE=200</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">osc_file_log="</span><span class="variable">$&#123;DB&#125;</span>_<span class="variable">$&#123;TB&#125;</span>_osc.log<span class="string">"</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">./pt-online-schema-change --host=<span class="variable">$&#123;MAXSTER_IP&#125;</span> \</span></span><br><span class="line"><span class="string">--port=<span class="variable">$&#123;PORT&#125;</span> --user=<span class="variable">$&#123;USER&#125;</span>  --password=<span class="variable">$&#123;PASS&#125;</span> --charset=utf8 \</span></span><br><span class="line"><span class="string">--alter="</span><span class="variable">$&#123;SQL&#125;</span><span class="string">"  --max-lag=<span class="variable">$&#123;MAX_LAG&#125;</span> \</span></span><br><span class="line"><span class="string">--recursion-method=dsn=D=test,t=dsns \</span></span><br><span class="line"><span class="string">--no-check-replication-filters  \</span></span><br><span class="line"><span class="string">--print --progress=time,1 --statistics \</span></span><br><span class="line"><span class="string">--chunk-size=<span class="variable">$&#123;CHUNK_SIZE&#125;</span> --check-interval 5  \</span></span><br><span class="line"><span class="string">--max-load Threads_running=140,Threads_connected=600 \</span></span><br><span class="line"><span class="string">--critical-load Threads_running=140,Threads_connected=800\</span></span><br><span class="line"><span class="string">--set-vars="</span>binlog_format=row<span class="string">" \</span></span><br><span class="line"><span class="string">D=<span class="variable">$&#123;DB&#125;</span>,t=<span class="variable">$&#123;TB&#125;</span> --execute  &gt; <span class="variable">$&#123;osc_file_log&#125;</span> 2&gt;&amp;1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">run_osc</span></span><br></pre></td></tr></table></figure>
-<h3 id="2、-1366错误"><a href="#2、-1366错误" class="headerlink" title="2、 1366错误"></a>2、 1366错误</h3><p>遇到1366错误，修改osc源码进行或护额</p>
-<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  Completely ignore these error codes.</span><br><span class="line"><span class="keyword">my</span> %ignore_code = (</span><br><span class="line"> add by guosong</span><br><span class="line"><span class="string">1366 =&gt;</span> <span class="number">1</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="Go实现——使用额外空间"><a href="#Go实现——使用额外空间" class="headerlink" title="Go实现——使用额外空间"></a>Go实现——使用额外空间</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">missingNumber</span><span class="params">(nums []<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    arr := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="built_in">len</span>(nums)+<span class="number">1</span>)</span><br><span class="line">    ret := <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,v := <span class="keyword">range</span> nums &#123;</span><br><span class="line">        arr[v] = <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i,v := <span class="keyword">range</span> arr &#123;</span><br><span class="line">        <span class="keyword">if</span> v==<span class="number">0</span> &#123;</span><br><span class="line">            ret = i</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>###Go实现——使用n*(n-1)/2获取和，然后计算缺失的数</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">missingNumber</span><span class="params">(nums []<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    maxInt:=<span class="number">0</span></span><br><span class="line">    s :=<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> _,v:= <span class="keyword">range</span> nums&#123;</span><br><span class="line">        <span class="keyword">if</span> maxInt &lt; v&#123;</span><br><span class="line">            maxInt=v</span><br><span class="line">        &#125;</span><br><span class="line">        s += v</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> maxInt == <span class="built_in">len</span>(nums)&#123;</span><br><span class="line">        <span class="keyword">return</span> maxInt*(maxInt+<span class="number">1</span>)/<span class="number">2</span>-s</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(nums)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">missingNumber</span><span class="params">(nums []<span class="keyword">int</span>)</span> <span class="params">(output <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    l := <span class="built_in">len</span>(nums)</span><br><span class="line">    output = (l * (l + <span class="number">1</span>)) / <span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _, n := <span class="keyword">range</span> nums &#123;</span><br><span class="line">        output -= n</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -355,6 +338,16 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Math/" rel="tag"># Math</a>
+          
+            <a href="/tags/Arrary/" rel="tag"># Arrary</a>
+          
+        </div>
+      
 
       
       
@@ -364,8 +357,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-12-23-mysqlquan-wen-suo-yin/" rel="next" title="mysql全文索引">
-                <i class="fa fa-chevron-left"></i> mysql全文索引
+              <a href="/2017-12-14-L258-Add-Digits/" rel="next" title="L258 Add Digits">
+                <i class="fa fa-chevron-left"></i> L258 Add Digits
               </a>
             
           </div>
@@ -373,10 +366,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016-01-05-mysqlda-xiao-can-shu-she-zhi/" rel="prev" title="mysql大小参数设置">
-                mysql大小参数设置 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -510,7 +499,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0、前言"><span class="nav-number">1.</span> <span class="nav-text">0、前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1、封装的osc脚本"><span class="nav-number">2.</span> <span class="nav-text">1、封装的osc脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2、-1366错误"><span class="nav-number">2.1.</span> <span class="nav-text">2、 1366错误</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现——使用额外空间"><span class="nav-number">3.</span> <span class="nav-text">Go实现——使用额外空间</span></a></li></ol></div>
             
 
           </div>
