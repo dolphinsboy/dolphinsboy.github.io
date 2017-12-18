@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode,String," />
+  <meta name="keywords" content="LeetCode,Math," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述L168. Excel Sheet Column Title1234567891011Given a positive integer, return its corresponding column title as appear in an Excel sheet.For example:    1 -&amp;gt; A    2 -&amp;gt; B    3 -&amp;gt; C    ...">
-<meta name="keywords" content="LeetCode,String">
+<meta name="description" content="题目描述1234Write a program to check whether a given number is an ugly number.Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly si">
+<meta name="keywords" content="LeetCode,Math">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Excel Sheet">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-07-Excel-Sheet/index.html">
+<meta property="og:title" content="L263 Ugly Number">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-18-L263-Ugly-Number/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述L168. Excel Sheet Column Title1234567891011Given a positive integer, return its corresponding column title as appear in an Excel sheet.For example:    1 -&amp;gt; A    2 -&amp;gt; B    3 -&amp;gt; C    ...">
+<meta property="og:description" content="题目描述1234Write a program to check whether a given number is an ugly number.Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly si">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-07T06:49:32.000Z">
+<meta property="og:updated_time" content="2017-12-18T12:15:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Excel Sheet">
-<meta name="twitter:description" content="题目描述L168. Excel Sheet Column Title1234567891011Given a positive integer, return its corresponding column title as appear in an Excel sheet.For example:    1 -&amp;gt; A    2 -&amp;gt; B    3 -&amp;gt; C    ...">
+<meta name="twitter:title" content="L263 Ugly Number">
+<meta name="twitter:description" content="题目描述1234Write a program to check whether a given number is an ugly number.Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly si">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-07-Excel-Sheet/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-18-L263-Ugly-Number/"/>
 
 
 
 
 
-  <title>Excel Sheet | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L263 Ugly Number | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-07-Excel-Sheet/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-18-L263-Ugly-Number/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Excel Sheet</h1>
+          <h1 class="post-title" itemprop="name headline">L263 Ugly Number</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-07T14:46:02+08:00">
-                2017-12-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-18T20:05:20+08:00">
+                2017-12-18
               </time>
             
 
@@ -314,14 +314,14 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><h4 id="L168-Excel-Sheet-Column-Title"><a href="#L168-Excel-Sheet-Column-Title" class="headerlink" title="L168. Excel Sheet Column Title"></a><a href="https://leetcode.com/problems/excel-sheet-column-title/" target="_blank" rel="external">L168. Excel Sheet Column Title</a></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Given a positive integer, return its corresponding column title as appear in an Excel sheet.</span><br><span class="line"></span><br><span class="line">For example:</span><br><span class="line"></span><br><span class="line">    1 -&gt; A</span><br><span class="line">    2 -&gt; B</span><br><span class="line">    3 -&gt; C</span><br><span class="line">    ...</span><br><span class="line">    26 -&gt; Z</span><br><span class="line">    27 -&gt; AA</span><br><span class="line">    28 -&gt; AB</span><br></pre></td></tr></table></figure>
-<h4 id="L171-Excel-Sheet-Column-Number"><a href="#L171-Excel-Sheet-Column-Number" class="headerlink" title="L171. Excel Sheet Column Number"></a><a href="https://leetcode.com/problems/excel-sheet-column-number/description/" target="_blank" rel="external">L171. Excel Sheet Column Number</a></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Related to question [Excel Sheet Column Title](https://leetcode.com/problems/excel-sheet-column-title/description/)</span><br><span class="line"></span><br><span class="line">Given a column title as appear in an Excel sheet, return its corresponding column number.</span><br><span class="line"></span><br><span class="line">For example:</span><br><span class="line"></span><br><span class="line">    A -&gt; 1</span><br><span class="line">    B -&gt; 2</span><br><span class="line">    C -&gt; 3</span><br><span class="line">    ...</span><br><span class="line">    Z -&gt; 26</span><br><span class="line">    AA -&gt; 27</span><br><span class="line">    AB -&gt; 28</span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/ugly-number/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Write a program to check whether a given number is an ugly number.</span><br><span class="line">Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. </span><br><span class="line">For example, 6, 8 are ugly while 14 is not ugly since it includes another prime factor 7.</span><br><span class="line">Note that 1 is typically treated as an ugly number.</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>26进制计算</li>
-<li>注意从1开始</li>
+<li>判断n是否能被2，3，5整除，如果不可以直接返回false</li>
+<li>如果可以将n替换为n/[2,3,5]后，再进行判断</li>
 </ul>
 <a id="more"></a>
-<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">convertToTitle</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">    ret:=<span class="string">""</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> n&gt;<span class="number">0</span> &#123;</span><br><span class="line">        ret = <span class="keyword">string</span>(<span class="string">'A'</span>+(n<span class="number">-1</span>)%<span class="number">26</span>) + ret</span><br><span class="line">        n = (n<span class="number">-1</span>)/<span class="number">26</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">titleToNumber</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    ret := <span class="number">0</span></span><br><span class="line">    n := <span class="built_in">len</span>(s)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n;i++ &#123;</span><br><span class="line">        ret = ret*<span class="number">26</span> + <span class="keyword">int</span>(s[i] - <span class="string">'A'</span>) + <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">26</span>))</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">27</span>))</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">28</span>))</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">52</span>))</span><br><span class="line">    fmt.Println(convertToTitle(<span class="number">53</span>))</span><br><span class="line"></span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"A"</span>))</span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"AA"</span>))</span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"AB"</span>))</span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"AZ"</span>))</span><br><span class="line">    fmt.Println(titleToNumber(<span class="string">"BA"</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Go实现1"><a href="#Go实现1" class="headerlink" title="Go实现1"></a>Go实现1</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isUgly</span><span class="params">(num <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> num&lt;=<span class="number">0</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> num &gt;<span class="number">1</span> &#123;</span><br><span class="line">        flag:= <span class="literal">false</span></span><br><span class="line">        <span class="keyword">for</span> _,x := <span class="keyword">range</span> []<span class="keyword">int</span>&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>&#125;&#123;</span><br><span class="line">            <span class="keyword">if</span> num%x==<span class="number">0</span> &#123;</span><br><span class="line">                num = num/x</span><br><span class="line">                flag=<span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> !flag &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Go实现2"><a href="#Go实现2" class="headerlink" title="Go实现2"></a>Go实现2</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isUgly</span><span class="params">(num <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> num&lt;=<span class="number">0</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,x := <span class="keyword">range</span> []<span class="keyword">int</span>&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>&#125;&#123;</span><br><span class="line">        <span class="keyword">for</span> num%x==<span class="number">0</span> &#123;</span><br><span class="line">            num = num/x</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> num == <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -341,7 +341,7 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
-            <a href="/tags/String/" rel="tag"># String</a>
+            <a href="/tags/Math/" rel="tag"># Math</a>
           
         </div>
       
@@ -354,8 +354,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-12-06-L169-Majority/" rel="next" title="L169 Majority Element">
-                <i class="fa fa-chevron-left"></i> L169 Majority Element
+              <a href="/2017-12-18-L204-Count-Primes/" rel="next" title="L204 Count Primes">
+                <i class="fa fa-chevron-left"></i> L204 Count Primes
               </a>
             
           </div>
@@ -363,10 +363,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-12-07-L172-Factorial-Trailing-Zeroes/" rel="prev" title="L172 Factorial Trailing Zeroes">
-                L172 Factorial Trailing Zeroes <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -500,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#L168-Excel-Sheet-Column-Title"><span class="nav-number">1.1.</span> <span class="nav-text">L168. Excel Sheet Column Title</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#L171-Excel-Sheet-Column-Number"><span class="nav-number">1.2.</span> <span class="nav-text">L171. Excel Sheet Column Number</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现1"><span class="nav-number">3.</span> <span class="nav-text">Go实现1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现2"><span class="nav-number">4.</span> <span class="nav-text">Go实现2</span></a></li></ol></div>
             
 
           </div>
