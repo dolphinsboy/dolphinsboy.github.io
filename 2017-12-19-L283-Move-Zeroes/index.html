@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode," />
+  <meta name="keywords" content="LeetCode,Array," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述12345Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.Note:You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold ad">
-<meta name="keywords" content="LeetCode">
+<meta name="description" content="题目描述1234567Given an array nums, write a function to move all 0&amp;apos;s to the end of it while maintaining the relative order of the non-zero elements.For example, given nums = [0, 1, 0, 3, 12], after c">
+<meta name="keywords" content="LeetCode,Array">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L83_Merge_Sorted_Array">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-16-L83-Merge-Sorted-Array/index.html">
+<meta property="og:title" content="L283 Move Zeroes">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-19-L283-Move-Zeroes/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述12345Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.Note:You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold ad">
+<meta property="og:description" content="题目描述1234567Given an array nums, write a function to move all 0&amp;apos;s to the end of it while maintaining the relative order of the non-zero elements.For example, given nums = [0, 1, 0, 3, 12], after c">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-17T04:04:32.000Z">
+<meta property="og:updated_time" content="2017-12-19T09:41:58.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L83_Merge_Sorted_Array">
-<meta name="twitter:description" content="题目描述12345Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.Note:You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold ad">
+<meta name="twitter:title" content="L283 Move Zeroes">
+<meta name="twitter:description" content="题目描述1234567Given an array nums, write a function to move all 0&amp;apos;s to the end of it while maintaining the relative order of the non-zero elements.For example, given nums = [0, 1, 0, 3, 12], after c">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-11-16-L83-Merge-Sorted-Array/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-19-L283-Move-Zeroes/"/>
 
 
 
 
 
-  <title>L83_Merge_Sorted_Array | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L283 Move Zeroes | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-16-L83-Merge-Sorted-Array/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-19-L283-Move-Zeroes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L83_Merge_Sorted_Array</h1>
+          <h1 class="post-title" itemprop="name headline">L283 Move Zeroes</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-16T18:20:58+08:00">
-                2017-11-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-19T16:59:02+08:00">
+                2017-12-19
               </time>
             
 
@@ -314,10 +314,23 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/merge-sorted-array/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional elements from nums2. </span><br><span class="line">The number of elements initialized in nums1 and nums2 are m and n respectively.</span><br></pre></td></tr></table></figure>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>nums1有足够的空间可以容纳2个数组的数据，故解题思路前提是不额外申请空间。<br>遍历nums2数据对nums1进行插入排序。</p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/move-zeroes/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Given an array nums, write a function to move all 0&apos;s to the end of it while maintaining the relative order of the non-zero elements.</span><br><span class="line"></span><br><span class="line">For example, given nums = [0, 1, 0, 3, 12], after calling your function, nums should be [1, 3, 12, 0, 0].</span><br><span class="line"></span><br><span class="line">Note:</span><br><span class="line">You must do this in-place without making a copy of the array.</span><br><span class="line">Minimize the total number of operations.</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>逐个判断，如果当前数为0，在其后面的数中一个不为0的数与其交换。时间复杂度O(n*2)，无额外空间</li>
+<li>使用两个索引进行i,j<blockquote>
+<p>初始化i=0,j=1<br>如果nums[i]和nums[j]两个数都为非0，i++,j++<br>如果nums[i]为0，nums[j]非零，将i和j交换，i++,j++<br>如果nums[i]非零，nums[j]为0，将i++<br>如果nums[i]为0，nums[j]非零，将j++</p>
+</blockquote>
+</li>
+</ul>
 <a id="more"></a>
-<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">merge</span><span class="params">(nums1 []<span class="keyword">int</span>, m <span class="keyword">int</span>, nums2 []<span class="keyword">int</span>, n <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> m == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> k:=<span class="number">0</span>;k&lt;n;k++  &#123;</span><br><span class="line">            nums1[k] = nums2[k]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    j:=<span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> j&lt;n  &#123;</span><br><span class="line">        i:=<span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i&lt;m &amp;&amp; nums1[i]&lt;nums2[j]  &#123;</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> i&gt;=m &#123;</span><br><span class="line">            nums1[i] = nums2[j]</span><br><span class="line">            j++</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            t := nums1[i]</span><br><span class="line">            nums1[i] = nums2[j]</span><br><span class="line">            <span class="keyword">for</span> i&lt;m  &#123;</span><br><span class="line">                t1 :=nums1[i+<span class="number">1</span>]</span><br><span class="line">                nums1[i+<span class="number">1</span>] = t</span><br><span class="line">                t = t1</span><br><span class="line">                i++</span><br><span class="line">            &#125;</span><br><span class="line">            j++</span><br><span class="line">        &#125;</span><br><span class="line">        m +=<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>  &#123;</span><br><span class="line">    nums1 := <span class="built_in">make</span>([]<span class="keyword">int</span>,<span class="number">10</span>)</span><br><span class="line">    <span class="comment">//[]int&#123;1,3,5&#125;</span></span><br><span class="line">    nums1[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">    nums1[<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    nums2 :=[]<span class="keyword">int</span>&#123;<span class="number">2</span>&#125;</span><br><span class="line">    m := <span class="number">1</span></span><br><span class="line">    n := <span class="number">1</span></span><br><span class="line">    merge(nums1, m, nums2, n)</span><br><span class="line">    fmt.Println(nums1[<span class="number">0</span>:m+n])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Python实现O-n-2"><a href="#Python实现O-n-2" class="headerlink" title="Python实现O(n*2)"></a>Python实现O(n*2)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">moveZeroes</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: void Do not return anything, modify nums in-place instead.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        n = len(nums)</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> i&lt;n:</span><br><span class="line">            <span class="keyword">if</span> nums[i] == <span class="number">0</span>:</span><br><span class="line">                k = i+<span class="number">1</span></span><br><span class="line">                <span class="keyword">while</span> k&lt;n:</span><br><span class="line">                    <span class="keyword">if</span> nums[k]:</span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    k+=<span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> k&lt;n <span class="keyword">and</span> nums[k]:</span><br><span class="line">                    nums[i],nums[k] = nums[k], nums[i]</span><br><span class="line">            i += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line"><span class="comment">#nums = [0,0,1]</span></span><br><span class="line">nums = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">12</span>]</span><br><span class="line">s.moveZeroes(nums)</span><br><span class="line"><span class="keyword">print</span> nums</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 423 ms</p>
+</blockquote>
+<h3 id="Python实现-O-n"><a href="#Python实现-O-n" class="headerlink" title="Python实现-O(n)"></a>Python实现-O(n)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">moveZeroes</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: void Do not return anything, modify nums in-place instead.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line"></span><br><span class="line">        n = len(nums)</span><br><span class="line">        i = <span class="number">0</span></span><br><span class="line">        j = <span class="number">1</span></span><br><span class="line">        <span class="keyword">while</span> i&lt;n<span class="number">-1</span> <span class="keyword">and</span> j&lt;n:</span><br><span class="line">            <span class="keyword">if</span> nums[i] <span class="keyword">and</span> nums[j]:</span><br><span class="line">                i+=<span class="number">1</span></span><br><span class="line">                j+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> nums[i] == <span class="number">0</span> <span class="keyword">and</span> nums[j]:</span><br><span class="line">                nums[i], nums[j] = nums[j], nums[i]</span><br><span class="line">                i+=<span class="number">1</span></span><br><span class="line">                j+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> nums[i] <span class="keyword">and</span> nums[j] == <span class="number">0</span>:</span><br><span class="line">                i+=<span class="number">1</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                j+=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">s = Solution()</span><br><span class="line"><span class="comment">#nums = [2,1]</span></span><br><span class="line"><span class="comment">#nums = [0,1,0,3,12]</span></span><br><span class="line">nums = [<span class="number">4</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">3</span>,<span class="number">0</span>,<span class="number">5</span>,<span class="number">1</span>,<span class="number">0</span>]</span><br><span class="line">s.moveZeroes(nums)</span><br><span class="line"><span class="keyword">print</span> nums</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 76 ms</p>
+</blockquote>
 
       
     </div>
@@ -337,6 +350,8 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
+            <a href="/tags/Array/" rel="tag"># Array</a>
+          
         </div>
       
 
@@ -348,8 +363,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-11-16-LeetCode-L83-从有序链表中删除重复的数据/" rel="next" title="L83_从有序链表中删除重复的数据">
-                <i class="fa fa-chevron-left"></i> L83_从有序链表中删除重复的数据
+              <a href="/2017-12-18-L263-Ugly-Number/" rel="next" title="L263 Ugly Number">
+                <i class="fa fa-chevron-left"></i> L263 Ugly Number
               </a>
             
           </div>
@@ -357,10 +372,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-11-17-L100-SameTree/" rel="prev" title="L100_SameTree">
-                L100_SameTree <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -494,7 +505,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python实现O-n-2"><span class="nav-number">3.</span> <span class="nav-text">Python实现O(n*2)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python实现-O-n"><span class="nav-number">4.</span> <span class="nav-text">Python实现-O(n)</span></a></li></ol></div>
             
 
           </div>
