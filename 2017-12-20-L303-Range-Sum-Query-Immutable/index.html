@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode,Linked List," />
+  <meta name="keywords" content="LeetCode,Array," />
 
 
 
@@ -68,20 +68,18 @@
 
 
 
-<meta name="description" content="题目描述123Reverse a singly linked list.Hint:A linked list can be reversed either iteratively or recursively. Could you implement both? 解题思路 使用循环的方式，使用newHead保存新的链表，将newHead的位置插入current节点 使用递归的方式, 使用prev和">
-<meta name="keywords" content="LeetCode,Linked List">
+<meta name="description" content="题目描述123456789101112Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.Example:Given nums = [-2, 0, 3, -5, 2, -1]sumRange(0, 2) -&amp;gt; 1sumRange(2, 5) -">
+<meta name="keywords" content="LeetCode,Array">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L206 Reverse Linked List">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-11-L206-Reverse-Linked-List/index.html">
+<meta property="og:title" content="L203 Range Sum Query Immutable">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-20-L303-Range-Sum-Query-Immutable/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述123Reverse a singly linked list.Hint:A linked list can be reversed either iteratively or recursively. Could you implement both? 解题思路 使用循环的方式，使用newHead保存新的链表，将newHead的位置插入current节点 使用递归的方式, 使用prev和">
+<meta property="og:description" content="题目描述123456789101112Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.Example:Given nums = [-2, 0, 3, -5, 2, -1]sumRange(0, 2) -&amp;gt; 1sumRange(2, 5) -">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dolphinsboy.github.io/images/reverse_list.png">
-<meta property="og:updated_time" content="2017-12-11T06:36:49.000Z">
+<meta property="og:updated_time" content="2017-12-20T03:41:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L206 Reverse Linked List">
-<meta name="twitter:description" content="题目描述123Reverse a singly linked list.Hint:A linked list can be reversed either iteratively or recursively. Could you implement both? 解题思路 使用循环的方式，使用newHead保存新的链表，将newHead的位置插入current节点 使用递归的方式, 使用prev和">
-<meta name="twitter:image" content="http://dolphinsboy.github.io/images/reverse_list.png">
+<meta name="twitter:title" content="L203 Range Sum Query Immutable">
+<meta name="twitter:description" content="题目描述123456789101112Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.Example:Given nums = [-2, 0, 3, -5, 2, -1]sumRange(0, 2) -&amp;gt; 1sumRange(2, 5) -">
 
 
 
@@ -110,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-11-L206-Reverse-Linked-List/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-20-L303-Range-Sum-Query-Immutable/"/>
 
 
 
 
 
-  <title>L206 Reverse Linked List | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L203 Range Sum Query Immutable | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -249,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-11-L206-Reverse-Linked-List/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-20-L303-Range-Sum-Query-Immutable/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -266,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L206 Reverse Linked List</h1>
+          <h1 class="post-title" itemprop="name headline">L203 Range Sum Query Immutable</h1>
         
 
         <div class="post-meta">
@@ -278,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-11T10:58:10+08:00">
-                2017-12-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T11:37:31+08:00">
+                2017-12-20
               </time>
             
 
@@ -316,19 +314,24 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/reverse-linked-list/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Reverse a singly linked list.</span><br><span class="line">Hint:</span><br><span class="line">A linked list can be reversed either iteratively or recursively. Could you implement both?</span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/range-sum-query-immutable/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Given an integer array nums, find the sum of the elements between indices i and j (i ≤ j), inclusive.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line">Given nums = [-2, 0, 3, -5, 2, -1]</span><br><span class="line"></span><br><span class="line">sumRange(0, 2) -&gt; 1</span><br><span class="line">sumRange(2, 5) -&gt; -1</span><br><span class="line">sumRange(0, 5) -&gt; -3</span><br><span class="line">Note:</span><br><span class="line">You may assume that the array does not change.</span><br><span class="line">There are many calls to sumRange function.</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>使用循环的方式，使用newHead保存新的链表，将newHead的位置插入current节点</li>
-<li>使用递归的方式, 使用prev和current指针，初始prev为nil</li>
+<li>针对每次输入都计算直接使用sum <strong>无需额外空间</strong></li>
+<li>计算sum值，根据index输入输出 <strong>需要空间</strong></li>
 </ul>
 <a id="more"></a>
-<ul>
-<li>使用递归方式，先递归到最后一个节点，调整head节点的next-&gt;next为head，将当前head的next设置为NULL，返回上一层</li>
-</ul>
-<p><img src="/images/reverse_list.png" alt="reverse_list"></p>
-<h3 id="Go——循环方式"><a href="#Go——循环方式" class="headerlink" title="Go——循环方式"></a>Go——循环方式</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseList</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> newHead *ListNode</span><br><span class="line">    current := head</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> current != <span class="literal">nil</span>&#123;</span><br><span class="line">        next := current.Next</span><br><span class="line">        current.Next = newHead</span><br><span class="line">        newHead = current</span><br><span class="line">        current = next</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newHead</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Go——递归实现"><a href="#Go——递归实现" class="headerlink" title="Go——递归实现"></a>Go——递归实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverse</span><span class="params">(current *ListNode, prev *ListNode)</span> *<span class="title">ListNode</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> current.Next == <span class="literal">nil</span> &#123;</span><br><span class="line">        current.Next = prev</span><br><span class="line">        <span class="keyword">return</span> current</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    node := current.Next</span><br><span class="line">    current.Next = prev</span><br><span class="line">    <span class="keyword">return</span> reverse(node, current)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseList</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> reverse(head, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Go——递归实现2"><a href="#Go——递归实现2" class="headerlink" title="Go——递归实现2"></a>Go——递归实现2</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseList</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line">    newHead := reverseList(head.Next)</span><br><span class="line">    head.Next.Next = head</span><br><span class="line">    head.Next = <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">return</span> newHead</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Python实现1"><a href="#Python实现1" class="headerlink" title="Python实现1"></a>Python实现1</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumArray</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.nums = nums</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumRange</span><span class="params">(self, i, j)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type i: int</span></span><br><span class="line"><span class="string">        :type j: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> sum(self.nums[i:j+<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 959 ms</p>
+</blockquote>
+<h3 id="Python实现2"><a href="#Python实现2" class="headerlink" title="Python实现2"></a>Python实现2</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumArray</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.sums =[]</span><br><span class="line">        s = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> n <span class="keyword">in</span> nums:</span><br><span class="line">            s+=n</span><br><span class="line">            self.sums.append(s)</span><br><span class="line">        <span class="keyword">print</span> self.sums</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumRange</span><span class="params">(self, i, j)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type i: int</span></span><br><span class="line"><span class="string">        :type j: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> i==<span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> self.sums[j]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.sums[j]-self.sums[i<span class="number">-1</span>]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 109 ms</p>
+</blockquote>
+<h3 id="Python实现3"><a href="#Python实现3" class="headerlink" title="Python实现3"></a>Python实现3</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NumArray</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.sums = [<span class="number">0</span>]*(len(nums)+<span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>,len(nums)+<span class="number">1</span>):</span><br><span class="line">            self.sums[i] = self.sums[i<span class="number">-1</span>]+nums[i<span class="number">-1</span>]</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sumRange</span><span class="params">(self, i, j)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type i: int</span></span><br><span class="line"><span class="string">        :type j: int</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> self.sums[j+<span class="number">1</span>]-self.sums[i]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 62ms</p>
+</blockquote>
 
       
     </div>
@@ -348,7 +351,7 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
-            <a href="/tags/Linked-List/" rel="tag"># Linked List</a>
+            <a href="/tags/Array/" rel="tag"># Array</a>
           
         </div>
       
@@ -361,8 +364,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-12-10-L203-Remove-Linked-List-Elements/" rel="next" title="L203 Remove Linked List Elements">
-                <i class="fa fa-chevron-left"></i> L203 Remove Linked List Elements
+              <a href="/2017-12-19-L290-Word-Pattern/" rel="next" title="Word Pattern">
+                <i class="fa fa-chevron-left"></i> Word Pattern
               </a>
             
           </div>
@@ -370,10 +373,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-12-11-L205-Isomorphic-Strings/" rel="prev" title="L205 Isomorphic Strings">
-                L205 Isomorphic Strings <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -507,7 +506,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go——循环方式"><span class="nav-number">3.</span> <span class="nav-text">Go——循环方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go——递归实现"><span class="nav-number">4.</span> <span class="nav-text">Go——递归实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go——递归实现2"><span class="nav-number">5.</span> <span class="nav-text">Go——递归实现2</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python实现1"><span class="nav-number">3.</span> <span class="nav-text">Python实现1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python实现2"><span class="nav-number">4.</span> <span class="nav-text">Python实现2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python实现3"><span class="nav-number">5.</span> <span class="nav-text">Python实现3</span></a></li></ol></div>
             
 
           </div>
