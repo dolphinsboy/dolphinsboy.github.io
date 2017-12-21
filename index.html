@@ -317,7 +317,8 @@
           <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/merge-k-sorted-lists/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Merge k sorted linked lists and return it as one sorted list. </span><br><span class="line">Analyze and describe its complexity.</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
 <li>选择首个非空list作为head，将其他list的数据有序的插入到list中，时间复杂度O(n*k),空间复杂为O(1)</li>
-<li>其他更优的算法
+<li>递归合并两个list，合并list算法使用O(m+n)=O(N)时间复杂度，再加上合并时间复杂度O(logK)，总的复杂度为O(N*logN)</li>
+<li>LeetCode上Discuss中有使用Python库实现的，更快的方法 <a href="https://discuss.leetcode.com/topic/10448/python-133ms-solution" target="_blank" rel="external">https://discuss.leetcode.com/topic/10448/python-133ms-solution</a>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017-12-21-L23-Merge-k-Sorted-Lists/#more" rel="contents">
