@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode,Math," />
+  <meta name="keywords" content="LeetCode,Linked List," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述1234Write a program to check whether a given number is an ugly number.Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly si">
-<meta name="keywords" content="LeetCode,Math">
+<meta name="description" content="题目描述123456789101112You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contain a single digit. Add the two n">
+<meta name="keywords" content="LeetCode,Linked List">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L263 Ugly Number">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-18-L263-Ugly-Number/index.html">
+<meta property="og:title" content="L445 Add Two Numbers II">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-26-L445-Add-Two-Numbers-II/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述1234Write a program to check whether a given number is an ugly number.Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly si">
+<meta property="og:description" content="题目描述123456789101112You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contain a single digit. Add the two n">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-18T12:15:26.000Z">
+<meta property="og:updated_time" content="2017-12-26T07:22:46.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L263 Ugly Number">
-<meta name="twitter:description" content="题目描述1234Write a program to check whether a given number is an ugly number.Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. For example, 6, 8 are ugly while 14 is not ugly si">
+<meta name="twitter:title" content="L445 Add Two Numbers II">
+<meta name="twitter:description" content="题目描述123456789101112You are given two non-empty linked lists representing two non-negative integers. The most significant digit comes first and each of their nodes contain a single digit. Add the two n">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-18-L263-Ugly-Number/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-26-L445-Add-Two-Numbers-II/"/>
 
 
 
 
 
-  <title>L263 Ugly Number | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L445 Add Two Numbers II | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-18-L263-Ugly-Number/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-26-L445-Add-Two-Numbers-II/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L263 Ugly Number</h1>
+          <h1 class="post-title" itemprop="name headline">L445 Add Two Numbers II</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-18T20:05:20+08:00">
-                2017-12-18
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-26T15:17:54+08:00">
+                2017-12-26
               </time>
             
 
@@ -314,14 +314,15 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/ugly-number/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Write a program to check whether a given number is an ugly number.</span><br><span class="line">Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. </span><br><span class="line">For example, 6, 8 are ugly while 14 is not ugly since it includes another prime factor 7.</span><br><span class="line">Note that 1 is typically treated as an ugly number.</span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/add-two-numbers-ii/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">You are given two non-empty linked lists representing two non-negative integers. </span><br><span class="line">The most significant digit comes first and each of their nodes contain a single digit. </span><br><span class="line">Add the two numbers and return it as a linked list.</span><br><span class="line">You may assume the two numbers do not contain any leading zero, except the number 0 itself.</span><br><span class="line"></span><br><span class="line">Follow up:</span><br><span class="line">What if you cannot modify the input lists? In other words, reversing the lists is not allowed.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">Input: (7 -&gt; 2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span><br><span class="line">Output: 7 -&gt; 8 -&gt; 0 -&gt; 7</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>判断n是否能被2，3，5整除，如果不可以直接返回false</li>
-<li>如果可以将n替换为n/[2,3,5]后，再进行判断</li>
+<li>将各自list转换为int，然后将int转换为list表示</li>
 </ul>
 <a id="more"></a>
-<h3 id="Go实现1"><a href="#Go实现1" class="headerlink" title="Go实现1"></a>Go实现1</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isUgly</span><span class="params">(num <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> num&lt;=<span class="number">0</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> num &gt;<span class="number">1</span> &#123;</span><br><span class="line">        flag:= <span class="literal">false</span></span><br><span class="line">        <span class="keyword">for</span> _,x := <span class="keyword">range</span> []<span class="keyword">int</span>&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>&#125;&#123;</span><br><span class="line">            <span class="keyword">if</span> num%x==<span class="number">0</span> &#123;</span><br><span class="line">                num = num/x</span><br><span class="line">                flag=<span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> !flag &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Go实现2"><a href="#Go实现2" class="headerlink" title="Go实现2"></a>Go实现2</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isUgly</span><span class="params">(num <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> num&lt;=<span class="number">0</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> num == <span class="number">1</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,x := <span class="keyword">range</span> []<span class="keyword">int</span>&#123;<span class="number">2</span>,<span class="number">3</span>,<span class="number">5</span>&#125;&#123;</span><br><span class="line">        <span class="keyword">for</span> num%x==<span class="number">0</span> &#123;</span><br><span class="line">            num = num/x</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> num == <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addTwoNumbers</span><span class="params">(self, l1, l2)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type l1: ListNode</span></span><br><span class="line"><span class="string">        :type l2: ListNode</span></span><br><span class="line"><span class="string">        :rtype: ListNode</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        n1 = self.listToInt(l1)</span><br><span class="line">        n2 = self.listToInt(l2)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> self.intToList(n1+n2)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">listToInt</span><span class="params">(self, head)</span>:</span></span><br><span class="line">        n = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> head:</span><br><span class="line">            n = n * <span class="number">10</span> + head.val</span><br><span class="line">            head = head.next</span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">intToList</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> n == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> ListNode(n)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">#在head前面插入新节点        </span></span><br><span class="line">        head = <span class="keyword">None</span></span><br><span class="line">        <span class="keyword">while</span> n:</span><br><span class="line">            node = ListNode(n%<span class="number">10</span>)</span><br><span class="line">            n = n/<span class="number">10</span></span><br><span class="line">            node.next = head</span><br><span class="line">            head = node</span><br><span class="line">        <span class="keyword">return</span> head</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要增加如下的测试，l1=[0] 和l2=[0]的情况<br>Runtime: 142 ms, 39.01.00%</p>
+</blockquote>
 
       
     </div>
@@ -341,7 +342,7 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
-            <a href="/tags/Math/" rel="tag"># Math</a>
+            <a href="/tags/Linked-List/" rel="tag"># Linked List</a>
           
         </div>
       
@@ -354,8 +355,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-12-18-L204-Count-Primes/" rel="next" title="L204 Count Primes">
-                <i class="fa fa-chevron-left"></i> L204 Count Primes
+              <a href="/2017-12-26-L148-Sort-List/" rel="next" title="L148 Sort List">
+                <i class="fa fa-chevron-left"></i> L148 Sort List
               </a>
             
           </div>
@@ -363,10 +364,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-12-19-L283-Move-Zeroes/" rel="prev" title="L283 Move Zeroes">
-                L283 Move Zeroes <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -500,7 +497,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现1"><span class="nav-number">3.</span> <span class="nav-text">Go实现1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现2"><span class="nav-number">4.</span> <span class="nav-text">Go实现2</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码实现"><span class="nav-number">3.</span> <span class="nav-text">代码实现</span></a></li></ol></div>
             
 
           </div>
