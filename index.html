@@ -316,7 +316,8 @@
         
           <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/add-two-numbers-ii/description/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">You are given two non-empty linked lists representing two non-negative integers. </span><br><span class="line">The most significant digit comes first and each of their nodes contain a single digit. </span><br><span class="line">Add the two numbers and return it as a linked list.</span><br><span class="line">You may assume the two numbers do not contain any leading zero, except the number 0 itself.</span><br><span class="line"></span><br><span class="line">Follow up:</span><br><span class="line">What if you cannot modify the input lists? In other words, reversing the lists is not allowed.</span><br><span class="line"></span><br><span class="line">Example:</span><br><span class="line"></span><br><span class="line">Input: (7 -&gt; 2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span><br><span class="line">Output: 7 -&gt; 8 -&gt; 0 -&gt; 7</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>将各自list转换为int，然后将int转换为list表示</li>
+<li>将各自list转换为int，然后将int转换为list表示，在Go会遇到int越界问题</li>
+<li>将各自list转换为array，然后计算两个array相加，并在加的时候生成list</li>
 </ul>
           <!--noindex-->
           <div class="post-button text-center">
