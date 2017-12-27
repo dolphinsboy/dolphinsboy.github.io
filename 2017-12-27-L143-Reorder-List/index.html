@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Linked List," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="1.背景之前搭建公司内部的API系统，tornado server的守护进程使用supervisord进行管理，故当时就supervisord进行学习，并整理成相关文档。 2. supervisord总结文档这里不在重复贴出，给出个百度网盘的链接:使用supervisor守护Python进程.pdf">
+<meta name="description" content="题目描述Given a singly linked list L:$L0&amp;rarr;L1&amp;rarr;&amp;hellip;&amp;rarr;Ln-1&amp;rarr;Ln,$ reorder it to:$L0&amp;rarr;Ln&amp;rarr;L1&amp;rarr;Ln-1&amp;rarr;L2&amp;rarr;Ln-2&amp;rarr;&amp;hellip;$ You must do this in-place without altering t">
+<meta name="keywords" content="LeetCode,Linked List">
 <meta property="og:type" content="article">
-<meta property="og:title" content="supervisord配置使用总结">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-06-12-supervisordpei-zhi-shi-yong-zong-jie/index.html">
+<meta property="og:title" content="L143 Reorder List">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-27-L143-Reorder-List/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="1.背景之前搭建公司内部的API系统，tornado server的守护进程使用supervisord进行管理，故当时就supervisord进行学习，并整理成相关文档。 2. supervisord总结文档这里不在重复贴出，给出个百度网盘的链接:使用supervisor守护Python进程.pdf">
+<meta property="og:description" content="题目描述Given a singly linked list L:$L0&amp;rarr;L1&amp;rarr;&amp;hellip;&amp;rarr;Ln-1&amp;rarr;Ln,$ reorder it to:$L0&amp;rarr;Ln&amp;rarr;L1&amp;rarr;Ln-1&amp;rarr;L2&amp;rarr;Ln-2&amp;rarr;&amp;hellip;$ You must do this in-place without altering t">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2017-12-27T07:55:45.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="supervisord配置使用总结">
-<meta name="twitter:description" content="1.背景之前搭建公司内部的API系统，tornado server的守护进程使用supervisord进行管理，故当时就supervisord进行学习，并整理成相关文档。 2. supervisord总结文档这里不在重复贴出，给出个百度网盘的链接:使用supervisor守护Python进程.pdf">
+<meta name="twitter:title" content="L143 Reorder List">
+<meta name="twitter:description" content="题目描述Given a singly linked list L:$L0&amp;rarr;L1&amp;rarr;&amp;hellip;&amp;rarr;Ln-1&amp;rarr;Ln,$ reorder it to:$L0&amp;rarr;Ln&amp;rarr;L1&amp;rarr;Ln-1&amp;rarr;L2&amp;rarr;Ln-2&amp;rarr;&amp;hellip;$ You must do this in-place without altering t">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-06-12-supervisordpei-zhi-shi-yong-zong-jie/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-27-L143-Reorder-List/"/>
 
 
 
 
 
-  <title>supervisord配置使用总结 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L143 Reorder List | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-06-12-supervisordpei-zhi-shi-yong-zong-jie/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-27-L143-Reorder-List/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">supervisord配置使用总结</h1>
+          <h1 class="post-title" itemprop="name headline">L143 Reorder List</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-06-12T16:05:56+08:00">
-                2015-06-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T15:47:55+08:00">
+                2017-12-27
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python知识点汇总/" itemprop="url" rel="index">
-                    <span itemprop="name">Python知识点汇总</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,10 +314,20 @@
       
 
       
-        <h3 id="1-背景"><a href="#1-背景" class="headerlink" title="1.背景"></a>1.背景</h3><p>之前搭建公司内部的API系统，tornado server的守护进程使用supervisord进行管理，故当时就supervisord进行学习，并整理成相关文档。</p>
-<h3 id="2-supervisord总结文档"><a href="#2-supervisord总结文档" class="headerlink" title="2. supervisord总结文档"></a>2. supervisord总结文档</h3><p>这里不在重复贴出，给出个百度网盘的链接:<br><a href="http://pan.baidu.com/s/1qWoPFm0" target="_blank" rel="external">使用supervisor守护Python进程.pdf</a></p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/reorder-list/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a singly linked list L:<br><span>$L0&rarr;L1&rarr;&hellip;&rarr;Ln-1&rarr;Ln,$</span><!-- Has MathJax --></p>
+<p>reorder it to:<br><span>$L0&rarr;Ln&rarr;L1&rarr;Ln-1&rarr;L2&rarr;Ln-2&rarr;&hellip;$</span><!-- Has MathJax --></p>
+<p>You must do this in-place without altering the nodes’ values.</p>
+<p>For example,<br>Given {1,2,3,4}, reorder it to {1,4,2,3}.</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用两个指针slow和fast，slow移动一次，fast移动两次，直到fast为最后一个元素</li>
+<li>在slow的地方将链表断开，将slow之后的list翻转</li>
+<li>将head和slow进行一一merge合并</li>
+</ul>
 <a id="more"></a>
-<p>Slideshare上的链接：</p>
+<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reorderList</span><span class="params">(head *ListNode)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    slow := head</span><br><span class="line">    fast := head</span><br><span class="line">    <span class="keyword">var</span> prev *ListNode</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> fast != <span class="literal">nil</span> &amp;&amp; fast.Next != <span class="literal">nil</span> &#123;</span><br><span class="line">        fast = fast.Next.Next</span><br><span class="line">        prev = slow</span><br><span class="line">        slow = slow.Next</span><br><span class="line">    &#125;</span><br><span class="line">    prev.Next = <span class="literal">nil</span></span><br><span class="line"></span><br><span class="line">    current1 := head</span><br><span class="line">    current2 := reverseList(slow)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> current1.Next != <span class="literal">nil</span> &amp;&amp; current2.Next != <span class="literal">nil</span>&#123;</span><br><span class="line">        next1 := current1.Next</span><br><span class="line">        current1.Next = current2</span><br><span class="line">        next2 := current2.Next</span><br><span class="line">        current2.Next = next1</span><br><span class="line"></span><br><span class="line">        current1 = next1</span><br><span class="line">        current2 = next2</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    current1.Next = current2</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">reverseList</span><span class="params">(head *ListNode)</span> *<span class="title">ListNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> head == <span class="literal">nil</span> || head.Next == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> head</span><br><span class="line">    &#125;</span><br><span class="line">    newHead := reverseList(head.Next)</span><br><span class="line">    head.Next.Next = head</span><br><span class="line">    head.Next = <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">return</span> newHead</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 25 ms 50.00%</p>
+</blockquote>
 
       
     </div>
@@ -354,6 +343,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Linked-List/" rel="tag"># Linked List</a>
+          
+        </div>
+      
 
       
       
@@ -363,8 +360,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-06-08-pythondan-yuan-ce-shi/" rel="next" title="Python单元测试">
-                <i class="fa fa-chevron-left"></i> Python单元测试
+              <a href="/2017-12-27-L328-Odd-Even-Linked-List/" rel="next" title="L328 Odd Even Linked List">
+                <i class="fa fa-chevron-left"></i> L328 Odd Even Linked List
               </a>
             
           </div>
@@ -372,10 +369,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-06-12-octopressde-gitwen-ti/" rel="prev" title="octopress的git问题">
-                octopress的git问题 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -509,7 +502,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-背景"><span class="nav-number">1.</span> <span class="nav-text">1.背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-supervisord总结文档"><span class="nav-number">2.</span> <span class="nav-text">2. supervisord总结文档</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a></li></ol></div>
             
 
           </div>
