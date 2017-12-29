@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Binary Tree," />
 
 
 
@@ -68,20 +68,18 @@
 
 
 
-<meta name="description" content="联系方式 姓名：郭颂 微博：@小郭学路 QQ：253876250  工作经历 2011.4——2013.6 百度MySQL DBA 2013.6——至今     新浪MySQL DBA">
+<meta name="description" content="题目描述Find the sum of all left leaves in a given binary tree. Example: 12345  3 / \9  20  /  \ 15   7 There are two left leaves in the binary tree, with values 9 and 15 respectively.Return 24. 解题思路 使用深度">
+<meta name="keywords" content="LeetCode,Binary Tree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="个人介绍">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-05-02-introduction/index.html">
+<meta property="og:title" content="L404 Sum of Left Leaves">
+<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-29-L404-Sum-of-Left-Leaves/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="联系方式 姓名：郭颂 微博：@小郭学路 QQ：253876250  工作经历 2011.4——2013.6 百度MySQL DBA 2013.6——至今     新浪MySQL DBA">
+<meta property="og:description" content="题目描述Find the sum of all left leaves in a given binary tree. Example: 12345  3 / \9  20  /  \ 15   7 There are two left leaves in the binary tree, with values 9 and 15 respectively.Return 24. 解题思路 使用深度">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dolphinsboy.github.io/images/ride.png">
-<meta property="og:image" content="http://dolphinsboy.github.io/images/running.png">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2017-12-29T08:59:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="个人介绍">
-<meta name="twitter:description" content="联系方式 姓名：郭颂 微博：@小郭学路 QQ：253876250  工作经历 2011.4——2013.6 百度MySQL DBA 2013.6——至今     新浪MySQL DBA">
-<meta name="twitter:image" content="http://dolphinsboy.github.io/images/ride.png">
+<meta name="twitter:title" content="L404 Sum of Left Leaves">
+<meta name="twitter:description" content="题目描述Find the sum of all left leaves in a given binary tree. Example: 12345  3 / \9  20  /  \ 15   7 There are two left leaves in the binary tree, with values 9 and 15 respectively.Return 24. 解题思路 使用深度">
 
 
 
@@ -110,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-05-02-introduction/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-29-L404-Sum-of-Left-Leaves/"/>
 
 
 
 
 
-  <title>个人介绍 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L404 Sum of Left Leaves | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -249,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-05-02-introduction/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-29-L404-Sum-of-Left-Leaves/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -266,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">个人介绍</h1>
+          <h1 class="post-title" itemprop="name headline">L404 Sum of Left Leaves</h1>
         
 
         <div class="post-meta">
@@ -278,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-04-29T20:12:11+08:00">
-                2015-04-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T16:56:23+08:00">
+                2017-12-29
               </time>
             
 
@@ -316,24 +314,17 @@
       
 
       
-        <h3 id="联系方式"><a href="#联系方式" class="headerlink" title="联系方式"></a>联系方式</h3><ul>
-<li>姓名：郭颂</li>
-<li>微博：@小郭学路</li>
-<li>QQ：253876250</li>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/sum-of-left-leaves/description/" target="_blank" rel="external">题目描述</a></h3><p>Find the sum of all left leaves in a given binary tree.</p>
+<p>Example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
+<p>There are two left leaves in the binary tree, with values 9 and 15 respectively.<br>Return 24.</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用深度遍历</li>
+<li>记录前一个节点prev，判断prev.Left是否等于当前叶子节点，如果等于说明才是其左叶子节点。</li>
+<li>递归和循环都实现一下<a id="more"></a>
+</li>
 </ul>
-<h3 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h3><ul>
-<li>2011.4——2013.6 百度MySQL DBA</li>
-<li>2013.6——至今     新浪MySQL DBA</li>
-</ul>
-<a id="more"></a>
-<h3 id="兴趣和爱好"><a href="#兴趣和爱好" class="headerlink" title="兴趣和爱好"></a>兴趣和爱好</h3><ul>
-<li><strong>骑行</strong></li>
-</ul>
-<p><img src="/images/ride.png" alt="妙峰山骑行"></p>
-<ul>
-<li><strong>慢跑</strong></li>
-</ul>
-<p><img src="/images/running.png" alt="咕咚运动"></p>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现——递归"><a href="#Go代码实现——递归" class="headerlink" title="Go代码实现——递归"></a>Go代码实现——递归</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sumOfLeftLeaves</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    sum := <span class="number">0</span></span><br><span class="line">    sumOfLeft(root, root, &amp;sum)</span><br><span class="line">    <span class="keyword">return</span> sum</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sumOfLeft</span><span class="params">(root *TreeNode, prev *TreeNode, sum *<span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Left == <span class="literal">nil</span> &amp;&amp; root.Right == <span class="literal">nil</span> &amp;&amp; prev.Left == root &#123;</span><br><span class="line">        *sum += root.Val</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Left != <span class="literal">nil</span> &#123;</span><br><span class="line">        sumOfLeft(root.Left, root, sum)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Right != <span class="literal">nil</span> &#123;</span><br><span class="line">        sumOfLeft(root.Right, root, sum)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -349,6 +340,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
+          
+        </div>
+      
 
       
       
@@ -358,15 +357,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017-12-29-L145-Binary-Tree-Postorder-Traversal/" rel="next" title="L145 Binary Tree Postorder Traversal">
+                <i class="fa fa-chevron-left"></i> L145 Binary Tree Postorder Traversal
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-05-04-python-operator-overload/" rel="prev" title="python类操作符重载">
-                python类操作符重载 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -500,7 +499,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#联系方式"><span class="nav-number">1.</span> <span class="nav-text">联系方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#工作经历"><span class="nav-number">2.</span> <span class="nav-text">工作经历</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#兴趣和爱好"><span class="nav-number">3.</span> <span class="nav-text">兴趣和爱好</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现——递归"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现——递归</span></a></li></ol></li></ol></div>
             
 
           </div>
