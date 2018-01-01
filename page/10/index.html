@@ -244,6 +244,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-02-16-gdbduo-jin-cheng-diao-shi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-02-16-gdbduo-jin-cheng-diao-shi/" itemprop="url">GDB多进程调试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-16T10:51:05+08:00">
+                2016-02-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GDB/" itemprop="url" rel="index">
+                    <span itemprop="name">GDB</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1、如何进行多进程调试"><a href="#1、如何进行多进程调试" class="headerlink" title="1、如何进行多进程调试"></a>1、如何进行多进程调试</h2><h3 id="1-1-代码"><a href="#1-1-代码" class="headerlink" title="1.1 代码"></a>1.1 代码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="number">2</span> <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="number">3</span> <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span> <span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function">6 </span>&#123;</span><br><span class="line"><span class="number">7</span>     <span class="keyword">pid_t</span> pid;</span><br><span class="line"><span class="number">8</span>     <span class="keyword">int</span> status;</span><br><span class="line"><span class="number">9</span>     <span class="keyword">int</span> a;</span><br><span class="line"><span class="number">10</span>     <span class="keyword">int</span> b;</span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span>     pid=fork();</span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span>     <span class="keyword">if</span> (pid &lt; <span class="number">0</span>)&#123;</span><br><span class="line"><span class="number">15</span>         <span class="built_in">printf</span>(<span class="string">"fork error"</span>);</span><br><span class="line"><span class="number">16</span>         <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"><span class="number">17</span>     &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line"><span class="number">18</span>         <span class="comment">//child</span></span><br><span class="line"><span class="number">19</span>         <span class="built_in">printf</span>(<span class="string">"in child\n"</span>);</span><br><span class="line"><span class="number">20</span>         fflush(<span class="built_in">stdout</span>);</span><br><span class="line"><span class="number">21</span>         sleep(<span class="number">100</span>);</span><br><span class="line"><span class="number">22</span>         a = <span class="number">5</span>;</span><br><span class="line"><span class="number">23</span>         b = <span class="number">10</span>;</span><br><span class="line"><span class="number">24</span>         <span class="built_in">printf</span>(<span class="string">"sum=%d\n"</span>,a+b);</span><br><span class="line"><span class="number">25</span>         fflush(<span class="built_in">stdout</span>);</span><br><span class="line"><span class="number">26</span></span><br><span class="line"><span class="number">27</span>     &#125;<span class="keyword">else</span>&#123;</span><br><span class="line"><span class="number">28</span>         <span class="comment">//parent</span></span><br><span class="line"><span class="number">29</span>         <span class="built_in">printf</span>(<span class="string">"in parent\n"</span>);</span><br><span class="line"><span class="number">30</span>         fflush(<span class="built_in">stdout</span>);</span><br><span class="line"><span class="number">31</span>         <span class="keyword">if</span>(waitpid(pid, &amp;status,<span class="number">0</span>) &lt; <span class="number">0</span>)&#123;</span><br><span class="line"><span class="number">32</span>             <span class="built_in">printf</span>(<span class="string">"failed to wait"</span>);</span><br><span class="line"><span class="number">33</span>             <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"><span class="number">34</span>         &#125;</span><br><span class="line"><span class="number">35</span>     &#125;</span><br><span class="line"><span class="number">36</span>     <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line"><span class="number">37</span> &#125;</span><br></pre></td></tr></table></figure>
+<p>对应的makefile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">test:test.c</span><br><span class="line">gcc -g -c test.c</span><br><span class="line">gcc -o test test.o</span><br><span class="line">clean:</span><br><span class="line">rm -rf test</span><br><span class="line">rm -rf *.o</span><br></pre></td></tr></table></figure>
+<p>默认设置下，在调试多进程时GDB只会调试主进程，但是GDB(&gt;V7.0)持多进程的分别以及同时调试，换句话说，GDB可以同时调试多个程序。只需要设置follow-fork-mode(默认值：parent)和detach-on-fork（默认值：on）即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) help set follow-fork-mode</span><br><span class="line">Set debugger response to a program call of fork or vfork.</span><br><span class="line">A fork or vfork creates a new process.  follow-fork-mode can be:</span><br><span class="line">parent  - the original process is debugged after a fork</span><br><span class="line">child   - the new process is debugged after a fork</span><br><span class="line">The unfollowed process will continue to run.</span><br><span class="line">By default, the debugger will follow the parent process.</span><br><span class="line"></span><br><span class="line">(gdb) help show detach-on-fork</span><br><span class="line">Show whether gdb will detach the child of a fork.</span><br><span class="line">Tells gdb whether to detach the child of a fork.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">follow-fork-mode          detach-on-fork   说明</span><br><span class="line">parent                   on               只调试主进程（GDB默认）</span><br><span class="line">child                     on               只调试子进程</span><br><span class="line">parent                   off              同时调试两个进程，gdb跟主进程，子进程block在fork位置</span><br><span class="line">child                     off              同时调试两个进程，gdb跟子进程，主进程block在fork位置</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-GDB调试"><a href="#1-2-GDB调试" class="headerlink" title="1.2 GDB调试"></a>1.2 GDB调试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set detach-on-fork off</span><br><span class="line">(gdb) show detach-on-fork</span><br><span class="line">Whether gdb will detach the child of a fork is off.</span><br><span class="line">(gdb) l</span><br><span class="line">warning: Source file is more recent than executable.</span><br><span class="line">3       #include &lt;unistd.h&gt;</span><br><span class="line">4</span><br><span class="line">5       int main(void)</span><br><span class="line">6       &#123;</span><br><span class="line">7           pid_t pid;</span><br><span class="line">8           int status;</span><br><span class="line">9           int a;</span><br><span class="line">10          int b;</span><br><span class="line">11</span><br><span class="line">12          pid=fork();</span><br><span class="line">(gdb) b 14</span><br><span class="line">Breakpoint 1 at 0x400700: file test.c, line 14.</span><br><span class="line">(gdb) r</span><br><span class="line">Starting program: /home/guosong/opdir/20160216/test</span><br><span class="line">[New process 7638]</span><br><span class="line">Missing separate debuginfos, use: debuginfo-install glibc-2.17-55.93.amzn1.x86_64</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at test.c:14</span><br><span class="line">14          if (pid &lt; 0)&#123;</span><br><span class="line">Missing separate debuginfos, use: debuginfo-install glibc-2.17-55.93.amzn1.x86_64</span><br><span class="line">(gdb) p pid</span><br><span class="line">$1 = 7638</span><br></pre></td></tr></table></figure>
+<p>默认是在parent进程中。</p>
+<p><strong>切换到子进程</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info inferiors</span><br><span class="line">Num  Description       Executable</span><br><span class="line">2    process 9388      /home/guosong/opdir/20160216/test</span><br><span class="line">* 1    process 9356      /home/guosong/opdir/20160216/test</span><br><span class="line"></span><br><span class="line">(gdb) inferior 2</span><br><span class="line">[Switching to inferior 2 [process 9388] (/home/guosong/opdir/20160216/test)]</span><br><span class="line">[Switching to thread 2 (process 9388)]</span><br><span class="line"> 0  0x00007ffff7aecc7c in fork () from /lib64/libc.so.6</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at test.c:14</span><br><span class="line">warning: Source file is more recent than executable.</span><br><span class="line">14          if (pid &lt; 0)&#123;</span><br><span class="line">(gdb) n</span><br><span class="line">17          &#125;else if(pid == 0)&#123;</span><br><span class="line">(gdb) n</span><br><span class="line">19              printf(&quot;in child\n&quot;);</span><br><span class="line">(gdb) info inferiors</span><br><span class="line">Num  Description       Executable</span><br><span class="line">* 2    process 9388      /home/guosong/opdir/20160216/test</span><br><span class="line">1    process 9356      /home/guosong/opdir/20160216/test</span><br></pre></td></tr></table></figure>
+<p><strong>再切换回去主进程</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(gdb) inferior 1</span><br><span class="line">[Switching to inferior 1 [process 9356] (/home/guosong/opdir/20160216/test)]</span><br><span class="line">[Switching to thread 1 (process 9356)]</span><br><span class="line"> 0  main () at test.c:33</span><br><span class="line">33                  exit(1);</span><br></pre></td></tr></table></figure>
+<h2 id="2、参考资料"><a href="#2、参考资料" class="headerlink" title="2、参考资料"></a>2、参考资料</h2><ul>
+<li><a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" target="_blank" rel="external">http://blog.csdn.net/pbymw8iwm/article/details/7876797</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-01-28-ioduo-lu-fu-yong/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1589,152 +1745,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-05-glib-threadpian/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015-12-05-glib-threadpian/" itemprop="url">Glib Thread篇</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-05T23:58:23+08:00">
-                2015-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL内核/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL内核</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h2><p>在mydumper以及myloader中使用到GLib库的功能，前面分析mydumper源码的时候，已经给出参数解析的demo以及mydumper实现过程。mysqldump以及mydumper最大的不同之处就mydumper是多线程的，效率更高。本文就是研究这个多线程是如何实现的，并给出相关demo进行源码的测试以及验证。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015-12-05-glib-threadpian/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1785,7 +1795,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">138</span>
+                <span class="site-state-item-count">139</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1849,7 +1859,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
