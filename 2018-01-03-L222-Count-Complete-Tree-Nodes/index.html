@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Binary Tree," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="简介 tcollector包括如下python学习点，强烈推荐阅读   参数解析 log日志 信号量 目录结构遍历 多线程以及多线程之间的数据共享 队列 定时任务 rpm打包 collector采集 程序兼容以及动态（collectors的动态更新，程序如何兼容） subprocess执行脚本 socket通信 正则表达式 守护进程 PYTHONPATH 设置 yield 迭代实现 单元测试以及m">
+<meta name="description" content="题目描述Given a complete binary tree, count the number of nodes. Definition of a complete binary tree from Wikipedia:In a complete binary tree every level, except possibly the last, is completely filled,">
+<meta name="keywords" content="LeetCode,Binary Tree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="tcollector源码功能解读">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-03-22-tcollectoryuan-ma-gong-neng-jie-du/index.html">
+<meta property="og:title" content="L222 Count Complete Tree Nodes">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-03-L222-Count-Complete-Tree-Nodes/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="简介 tcollector包括如下python学习点，强烈推荐阅读   参数解析 log日志 信号量 目录结构遍历 多线程以及多线程之间的数据共享 队列 定时任务 rpm打包 collector采集 程序兼容以及动态（collectors的动态更新，程序如何兼容） subprocess执行脚本 socket通信 正则表达式 守护进程 PYTHONPATH 设置 yield 迭代实现 单元测试以及m">
+<meta property="og:description" content="题目描述Given a complete binary tree, count the number of nodes. Definition of a complete binary tree from Wikipedia:In a complete binary tree every level, except possibly the last, is completely filled,">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T09:12:39.000Z">
+<meta property="og:updated_time" content="2018-01-03T04:18:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tcollector源码功能解读">
-<meta name="twitter:description" content="简介 tcollector包括如下python学习点，强烈推荐阅读   参数解析 log日志 信号量 目录结构遍历 多线程以及多线程之间的数据共享 队列 定时任务 rpm打包 collector采集 程序兼容以及动态（collectors的动态更新，程序如何兼容） subprocess执行脚本 socket通信 正则表达式 守护进程 PYTHONPATH 设置 yield 迭代实现 单元测试以及m">
+<meta name="twitter:title" content="L222 Count Complete Tree Nodes">
+<meta name="twitter:description" content="题目描述Given a complete binary tree, count the number of nodes. Definition of a complete binary tree from Wikipedia:In a complete binary tree every level, except possibly the last, is completely filled,">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-03-22-tcollectoryuan-ma-gong-neng-jie-du/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-03-L222-Count-Complete-Tree-Nodes/"/>
 
 
 
 
 
-  <title>tcollector源码功能解读 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L222 Count Complete Tree Nodes | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-03-22-tcollectoryuan-ma-gong-neng-jie-du/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-03-L222-Count-Complete-Tree-Nodes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">tcollector源码功能解读</h1>
+          <h1 class="post-title" itemprop="name headline">L222 Count Complete Tree Nodes</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-22T11:59:47+08:00">
-                2017-03-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-03T12:13:54+08:00">
+                2018-01-03
               </time>
             
 
@@ -313,29 +314,15 @@
       
 
       
-        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><blockquote>
-<p>tcollector包括如下python学习点，强烈推荐阅读</p>
-</blockquote>
-<ul>
-<li>参数解析</li>
-<li>log日志</li>
-<li>信号量</li>
-<li>目录结构遍历</li>
-<li>多线程以及多线程之间的数据共享</li>
-<li>队列</li>
-<li>定时任务</li>
-<li>rpm打包</li>
-<li>collector采集</li>
-<li>程序兼容以及动态（collectors的动态更新，程序如何兼容）</li>
-<li>subprocess执行脚本</li>
-<li>socket通信</li>
-<li>正则表达式</li>
-<li>守护进程</li>
-<li>PYTHONPATH 设置</li>
-<li>yield 迭代实现</li>
-<li>单元测试以及mock</li>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/count-complete-tree-nodes/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a complete binary tree, count the number of nodes.</p>
+<p><a href="https://en.wikipedia.org/wiki/Binary_tree#Types_of_binary_trees" target="_blank" rel="external">Definition of a complete binary tree from Wikipedia</a>:<br>In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible.<br>It can have between 1 and 2**h nodes inclusive at the last level h.</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用深度遍历以及广度遍历都是执行超时，这些算法时间复杂度都是O(N)</li>
+<li>使用二分法以及判断是否为满二叉树计算，时间复杂度为O(logN)</li>
 </ul>
-<h3 id="源码剖析"><a href="#源码剖析" class="headerlink" title="源码剖析"></a>源码剖析</h3>
+<a id="more"></a>
+<h3 id="Python代码实现——二分法"><a href="#Python代码实现——二分法" class="headerlink" title="Python代码实现——二分法"></a>Python代码实现——二分法</h3><h4 id="Python代码实现——二分法递归"><a href="#Python代码实现——二分法递归" class="headerlink" title="Python代码实现——二分法递归"></a>Python代码实现——二分法递归</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">countNodes</span><span class="params">(self, root)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type root: TreeNode</span></span><br><span class="line"><span class="string">        :rtype: int</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> root:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        hLeft= <span class="number">0</span></span><br><span class="line">        hRight = <span class="number">0</span></span><br><span class="line">        pLeft = root</span><br><span class="line">        pRight = root</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> pLeft:</span><br><span class="line">            hLeft+=<span class="number">1</span></span><br><span class="line">            pLeft = pLeft.left</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> pRight:</span><br><span class="line">            hRight+=<span class="number">1</span></span><br><span class="line">            pRight = pRight.right</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> hLeft == hRight:</span><br><span class="line">            <span class="keyword">return</span> pow(<span class="number">2</span>,hLeft)<span class="number">-1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> self.countNodes(root.left) + self.countNodes(root.right) + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -350,6 +337,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
+          
+        </div>
+      
 
       
       
@@ -359,8 +354,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-02-08-aws-boto3/" rel="next" title="AWS boto3">
-                <i class="fa fa-chevron-left"></i> AWS boto3
+              <a href="/2018-01-02-L129-Sum-Root-to-Leaf-Numbers/" rel="next" title="L129 Sum Root to Leaf Numbers">
+                <i class="fa fa-chevron-left"></i> L129 Sum Root to Leaf Numbers
               </a>
             
           </div>
@@ -368,10 +363,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-11-13-leetcode-L15-3sum/" rel="prev" title="L15_3sum">
-                L15_3sum <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -505,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码剖析"><span class="nav-number">2.</span> <span class="nav-text">源码剖析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python代码实现——二分法"><span class="nav-number">3.</span> <span class="nav-text">Python代码实现——二分法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python代码实现——二分法递归"><span class="nav-number">3.1.</span> <span class="nav-text">Python代码实现——二分法递归</span></a></li></ol></li></ol></div>
             
 
           </div>
