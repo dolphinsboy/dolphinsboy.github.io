@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Binary Tree," />
 
 
 
@@ -68,20 +68,18 @@
 
 
 
-<meta name="description" content="前言 汇总在开发过程中使用到所有Python模块，记录起来方便日后使用。  prettytable ascii_graph      1、prettytable1.1 功能实现python console的数据格式化，按照表格的方式输出。 1.2 演示">
+<meta name="description" content="题目描述Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or m">
+<meta name="keywords" content="LeetCode,Binary Tree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python模块汇总">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-08-12-pythonmo-kuai-hui-zong/index.html">
+<meta property="og:title" content="L543 Diameter of Binary Tree">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-05-L543-Diameter-of-Binary-Tree/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="前言 汇总在开发过程中使用到所有Python模块，记录起来方便日后使用。  prettytable ascii_graph      1、prettytable1.1 功能实现python console的数据格式化，按照表格的方式输出。 1.2 演示">
+<meta property="og:description" content="题目描述Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or m">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dolphinsboy.github.io/images/prettytable3.jpg%20=500x400">
-<meta property="og:image" content="http://dolphinsboy.github.io/images/python_graph.png%20=500x400">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2018-01-05T12:51:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python模块汇总">
-<meta name="twitter:description" content="前言 汇总在开发过程中使用到所有Python模块，记录起来方便日后使用。  prettytable ascii_graph      1、prettytable1.1 功能实现python console的数据格式化，按照表格的方式输出。 1.2 演示">
-<meta name="twitter:image" content="http://dolphinsboy.github.io/images/prettytable3.jpg%20=500x400">
+<meta name="twitter:title" content="L543 Diameter of Binary Tree">
+<meta name="twitter:description" content="题目描述Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or m">
 
 
 
@@ -110,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-08-12-pythonmo-kuai-hui-zong/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-05-L543-Diameter-of-Binary-Tree/"/>
 
 
 
 
 
-  <title>Python模块汇总 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L543 Diameter of Binary Tree | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -249,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-08-12-pythonmo-kuai-hui-zong/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-05-L543-Diameter-of-Binary-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -266,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Python模块汇总</h1>
+          <h1 class="post-title" itemprop="name headline">L543 Diameter of Binary Tree</h1>
         
 
         <div class="post-meta">
@@ -278,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-12T17:39:19+08:00">
-                2015-08-12
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T20:45:28+08:00">
+                2018-01-05
               </time>
             
 
@@ -288,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python知识点汇总/" itemprop="url" rel="index">
-                    <span itemprop="name">Python知识点汇总</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -338,29 +314,16 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
-<p>汇总在开发过程中使用到所有Python模块，记录起来方便日后使用。</p>
-<ul>
-<li><font size="5"><sup><a href="#prettytable">prettytable</a></sup></font></li>
-<li><font size="5"><sup><a href="#ascii_graph">ascii_graph</a></sup></font>
-
-
-</li>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/diameter-of-binary-tree/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a binary tree, you need to compute the length of the diameter of the tree. The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.</p>
+<p>Example:<br>Given a binary tree<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">   / \</span><br><span class="line">  2   3</span><br><span class="line"> / \     </span><br><span class="line">4   5</span><br></pre></td></tr></table></figure></p>
+<p>Return 3, which is the length of the path [4,2,1,3] or [5,2,1,3].</p>
+<p>Note: The length of path between two nodes is represented by the number of edges between them.</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用深度遍历，计算各个节点左右节点的高度是否小于一个最大值max</li>
+<li>返回这个max</li>
 </ul>
-</blockquote>
-<h2 id="1、prettytable"><a href="#1、prettytable" class="headerlink" title="1、prettytable"></a><a name="prettytable">1、prettytable</a></h2><h3 id="1-1-功能"><a href="#1-1-功能" class="headerlink" title="1.1 功能"></a>1.1 功能</h3><p>实现python console的数据格式化，按照表格的方式输出。</p>
-<h3 id="1-2-演示"><a href="#1-2-演示" class="headerlink" title="1.2 演示"></a>1.2 演示</h3><p><img src="/images/prettytable3.jpg =500x400" alt="pretty table3"></p>
 <a id="more"></a>
-<h3 id="1-3-代码demo"><a href="#1-3-代码demo" class="headerlink" title="1.3 代码demo"></a>1.3 代码demo</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> !/usr/bin/env python2<span class="number">.7</span></span><br><span class="line"> -*- coding:utf8 -*-</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> prettytable <span class="keyword">import</span> PrettyTable</span><br><span class="line">table = PrettyTable([<span class="string">"animal"</span>, <span class="string">"ferocity"</span>])</span><br><span class="line">table.add_row([<span class="string">"wolverine"</span>, <span class="number">100</span>])</span><br><span class="line">table.add_row([<span class="string">"grizzly"</span>, <span class="number">87</span>])</span><br><span class="line">table.add_row([<span class="string">"Rabbit of Caerbannog"</span>, <span class="number">110</span>])</span><br><span class="line">table.add_row([<span class="string">"cat"</span>, <span class="string">"中文中文中文中文中文中"</span>])</span><br><span class="line">table.add_row([<span class="string">"platypus"</span>, <span class="number">23</span>])</span><br><span class="line">table.add_row([<span class="string">"dolphin"</span>, <span class="number">63</span>])</span><br><span class="line">table.add_row([<span class="string">"albatross"</span>, <span class="number">44</span>])</span><br><span class="line">table.sort_key(<span class="string">"ferocity"</span>)</span><br><span class="line">table.reversesort = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> table</span><br></pre></td></tr></table></figure>
-<p>如果使用颜色的话，得使用shell的方式</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">color = <span class="string">"\033[94m&#123;value&#125;\033[0m"</span></span><br><span class="line">value = <span class="string">"中文"</span></span><br><span class="line">value = color.format(value=value)</span><br></pre></td></tr></table></figure>
-<h3 id="2、ascii-graph"><a href="#2、ascii-graph" class="headerlink" title="2、ascii_graph "></a><a name="ascii_graph">2、ascii_graph </a></h3><h2 id="2-1-功能"><a href="#2-1-功能" class="headerlink" title="2.1 功能"></a>2.1 功能</h2><p>将数据打印输出成直方图的形式</p>
-<h3 id="2-2-演示"><a href="#2-2-演示" class="headerlink" title="2.2 演示"></a>2.2 演示</h3><p><img src="/images/python_graph.png =500x400" alt="python_graph"></p>
-<h3 id="2-3-代码Demo"><a href="#2-3-代码Demo" class="headerlink" title="2.3 代码Demo"></a>2.3 代码Demo</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> ascii_graph <span class="keyword">import</span> Pyasciigraph</span><br><span class="line"><span class="keyword">from</span> ascii_graph.colors <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">  Simple coloring</span><br><span class="line">test = [(<span class="string">'testval0'</span>, <span class="number">600</span>),</span><br><span class="line">(<span class="string">'testval1'</span>, <span class="number">500</span>, Pur),</span><br><span class="line">(<span class="string">'testval2'</span>, <span class="number">400</span>, Red),</span><br><span class="line">(<span class="string">'testval3'</span>, <span class="number">400</span>, Red),</span><br><span class="line">(<span class="string">'testval4'</span>, <span class="number">300</span>, Gre),</span><br><span class="line">(<span class="string">'testval5'</span>, <span class="number">200</span>, Yel),</span><br><span class="line">(<span class="string">'testval6'</span>, <span class="number">100</span>, Cya),</span><br><span class="line">(<span class="string">'testval7'</span>, <span class="number">50</span>,  Blu) ]</span><br><span class="line"></span><br><span class="line">graph = Pyasciigraph()</span><br><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> graph.graph(<span class="string">'test graph'</span>, test):</span><br><span class="line">print(line)</span><br></pre></td></tr></table></figure>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
-<li><a href="http://code.google.com/p/prettytable/" target="_blank" rel="external">http://code.google.com/p/prettytable/</a></li>
-<li><a href="https://py-ascii-graph.readthedocs.org/en/latest/" target="_blank" rel="external">https://py-ascii-graph.readthedocs.org/en/latest/</a></li>
-</ol>
+<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><h4 id="Go递归实现"><a href="#Go递归实现" class="headerlink" title="Go递归实现"></a>Go递归实现</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">diameterOfBinaryTree</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    d := <span class="number">0</span></span><br><span class="line">    height(root, &amp;d)</span><br><span class="line">    <span class="keyword">return</span> d</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">height</span><span class="params">(root *TreeNode, d *<span class="keyword">int</span>)</span> <span class="title">int</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span>  <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    hLeft := height(root.Left, d)</span><br><span class="line">    hRight := height(root.Right, d)</span><br><span class="line">    <span class="keyword">if</span> *d&lt;hLeft+hRight &#123;</span><br><span class="line">        *d = hLeft + hRight</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> hLeft&gt;hRight &#123;</span><br><span class="line">        <span class="keyword">return</span> hLeft+<span class="number">1</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> hRight+<span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -376,6 +339,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
+          
+        </div>
+      
 
       
       
@@ -385,8 +356,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-08-11-mysql-groupcommit/" rel="next" title="MySQL GroupCommit">
-                <i class="fa fa-chevron-left"></i> MySQL GroupCommit
+              <a href="/2018-01-05-L538-Convert-BST-to-Greater-Tree/" rel="next" title="L538. Convert BST to Greater Tree">
+                <i class="fa fa-chevron-left"></i> L538. Convert BST to Greater Tree
               </a>
             
           </div>
@@ -394,10 +365,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-08-24-a-li-shu-ju-ku-xiang-guan-shi-pin-fen-xiang/" rel="prev" title="阿里数据库相关视频分享">
-                阿里数据库相关视频分享 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -531,7 +498,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1、prettytable"><span class="nav-number">2.</span> <span class="nav-text">1、prettytable</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-功能"><span class="nav-number">2.1.</span> <span class="nav-text">1.1 功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-演示"><span class="nav-number">2.2.</span> <span class="nav-text">1.2 演示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-代码demo"><span class="nav-number">2.3.</span> <span class="nav-text">1.3 代码demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、ascii-graph"><span class="nav-number">2.4.</span> <span class="nav-text">2、ascii_graph </span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-功能"><span class="nav-number">3.</span> <span class="nav-text">2.1 功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-演示"><span class="nav-number">3.1.</span> <span class="nav-text">2.2 演示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-代码Demo"><span class="nav-number">3.2.</span> <span class="nav-text">2.3 代码Demo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go递归实现"><span class="nav-number">3.1.</span> <span class="nav-text">Go递归实现</span></a></li></ol></li></ol></div>
             
 
           </div>
