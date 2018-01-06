@@ -76,7 +76,7 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="题目描述Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge them into a new binary t">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-06T14:49:04.000Z">
+<meta property="og:updated_time" content="2018-01-06T14:50:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="L617  Merge Two Binary Trees">
 <meta name="twitter:description" content="题目描述Given two binary trees and imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge them into a new binary t">
@@ -326,6 +326,9 @@
 </ul>
 <a id="more"></a>
 <h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><h4 id="Go递归实现"><a href="#Go递归实现" class="headerlink" title="Go递归实现"></a>Go递归实现</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">mergeTrees</span><span class="params">(t1 *TreeNode, t2 *TreeNode)</span> *<span class="title">TreeNode</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> t1 != <span class="literal">nil</span> &amp;&amp; t2 != <span class="literal">nil</span> &#123;</span><br><span class="line">        t1.Val += t2.Val</span><br><span class="line">        t1.Left = mergeTrees(t1.Left, t2.Left)</span><br><span class="line">        t1.Right = mergeTrees(t1.Right, t2.Right)</span><br><span class="line">        <span class="keyword">return</span> t1</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> t1 == <span class="literal">nil</span> &amp;&amp; t2 != <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> t2</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> t1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 62 ms 72.46%</p>
+</blockquote>
 
       
     </div>
