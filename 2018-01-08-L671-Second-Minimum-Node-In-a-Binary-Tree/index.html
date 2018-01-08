@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Binary Tree," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="GDB概述GDB主要帮忙你完成下面四个方面的功能： 1、启动你的程序，可以按照你的自定义的要求随心所欲的运行程序。 2、可让被调试的程序在你所指定的调置的断点处停住。（断点可以是条件表达式） 3、当程序被停住时，可以检查此时你的程序中所发生的事。 4、动态的改变你程序的执行环境。">
+<meta name="description" content="题目描述Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node’">
+<meta name="keywords" content="LeetCode,Binary Tree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GDB学习笔记">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-05-11-learning-gdb/index.html">
+<meta property="og:title" content="L671  Second Minimum Node In a Binary Tree">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-08-L671-Second-Minimum-Node-In-a-Binary-Tree/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="GDB概述GDB主要帮忙你完成下面四个方面的功能： 1、启动你的程序，可以按照你的自定义的要求随心所欲的运行程序。 2、可让被调试的程序在你所指定的调置的断点处停住。（断点可以是条件表达式） 3、当程序被停住时，可以检查此时你的程序中所发生的事。 4、动态的改变你程序的执行环境。">
+<meta property="og:description" content="题目描述Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node’">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2018-01-08T07:21:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GDB学习笔记">
-<meta name="twitter:description" content="GDB概述GDB主要帮忙你完成下面四个方面的功能： 1、启动你的程序，可以按照你的自定义的要求随心所欲的运行程序。 2、可让被调试的程序在你所指定的调置的断点处停住。（断点可以是条件表达式） 3、当程序被停住时，可以检查此时你的程序中所发生的事。 4、动态的改变你程序的执行环境。">
+<meta name="twitter:title" content="L671  Second Minimum Node In a Binary Tree">
+<meta name="twitter:description" content="题目描述Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node’">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-05-11-learning-gdb/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-08-L671-Second-Minimum-Node-In-a-Binary-Tree/"/>
 
 
 
 
 
-  <title>GDB学习笔记 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L671  Second Minimum Node In a Binary Tree | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-05-11-learning-gdb/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-08-L671-Second-Minimum-Node-In-a-Binary-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">GDB学习笔记</h1>
+          <h1 class="post-title" itemprop="name headline">L671  Second Minimum Node In a Binary Tree</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-05-11T10:16:16+08:00">
-                2015-05-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-08T15:19:20+08:00">
+                2018-01-08
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GDB/" itemprop="url" rel="index">
-                    <span itemprop="name">GDB</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,13 +314,20 @@
       
 
       
-        <h3 id="GDB概述"><a href="#GDB概述" class="headerlink" title="GDB概述"></a>GDB概述</h3><p>GDB主要帮忙你完成下面四个方面的功能：</p>
-<p>1、启动你的程序，可以按照你的自定义的要求随心所欲的运行程序。</p>
-<p>2、可让被调试的程序在你所指定的调置的断点处停住。（断点可以是条件表达式）</p>
-<p>3、当程序被停住时，可以检查此时你的程序中所发生的事。</p>
-<p>4、动态的改变你程序的执行环境。</p>
-<a id="more"></a>
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="http://blog.csdn.net/haoel/article/details/2879" target="_blank" rel="external">陈皓的博客-用GDB调试程序 http://blog.csdn.net/haoel/article/details/2879</a></p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a non-empty special binary tree consisting of nodes with the non-negative value, where each node in this tree has exactly two or zero sub-node. If the node has two sub-nodes, then this node’s value is the smaller value among its two sub-nodes.</p>
+<p>Given such a binary tree, you need to output the second minimum value in the set made of all the nodes’ value in the whole tree.</p>
+<p>If no such second minimum value exists, output -1 instead.</p>
+<p>Example 1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">    2</span><br><span class="line">   / \</span><br><span class="line">  2   5</span><br><span class="line">     / \</span><br><span class="line">    5   7</span><br><span class="line"></span><br><span class="line">Output: 5</span><br></pre></td></tr></table></figure></p>
+<p>Explanation: The smallest value is 2, the second smallest value is 5.<br>Example 2:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: </span><br><span class="line">    2</span><br><span class="line">   / \</span><br><span class="line">  2   2</span><br><span class="line"></span><br><span class="line">Output: -1</span><br></pre></td></tr></table></figure></p>
+<p>Explanation: The smallest value is 2, but there isn’t any second smallest value.</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用两个变量，一个表是最小，一个表示第二小，初始化为最大值</li>
+<li>DFS遍历进行逐个比较</li>
+</ul>
+<h3 id="Go实现"><a href="#Go实现" class="headerlink" title="Go实现"></a>Go实现</h3><h4 id="Go递归实现"><a href="#Go递归实现" class="headerlink" title="Go递归实现"></a>Go递归实现</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">findSecondMinimumValue</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">const</span> MAX  = <span class="number">100000</span></span><br><span class="line">    first := MAX</span><br><span class="line">    second := first<span class="number">-1</span></span><br><span class="line">    dfs(root, &amp;first, &amp;second)</span><br><span class="line">    <span class="keyword">if</span> second != MAX<span class="number">-1</span> &#123;</span><br><span class="line">         <span class="keyword">return</span> second</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">dfs</span><span class="params">(root *TreeNode, first *<span class="keyword">int</span>, second *<span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Val&lt;*first &#123;</span><br><span class="line">        *first = root.Val</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Val&lt;*second &amp;&amp; root.Val&gt;*first &#123;</span><br><span class="line">        *second = root.Val</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    dfs(root.Left, first, second)</span><br><span class="line">    dfs(root.Right, first, second)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 2 ms 7.14%</p>
+</blockquote>
 
       
     </div>
@@ -357,6 +343,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
+          
+        </div>
+      
 
       
       
@@ -366,8 +360,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-05-04-python-operator-overload/" rel="next" title="python类操作符重载">
-                <i class="fa fa-chevron-left"></i> python类操作符重载
+              <a href="/2018-01-06-L637-Average-of-Levels-in-Binary-Tree/" rel="next" title="L637  Average of Levels in Binary Tree">
+                <i class="fa fa-chevron-left"></i> L637  Average of Levels in Binary Tree
               </a>
             
           </div>
@@ -375,10 +369,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-05-14-ccheng-xu-cun-chu-kong-jian/" rel="prev" title="C程序存储空间">
-                C程序存储空间 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -512,7 +502,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#GDB概述"><span class="nav-number">1.</span> <span class="nav-text">GDB概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">2.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go实现"><span class="nav-number">3.</span> <span class="nav-text">Go实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go递归实现"><span class="nav-number">3.1.</span> <span class="nav-text">Go递归实现</span></a></li></ol></li></ol></div>
             
 
           </div>
