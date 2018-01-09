@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo," />
+  <meta name="keywords" content="LeetCode,Binary Search Tree," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="Hexo使用数学公式在hexo安装目录下执行 1npm install hexo-math --save">
-<meta name="keywords" content="Hexo">
+<meta name="description" content="题目描述Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST. Assume a BST is defined as follows: The left subtree of a node conta">
+<meta name="keywords" content="LeetCode,Binary Search Tree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo相关使用">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-01-Hexo/index.html">
+<meta property="og:title" content="L501  Find Mode in Binary Search Tree">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-09-L501-Find-Mode-in-Binary-Search-Tree/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="Hexo使用数学公式在hexo安装目录下执行 1npm install hexo-math --save">
+<meta property="og:description" content="题目描述Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST. Assume a BST is defined as follows: The left subtree of a node conta">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-27T07:53:04.000Z">
+<meta property="og:updated_time" content="2018-01-09T02:55:11.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo相关使用">
-<meta name="twitter:description" content="Hexo使用数学公式在hexo安装目录下执行 1npm install hexo-math --save">
+<meta name="twitter:title" content="L501  Find Mode in Binary Search Tree">
+<meta name="twitter:description" content="题目描述Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST. Assume a BST is defined as follows: The left subtree of a node conta">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-01-Hexo/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-09-L501-Find-Mode-in-Binary-Search-Tree/"/>
 
 
 
 
 
-  <title>Hexo相关使用 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L501  Find Mode in Binary Search Tree | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-01-Hexo/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-09-L501-Find-Mode-in-Binary-Search-Tree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hexo相关使用</h1>
+          <h1 class="post-title" itemprop="name headline">L501  Find Mode in Binary Search Tree</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-01T16:45:38+08:00">
-                2017-12-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-09T10:52:38+08:00">
+                2018-01-09
               </time>
             
 
@@ -314,19 +314,17 @@
       
 
       
-        <h3 id="Hexo使用数学公式"><a href="#Hexo使用数学公式" class="headerlink" title="Hexo使用数学公式"></a>Hexo使用数学公式</h3><p>在hexo安装目录下执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-math --save</span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/find-mode-in-binary-search-tree/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a binary search tree (BST) with duplicates, find all the mode(s) (the most frequently occurred element) in the given BST.</p>
+<p>Assume a BST is defined as follows:</p>
+<p>The left subtree of a node contains only nodes with keys less than or equal to the node’s key.<br>The right subtree of a node contains only nodes with keys greater than or equal to the node’s key.<br>Both the left and right subtrees must also be binary search trees.<br>For example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Given BST [1,null,2,2],</span><br><span class="line">   1</span><br><span class="line">    \</span><br><span class="line">     2</span><br><span class="line">    /</span><br><span class="line">   2</span><br><span class="line">return [2].</span><br></pre></td></tr></table></figure></p>
+<p>Note: If a tree has more than one mode, you can return them in any order.</p>
+<p>Follow up: Could you do that without using any extra space? (Assume that the implicit stack space incurred due to recursion does not count).</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用map记录各个元素出现的次数，返回次数最多对应的元素list</li>
+</ul>
 <a id="more"></a>
-<p>然后编辑站点根目录下的_config.yml，添加</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">math:</span><br><span class="line">  engine: &apos;mathjax&apos; # or &apos;katex&apos;</span><br><span class="line">  mathjax:</span><br><span class="line">    src: custom_mathjax_source</span><br><span class="line">    config:</span><br><span class="line">      # MathJax config</span><br></pre></td></tr></table></figure>
-<p>之后进入theme的目录，编辑主题的_config.yml，找到mathjax字段。<br>NexT 5.0.1中默认mathjax是禁用，需要改成</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mathjax:</span><br><span class="line">   enable: true</span><br></pre></td></tr></table></figure>
-<p>最后hexo g，就可以部署或者运行server查看效果了。</p>
-<p>几个测试例子<br>使用$的一行代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% math %&#125;</span><br><span class="line">Simple inline $a = b + c$.</span><br><span class="line">&#123;% endmath %&#125;</span><br></pre></td></tr></table></figure>
-<p>Simple inline $a = b + c$.</p>
-<p>参考资料：<a href="http://zjubank.com/2016/08/16/hexo-use-mathjax/" target="_blank" rel="external">http://zjubank.com/2016/08/16/hexo-use-mathjax/</a></p>
-
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1——使用map"><a href="#Go代码实现1——使用map" class="headerlink" title="Go代码实现1——使用map"></a>Go代码实现1——使用map</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">findMode</span><span class="params">(root *TreeNode)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    m := <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    DFS(root, m)</span><br><span class="line">    path := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> _,v := <span class="keyword">range</span> m&#123;</span><br><span class="line">        path = <span class="built_in">append</span>(path, v)</span><br><span class="line">    &#125;</span><br><span class="line">    sort.Ints(path)</span><br><span class="line">    n:=<span class="built_in">len</span>(path)<span class="number">-1</span></span><br><span class="line">    max:= path[n]</span><br><span class="line">    ret := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> k,v := <span class="keyword">range</span> m&#123;</span><br><span class="line">        <span class="keyword">if</span> v==max &#123;</span><br><span class="line">            ret = <span class="built_in">append</span>(ret, k)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DFS</span><span class="params">(root *TreeNode, m <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> _,ok := m[root.Val];!ok&#123;</span><br><span class="line">        m[root.Val] = <span class="number">1</span></span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        m[root.Val] += <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    DFS(root.Left, m)</span><br><span class="line">    DFS(root.Right, m)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Go代码实现2"><a href="#Go代码实现2" class="headerlink" title="Go代码实现2"></a>Go代码实现2</h4>
       
     </div>
     
@@ -343,7 +341,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Binary-Search-Tree/" rel="tag"># Binary Search Tree</a>
           
         </div>
       
@@ -356,8 +356,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-12-01-L136-Single-Number/" rel="next" title="L136_Single_Number">
-                <i class="fa fa-chevron-left"></i> L136_Single_Number
+              <a href="/2018-01-08-L653-Two-Sum-IV-Input-is-a-BST/" rel="next" title="L653  Two Sum IV Input is a BST">
+                <i class="fa fa-chevron-left"></i> L653  Two Sum IV Input is a BST
               </a>
             
           </div>
@@ -365,10 +365,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-12-04-Linked-List-Cycle/" rel="prev" title="Linked List Cycle">
-                Linked List Cycle <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -502,7 +498,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Hexo使用数学公式"><span class="nav-number">1.</span> <span class="nav-text">Hexo使用数学公式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现1——使用map"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现1——使用map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现2"><span class="nav-number">3.2.</span> <span class="nav-text">Go代码实现2</span></a></li></ol></li></ol></div>
             
 
           </div>
