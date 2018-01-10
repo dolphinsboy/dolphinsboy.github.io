@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode,Binary Tree," />
+  <meta name="keywords" content="LeetCode,Binary Search Tree," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述Given a binary tree, return the preorder traversal of its nodes’ values. For example:Given binary tree [1,null,2,3], 123451 \  2 /3 return [1,2,3]. Note: Recursive solution is trivial, could you d">
-<meta name="keywords" content="LeetCode,Binary Tree">
+<meta name="description" content="题目描述Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST. Basically, the deletion can be divided">
+<meta name="keywords" content="LeetCode,Binary Search Tree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L144 Binary Tree Preorder Traversal">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-29-L144-Binary-Tree-Preorder-Traversal/index.html">
+<meta property="og:title" content="L450  Delete Node in a BST">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-10-L450-Delete-Node-in-a-BST/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述Given a binary tree, return the preorder traversal of its nodes’ values. For example:Given binary tree [1,null,2,3], 123451 \  2 /3 return [1,2,3]. Note: Recursive solution is trivial, could you d">
+<meta property="og:description" content="题目描述Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST. Basically, the deletion can be divided">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-29T04:00:26.000Z">
+<meta property="og:updated_time" content="2018-01-10T08:10:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L144 Binary Tree Preorder Traversal">
-<meta name="twitter:description" content="题目描述Given a binary tree, return the preorder traversal of its nodes’ values. For example:Given binary tree [1,null,2,3], 123451 \  2 /3 return [1,2,3]. Note: Recursive solution is trivial, could you d">
+<meta name="twitter:title" content="L450  Delete Node in a BST">
+<meta name="twitter:description" content="题目描述Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST. Basically, the deletion can be divided">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-29-L144-Binary-Tree-Preorder-Traversal/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-10-L450-Delete-Node-in-a-BST/"/>
 
 
 
 
 
-  <title>L144 Binary Tree Preorder Traversal | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L450  Delete Node in a BST | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-29-L144-Binary-Tree-Preorder-Traversal/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-10-L450-Delete-Node-in-a-BST/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L144 Binary Tree Preorder Traversal</h1>
+          <h1 class="post-title" itemprop="name headline">L450  Delete Node in a BST</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T11:33:59+08:00">
-                2017-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-10T16:01:08+08:00">
+                2018-01-10
               </time>
             
 
@@ -314,20 +314,19 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/binary-tree-preorder-traversal/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a binary tree, return the preorder traversal of its nodes’ values.</p>
-<p>For example:<br>Given binary tree [1,null,2,3],</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line"> \</span><br><span class="line">  2</span><br><span class="line"> /</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
-<p>return [1,2,3].</p>
-<p>Note: Recursive solution is trivial, could you do it iteratively?</p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="">题目描述</a></h3><p>Given a root node reference of a BST and a key, delete the node with the given key in the BST. Return the root node reference (possibly updated) of the BST.</p>
+<p>Basically, the deletion can be divided into two stages:</p>
+<p>Search for a node to remove.<br>If the node is found, delete the node.<br>Note: Time complexity should be O(height of tree).</p>
+<p>Example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">root = [5,3,6,2,4,null,7]</span><br><span class="line">key = 3</span><br><span class="line"></span><br><span class="line">    5</span><br><span class="line">   / \</span><br><span class="line">  3   6</span><br><span class="line"> / \   \</span><br><span class="line">2   4   7</span><br><span class="line"></span><br><span class="line">Given key to delete is 3. So we find the node with value 3 and delete it.</span><br><span class="line"></span><br><span class="line">One valid answer is [5,4,6,2,null,null,7], shown in the following BST.</span><br><span class="line"></span><br><span class="line">    5</span><br><span class="line">   / \</span><br><span class="line">  4   6</span><br><span class="line"> /     \</span><br><span class="line">2       7</span><br><span class="line"></span><br><span class="line">Another valid answer is [5,2,6,null,4,null,7].</span><br><span class="line"></span><br><span class="line">    5</span><br><span class="line">   / \</span><br><span class="line">  2   6</span><br><span class="line">   \   \</span><br><span class="line">    4   7</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>前序遍历递归，使用指针数组</li>
-<li>前序遍历递归，不使用指针数组</li>
-<li>使用stack循环实现, 右节点先入栈，左节点后入栈</li>
+<li>二分遍历BST，发现对应的节点root，查找右子树最小的元素current，将root.left接到current.left上，返回root.right<a id="more"></a>
+</li>
 </ul>
-<a id="more"></a>
-<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1——前序递归遍历，使用指针数组"><a href="#Go代码实现1——前序递归遍历，使用指针数组" class="headerlink" title="Go代码实现1——前序递归遍历，使用指针数组"></a>Go代码实现1——前序递归遍历，使用指针数组</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">preorderTraversal</span><span class="params">(root *TreeNode)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    path := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    preorder(root, &amp;path)</span><br><span class="line">    <span class="keyword">return</span> path</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">preorder</span><span class="params">(root *TreeNode, path *[]<span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    *path = <span class="built_in">append</span>(*path, root.Val)</span><br><span class="line">    preorder(root.Left, path)</span><br><span class="line">    preorder(root.Right, path)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Go代码实现2–前序递归遍历，不使用指针数组"><a href="#Go代码实现2–前序递归遍历，不使用指针数组" class="headerlink" title="Go代码实现2–前序递归遍历，不使用指针数组"></a>Go代码实现2–前序递归遍历，不使用指针数组</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">preorderTraversal</span><span class="params">(root *TreeNode)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    path := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    path = <span class="built_in">append</span>(path, root.Val)</span><br><span class="line">    path = <span class="built_in">append</span>(path, preorderTraversal(root.Left)...)</span><br><span class="line">    path = <span class="built_in">append</span>(path, preorderTraversal(root.Right)...)</span><br><span class="line">    <span class="keyword">return</span> path</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Go代码实现3——使用stack循环实现"><a href="#Go代码实现3——使用stack循环实现" class="headerlink" title="Go代码实现3——使用stack循环实现"></a>Go代码实现3——使用stack循环实现</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">preorderTraversal</span><span class="params">(root *TreeNode)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    path := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> path</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">var</span> stack []*TreeNode</span><br><span class="line">    stack = <span class="built_in">append</span>(stack, root)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">len</span>(stack)&gt;<span class="number">0</span> &#123;</span><br><span class="line">        root := stack[<span class="built_in">len</span>(stack)<span class="number">-1</span>]</span><br><span class="line">        stack = stack[<span class="number">0</span>:<span class="built_in">len</span>(stack)<span class="number">-1</span>]</span><br><span class="line">        path = <span class="built_in">append</span>(path, root.Val)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> root.Right != <span class="literal">nil</span> &#123;</span><br><span class="line">            stack = <span class="built_in">append</span>(stack, root.Right)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> root.Left != <span class="literal">nil</span> &#123;</span><br><span class="line">            stack = <span class="built_in">append</span>(stack, root.Left)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> path</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1"><a href="#Go代码实现1" class="headerlink" title="Go代码实现1"></a>Go代码实现1</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">deleteNode</span><span class="params">(root *TreeNode, key <span class="keyword">int</span>)</span> *<span class="title">TreeNode</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    root = findDelete(root, key)</span><br><span class="line">    <span class="keyword">return</span> root</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">findDelete</span><span class="params">(root *TreeNode, key <span class="keyword">int</span>)</span>*<span class="title">TreeNode</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Val == key&#123;</span><br><span class="line">        <span class="keyword">if</span> root.Left == <span class="literal">nil</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> root.Right</span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span> root.Right == <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> root.Left</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        current := root.Right</span><br><span class="line">        <span class="keyword">for</span> current.Left != <span class="literal">nil</span> &#123;</span><br><span class="line">            current = current.Left</span><br><span class="line">        &#125;</span><br><span class="line">        current.Left = root.Left</span><br><span class="line">        <span class="keyword">return</span> root.Right</span><br><span class="line"></span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span> root.Val&gt;key &#123;</span><br><span class="line">        root.Left = findDelete(root.Left, key)</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        root.Right = findDelete(root.Right, key)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 1162 ms 27.78%</p>
+</blockquote>
 
       
     </div>
@@ -347,7 +346,7 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
-            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
+            <a href="/tags/Binary-Search-Tree/" rel="tag"># Binary Search Tree</a>
           
         </div>
       
@@ -360,8 +359,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-12-29-L572-Subtree-of-Another-Tree/" rel="next" title="L572 Subtree of Another Tree">
-                <i class="fa fa-chevron-left"></i> L572 Subtree of Another Tree
+              <a href="/2018-01-10-L449-Serialize-and-Deserialize-BST/" rel="next" title="L449  Serialize and Deserialize BST">
+                <i class="fa fa-chevron-left"></i> L449  Serialize and Deserialize BST
               </a>
             
           </div>
@@ -369,10 +368,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-12-29-L145-Binary-Tree-Postorder-Traversal/" rel="prev" title="L145 Binary Tree Postorder Traversal">
-                L145 Binary Tree Postorder Traversal <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -506,7 +501,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现1——前序递归遍历，使用指针数组"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现1——前序递归遍历，使用指针数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现2–前序递归遍历，不使用指针数组"><span class="nav-number">3.2.</span> <span class="nav-text">Go代码实现2–前序递归遍历，不使用指针数组</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现3——使用stack循环实现"><span class="nav-number">3.3.</span> <span class="nav-text">Go代码实现3——使用stack循环实现</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现1"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现1</span></a></li></ol></li></ol></div>
             
 
           </div>
