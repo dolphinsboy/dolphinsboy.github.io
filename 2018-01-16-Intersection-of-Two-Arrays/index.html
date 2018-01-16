@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Array," />
 
 
 
@@ -68,19 +68,18 @@
 
 
 
-<meta name="description" content="1. 正文段CPU执行的机器指令部分。通常，正文段是可共享的。正文段常常是只读的，以防止程序由于意外而修改其自身的指令。 2. 初始化数据段程序需明确赋值的变量。 3. 非初始化数据段bss：block started by symbol 由符合开始的地方。">
+<meta name="description" content="题目描述L349Given two arrays, write a function to compute their intersection. Example:Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2]. Note:Each element in the result must be unique.The result can">
+<meta name="keywords" content="LeetCode,Array">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C程序存储空间">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-05-14-ccheng-xu-cun-chu-kong-jian/index.html">
+<meta property="og:title" content="Intersection of Two Arrays">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-16-Intersection-of-Two-Arrays/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="1. 正文段CPU执行的机器指令部分。通常，正文段是可共享的。正文段常常是只读的，以防止程序由于意外而修改其自身的指令。 2. 初始化数据段程序需明确赋值的变量。 3. 非初始化数据段bss：block started by symbol 由符合开始的地方。">
+<meta property="og:description" content="题目描述L349Given two arrays, write a function to compute their intersection. Example:Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2]. Note:Each element in the result must be unique.The result can">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dolphinsboy.github.io/images/c_program.png">
-<meta property="og:updated_time" content="2017-11-13T07:47:09.000Z">
+<meta property="og:updated_time" content="2018-01-16T10:27:33.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C程序存储空间">
-<meta name="twitter:description" content="1. 正文段CPU执行的机器指令部分。通常，正文段是可共享的。正文段常常是只读的，以防止程序由于意外而修改其自身的指令。 2. 初始化数据段程序需明确赋值的变量。 3. 非初始化数据段bss：block started by symbol 由符合开始的地方。">
-<meta name="twitter:image" content="http://dolphinsboy.github.io/images/c_program.png">
+<meta name="twitter:title" content="Intersection of Two Arrays">
+<meta name="twitter:description" content="题目描述L349Given two arrays, write a function to compute their intersection. Example:Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2]. Note:Each element in the result must be unique.The result can">
 
 
 
@@ -109,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-05-14-ccheng-xu-cun-chu-kong-jian/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-16-Intersection-of-Two-Arrays/"/>
 
 
 
 
 
-  <title>C程序存储空间 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Intersection of Two Arrays | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -248,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-05-14-ccheng-xu-cun-chu-kong-jian/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-16-Intersection-of-Two-Arrays/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -265,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C程序存储空间</h1>
+          <h1 class="post-title" itemprop="name headline">Intersection of Two Arrays</h1>
         
 
         <div class="post-meta">
@@ -277,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-05-14T11:39:12+08:00">
-                2015-05-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T17:43:07+08:00">
+                2018-01-16
               </time>
             
 
@@ -287,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -337,16 +314,24 @@
       
 
       
-        <h3 id="1-正文段"><a href="#1-正文段" class="headerlink" title="1. 正文段"></a>1. 正文段</h3><p>CPU执行的机器指令部分。通常，正文段是可共享的。正文段常常是只读的，以防止程序由于意外而修改其自身的指令。</p>
-<h3 id="2-初始化数据段"><a href="#2-初始化数据段" class="headerlink" title="2. 初始化数据段"></a>2. 初始化数据段</h3><p>程序需明确赋值的变量。</p>
-<h3 id="3-非初始化数据段"><a href="#3-非初始化数据段" class="headerlink" title="3. 非初始化数据段"></a>3. 非初始化数据段</h3><p>bss：block started by symbol 由符合开始的地方。</p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><h4 id="L349"><a href="#L349" class="headerlink" title="L349"></a><a href="https://leetcode.com/problems/intersection-of-two-arrays/description/" target="_blank" rel="external">L349</a></h4><p>Given two arrays, write a function to compute their intersection.</p>
+<p>Example:<br>Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2].</p>
+<p>Note:<br>Each element in the result must be unique.<br>The result can be in any order.</p>
+<h4 id="L350"><a href="#L350" class="headerlink" title="L350"></a><a href="https://leetcode.com/problems/intersection-of-two-arrays-ii/description/" target="_blank" rel="external">L350</a></h4><p>Given two arrays, write a function to compute their intersection.</p>
+<p>Example:<br>Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2, 2].</p>
+<p>Note:<br>Each element in the result should appear as many times as it shows in both arrays.<br>The result can be in any order.<br>Follow up:<br>What if the given array is already sorted? How would you optimize your algorithm?<br>What if nums1’s size is small compared to nums2’s size? Which algorithm is better?<br>What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用map实现</li>
+</ul>
 <a id="more"></a>
-<h3 id="4-栈"><a href="#4-栈" class="headerlink" title="4. 栈"></a>4. 栈</h3><p>自动变量以及每次函数调用时所需保存的信息都存放在此段中。</p>
-<h3 id="5-堆"><a href="#5-堆" class="headerlink" title="5. 堆"></a>5. 堆</h3><p>通常在堆中进行动态存储分配。</p>
-<p><img src="/images/c_program.png" alt="C程序存储空间"></p>
-<h3 id="6、例子"><a href="#6、例子" class="headerlink" title="6、例子"></a>6、例子</h3><p>size命令获取各个段的大小，单位是字节</p>
-<figure class="highlight html"><figcaption><span>size命令获取各个段大小</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ size 7-1</span><br><span class="line">__TEXT	__DATA	__OBJC	others	dec	hex</span><br><span class="line">4096	4096	0	4294971392	4294979584	100003000</span><br></pre></td></tr></table></figure>
-<p>第四列和第五列是十进制和十六进制的长度表示。</p>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="L349-1"><a href="#L349-1" class="headerlink" title="L349"></a>L349</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">intersection</span><span class="params">(nums1 []<span class="keyword">int</span>, nums2 []<span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    m := <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    ret_map := <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    ret := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> _,n := <span class="keyword">range</span> nums1&#123;</span><br><span class="line">        <span class="keyword">if</span> _,ok := m[n];!ok &#123;</span><br><span class="line">            m[n] = <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,n := <span class="keyword">range</span> nums2 &#123;</span><br><span class="line">        <span class="keyword">if</span> _,ok := m[n] ;ok&#123;</span><br><span class="line">            <span class="keyword">if</span> _,ok2 := ret_map[n]; !ok2&#123;</span><br><span class="line">                ret_map[n]=<span class="number">1</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k := <span class="keyword">range</span> ret_map&#123;</span><br><span class="line">        ret = <span class="built_in">append</span>(ret, k)</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 13 ms 10.53%</p>
+</blockquote>
+<h4 id="L350-1"><a href="#L350-1" class="headerlink" title="L350"></a>L350</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">intersect</span><span class="params">(nums1 []<span class="keyword">int</span>, nums2 []<span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">    m := <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    ret := <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    arr := []<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> _,n := <span class="keyword">range</span> nums1&#123;</span><br><span class="line">        <span class="keyword">if</span> _,ok := m[n];!ok &#123;</span><br><span class="line">            m[n] = <span class="number">1</span></span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            m[n] += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> _,n := <span class="keyword">range</span> nums2 &#123;</span><br><span class="line">        <span class="keyword">if</span> _,ok := m[n];ok &#123;</span><br><span class="line">            ret[n] += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> n,j := <span class="keyword">range</span> ret&#123;</span><br><span class="line">        k,_ := m[n]</span><br><span class="line">        <span class="keyword">if</span> k&gt;j &#123;</span><br><span class="line">            k = j</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;k;i++ &#123;</span><br><span class="line">            arr = <span class="built_in">append</span>(arr, n)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> arr</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 12ms 15.38%</p>
+</blockquote>
 
       
     </div>
@@ -362,6 +347,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Array/" rel="tag"># Array</a>
+          
+        </div>
+      
 
       
       
@@ -371,8 +364,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-05-11-learning-gdb/" rel="next" title="GDB学习笔记">
-                <i class="fa fa-chevron-left"></i> GDB学习笔记
+              <a href="/2018-01-15-L448-Find-All-Numbers-Disappeared-in-an-Array/" rel="next" title="L448  Find All Numbers Disappeared in an Array">
+                <i class="fa fa-chevron-left"></i> L448  Find All Numbers Disappeared in an Array
               </a>
             
           </div>
@@ -380,10 +373,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-05-15-cheng-xu-ku/" rel="prev" title="静态库、共享库、动态库">
-                静态库、共享库、动态库 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -517,7 +506,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-正文段"><span class="nav-number">1.</span> <span class="nav-text">1. 正文段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-初始化数据段"><span class="nav-number">2.</span> <span class="nav-text">2. 初始化数据段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-非初始化数据段"><span class="nav-number">3.</span> <span class="nav-text">3. 非初始化数据段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-栈"><span class="nav-number">4.</span> <span class="nav-text">4. 栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-堆"><span class="nav-number">5.</span> <span class="nav-text">5. 堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、例子"><span class="nav-number">6.</span> <span class="nav-text">6、例子</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#L349"><span class="nav-number">1.1.</span> <span class="nav-text">L349</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#L350"><span class="nav-number">1.2.</span> <span class="nav-text">L350</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#L349-1"><span class="nav-number">3.1.</span> <span class="nav-text">L349</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#L350-1"><span class="nav-number">3.2.</span> <span class="nav-text">L350</span></a></li></ol></li></ol></div>
             
 
           </div>
