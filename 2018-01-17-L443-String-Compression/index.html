@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines">
+<meta name="description" content="题目描述Given an array of characters, compress it in-place. The length after compression must always be smaller than or equal to the original array. Every element of the array should be a character (not i">
 <meta name="keywords" content="LeetCode,String">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L383  Ransom Note">
-<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-17-L383-Ransom-Note/index.html">
+<meta property="og:title" content="L443  String Compression">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-17-L443-String-Compression/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines">
+<meta property="og:description" content="题目描述Given an array of characters, compress it in-place. The length after compression must always be smaller than or equal to the original array. Every element of the array should be a character (not i">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-17T06:39:29.000Z">
+<meta property="og:updated_time" content="2018-01-17T10:35:44.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L383  Ransom Note">
-<meta name="twitter:description" content="题目描述Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines">
+<meta name="twitter:title" content="L443  String Compression">
+<meta name="twitter:description" content="题目描述Given an array of characters, compress it in-place. The length after compression must always be smaller than or equal to the original array. Every element of the array should be a character (not i">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-17-L383-Ransom-Note/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-17-L443-String-Compression/"/>
 
 
 
 
 
-  <title>L383  Ransom Note | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L443  String Compression | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-17-L383-Ransom-Note/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-17-L443-String-Compression/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L383  Ransom Note</h1>
+          <h1 class="post-title" itemprop="name headline">L443  String Compression</h1>
         
 
         <div class="post-meta">
@@ -276,7 +276,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T11:56:28+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T18:32:37+08:00">
                 2018-01-17
               </time>
             
@@ -314,22 +314,20 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/ransom-note/description/" target="_blank" rel="external">题目描述</a></h3><p>Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines ; otherwise, it will return false.</p>
-<p>Each letter in the magazine string can only be used once in your ransom note.</p>
-<p>Note:<br>You may assume that both strings contain only lowercase letters.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">canConstruct(&quot;a&quot;, &quot;b&quot;) -&gt; false</span><br><span class="line">canConstruct(&quot;aa&quot;, &quot;ab&quot;) -&gt; false</span><br><span class="line">canConstruct(&quot;aa&quot;, &quot;aab&quot;) -&gt; true</span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="">题目描述</a></h3><p>Given an array of characters, compress it in-place.</p>
+<p>The length after compression must always be smaller than or equal to the original array.</p>
+<p>Every element of the array should be a character (not int) of length 1.</p>
+<p>After you are done modifying the input array in-place, return the new length of the array.</p>
+<p>Follow up:<br>Could you solve it using only O(1) extra space?<br><a id="more"></a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;c&quot;,&quot;c&quot;,&quot;c&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 6, and the first 6 characters of the input array should be: [&quot;a&quot;,&quot;2&quot;,&quot;b&quot;,&quot;2&quot;,&quot;c&quot;,&quot;3&quot;]</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">&quot;aa&quot; is replaced by &quot;a2&quot;. &quot;bb&quot; is replaced by &quot;b2&quot;. &quot;ccc&quot; is replaced by &quot;c3&quot;.</span><br><span class="line">Example 2:</span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 1, and the first 1 characters of the input array should be: [&quot;a&quot;]</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Nothing is replaced.</span><br><span class="line">Example 3:</span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 4, and the first 4 characters of the input array should be: [&quot;a&quot;,&quot;b&quot;,&quot;1&quot;,&quot;2&quot;].</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Since the character &quot;a&quot; does not repeat, it is not compressed. &quot;bbbbbbbbbbbb&quot; is replaced by &quot;b12&quot;.</span><br><span class="line">Notice each digit has it&apos;s own entry in the array.</span><br><span class="line">Note:</span><br><span class="line">All characters have an ASCII value in [35, 126].</span><br><span class="line">1 &lt;= len(chars) &lt;= 1000.</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>使用两个map表示字符串，判断第一个map中key是否存在于第二个map中，且value是否小于第二个map</li>
-<li>使用一个128位的数组</li>
+<li>对连续的字符进行压缩，压缩的结果是字符以及对应的连续的次数，如果连续次数为1，不显示次数</li>
+<li>返回结果为压缩后字符的总长度</li>
+<li>同时，需要将chars修改为压缩后结果</li>
 </ul>
-<a id="more"></a>
-<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1——使用map"><a href="#Go代码实现1——使用map" class="headerlink" title="Go代码实现1——使用map"></a>Go代码实现1——使用map</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">canConstruct</span><span class="params">(ransomNote <span class="keyword">string</span>, magazine <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    m1 := <span class="keyword">map</span>[<span class="keyword">int32</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    m2 := <span class="keyword">map</span>[<span class="keyword">int32</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,c := <span class="keyword">range</span> ransomNote &#123;</span><br><span class="line">        <span class="keyword">if</span> _,ok := m1[c];!ok &#123;</span><br><span class="line">            m1[c] = <span class="number">1</span></span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            m1[c] += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,c := <span class="keyword">range</span> magazine &#123;</span><br><span class="line">        <span class="keyword">if</span> _,ok := m2[c];!ok &#123;</span><br><span class="line">            m2[c] = <span class="number">1</span></span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            m2[c] += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k,v := <span class="keyword">range</span> m1&#123;</span><br><span class="line">        <span class="keyword">if</span> v1, ok := m2[k];!ok ||  v&gt;v1 &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1"><a href="#Go代码实现1" class="headerlink" title="Go代码实现1"></a>Go代码实现1</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">mport (</span><br><span class="line">    <span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">compress</span><span class="params">(chars []<span class="keyword">byte</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    n:=<span class="built_in">len</span>(chars)</span><br><span class="line">    idx := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n;i++ &#123;</span><br><span class="line">        char := chars[i]</span><br><span class="line">        count := <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i&lt;n &amp;&amp; chars[i] == char &#123;</span><br><span class="line">            count++</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">        i--</span><br><span class="line"></span><br><span class="line">        chars[idx] = char</span><br><span class="line">        idx++</span><br><span class="line">        <span class="keyword">if</span> count &gt; <span class="number">1</span> &#123;</span><br><span class="line">            countStr := strconv.Itoa(count)</span><br><span class="line">            <span class="keyword">for</span> k:=<span class="number">0</span>;k&lt;<span class="built_in">len</span>(countStr);k++ &#123;</span><br><span class="line">                chars[idx] = countStr[k]</span><br><span class="line">                idx++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> idx</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>Runtime: 45 ms 38.10%</p>
-</blockquote>
-<h4 id="Go代码实现2"><a href="#Go代码实现2" class="headerlink" title="Go代码实现2"></a>Go代码实现2</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">canConstruct</span><span class="params">(ransomNote <span class="keyword">string</span>, magazine <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    letter := <span class="built_in">make</span>([]<span class="keyword">int32</span>, <span class="number">128</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,n := <span class="keyword">range</span> magazine&#123;</span><br><span class="line">        letter[n] += <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,n := <span class="keyword">range</span> ransomNote&#123;</span><br><span class="line">        letter[n]-=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> letter[n]&lt;<span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>Runtime: 11 ms 80.95%</p>
+<p>Runtime 35ms 0.00% </p>
 </blockquote>
 
       
@@ -363,8 +361,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018-01-17-L345-Reverse-Vowels-of-a-String/" rel="next" title="L345  Reverse Vowels of a String">
-                <i class="fa fa-chevron-left"></i> L345  Reverse Vowels of a String
+              <a href="/2018-01-17-L434-Number-of-Segments-in-a-String/" rel="next" title="L434  Number of Segments in a String">
+                <i class="fa fa-chevron-left"></i> L434  Number of Segments in a String
               </a>
             
           </div>
@@ -372,10 +370,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018-01-17-L434-Number-of-Segments-in-a-String/" rel="prev" title="L434  Number of Segments in a String">
-                L434  Number of Segments in a String <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -509,7 +503,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现1——使用map"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现1——使用map</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现2"><span class="nav-number">3.2.</span> <span class="nav-text">Go代码实现2</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现1"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现1</span></a></li></ol></li></ol></div>
             
 
           </div>
