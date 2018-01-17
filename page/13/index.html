@@ -244,6 +244,199 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-21-mysqlxing-neng-ce-shi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015-12-21-mysqlxing-neng-ce-shi/" itemprop="url">mysql性能测试</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-21T17:00:06+08:00">
+                2015-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>介绍sysbench相关的使用方法。</p>
+<h2 id="1、sysbench生成数据"><a href="#1、sysbench生成数据" class="headerlink" title="1、sysbench生成数据"></a>1、sysbench生成数据</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sysbench --<span class="built_in">test</span>=/home/guosong/<span class="built_in">source</span>/sysbench/sysbench/tests/db/oltp.lua</span><br><span class="line">--mysql-host=10.30.21.179 --mysql-port=4000</span><br><span class="line">--mysql-user=superdba --mysql-password=nUSP9RAOXXqTrNq50rRw</span><br><span class="line">--mysql-table-engine=innodb --oltp-table-size=20000000</span><br><span class="line">--max-time=180 --num-threads=30 --max-requests=0 prepare</span><br></pre></td></tr></table></figure>
+<p>直接使用otlp报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[guosong@dev-00 db]$ sysbench --<span class="built_in">test</span>=oltp <span class="built_in">help</span></span><br><span class="line">sysbench 0.5:  multi-threaded system evaluation benchmark</span><br><span class="line">PANIC: unprotected error <span class="keyword">in</span> call to Lua API (cannot open oltp: No such file or directory)</span><br></pre></td></tr></table></figure>
+<p>原因是这个0.5版本的特性，与0.4版本不同。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2 000 0000  行数据 4.8G</span><br><span class="line">2 0000 0000 行数据 48G</span><br></pre></td></tr></table></figure>
+<h2 id="2、运行"><a href="#2、运行" class="headerlink" title="2、运行"></a>2、运行</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sysbench --num-threads=256 --<span class="built_in">test</span>=/home/guosong/<span class="built_in">source</span>/sysbench/sysbench/tests/db/oltp.lua</span><br><span class="line">--oltp-dist-type=uniform --oltp-table-name=sbtest_1</span><br><span class="line">--max-requests=0 --max-time=720</span><br><span class="line">--mysql-host=shangcheng-online-s1-d0.db --mysql-port=3306</span><br><span class="line">--mysql-user=dba --mysql-password=xxxxxx</span><br><span class="line">--mysql-db=sbtest --mysql-table-engine=INNODB</span><br><span class="line">--db-driver=mysql --oltp-point-selects=1</span><br><span class="line">--oltp-simple-ranges=0</span><br><span class="line">--oltp-sum-ranges=0</span><br><span class="line">--oltp-order-ranges=0</span><br><span class="line">--oltp-distinct-ranges=0</span><br><span class="line">--oltp-skip-trx=on</span><br><span class="line">--oltp-read-only=on run</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th style="text-align:left">含义</th>
+<th style="text-align:center">默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>–oltp-simple-ranges</td>
+<td style="text-align:left">Range size for range queries</td>
+<td style="text-align:center">100</td>
+</tr>
+<tr>
+<td>–oltp-sum-ranges</td>
+<td style="text-align:left">Number of SUM range queries in a single transaction</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td>–oltp-order-ranges</td>
+<td style="text-align:left">Number of ORDER range queries in a single transaction</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td>–oltp-distinct-ranges</td>
+<td style="text-align:left">Number of DISTINCT range queries in a single 1 transaction</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td>–oltp-skip-trx</td>
+<td style="text-align:left">Omit BEGIN/COMMIT statements, i.e. run the same queries as the test would normally run but without off using transactions.</td>
+<td style="text-align:center">off</td>
+</tr>
+<tr>
+<td>–oltp-read-only</td>
+<td style="text-align:left">Read-only mode. No UPDATE, DELETE or INSERT queries off will be performed.</td>
+<td style="text-align:center">off</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/images/sysbench_demo.png" alt="../image/sysbench_demo.png"></p>
+<h2 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h2><ul>
+<li><a href="http://wiki.mikejung.biz/Benchmarking" target="_blank" rel="external">http://wiki.mikejung.biz/Benchmarking</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-09-mysql-gtidshi-jian/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1553,150 +1746,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-09-16-pythonpa-chong/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015-09-16-pythonpa-chong/" itemprop="url">Python爬虫</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-09-16T15:03:50+08:00">
-                2015-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python实战/" itemprop="url" rel="index">
-                    <span itemprop="name">Python实战</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1、Python抓取内部wiki保存为pdf文件"><a href="#1、Python抓取内部wiki保存为pdf文件" class="headerlink" title="1、Python抓取内部wiki保存为pdf文件"></a>1、Python抓取内部wiki保存为pdf文件</h2><h2 id="2、参考资料"><a href="#2、参考资料" class="headerlink" title="2、参考资料"></a>2、参考资料</h2><ul>
-<li><a href="http://cuiqingcai.com/1052.html" target="_blank" rel="external">http://cuiqingcai.com/1052.html</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1747,7 +1796,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">162</span>
+                <span class="site-state-item-count">163</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
