@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,String," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="======= categories: [‘MySQL’]0、全文索引说明全文索引使用情况，文件组织格式、使用方式等。">
+<meta name="description" content="题目描述Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines">
+<meta name="keywords" content="LeetCode,String">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql全文索引">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-12-23-mysqlquan-wen-suo-yin/index.html">
+<meta property="og:title" content="L383  Ransom Note">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-17-L383-Ransom-Note/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="======= categories: [‘MySQL’]0、全文索引说明全文索引使用情况，文件组织格式、使用方式等。">
+<meta property="og:description" content="题目描述Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2018-01-17T03:59:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql全文索引">
-<meta name="twitter:description" content="======= categories: [‘MySQL’]0、全文索引说明全文索引使用情况，文件组织格式、使用方式等。">
+<meta name="twitter:title" content="L383  Ransom Note">
+<meta name="twitter:description" content="题目描述Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-12-23-mysqlquan-wen-suo-yin/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-17-L383-Ransom-Note/"/>
 
 
 
 
 
-  <title>mysql全文索引 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L383  Ransom Note | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-23-mysqlquan-wen-suo-yin/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-17-L383-Ransom-Note/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mysql全文索引</h1>
+          <h1 class="post-title" itemprop="name headline">L383  Ransom Note</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-23T15:07:57+08:00">
-                2015-12-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T11:56:28+08:00">
+                2018-01-17
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,11 +314,18 @@
       
 
       
-        <p>=======</p>
-<h2 id="categories-‘MySQL’"><a href="#categories-‘MySQL’" class="headerlink" title="categories: [‘MySQL’]"></a>categories: [‘MySQL’]</h2><h2 id="0、全文索引"><a href="#0、全文索引" class="headerlink" title="0、全文索引"></a>0、全文索引</h2><p>说明全文索引使用情况，文件组织格式、使用方式等。<br><a id="more"></a></p>
-<h2 id="1、全文索引"><a href="#1、全文索引" class="headerlink" title="1、全文索引"></a>1、全文索引</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_1.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_2.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_3.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_4.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_5.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_6.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED.ibd</span><br><span class="line">FTS_000000000000004b_CONFIG.ibd</span><br><span class="line">FTS_000000000000004b_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_DELETED.ibd</span><br></pre></td></tr></table></figure>
-<p>之前没有对全文索引研究过，一开始对这个ibd文件感到奇怪，原来使用到全文索引。</p>
-<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html</a></p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/ransom-note/description/" target="_blank" rel="external">题目描述</a></h3><p>Given an arbitrary ransom note string and another string containing letters from all the magazines, write a function that will return true if the ransom note can be constructed from the magazines ; otherwise, it will return false.</p>
+<p>Each letter in the magazine string can only be used once in your ransom note.</p>
+<p>Note:<br>You may assume that both strings contain only lowercase letters.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">canConstruct(&quot;a&quot;, &quot;b&quot;) -&gt; false</span><br><span class="line">canConstruct(&quot;aa&quot;, &quot;ab&quot;) -&gt; false</span><br><span class="line">canConstruct(&quot;aa&quot;, &quot;aab&quot;) -&gt; true</span><br></pre></td></tr></table></figure>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>使用两个map表示字符串，判断第一个map中key是否存在于第二个map中，且value是否小于第二个map</li>
+</ul>
+<a id="more"></a>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1——使用map"><a href="#Go代码实现1——使用map" class="headerlink" title="Go代码实现1——使用map"></a>Go代码实现1——使用map</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">canConstruct</span><span class="params">(ransomNote <span class="keyword">string</span>, magazine <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    m1 := <span class="keyword">map</span>[<span class="keyword">int32</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    m2 := <span class="keyword">map</span>[<span class="keyword">int32</span>]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,c := <span class="keyword">range</span> ransomNote &#123;</span><br><span class="line">        <span class="keyword">if</span> _,ok := m1[c];!ok &#123;</span><br><span class="line">            m1[c] = <span class="number">1</span></span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            m1[c] += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _,c := <span class="keyword">range</span> magazine &#123;</span><br><span class="line">        <span class="keyword">if</span> _,ok := m2[c];!ok &#123;</span><br><span class="line">            m2[c] = <span class="number">1</span></span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            m2[c] += <span class="number">1</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> k,v := <span class="keyword">range</span> m1&#123;</span><br><span class="line">        <span class="keyword">if</span> v1, ok := m2[k];!ok ||  v&gt;v1 &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 45 ms 38.10%</p>
+</blockquote>
 
       
     </div>
@@ -355,6 +341,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/String/" rel="tag"># String</a>
+          
+        </div>
+      
 
       
       
@@ -364,8 +358,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-12-21-mysqlxing-neng-ce-shi/" rel="next" title="mysql性能测试">
-                <i class="fa fa-chevron-left"></i> mysql性能测试
+              <a href="/2018-01-17-L345-Reverse-Vowels-of-a-String/" rel="next" title="L345  Reverse Vowels of a String">
+                <i class="fa fa-chevron-left"></i> L345  Reverse Vowels of a String
               </a>
             
           </div>
@@ -373,10 +367,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/" rel="prev" title="pt-online-schema-change使用方法">
-                pt-online-schema-change使用方法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -510,7 +500,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#categories-‘MySQL’"><span class="nav-number">1.</span> <span class="nav-text">categories: [‘MySQL’]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0、全文索引"><span class="nav-number">2.</span> <span class="nav-text">0、全文索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1、全文索引"><span class="nav-number">3.</span> <span class="nav-text">1、全文索引</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现1——使用map"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现1——使用map</span></a></li></ol></li></ol></div>
             
 
           </div>
