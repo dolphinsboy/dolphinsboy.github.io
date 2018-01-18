@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode," />
+  <meta name="keywords" content="LeetCode,String," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero. Note: The solution set must not contain">
-<meta name="keywords" content="LeetCode">
+<meta name="description" content="题目描述Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1. Examples: 12345s = &amp;quot;leetcode&amp;quot;return 0.s = &amp;quot;loveleetcode&amp;quot;,ret">
+<meta name="keywords" content="LeetCode,String">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L15_3sum">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-11-13-leetcode-L15-3sum/index.html">
+<meta property="og:title" content="L387  First Unique Character in a String">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-18-L387-First-Unique-Character-in-a-String/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero. Note: The solution set must not contain">
+<meta property="og:description" content="题目描述Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1. Examples: 12345s = &amp;quot;leetcode&amp;quot;return 0.s = &amp;quot;loveleetcode&amp;quot;,ret">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-16T10:29:13.000Z">
+<meta property="og:updated_time" content="2018-01-18T02:54:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L15_3sum">
-<meta name="twitter:description" content="题目描述Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero. Note: The solution set must not contain">
+<meta name="twitter:title" content="L387  First Unique Character in a String">
+<meta name="twitter:description" content="题目描述Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1. Examples: 12345s = &amp;quot;leetcode&amp;quot;return 0.s = &amp;quot;loveleetcode&amp;quot;,ret">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-11-13-leetcode-L15-3sum/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-18-L387-First-Unique-Character-in-a-String/"/>
 
 
 
 
 
-  <title>L15_3sum | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L387  First Unique Character in a String | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-11-13-leetcode-L15-3sum/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-18-L387-First-Unique-Character-in-a-String/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L15_3sum</h1>
+          <h1 class="post-title" itemprop="name headline">L387  First Unique Character in a String</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-13T15:29:46+08:00">
-                2017-11-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T10:42:29+08:00">
+                2018-01-18
               </time>
             
 
@@ -314,13 +314,23 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/3sum" target="_blank" rel="external">题目描述</a></h3><p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.</p>
-<p>Note: The solution set must not contain duplicate triplets.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">For example, given array S = [-1, 0, 1, 2, -1, -4],</span><br><span class="line"></span><br><span class="line">A solution set is:</span><br><span class="line">[</span><br><span class="line">  [-1, 0, 1],</span><br><span class="line">  [-1, -1, 2]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><p>首先将数组进行排序，排序后使用3个索引进行sum的判断</p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/first-unique-character-in-a-string/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a string, find the first non-repeating character in it and return it’s index. If it doesn’t exist, return -1.</p>
+<p>Examples:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = &quot;leetcode&quot;</span><br><span class="line">return 0.</span><br><span class="line"></span><br><span class="line">s = &quot;loveleetcode&quot;,</span><br><span class="line">return 2.</span><br></pre></td></tr></table></figure>
+<p>Note: You may assume the string contain only lowercase letters.</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>题目中note说是字符串中包含的只有小写字母，故可以包含26个int的数组表示各个字符出现的次数</li>
+<li>然后再从新遍历字符串，首次只出现一次的字符串的index返回</li>
+</ul>
 <a id="more"></a>
-<h3 id="Go版本"><a href="#Go版本" class="headerlink" title="Go版本"></a>Go版本</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"sort"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">threeSum</span><span class="params">(nums []<span class="keyword">int</span>)</span> [][]<span class="title">int</span></span> &#123;</span><br><span class="line">    l := <span class="built_in">len</span>(nums)</span><br><span class="line">    r := [][]<span class="keyword">int</span>&#123;&#125;</span><br><span class="line">    sort.Ints(nums)</span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>; i&lt;l<span class="number">-2</span>;i++  &#123;</span><br><span class="line">        j := i+<span class="number">1</span></span><br><span class="line">        k := l<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> j&lt;k &#123;</span><br><span class="line">            s := nums[i] + nums[j] + nums[k]</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> s&gt;<span class="number">0</span>&#123;</span><br><span class="line">                k--</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span> s&lt;<span class="number">0</span> &#123;</span><br><span class="line">                j++</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                row:=[]<span class="keyword">int</span>&#123;nums[i],nums[j], nums[k]&#125;</span><br><span class="line">                flag := <span class="literal">true</span></span><br><span class="line">                <span class="keyword">for</span> _, v := <span class="keyword">range</span> r&#123;</span><br><span class="line">                    <span class="keyword">if</span> v[<span class="number">0</span>]==row[<span class="number">0</span>] &amp;&amp;v[<span class="number">1</span>] == row[<span class="number">1</span>] &amp;&amp; v[<span class="number">2</span>] == row[<span class="number">2</span>] &#123;</span><br><span class="line">                        flag = <span class="literal">false</span></span><br><span class="line">                        <span class="keyword">break</span></span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> flag &#123;</span><br><span class="line">                    r = <span class="built_in">append</span>(r,row)</span><br><span class="line">                &#125;</span><br><span class="line">                j++</span><br><span class="line">                k--</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Python版本"><a href="#Python版本" class="headerlink" title="Python版本"></a>Python版本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">threeSum</span><span class="params">(self, nums)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        :type nums: List[int]</span></span><br><span class="line"><span class="string">        :rtype: List[List[int]]</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        r = []</span><br><span class="line"></span><br><span class="line">        nums = sorted(nums)</span><br><span class="line">        l = len(nums)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(l):</span><br><span class="line">            j = i + <span class="number">1</span></span><br><span class="line">            k = l - <span class="number">1</span></span><br><span class="line">            <span class="keyword">while</span> j &lt; k:</span><br><span class="line">                s = nums[i] + nums[j] + nums[k]</span><br><span class="line">                <span class="keyword">if</span> s &gt; <span class="number">0</span>:</span><br><span class="line">                    k -= <span class="number">1</span></span><br><span class="line">                <span class="keyword">elif</span> s &lt; <span class="number">0</span>:</span><br><span class="line">                    j += <span class="number">1</span></span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    t = [nums[i], nums[j], nums[k]]</span><br><span class="line">                    <span class="keyword">if</span> t <span class="keyword">not</span> <span class="keyword">in</span> r:</span><br><span class="line">                        r.append(t)</span><br><span class="line">                    j += <span class="number">1</span></span><br><span class="line">                    k -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1"><a href="#Go代码实现1" class="headerlink" title="Go代码实现1"></a>Go代码实现1</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">firstUniqChar</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    m := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">26</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, c := <span class="keyword">range</span> s&#123;</span><br><span class="line">        idx := <span class="keyword">int</span>(c-<span class="string">'a'</span>)</span><br><span class="line">        m[idx]++</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, c := <span class="keyword">range</span> s&#123;</span><br><span class="line">        <span class="keyword">if</span> m[c-<span class="string">'a'</span>] == <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 20ms 73.91%</p>
+</blockquote>
+<h4 id="Go代码实现2"><a href="#Go代码实现2" class="headerlink" title="Go代码实现2"></a>Go代码实现2</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">firstUniqChar</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> m [<span class="number">128</span>]<span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _, c := <span class="keyword">range</span> s&#123;</span><br><span class="line">        m[c]++</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i, c := <span class="keyword">range</span> s&#123;</span><br><span class="line">        <span class="keyword">if</span> m[c] == <span class="number">1</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> i</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意不能使用byte数组，存在越界情况,数组表示字符出现的次数，故不限制byte上限127</p>
+</blockquote>
 
       
     </div>
@@ -340,6 +350,8 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
+            <a href="/tags/String/" rel="tag"># String</a>
+          
         </div>
       
 
@@ -351,8 +363,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-03-22-tcollectoryuan-ma-gong-neng-jie-du/" rel="next" title="tcollector源码功能解读">
-                <i class="fa fa-chevron-left"></i> tcollector源码功能解读
+              <a href="/2018-01-17-L443-String-Compression/" rel="next" title="L443  String Compression">
+                <i class="fa fa-chevron-left"></i> L443  String Compression
               </a>
             
           </div>
@@ -360,10 +372,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-11-14-Leetcode-L66-PlusOne/" rel="prev" title="L66_PlusOne">
-                L66_PlusOne <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -497,7 +505,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go版本"><span class="nav-number">3.</span> <span class="nav-text">Go版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python版本"><span class="nav-number">4.</span> <span class="nav-text">Python版本</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现1"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现2"><span class="nav-number">3.2.</span> <span class="nav-text">Go代码实现2</span></a></li></ol></li></ol></div>
             
 
           </div>
