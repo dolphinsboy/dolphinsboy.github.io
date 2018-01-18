@@ -244,6 +244,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-04-15-redis-info-memoryyan-jiu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-15-redis-info-memoryyan-jiu/" itemprop="url">Redis info memory研究</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-15T10:01:33+08:00">
+                2016-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="info-memory输出信息"><a href="#info-memory输出信息" class="headerlink" title="info memory输出信息"></a>info memory输出信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">info memory</span><br><span class="line">  Memory</span><br><span class="line">used_memory:5198608840</span><br><span class="line">used_memory_human:4.84G</span><br><span class="line">used_memory_rss:11156660224</span><br><span class="line">used_memory_peak:9816601560</span><br><span class="line">used_memory_peak_human:9.14G</span><br><span class="line">used_memory_lua:36864</span><br><span class="line">mem_fragmentation_ratio:2.15</span><br><span class="line">mem_allocator:libc</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.cnblogs.com/mushroom/p/4738170.html" target="_blank" rel="external">http://www.cnblogs.com/mushroom/p/4738170.html</a></p>
+<p>对应的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Memory */</span></span><br><span class="line"><span class="keyword">if</span> (allsections || defsections || !strcasecmp(section,<span class="string">"memory"</span>)) &#123;</span><br><span class="line"><span class="keyword">char</span> hmem[<span class="number">64</span>];</span><br><span class="line"><span class="keyword">char</span> peak_hmem[<span class="number">64</span>];</span><br><span class="line"><span class="keyword">size_t</span> zmalloc_used = zmalloc_used_memory();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Peak memory is updated from time to time by serverCron() so it</span></span><br><span class="line"><span class="comment">* may happen that the instantaneous value is slightly bigger than</span></span><br><span class="line"><span class="comment">* the peak value. This may confuse users, so we update the peak</span></span><br><span class="line"><span class="comment">* if found smaller than the current memory usage. */</span></span><br><span class="line"><span class="keyword">if</span> (zmalloc_used &gt; server.stat_peak_memory)</span><br><span class="line">server.stat_peak_memory = zmalloc_used;</span><br><span class="line"></span><br><span class="line">bytesToHuman(hmem,zmalloc_used);</span><br><span class="line">bytesToHuman(peak_hmem,server.stat_peak_memory);</span><br><span class="line"><span class="keyword">if</span> (sections++) info = sdscat(info,<span class="string">"\r\n"</span>);</span><br><span class="line">info = sdscatprintf(info,</span><br><span class="line"><span class="string">"# Memory\r\n"</span></span><br><span class="line"><span class="string">"used_memory:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_human:%s\r\n"</span></span><br><span class="line"><span class="string">"used_memory_rss:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_peak:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_peak_human:%s\r\n"</span></span><br><span class="line"><span class="string">"used_memory_lua:%lld\r\n"</span></span><br><span class="line"><span class="string">"mem_fragmentation_ratio:%.2f\r\n"</span></span><br><span class="line"><span class="string">"mem_allocator:%s\r\n"</span>,</span><br><span class="line">zmalloc_used,</span><br><span class="line">hmem,</span><br><span class="line">server.resident_set_size,</span><br><span class="line">server.stat_peak_memory,</span><br><span class="line">peak_hmem,</span><br><span class="line">((<span class="keyword">long</span> <span class="keyword">long</span>)lua_gc(server.lua,LUA_GCCOUNT,<span class="number">0</span>))*<span class="number">1024L</span>L,</span><br><span class="line">zmalloc_get_fragmentation_ratio(server.resident_set_size),</span><br><span class="line">ZMALLOC_LIB</span><br><span class="line">);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>used_memory</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-04-11-mysqlxing-neng-pai-cha-an-li-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1631,150 +1777,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-01-05-mysqlda-xiao-can-shu-she-zhi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-01-05-mysqlda-xiao-can-shu-she-zhi/" itemprop="url">mysql大小参数设置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-05T10:22:40+08:00">
-                2016-01-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制"><a href="#MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制" class="headerlink" title="MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制"></a>MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制</h2><p>&gt;<br>It is strongly recommended that you always use the same setting for the lower_case_table_names system variable on both master and slave. In particular, when a case-sensitive file system is used, setting this variable to 1 on the slave, but to a different value on the master, can cause two types of problems: Names of databases are not converted to lowercase; in addition, when using row-based replication names of tables are also not converted. Either of these problems can cause replication to fail. This is a known issue, which is fixed in MySQL 5.6.</p>
-<p>否则会出现同步错误：<br>&gt;<br>Last_SQL_Errno: 1146<br>Last_SQL_Error: Error executing row event: ‘Table’ 10futu.commentAZXI’ doesn’t exist</p>
-<p><a href="http://dev.mysql.com/doc/refman/5.5/en/replication-features-variables.html" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.5/en/replication-features-variables.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1825,7 +1827,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">165</span>
+                <span class="site-state-item-count">166</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

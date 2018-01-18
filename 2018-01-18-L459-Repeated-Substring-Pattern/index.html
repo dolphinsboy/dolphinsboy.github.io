@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述Given an array of characters, compress it in-place. The length after compression must always be smaller than or equal to the original array. Every element of the array should be a character (not i">
+<meta name="description" content="题目描述Given a non-empty string check if it can be constructed by taking a substring of it and appending multiple copies of the substring together. You may assume the given string consists of lowercase E">
 <meta name="keywords" content="LeetCode,String">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L443  String Compression">
-<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-17-L443-String-Compression/index.html">
+<meta property="og:title" content="L459  Repeated Substring Pattern">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-01-18-L459-Repeated-Substring-Pattern/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述Given an array of characters, compress it in-place. The length after compression must always be smaller than or equal to the original array. Every element of the array should be a character (not i">
+<meta property="og:description" content="题目描述Given a non-empty string check if it can be constructed by taking a substring of it and appending multiple copies of the substring together. You may assume the given string consists of lowercase E">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-17T10:35:44.000Z">
+<meta property="og:updated_time" content="2018-01-18T06:38:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L443  String Compression">
-<meta name="twitter:description" content="题目描述Given an array of characters, compress it in-place. The length after compression must always be smaller than or equal to the original array. Every element of the array should be a character (not i">
+<meta name="twitter:title" content="L459  Repeated Substring Pattern">
+<meta name="twitter:description" content="题目描述Given a non-empty string check if it can be constructed by taking a substring of it and appending multiple copies of the substring together. You may assume the given string consists of lowercase E">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-17-L443-String-Compression/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-01-18-L459-Repeated-Substring-Pattern/"/>
 
 
 
 
 
-  <title>L443  String Compression | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L459  Repeated Substring Pattern | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-17-L443-String-Compression/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-18-L459-Repeated-Substring-Pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L443  String Compression</h1>
+          <h1 class="post-title" itemprop="name headline">L459  Repeated Substring Pattern</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T18:32:37+08:00">
-                2018-01-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T14:31:31+08:00">
+                2018-01-18
               </time>
             
 
@@ -314,20 +314,15 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="">题目描述</a></h3><p>Given an array of characters, compress it in-place.</p>
-<p>The length after compression must always be smaller than or equal to the original array.</p>
-<p>Every element of the array should be a character (not int) of length 1.</p>
-<p>After you are done modifying the input array in-place, return the new length of the array.</p>
-<p>Follow up:<br>Could you solve it using only O(1) extra space?<br><a id="more"></a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;,&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;c&quot;,&quot;c&quot;,&quot;c&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 6, and the first 6 characters of the input array should be: [&quot;a&quot;,&quot;2&quot;,&quot;b&quot;,&quot;2&quot;,&quot;c&quot;,&quot;3&quot;]</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">&quot;aa&quot; is replaced by &quot;a2&quot;. &quot;bb&quot; is replaced by &quot;b2&quot;. &quot;ccc&quot; is replaced by &quot;c3&quot;.</span><br><span class="line">Example 2:</span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 1, and the first 1 characters of the input array should be: [&quot;a&quot;]</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Nothing is replaced.</span><br><span class="line">Example 3:</span><br><span class="line">Input:</span><br><span class="line">[&quot;a&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;,&quot;b&quot;]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">Return 4, and the first 4 characters of the input array should be: [&quot;a&quot;,&quot;b&quot;,&quot;1&quot;,&quot;2&quot;].</span><br><span class="line"></span><br><span class="line">Explanation:</span><br><span class="line">Since the character &quot;a&quot; does not repeat, it is not compressed. &quot;bbbbbbbbbbbb&quot; is replaced by &quot;b12&quot;.</span><br><span class="line">Notice each digit has it&apos;s own entry in the array.</span><br><span class="line">Note:</span><br><span class="line">All characters have an ASCII value in [35, 126].</span><br><span class="line">1 &lt;= len(chars) &lt;= 1000.</span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/repeated-substring-pattern/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a non-empty string check if it can be constructed by taking a substring of it and appending multiple copies of the substring together. You may assume the given string consists of lowercase English letters only and its length will not exceed 10000.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">Input: &quot;abab&quot;</span><br><span class="line"></span><br><span class="line">Output: True</span><br><span class="line"></span><br><span class="line">Explanation: It&apos;s the substring &quot;ab&quot; twice.</span><br><span class="line">Example 2:</span><br><span class="line">Input: &quot;aba&quot;</span><br><span class="line"></span><br><span class="line">Output: False</span><br><span class="line">Example 3:</span><br><span class="line">Input: &quot;abcabcabcabc&quot;</span><br><span class="line"></span><br><span class="line">Output: True</span><br><span class="line"></span><br><span class="line">Explanation: It&apos;s the substring &quot;abc&quot; four times. (And the substring &quot;abcabc&quot; twice.)</span><br></pre></td></tr></table></figure>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>对连续的字符进行压缩，压缩的结果是字符以及对应的连续的次数，如果连续次数为1，不显示次数</li>
-<li>返回结果为压缩后字符的总长度</li>
-<li>同时，需要将chars修改为压缩后结果</li>
+<li>从字符串str[0:n/2]分成n/2子串，判断是否以这个子串repeated成字符串str，如果是返回true，否则继续检查</li>
 </ul>
-<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1"><a href="#Go代码实现1" class="headerlink" title="Go代码实现1"></a>Go代码实现1</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">mport (</span><br><span class="line">    <span class="string">"strconv"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">compress</span><span class="params">(chars []<span class="keyword">byte</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    n:=<span class="built_in">len</span>(chars)</span><br><span class="line">    idx := <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n;i++ &#123;</span><br><span class="line">        char := chars[i]</span><br><span class="line">        count := <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i&lt;n &amp;&amp; chars[i] == char &#123;</span><br><span class="line">            count++</span><br><span class="line">            i++</span><br><span class="line">        &#125;</span><br><span class="line">        i--</span><br><span class="line"></span><br><span class="line">        chars[idx] = char</span><br><span class="line">        idx++</span><br><span class="line">        <span class="keyword">if</span> count &gt; <span class="number">1</span> &#123;</span><br><span class="line">            countStr := strconv.Itoa(count)</span><br><span class="line">            <span class="keyword">for</span> k:=<span class="number">0</span>;k&lt;<span class="built_in">len</span>(countStr);k++ &#123;</span><br><span class="line">                chars[idx] = countStr[k]</span><br><span class="line">                idx++</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> idx</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1"><a href="#Go代码实现1" class="headerlink" title="Go代码实现1"></a>Go代码实现1</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">repeatedSubstringPattern</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    n := <span class="built_in">len</span>(s)</span><br><span class="line">    mid := n/<span class="number">2</span></span><br><span class="line">    <span class="keyword">for</span> i:=<span class="number">1</span>;i&lt;=mid;i++ &#123;</span><br><span class="line">        substr :=s[<span class="number">0</span>:i]</span><br><span class="line">        m := <span class="built_in">len</span>(substr)</span><br><span class="line">        flag := <span class="literal">true</span></span><br><span class="line">        <span class="keyword">for</span> k:=<span class="number">0</span>;k&lt;n; &#123;</span><br><span class="line">            t:= m+k</span><br><span class="line">            <span class="keyword">if</span> m+k&gt;n&#123;</span><br><span class="line">                t = n<span class="number">-1</span></span><br><span class="line">            &#125;</span><br><span class="line">            tmp := s[k:t]</span><br><span class="line">            <span class="keyword">if</span> tmp != substr &#123;</span><br><span class="line">                flag = <span class="literal">false</span></span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            &#125;</span><br><span class="line">            k += m</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> flag &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>Runtime 35ms 0.00% </p>
+<p>Runtime: 20 ms 33.33%</p>
 </blockquote>
 
       
@@ -361,8 +356,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018-01-17-L434-Number-of-Segments-in-a-String/" rel="next" title="L434  Number of Segments in a String">
-                <i class="fa fa-chevron-left"></i> L434  Number of Segments in a String
+              <a href="/2018-01-18-L387-First-Unique-Character-in-a-String/" rel="next" title="L387  First Unique Character in a String">
+                <i class="fa fa-chevron-left"></i> L387  First Unique Character in a String
               </a>
             
           </div>
@@ -370,10 +365,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018-01-18-L387-First-Unique-Character-in-a-String/" rel="prev" title="L387  First Unique Character in a String">
-                L387  First Unique Character in a String <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
