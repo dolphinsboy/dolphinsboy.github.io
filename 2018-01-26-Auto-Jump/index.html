@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Opencv," />
+  <meta name="keywords" content="Opencv,WebDriverAgent," />
 
 
 
@@ -68,18 +68,23 @@
 
 
 
-<meta name="description" content="背景刷微信公众账号的时候看到一篇文章AI 玩跳一跳的正确姿势，Auto-Jump 算法详解，觉得挺感兴趣的。再加上现在AI这么火，故按照文章上相关资料进行尝试。本系列文章记录尝试的过程以及遇到的问题。 Opencv安装在Mac安装Opencv，主要参照文章Mac下安装使用Python-OpenCV。遇到主要问题是brew update时候遇到git错误，后来通过重新安装brew根本解决。">
-<meta name="keywords" content="Opencv">
+<meta name="description" content="背景刷微信公众账号的时候看到一篇文章AI 玩跳一跳的正确姿势，Auto-Jump 算法详解，觉得挺感兴趣的。再加上现在AI这么火，故按照文章上相关资料进行尝试。本系列文章记录尝试的过程以及遇到的问题。 OpencvOpencv安装在Mac安装Opencv，主要参照文章Mac下安装使用Python-OpenCV。遇到主要问题是brew update时候遇到git错误，后来通过重新安装brew根本解决">
+<meta name="keywords" content="Opencv,WebDriverAgent">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Auto_Jump 准备工作1——Opencv">
+<meta property="og:title" content="Auto_Jump 准备工作1">
 <meta property="og:url" content="http://dolphinsboy.github.io/2018-01-26-Auto-Jump/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="背景刷微信公众账号的时候看到一篇文章AI 玩跳一跳的正确姿势，Auto-Jump 算法详解，觉得挺感兴趣的。再加上现在AI这么火，故按照文章上相关资料进行尝试。本系列文章记录尝试的过程以及遇到的问题。 Opencv安装在Mac安装Opencv，主要参照文章Mac下安装使用Python-OpenCV。遇到主要问题是brew update时候遇到git错误，后来通过重新安装brew根本解决。">
+<meta property="og:description" content="背景刷微信公众账号的时候看到一篇文章AI 玩跳一跳的正确姿势，Auto-Jump 算法详解，觉得挺感兴趣的。再加上现在AI这么火，故按照文章上相关资料进行尝试。本系列文章记录尝试的过程以及遇到的问题。 OpencvOpencv安装在Mac安装Opencv，主要参照文章Mac下安装使用Python-OpenCV。遇到主要问题是brew update时候遇到git错误，后来通过重新安装brew根本解决">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-28T11:38:14.130Z">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/auto_jump_demo.png">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/auto_jump_sign5.png">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/auto_jump_sign3.png">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/auto_jump_sign1.png">
+<meta property="og:updated_time" content="2018-01-28T14:00:16.537Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Auto_Jump 准备工作1——Opencv">
-<meta name="twitter:description" content="背景刷微信公众账号的时候看到一篇文章AI 玩跳一跳的正确姿势，Auto-Jump 算法详解，觉得挺感兴趣的。再加上现在AI这么火，故按照文章上相关资料进行尝试。本系列文章记录尝试的过程以及遇到的问题。 Opencv安装在Mac安装Opencv，主要参照文章Mac下安装使用Python-OpenCV。遇到主要问题是brew update时候遇到git错误，后来通过重新安装brew根本解决。">
+<meta name="twitter:title" content="Auto_Jump 准备工作1">
+<meta name="twitter:description" content="背景刷微信公众账号的时候看到一篇文章AI 玩跳一跳的正确姿势，Auto-Jump 算法详解，觉得挺感兴趣的。再加上现在AI这么火，故按照文章上相关资料进行尝试。本系列文章记录尝试的过程以及遇到的问题。 OpencvOpencv安装在Mac安装Opencv，主要参照文章Mac下安装使用Python-OpenCV。遇到主要问题是brew update时候遇到git错误，后来通过重新安装brew根本解决">
+<meta name="twitter:image" content="http://dolphinsboy.github.io/images/auto_jump_demo.png">
 
 
 
@@ -114,7 +119,7 @@
 
 
 
-  <title>Auto_Jump 准备工作1——Opencv | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Auto_Jump 准备工作1 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -264,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Auto_Jump 准备工作1——Opencv</h1>
+          <h1 class="post-title" itemprop="name headline">Auto_Jump 准备工作1</h1>
         
 
         <div class="post-meta">
@@ -336,14 +341,30 @@
       
 
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>刷微信公众账号的时候看到一篇文章<a href="https://mp.weixin.qq.com/s/6fGrNSOTAJ7vbqN2AydGbw" target="_blank" rel="external">AI 玩跳一跳的正确姿势，Auto-Jump 算法详解</a>，觉得挺感兴趣的。<br>再加上现在AI这么火，故按照文章上相关资料进行尝试。本系列文章记录尝试的过程以及遇到的问题。</p>
-<h3 id="Opencv安装"><a href="#Opencv安装" class="headerlink" title="Opencv安装"></a>Opencv安装</h3><p>在Mac安装Opencv，主要参照文章<a href="https://ptorch.com/news/31.html" target="_blank" rel="external">Mac下安装使用Python-OpenCV</a>。<br>遇到主要问题是brew update时候遇到git错误，后来通过重新安装brew根本解决。</p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>刷微信公众账号的时候看到一篇文章<a href="https://mp.weixin.qq.com/s/6fGrNSOTAJ7vbqN2AydGbw" target="_blank" rel="external">AI 玩跳一跳的正确姿势，Auto-Jump 算法详解</a>，觉得挺感兴趣的。<br>再加上现在AI这么火，故按照文章上相关资料进行尝试。本系列文章记录尝试的过程以及遇到的问题。</p>
+<h2 id="Opencv"><a href="#Opencv" class="headerlink" title="Opencv"></a>Opencv</h2><h3 id="Opencv安装"><a href="#Opencv安装" class="headerlink" title="Opencv安装"></a>Opencv安装</h3><p>在Mac安装Opencv，主要参照文章<a href="https://ptorch.com/news/31.html" target="_blank" rel="external">Mac下安装使用Python-OpenCV</a>。<br>遇到主要问题是brew update时候遇到git错误，后来通过重新安装brew根本解决。</p>
 <a id="more"></a>
 <h3 id="Opencv测试人脸识别"><a href="#Opencv测试人脸识别" class="headerlink" title="Opencv测试人脸识别"></a>Opencv测试人脸识别</h3><p>参照<a href="https://realpython.com/blog/python/face-recognition-with-python/" target="_blank" rel="external">Face Recognition with Python, in Under 25 Lines of Code</a>实现第一个人脸识别Python Demo。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(image_path, casc_path)</span>:</span></span><br><span class="line">    newPath = <span class="string">"new_"</span> + image_path</span><br><span class="line"></span><br><span class="line">    faceCascade = cv2.CascadeClassifier(casc_path)</span><br><span class="line">    image = cv2.imread(image_path)</span><br><span class="line">    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)</span><br><span class="line"></span><br><span class="line">    faces = faceCascade.detectMultiScale(</span><br><span class="line">        gray,</span><br><span class="line">        scaleFactor=<span class="number">1.1</span>,</span><br><span class="line">        minNeighbors=<span class="number">5</span>,</span><br><span class="line">        minSize=(<span class="number">30</span>, <span class="number">30</span>),</span><br><span class="line">        flags=cv2.CASCADE_SCALE_IMAGE</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">print</span> <span class="string">"Found &#123;0&#125; faces!"</span>.format(len(faces))</span><br><span class="line">    <span class="comment"># Draw a rectangle around the faces</span></span><br><span class="line">    <span class="keyword">for</span> (x, y, w, h) <span class="keyword">in</span> faces:</span><br><span class="line">        cv2.rectangle(image, (x, y), (x + w, y + h), (<span class="number">0</span>, <span class="number">255</span>, <span class="number">0</span>), <span class="number">1</span>)</span><br><span class="line">    cv2.imwrite(newPath, image)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    imagePath = sys.argv[<span class="number">1</span>]</span><br><span class="line">    cascPath = sys.argv[<span class="number">2</span>]</span><br><span class="line">    test(imagePath, cascPath)</span><br></pre></td></tr></table></figure>
 <p>运行参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2.7 Test_Face.py head.jpeg haarcascade_frontalface_default.xml</span><br></pre></td></tr></table></figure></p>
 <p>其中第一个参数为图片，第二个参数为frontface检查器。</p>
 <p>程序中最关键的是face检测，也就是Line 37，结果返回检测的faces在图片的坐标，通过rectangle将这些face使用矩形框标记。</p>
+<h2 id="WebDriverAgent"><a href="#WebDriverAgent" class="headerlink" title="WebDriverAgent"></a>WebDriverAgent</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>参照git上给出连接搭建WebDriverAgent，期间由于mac、IOS以及Xcode版本过低，统一都进行了升级。具体版本如下：</p>
+<ul>
+<li>Mac 10.13.3 High Sierra</li>
+<li>IOS 11.2.5</li>
+<li>Xcode 9.2</li>
+</ul>
+<p><strong>端口转发</strong></p>
+<p>文档中给出是imobiledevice，在mac实现测试使用libimobiledevice。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install libimobiledevice</span><br></pre></td></tr></table></figure>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>使用iproxy进行端口转发</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iproxy 8100 8100</span><br></pre></td></tr></table></figure>
+<p><img src="/images/auto_jump_demo.png" alt="auto_jump_demo"></p>
+<p><strong>sign配置</strong></p>
+<p><img src="/images/auto_jump_sign5.png" alt="auto_jump_sign5"></p>
+<p><img src="/images/auto_jump_sign3.png" alt="auto_jump_sign3"></p>
+<p><img src="/images/auto_jump_sign1.png" alt="auto_jump_sign1"></p>
 
       
     </div>
@@ -362,6 +383,8 @@
         <div class="post-tags">
           
             <a href="/tags/Opencv/" rel="tag"># Opencv</a>
+          
+            <a href="/tags/WebDriverAgent/" rel="tag"># WebDriverAgent</a>
           
         </div>
       
@@ -481,7 +504,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-count">15</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -516,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Opencv安装"><span class="nav-number">2.</span> <span class="nav-text">Opencv安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Opencv测试人脸识别"><span class="nav-number">3.</span> <span class="nav-text">Opencv测试人脸识别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Opencv"><span class="nav-number">2.</span> <span class="nav-text">Opencv</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Opencv安装"><span class="nav-number">2.1.</span> <span class="nav-text">Opencv安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Opencv测试人脸识别"><span class="nav-number">2.2.</span> <span class="nav-text">Opencv测试人脸识别</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebDriverAgent"><span class="nav-number">3.</span> <span class="nav-text">WebDriverAgent</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#测试"><span class="nav-number">3.2.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></div>
             
 
           </div>
