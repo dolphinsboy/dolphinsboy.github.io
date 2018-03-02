@@ -244,6 +244,151 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-02-08-aws-boto3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017-02-08-aws-boto3/" itemprop="url">AWS boto3</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-08T16:45:43+08:00">
+                2017-02-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/AWS-API/" itemprop="url" rel="index">
+                    <span itemprop="name">AWS API</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-根据机器名称获取instance"><a href="#1-根据机器名称获取instance" class="headerlink" title="1.根据机器名称获取instance"></a>1.根据机器名称获取instance</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line"></span><br><span class="line">instances = ec2.instances.filter(</span><br><span class="line">¦   ¦   Filters = [&#123;<span class="string">'Name'</span>: <span class="string">'tag-value'</span>, <span class="string">'Values'</span>:[<span class="string">'service-test1'</span>]&#125;])</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> instance <span class="keyword">in</span> instances:</span><br><span class="line">¦   <span class="keyword">print</span> instance</span><br></pre></td></tr></table></figure>
+<h2 id="2-获取所有机器的信息"><a href="#2-获取所有机器的信息" class="headerlink" title="2.获取所有机器的信息"></a>2.获取所有机器的信息</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line">instances = ec2.instances.filter()</span><br><span class="line"><span class="keyword">for</span> instance <span class="keyword">in</span> instances:</span><br><span class="line"><span class="keyword">print</span> instance</span><br></pre></td></tr></table></figure>
+<h2 id="3-通过instance-id获取机器信息"><a href="#3-通过instance-id获取机器信息" class="headerlink" title="3.通过instance_id获取机器信息"></a>3.通过instance_id获取机器信息</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ec2 = boto3.resource(<span class="string">"ec2"</span>)</span><br><span class="line">instance = ec2.Instance(<span class="string">'i-d8d0c8e1'</span>)</span><br><span class="line"><span class="keyword">print</span> instance.instance_type</span><br></pre></td></tr></table></figure>
+<p>通过方法1和方法3获取信息所需要时间差不多，方法2获取所需要时间多。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-12-23-zai-aws-ec2da-jian-hadoop2-dot-6ji-qun/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1606,213 +1751,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-03-11-redis-sentinel/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-03-11-redis-sentinel/" itemprop="url">Redis Sentinel</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-11T16:32:42+08:00">
-                2016-03-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1、Redis哨兵搭建测试"><a href="#1、Redis哨兵搭建测试" class="headerlink" title="1、Redis哨兵搭建测试"></a>1、Redis哨兵搭建测试</h2><h3 id="1-1-Redis主从信息"><a href="#1-1-Redis主从信息" class="headerlink" title="1.1 Redis主从信息"></a>1.1 Redis主从信息</h3><p><strong>主从信息:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis主库:10.30.6.184(service-test2)</span><br><span class="line">redis从库1:10.30.6.183(service-test3)</span><br><span class="line">redis从库2:10.30.6.217（service-test1）</span><br></pre></td></tr></table></figure>
-<p><strong>redis部署的目录结构:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">├── bin</span><br><span class="line">│   ├── redis-benchmark</span><br><span class="line">│   ├── redis-check-aof</span><br><span class="line">│   ├── redis-check-dump</span><br><span class="line">│   ├── redis-cli</span><br><span class="line">│   ├── redis-sentinel</span><br><span class="line">│   ├── redis-server</span><br><span class="line">│   └── redis-trib.rb</span><br><span class="line">├── conf</span><br><span class="line">│   ├── r3050.conf</span><br><span class="line">│   └── sentinel.conf</span><br><span class="line">├── data</span><br><span class="line">│   ├── appendonly.aof</span><br><span class="line">│   └── r3050.rdb</span><br><span class="line">├── log</span><br><span class="line">│   └── r3050.log</span><br><span class="line">└── tmp</span><br><span class="line">└── redis3050.pid</span><br></pre></td></tr></table></figure>
-<p><strong>redis配置文件:</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes</span><br><span class="line">pidfile /home/op/redis3050/tmp/redis3050.pid</span><br><span class="line">port 3050</span><br><span class="line">timeout 172800</span><br><span class="line">loglevel notice</span><br><span class="line">logfile /home/op/redis3050/log/r3050.log</span><br><span class="line">databases 16</span><br><span class="line">rdbcompression yes</span><br><span class="line">dbfilename r3050.rdb</span><br><span class="line">dir /home/op/redis3050/data/</span><br><span class="line">slave-serve-stale-data yes</span><br><span class="line">appendonly yes</span><br><span class="line">appendfilename appendonly.aof</span><br><span class="line">appendfsync everysec</span><br><span class="line">no-appendfsync-on-rewrite yes</span><br><span class="line">auto-aof-rewrite-percentage 0</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br><span class="line">slowlog-log-slower-than 10000</span><br><span class="line">slowlog-max-len 1024</span><br><span class="line">list-max-ziplist-entries 512</span><br><span class="line">list-max-ziplist-value 64</span><br><span class="line">set-max-intset-entries 512</span><br><span class="line">zset-max-ziplist-entries 128</span><br><span class="line">zset-max-ziplist-value 64</span><br><span class="line">activerehashing yes</span><br><span class="line">maxmemory-policy noeviction</span><br><span class="line">maxmemory 5G</span><br></pre></td></tr></table></figure>
-<h3 id="1-2-哨兵配置"><a href="#1-2-哨兵配置" class="headerlink" title="1.2 哨兵配置"></a>1.2 哨兵配置</h3><p>以上三台机器上初始化sentinel配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 10.30.6.184 3050 2</span><br><span class="line">sentinel down-after-milliseconds mymaster 60000</span><br><span class="line">sentinel failover-timeout mymaster 18000</span><br><span class="line">sentinel config-epoch mymaster 0</span><br></pre></td></tr></table></figure>
-<p>通过下面命令在三台机器上启动哨兵:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/redis-sentinel ./conf/sentinel.conf &amp;</span><br></pre></td></tr></table></figure>
-<p>在主上可以看到收到下面消息，说明各个哨兵联合在一起了:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">22210:X 11 Mar 16:37:22.505 * +sentinel sentinel 10.30.6.183:26379 10.30.6.183 26379 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 16:37:46.050 * +sentinel sentinel 10.30.6.217:26379 10.30.6.217 26379 @ mymaster 10.30.6.184 3050</span><br></pre></td></tr></table></figure>
-<p>这个时候的哨兵配置文件内容变成如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 10.30.6.184 3050 2</span><br><span class="line">sentinel down-after-milliseconds mymaster 60000</span><br><span class="line">sentinel failover-timeout mymaster 18000</span><br><span class="line">sentinel config-epoch mymaster 0</span><br><span class="line">  Generated by CONFIG REWRITE</span><br><span class="line">port 26379</span><br><span class="line">dir &quot;/home/op/redis3050&quot;</span><br><span class="line">sentinel leader-epoch mymaster 0</span><br><span class="line">sentinel known-slave mymaster 10.30.6.217 3050</span><br><span class="line">sentinel known-slave mymaster 10.30.6.183 3050</span><br><span class="line">sentinel known-sentinel mymaster 10.30.6.217 26379 86aefa154fe695f9e0ea56312e01a14c24e79129</span><br><span class="line">sentinel known-sentinel mymaster 10.30.6.183 26379 61c53d7c01409da6b5e831d0fa26f49026909809</span><br><span class="line">sentinel current-epoch 0</span><br></pre></td></tr></table></figure>
-<p>每台均是如此。</p>
-<h2 id="2、Sentinel基本操作"><a href="#2、Sentinel基本操作" class="headerlink" title="2、Sentinel基本操作"></a>2、Sentinel基本操作</h2><h3 id="2-1-Sentinel-masters"><a href="#2-1-Sentinel-masters" class="headerlink" title="2.1 Sentinel masters"></a>2.1 Sentinel masters</h3><p>列出所有被见识的主Redis服务实例，以及这些主服务实例的当前状态。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:26379&gt; sentinel masters</span><br><span class="line">1)  1) &quot;name&quot;</span><br><span class="line">2) &quot;mymaster&quot;</span><br><span class="line">3) &quot;ip&quot;</span><br><span class="line">4) &quot;10.30.6.184&quot;</span><br><span class="line">5) &quot;port&quot;</span><br><span class="line">6) &quot;3050&quot;</span><br><span class="line">7) &quot;runid&quot;</span><br><span class="line">8) &quot;680b4c8c7cb4a05fadbe968e03c2c9e3de42e09e&quot;</span><br><span class="line">9) &quot;flags&quot;</span><br><span class="line">10) &quot;master&quot;</span><br><span class="line">......</span><br><span class="line">37) &quot;parallel-syncs&quot;</span><br><span class="line">38) &quot;1&quot;</span><br></pre></td></tr></table></figure>
-<h3 id="2-2-Sentinel-Slaves"><a href="#2-2-Sentinel-Slaves" class="headerlink" title="2.2 Sentinel Slaves"></a>2.2 Sentinel Slaves</h3><p>列出给定主服务实例的所有从实例，以及这些从实例的当前状态。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:26379&gt; sentinel slaves mymaster</span><br><span class="line">1)  1) &quot;name&quot;</span><br><span class="line">2) &quot;10.30.6.217:3050&quot;</span><br><span class="line">3) &quot;ip&quot;</span><br><span class="line">4) &quot;10.30.6.217&quot;</span><br><span class="line">5) &quot;port&quot;</span><br><span class="line">6) &quot;3050&quot;</span><br><span class="line">7) &quot;runid&quot;</span><br><span class="line">8) &quot;9ae75482b5c770c7c0cf8aa2092eab7e450ec232&quot;</span><br><span class="line">9) &quot;flags&quot;</span><br><span class="line">10) &quot;slave&quot;</span><br><span class="line">......</span><br><span class="line">37) &quot;slave-repl-offset&quot;</span><br><span class="line">38) &quot;186791&quot;</span><br><span class="line">2)  1) &quot;name&quot;</span><br><span class="line">2) &quot;10.30.6.183:3050&quot;</span><br><span class="line">3) &quot;ip&quot;</span><br><span class="line">4) &quot;10.30.6.183&quot;</span><br><span class="line">5) &quot;port&quot;</span><br><span class="line">6) &quot;3050&quot;</span><br><span class="line">7) &quot;runid&quot;</span><br><span class="line">8) &quot;390beeec7d4ebfd0d4c0317eed3e97e498f4d9fd&quot;</span><br><span class="line">9) &quot;flags&quot;</span><br><span class="line">10) &quot;slave&quot;</span><br><span class="line">......</span><br><span class="line">38) &quot;186791&quot;</span><br></pre></td></tr></table></figure>
-<h3 id="2-3-Sentinel-get-master-addr-by-name"><a href="#2-3-Sentinel-get-master-addr-by-name" class="headerlink" title="2.3 Sentinel get-master-addr-by-name"></a>2.3 Sentinel get-master-addr-by-name</h3><p>返回给定名字的主实例IP地址和端口号。如果这个主实例正在进行故障转移操作，<br>或者针对这个主实例的故障转移操作已经完成，那么这个命令返回新的主服务器的IP地址和端口号。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:26379&gt; sentinel get-master-addr-by-name mymaster</span><br><span class="line">1) &quot;10.30.6.184&quot;</span><br><span class="line">2) &quot;3050&quot;</span><br></pre></td></tr></table></figure>
-<h3 id="2-4-Sentinel-failover"><a href="#2-4-Sentinel-failover" class="headerlink" title="2.4 Sentinel failover"></a>2.4 Sentinel failover</h3><p>进行一次主动的failover，即在不询问Sentinel意见的情况下，强制开始一次自动故障迁移。<br>发起故障迁移的Sentinel会向其他Sentinel发送一个新的配置，其他Sentinel会根据这个配置进行相应的更新。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">sentinel failover mymaster</span><br><span class="line">22210:X 11 Mar 17:03:59.846 # Executing user requested FAILOVER of &apos;mymaster&apos;</span><br><span class="line">22210:X 11 Mar 17:03:59.846 # +new-epoch 1</span><br><span class="line">22210:X 11 Mar 17:03:59.846 # +try-failover master mymaster 10.30.6.184 3050</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:26379&gt; 22210:X 11 Mar 17:03:59.890 # +vote-for-leader 8da81bbf7a87e42440046a8978b2fa69adc11fae 1</span><br><span class="line">22210:X 11 Mar 17:03:59.890 # +elected-leader master mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:03:59.890 # +failover-state-select-slave master mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:03:59.973 # +selected-slave slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:03:59.973 * +failover-state-send-slaveof-noone slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:00.031 * +failover-state-wait-promotion slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:00.901 # +promoted-slave slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:00.901 # +failover-state-reconf-slaves master mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:00.981 * +slave-reconf-sent slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:01.947 * +slave-reconf-inprog slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:01.947 * +slave-reconf-done slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:02.024 # +failover-end master mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:02.024 # +switch-master mymaster 10.30.6.184 3050 10.30.6.183 3050</span><br><span class="line">22210:X 11 Mar 17:04:02.024 * +slave slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050</span><br><span class="line">22210:X 11 Mar 17:04:02.024 * +slave slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050</span><br><span class="line"></span><br><span class="line">127.0.0.1:26379&gt; sentinel get-master-addr-by-name mymaster</span><br><span class="line">1) &quot;10.30.6.183&quot;</span><br><span class="line">2) &quot;3050&quot;</span><br></pre></td></tr></table></figure>
-<p>可以看出来新的主，原来主变成新库的从库:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">11826:M 11 Mar 17:04:00.032 # Connection with slave 10.30.6.183:3050 lost.</span><br><span class="line">11826:M 11 Mar 17:04:00.982 # Connection with slave 10.30.6.217:3050 lost.</span><br><span class="line">11826:S 11 Mar 17:04:11.079 * SLAVE OF 10.30.6.183:3050 enabled (user request from &apos;id=23 addr=10.30.6.217:35942 fd=9 name=sentinel-86aefa15-cmd age=10 idle=0 flags=x db=0 sub=0</span><br><span class="line">psub=0 multi=3 qbuf=0 qbuf-free=32768 obl=36 oll=0 omem=0 events=rw cmd=exec&apos;)</span><br><span class="line">11826:S 11 Mar 17:04:11.079 # CONFIG REWRITE executed with success.</span><br><span class="line">11826:S 11 Mar 17:04:11.602 * Connecting to MASTER 10.30.6.183:3050</span><br><span class="line">11826:S 11 Mar 17:04:11.602 * MASTER &lt;-&gt; SLAVE sync started</span><br><span class="line">11826:S 11 Mar 17:04:11.602 * Non blocking connect for SYNC fired the event.</span><br><span class="line">11826:S 11 Mar 17:04:11.603 * Master replied to PING, replication can continue...</span><br><span class="line">11826:S 11 Mar 17:04:11.603 * Partial resynchronization not possible (no cached master)</span><br><span class="line">11826:S 11 Mar 17:04:11.605 * Full resync from master: 390beeec7d4ebfd0d4c0317eed3e97e498f4d9fd:357200</span><br><span class="line">11826:S 11 Mar 17:04:11.683 * MASTER &lt;-&gt; SLAVE sync: receiving 55 bytes from master</span><br><span class="line">11826:S 11 Mar 17:04:11.683 * MASTER &lt;-&gt; SLAVE sync: Flushing old data</span><br><span class="line">11826:S 11 Mar 17:04:11.683 * MASTER &lt;-&gt; SLAVE sync: Loading DB in memory</span><br><span class="line">11826:S 11 Mar 17:04:11.684 * MASTER &lt;-&gt; SLAVE sync: Finished with success</span><br><span class="line">11826:S 11 Mar 17:04:11.684 * Background append only file rewriting started by pid 27191</span><br><span class="line">11826:S 11 Mar 17:04:11.712 * AOF rewrite child asks to stop sending diffs.</span><br><span class="line">27191:C 11 Mar 17:04:11.712 * Parent agreed to stop sending diffs. Finalizing AOF...</span><br><span class="line">27191:C 11 Mar 17:04:11.712 * Concatenating 0.00 MB of AOF diff received from parent.</span><br><span class="line">27191:C 11 Mar 17:04:11.712 * SYNC append only file rewrite performed</span><br><span class="line">27191:C 11 Mar 17:04:11.712 * AOF rewrite: 0 MB of memory used by copy-on-write</span><br><span class="line">11826:S 11 Mar 17:04:11.802 * Background AOF rewrite terminated with success</span><br><span class="line">11826:S 11 Mar 17:04:11.802 * Residual parent diff successfully flushed to the rewritten AOF (0.00 MB)</span><br><span class="line">11826:S 11 Mar 17:04:11.802 * Background AOF rewrite finished successfully</span><br><span class="line">11826:S 11 Mar 17:16:59.969 * SLAVE OF would result into synchronization with the master we are already connected with. No operation performed.</span><br><span class="line">11826:M 11 Mar 17:17:16.301 # Connection with master lost.</span><br><span class="line">11826:M 11 Mar 17:17:16.301 * Caching the disconnected master state.</span><br><span class="line">11826:M 11 Mar 17:17:16.301 * Discarding previously cached master state.</span><br></pre></td></tr></table></figure>
-<h3 id="2-5-订阅哨兵的消息"><a href="#2-5-订阅哨兵的消息" class="headerlink" title="2.5 订阅哨兵的消息"></a>2.5 订阅哨兵的消息</h3><p>通过接受sentinel发送的通知:<br>当执行故障转移操作，或者某个被监视的实例被判断为主观下线或者客观下线时，Sentinel就会发送想要的信息。<br>一个频道能够接收和这个名字相同的事件。<br>通过执行PUBSCRIBE *命令接收所有事件信息。例如:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">10.30.6.184:26379&gt; PSUBSCRIBE *</span><br><span class="line">Reading messages... (press Ctrl-C to quit)</span><br><span class="line">1) &quot;psubscribe&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) (integer) 1</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+new-epoch&quot;</span><br><span class="line">4) &quot;2&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+try-failover&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+vote-for-leader&quot;</span><br><span class="line">4) &quot;8da81bbf7a87e42440046a8978b2fa69adc11fae 2&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+elected-leader&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-state-select-slave&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+selected-slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-state-send-slaveof-noone&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-state-wait-promotion&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;-role-change&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050 new reported role is master&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+promoted-slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-state-reconf-slaves&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave-reconf-sent&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave-reconf-inprog&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave-reconf-done&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-end&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+switch-master&quot;</span><br><span class="line">4) &quot;mymaster 10.30.6.183 3050 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;-role-change&quot;</span><br><span class="line">4) &quot;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050 new reported role is master&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+role-change&quot;</span><br><span class="line">4) &quot;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050 new reported role is slave&quot;</span><br></pre></td></tr></table></figure>
-<p>从订阅的信息可以看出，故障检测、vote、以及修改其他从库同步。</p>
-<h3 id="2-6-模拟故障，手动kill主库的进程"><a href="#2-6-模拟故障，手动kill主库的进程" class="headerlink" title="2.6 模拟故障，手动kill主库的进程"></a>2.6 模拟故障，手动kill主库的进程</h3><p>从订阅的信息中可以看到+sdown的信息。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+sdown&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+new-epoch&quot;</span><br><span class="line">4) &quot;3&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+vote-for-leader&quot;</span><br><span class="line">4) &quot;86aefa154fe695f9e0ea56312e01a14c24e79129 3&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+odown&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.184 3050 #quorum 3/2&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;-role-change&quot;</span><br><span class="line">4) &quot;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050 new reported role is master&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+config-update-from&quot;</span><br><span class="line">4) &quot;sentinel 10.30.6.217:26379 10.30.6.217 26379 @ mymaster 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+switch-master&quot;</span><br><span class="line">4) &quot;mymaster 10.30.6.184 3050 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br></pre></td></tr></table></figure>
-<p>当将老主库的实例启动起来之后，自动同步新主库。</p>
-<p><strong>SDOWN 主观下线</strong><br>如果服务器在给定的毫秒数之内，没有返回Sentinel发送的PING命令回复或者返回一个错误，那么Sentinel将这个服务器标记为主观下线(SDOWN)。</p>
-<p><strong>ODOWN 客观下线</strong><br>只有一个Sentinel将服务器标记为主观下线并不一定会引起服务器的自动故障迁移：只有在足够数量的Sentinel都将一个服务器标记为主观下线之后，服务器才会被标记为客观下线（ODOWN），这时自动故障迁移才会执行。</p>
-<p>将服务器标记为客观下线所需的Sentinel数量由对主服务器的配置决定。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 10.30.6.184 3050 2</span><br></pre></td></tr></table></figure>
-<h3 id="2-7-Sentinel客户端"><a href="#2-7-Sentinel客户端" class="headerlink" title="2.7 Sentinel客户端"></a>2.7 Sentinel客户端</h3><p>如果要做到应用程序对Redis的failover透明，客户端需要监控sentinel的平道信息，并自动连接新的主节点。</p>
-<p>这里就需要整合sentinel的redis driver。</p>
-<h3 id="2-8-故障通知以及配置修改"><a href="#2-8-故障通知以及配置修改" class="headerlink" title="2.8 故障通知以及配置修改"></a>2.8 故障通知以及配置修改</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sentinel notification-script mymaster /var/redis/notify.sh</span><br><span class="line"></span><br><span class="line">  Call the specified notification script for any sentinel event that is</span><br><span class="line">  generated in the WARNING level (for instance -sdown, -odown, and so forth).</span><br><span class="line">  This script should notify the system administrator via email, SMS, or any</span><br><span class="line">  other messaging system, that there is something wrong with the monitored</span><br><span class="line">  Redis systems.</span><br><span class="line"></span><br><span class="line">sentinel client-reconfig-script mymaster /var/redis/reconfig.sh</span><br><span class="line">  When the master changed because of a failover a script can be called in</span><br><span class="line">  order to perform application-specific tasks to notify the clients that the</span><br><span class="line">  configuration has changed and the master is at a different address.</span><br></pre></td></tr></table></figure>
-<h3 id="2-9-哨兵切换过程"><a href="#2-9-哨兵切换过程" class="headerlink" title="2.9 哨兵切换过程"></a>2.9 哨兵切换过程</h3><p>一次故障转移操作步骤:</p>
-<ul>
-<li>发下主服务器已经进入客观下线状态</li>
-<li>对我们的当前纪元进行自增，并尝试在这个纪元中当选</li>
-<li>如果当选失败，那么在设定的故障迁移超时时间的两倍之后，重新尝试当选。如果当选成功，那么执行以下步骤</li>
-<li>选出一个从服务器，并将它升级为主服务器</li>
-<li>向被选中的从服务器发送SLAVEOF NO ONE命令，让它转变为主服务器</li>
-<li>通过发布与订阅功能，将更新后的配置传播给所有其他Sentinel，其他Sentinel队它们自己的配置进行更新</li>
-<li>向已下线主服务器的从服务器发送SLAVEOF命令，让它们去复制新的主服务器<br>+当所有从服务器都已经开始复制新的主服务器时，领头的Sentinel终止这次故障迁移操作。</li>
-</ul>
-<h3 id="2-10-后续处理"><a href="#2-10-后续处理" class="headerlink" title="2.10 后续处理"></a>2.10 后续处理</h3><p>什么时候知道从库已经全部同步完成？？</p>
-<p>通过python的订阅信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;pattern&apos;: None, &apos;type&apos;: &apos;psubscribe&apos;, &apos;channel&apos;: &apos;*&apos;, &apos;data&apos;: 1L&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+new-epoch&apos;, &apos;data&apos;: &apos;9&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+config-update-from&apos;, &apos;data&apos;: &apos;sentinel 10.30.6.217:26379 10.30.6.217 26379 @ mymaster 10.30.6.217 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+switch-master&apos;, &apos;data&apos;: &apos;mymaster 10.30.6.217 3050 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;-role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050 new reported role is master&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050 new reported role is slave&apos;&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;pattern&apos;: None, &apos;type&apos;: &apos;psubscribe&apos;, &apos;channel&apos;: &apos;*&apos;, &apos;data&apos;: 1L&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+new-epoch&apos;, &apos;data&apos;: &apos;8&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+try-failover&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+vote-for-leader&apos;, &apos;data&apos;: &apos;558204b27aada22f980284b9447fa34c30ea2fa0 8&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+elected-leader&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-state-select-slave&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+selected-slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-state-send-slaveof-noone&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-state-wait-promotion&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;-role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050 new reported role is master&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+promoted-slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-state-reconf-slaves&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave-reconf-sent&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave-reconf-inprog&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave-reconf-done&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-end&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+switch-master&apos;, &apos;data&apos;: &apos;mymaster 10.30.6.183 3050 10.30.6.217 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.217 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.217 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;-role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.217 3050 new reported role is master&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.217 3050 new reported role is slave&apos;&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-11-问题"><a href="#2-11-问题" class="headerlink" title="2.11 问题"></a>2.11 问题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-failover-abort-slave-timeout master mytest 10.30.11.225 8379</span><br></pre></td></tr></table></figure>
-<p><a href="http://grokbase.com/t/gg/redis-db/147hea9vmm/redis-sentinel-manual-failover-hangs-on-failover-state-wait-promotion" target="_blank" rel="external">http://grokbase.com/t/gg/redis-db/147hea9vmm/redis-sentinel-manual-failover-hangs-on-failover-state-wait-promotion</a><br><a href="https://github.com/antirez/redis/pull/2097" target="_blank" rel="external">https://github.com/antirez/redis/pull/2097</a></p>
-<font color="red">原因在于修改对于config命令进行重命名操作了。</font>
-
-<p><a href="https://github.com/jipperinbham/redis/blob/sentinel-rename-command-3.0/sentinel.conf" target="_blank" rel="external">https://github.com/jipperinbham/redis/blob/sentinel-rename-command-3.0/sentinel.conf</a></p>
-<p><strong>添加对rename操作支持(支持config以及slaveof 的patch)</strong><br>一共存在两个分支，支持全局rename以及按照cluster的rename配置<br><a href="https://github.com/antirez/redis/pull/2068/commits/78b5be6833d627de96136cc41896b7d01bceaaed" target="_blank" rel="external">https://github.com/antirez/redis/pull/2068/commits/78b5be6833d627de96136cc41896b7d01bceaaed</a></p>
-<p>去哪儿使用的方式是使用patch的方式禁用高危命令，这些高危名利只对哨兵机器开放。</p>
-<p><strong>脚本调用超时</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[19809] 22 Mar 18:16:44.906 # +switch-master myredis 10.30.7.211 25379 10.30.7.212 25379</span><br><span class="line">[19809] 22 Mar 18:16:44.906 * +slave slave 10.30.7.213:25379 10.30.7.213 25379 @ myredis 10.30.7.212 25379</span><br><span class="line">[19809] 22 Mar 18:16:44.909 * +slave slave 10.30.7.211:25379 10.30.7.211 25379 @ myredis 10.30.7.212 25379</span><br><span class="line">[19809] 22 Mar 18:17:26.937 # -script-timeout /home/op/sentinel/reconfig.py 24081</span><br><span class="line">[19809] 22 Mar 18:18:57.183 # -script-timeout /home/op/sentinel/reconfig.py 24283</span><br></pre></td></tr></table></figure>
-<p><strong>单个从库出现问题之后如何处理？？</strong></p>
-<p><strong>订阅消息的地方如何处理？？</strong></p>
-<h2 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h2><ul>
-<li><a href="http://debugo.com/redis-sentinel/" target="_blank" rel="external">http://debugo.com/redis-sentinel/</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1863,7 +1801,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">172</span>
+                <span class="site-state-item-count">173</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

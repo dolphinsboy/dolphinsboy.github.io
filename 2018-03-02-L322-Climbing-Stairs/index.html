@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Dynamic Planning," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="======= categories: [‘MySQL’]0、全文索引说明全文索引使用情况，文件组织格式、使用方式等。">
+<meta name="description" content="题目描述You are climbing a stair case. It takes n steps to reach to the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top? Note: Given n will be a positi">
+<meta name="keywords" content="LeetCode,Dynamic Planning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql全文索引">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-12-23-mysqlquan-wen-suo-yin/index.html">
+<meta property="og:title" content="L322  Climbing Stairs">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-03-02-L322-Climbing-Stairs/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="======= categories: [‘MySQL’]0、全文索引说明全文索引使用情况，文件组织格式、使用方式等。">
+<meta property="og:description" content="题目描述You are climbing a stair case. It takes n steps to reach to the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top? Note: Given n will be a positi">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2018-03-02T08:02:25.617Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mysql全文索引">
-<meta name="twitter:description" content="======= categories: [‘MySQL’]0、全文索引说明全文索引使用情况，文件组织格式、使用方式等。">
+<meta name="twitter:title" content="L322  Climbing Stairs">
+<meta name="twitter:description" content="题目描述You are climbing a stair case. It takes n steps to reach to the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top? Note: Given n will be a positi">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-12-23-mysqlquan-wen-suo-yin/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-03-02-L322-Climbing-Stairs/"/>
 
 
 
 
 
-  <title>mysql全文索引 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L322  Climbing Stairs | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-23-mysqlquan-wen-suo-yin/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-03-02-L322-Climbing-Stairs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mysql全文索引</h1>
+          <h1 class="post-title" itemprop="name headline">L322  Climbing Stairs</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-23T15:07:57+08:00">
-                2015-12-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-02T15:54:26+08:00">
+                2018-03-02
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,11 +314,19 @@
       
 
       
-        <p>=======</p>
-<h2 id="categories-‘MySQL’"><a href="#categories-‘MySQL’" class="headerlink" title="categories: [‘MySQL’]"></a>categories: [‘MySQL’]</h2><h2 id="0、全文索引"><a href="#0、全文索引" class="headerlink" title="0、全文索引"></a>0、全文索引</h2><p>说明全文索引使用情况，文件组织格式、使用方式等。<br><a id="more"></a></p>
-<h2 id="1、全文索引"><a href="#1、全文索引" class="headerlink" title="1、全文索引"></a>1、全文索引</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_1.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_2.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_3.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_4.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_5.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_6.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED.ibd</span><br><span class="line">FTS_000000000000004b_CONFIG.ibd</span><br><span class="line">FTS_000000000000004b_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_DELETED.ibd</span><br></pre></td></tr></table></figure>
-<p>之前没有对全文索引研究过，一开始对这个ibd文件感到奇怪，原来使用到全文索引。</p>
-<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html</a></p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/climbing-stairs/description/" target="_blank" rel="external">题目描述</a></h3><p>You are climbing a stair case. It takes n steps to reach to the top.</p>
+<p>Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?</p>
+<p>Note: Given n will be a positive integer.</p>
+<p>Example 1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: 2</span><br><span class="line">Output:  2</span><br><span class="line">Explanation:  There are two ways to climb to the top.</span><br><span class="line"></span><br><span class="line">1. 1 step + 1 step</span><br><span class="line">2. 2 steps</span><br></pre></td></tr></table></figure></p>
+<p>Example 2:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Input: 3</span><br><span class="line">Output:  3</span><br><span class="line">Explanation:  There are three ways to climb to the top.</span><br><span class="line"></span><br><span class="line">1. 1 step + 1 step + 1 step</span><br><span class="line">2. 1 step + 2 steps</span><br><span class="line">3. 2 steps + 1 step</span><br></pre></td></tr></table></figure></p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>动态规划思想<br>dp[i] = dp[i-2] + dp[i-1]<br>注意初始化条件<br>dp[0] = 0<br>dp[1] = 1<br>dp[2] = {dp[1]+1（爬1个）,dp[0]+2（爬2个）} = dp[1] + dp[0]<br>&lt;–more–&gt;</li>
+</ul>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go动态规划实现——使用n个存储"><a href="#Go动态规划实现——使用n个存储" class="headerlink" title="Go动态规划实现——使用n个存储"></a>Go动态规划实现——使用n个存储</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">climbStairs</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> n == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> n==<span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	dp := <span class="built_in">make</span>([]<span class="keyword">int</span>, n)</span><br><span class="line">	dp[<span class="number">0</span>] = <span class="number">1</span></span><br><span class="line">	dp[<span class="number">1</span>] = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">2</span>;i&lt;n;i++ &#123;</span><br><span class="line">		dp[i] = dp[i<span class="number">-2</span>]+dp[i<span class="number">-1</span>]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> dp[n<span class="number">-1</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime:0ms, 4.84%</p>
+</blockquote>
+<h4 id="Go动态规划优化——使用两个变量"><a href="#Go动态规划优化——使用两个变量" class="headerlink" title="Go动态规划优化——使用两个变量"></a>Go动态规划优化——使用两个变量</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">climbStairs</span><span class="params">(n <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> n == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> n==<span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	a := <span class="number">1</span></span><br><span class="line">	b := <span class="number">2</span></span><br><span class="line">    ret := b</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">2</span>;i&lt;n;i++ &#123;</span><br><span class="line">		ret = a+b</span><br><span class="line">		a = b</span><br><span class="line">		b = ret</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -355,6 +342,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Dynamic-Planning/" rel="tag"># Dynamic Planning</a>
+          
+        </div>
+      
 
       
       
@@ -364,8 +359,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-12-21-mysqlxing-neng-ce-shi/" rel="next" title="mysql性能测试">
-                <i class="fa fa-chevron-left"></i> mysql性能测试
+              <a href="/2018-03-01-L198-House-Robber/" rel="next" title="L198  House Robber">
+                <i class="fa fa-chevron-left"></i> L198  House Robber
               </a>
             
           </div>
@@ -373,10 +368,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/" rel="prev" title="pt-online-schema-change使用方法">
-                pt-online-schema-change使用方法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -510,7 +501,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#categories-‘MySQL’"><span class="nav-number">1.</span> <span class="nav-text">categories: [‘MySQL’]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0、全文索引"><span class="nav-number">2.</span> <span class="nav-text">0、全文索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1、全文索引"><span class="nav-number">3.</span> <span class="nav-text">1、全文索引</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go动态规划实现——使用n个存储"><span class="nav-number">3.1.</span> <span class="nav-text">Go动态规划实现——使用n个存储</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go动态规划优化——使用两个变量"><span class="nav-number">3.2.</span> <span class="nav-text">Go动态规划优化——使用两个变量</span></a></li></ol></li></ol></div>
             
 
           </div>
