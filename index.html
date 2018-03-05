@@ -319,10 +319,10 @@
 <p>Your algorithm should run in O(n2) complexity.</p>
 <p>Follow up: Could you improve it to O(n log n) time complexity?</p>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>动态规划思想，状态转移方程式<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i] = max&#123;dp[j]+1&#125; 其中j&lt;i &amp;&amp; A[j]&lt;=A[i]</span><br></pre></td></tr></table></figure>
+<li><p>动态规划思想，状态转移方程式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i] = max&#123;dp[j]+1&#125; 其中j&lt;i &amp;&amp; A[j]&lt;=A[i]</span><br></pre></td></tr></table></figure>
 </li>
-</ul>
-<p>-<a href="https://www.felix021.com/blog/read.php?1587" target="_blank" rel="external">O(NlogN)时间复杂度</a><br>
+<li><p><a href="https://www.felix021.com/blog/read.php?1587" target="_blank" rel="external">O(NlogN)时间复杂度</a></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018-03-05-L300-Longest-Increasing-Subsequence/#more" rel="contents">
