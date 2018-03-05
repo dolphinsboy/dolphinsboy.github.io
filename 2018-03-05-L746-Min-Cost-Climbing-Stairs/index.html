@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Dynamic Planning," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="APUE 7-8例子出现如下用法宏定义的井号用法12#define doit(name) pr_limits( name, name)static void pr_limits(char *, int)">
+<meta name="description" content="题目描述On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed). Once you pay the cost, you can either climb one or two steps. You need to find minimum cost to reach the top">
+<meta name="keywords" content="LeetCode,Dynamic Planning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C宏定义的特殊用法">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/index.html">
+<meta property="og:title" content="L746  Min Cost Climbing Stairs">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-03-05-L746-Min-Cost-Climbing-Stairs/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="APUE 7-8例子出现如下用法宏定义的井号用法12#define doit(name) pr_limits( name, name)static void pr_limits(char *, int)">
+<meta property="og:description" content="题目描述On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed). Once you pay the cost, you can either climb one or two steps. You need to find minimum cost to reach the top">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-13T07:47:24.000Z">
+<meta property="og:updated_time" content="2018-03-05T02:54:36.074Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="C宏定义的特殊用法">
-<meta name="twitter:description" content="APUE 7-8例子出现如下用法宏定义的井号用法12#define doit(name) pr_limits( name, name)static void pr_limits(char *, int)">
+<meta name="twitter:title" content="L746  Min Cost Climbing Stairs">
+<meta name="twitter:description" content="题目描述On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed). Once you pay the cost, you can either climb one or two steps. You need to find minimum cost to reach the top">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-03-05-L746-Min-Cost-Climbing-Stairs/"/>
 
 
 
 
 
-  <title>C宏定义的特殊用法 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L746  Min Cost Climbing Stairs | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-05-15-chong-ding-yi-de-te-shu-yong-fa/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-03-05-L746-Min-Cost-Climbing-Stairs/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">C宏定义的特殊用法</h1>
+          <h1 class="post-title" itemprop="name headline">L746  Min Cost Climbing Stairs</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-05-15T17:15:12+08:00">
-                2015-05-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-05T10:42:45+08:00">
+                2018-03-05
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/C/" itemprop="url" rel="index">
-                    <span itemprop="name">C</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,9 +314,19 @@
       
 
       
-        <h4 id="APUE-7-8例子出现如下用法"><a href="#APUE-7-8例子出现如下用法" class="headerlink" title="APUE 7-8例子出现如下用法"></a>APUE 7-8例子出现如下用法</h4><figure class="highlight c"><figcaption><span>宏定义的井号用法</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> doit(name) pr_limits( name, name)</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pr_limits</span><span class="params">(<span class="keyword">char</span> *, <span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/min-cost-climbing-stairs/description/" target="_blank" rel="external">题目描述</a></h3><p>On a staircase, the i-th step has some non-negative cost cost[i] assigned (0 indexed).</p>
+<p>Once you pay the cost, you can either climb one or two steps. You need to find minimum cost to reach the top of the floor, and you can either start from the step with index 0, or the step with index 1.</p>
+<p>Example 1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: cost = [10, 15, 20]</span><br><span class="line">Output: 15</span><br></pre></td></tr></table></figure></p>
+<p>Explanation: Cheapest is start on cost[1], pay that cost and go to the top.<br>Example 2:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: cost = [1, 100, 1, 1, 1, 100, 1, 1, 100, 1]</span><br><span class="line">Output: 6</span><br></pre></td></tr></table></figure></p>
+<p>Explanation: Cheapest is start on cost[0], and only step on 1s, skipping cost[3].<br>Note:<br>cost will have a length in the range [2, 1000].<br>Every cost[i] will be an integer in the range [0, 999].</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>动态规划思想<br>dp[i] = min(cost[i-1]+dp[i-1], cost[i-2]+dp[i-2])</li>
+</ul>
 <a id="more"></a>
-<h4 id="更多的特殊使用方法"><a href="#更多的特殊使用方法" class="headerlink" title="更多的特殊使用方法"></a>更多的特殊使用方法</h4><p><a href="http://www.trueeyu.com/?p=494" target="_blank" rel="external">#(井号)在C/C++的#define宏定义中的特殊用法</a></p>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现——数组存储子问题解"><a href="#Go代码实现——数组存储子问题解" class="headerlink" title="Go代码实现——数组存储子问题解"></a>Go代码实现——数组存储子问题解</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">min</span><span class="params">(a <span class="keyword">int</span>, b <span class="keyword">int</span>)</span><span class="title">int</span></span>  &#123;</span><br><span class="line">	<span class="keyword">if</span> a&lt;b &#123;</span><br><span class="line">		<span class="keyword">return</span> a</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> b</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">minCostClimbingStairs</span><span class="params">(cost []<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	n := <span class="built_in">len</span>(cost)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> n == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> n == <span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> cost[<span class="number">0</span>]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	dp := <span class="built_in">make</span>([]<span class="keyword">int</span>, n+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">2</span>;i&lt;n+<span class="number">1</span>;i++ &#123;</span><br><span class="line">		dp[i] = min(cost[i<span class="number">-1</span>]+dp[i<span class="number">-1</span>], cost[i<span class="number">-2</span>]+dp[i<span class="number">-2</span>])</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> dp[n]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime: 8ms</p>
+</blockquote>
 
       
     </div>
@@ -353,6 +342,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Dynamic-Planning/" rel="tag"># Dynamic Planning</a>
+          
+        </div>
+      
 
       
       
@@ -362,8 +359,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-05-15-cheng-xu-ku/" rel="next" title="静态库、共享库、动态库">
-                <i class="fa fa-chevron-left"></i> 静态库、共享库、动态库
+              <a href="/2018-03-02-L322-Climbing-Stairs/" rel="next" title="L322  Climbing Stairs">
+                <i class="fa fa-chevron-left"></i> L322  Climbing Stairs
               </a>
             
           </div>
@@ -371,10 +368,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-05-15-c-typedefyong-fa/" rel="prev" title="C typedef用法">
-                C typedef用法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -508,7 +501,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#APUE-7-8例子出现如下用法"><span class="nav-number">1.</span> <span class="nav-text">APUE 7-8例子出现如下用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#更多的特殊使用方法"><span class="nav-number">2.</span> <span class="nav-text">更多的特殊使用方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现——数组存储子问题解"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现——数组存储子问题解</span></a></li></ol></li></ol></div>
             
 
           </div>
