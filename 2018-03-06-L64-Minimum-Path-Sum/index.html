@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="LeetCode,Dynamic Planning," />
 
 
 
@@ -68,17 +68,18 @@
 
 
 
-<meta name="description" content="前言汇总各种比较好的优化博客，便于在遇到实际问题的时候查看，包括优化准则、美团的索引博文、Join优化。">
+<meta name="description" content="题目描述Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path. Note: You can only move either down or right a">
+<meta name="keywords" content="LeetCode,Dynamic Planning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL优化">
-<meta property="og:url" content="http://dolphinsboy.github.io/2015-08-25-mysqlyou-hua/index.html">
+<meta property="og:title" content="L64  Minimum Path Sum">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-03-06-L64-Minimum-Path-Sum/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="前言汇总各种比较好的优化博客，便于在遇到实际问题的时候查看，包括优化准则、美团的索引博文、Join优化。">
+<meta property="og:description" content="题目描述Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path. Note: You can only move either down or right a">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2018-03-06T03:03:21.355Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MySQL优化">
-<meta name="twitter:description" content="前言汇总各种比较好的优化博客，便于在遇到实际问题的时候查看，包括优化准则、美团的索引博文、Join优化。">
+<meta name="twitter:title" content="L64  Minimum Path Sum">
+<meta name="twitter:description" content="题目描述Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path. Note: You can only move either down or right a">
 
 
 
@@ -107,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2015-08-25-mysqlyou-hua/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-03-06-L64-Minimum-Path-Sum/"/>
 
 
 
 
 
-  <title>MySQL优化 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L64  Minimum Path Sum | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -246,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-08-25-mysqlyou-hua/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-03-06-L64-Minimum-Path-Sum/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -263,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">MySQL优化</h1>
+          <h1 class="post-title" itemprop="name headline">L64  Minimum Path Sum</h1>
         
 
         <div class="post-meta">
@@ -275,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-08-25T19:01:32+08:00">
-                2015-08-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T11:00:10+08:00">
+                2018-03-06
               </time>
             
 
@@ -285,28 +286,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL优化/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL优化</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -335,20 +314,17 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>汇总各种比较好的优化博客，便于在遇到实际问题的时候查看，包括优化准则、美团的索引博文、Join优化。</p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/minimum-path-sum/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.</p>
+<p>Note: You can only move either down or right at any point in time.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Example 1:</span><br><span class="line">[[1,3,1],</span><br><span class="line"> [1,5,1],</span><br><span class="line"> [4,2,1]]</span><br></pre></td></tr></table></figure></p>
+<p>Given the above grid map, return 7. Because the path 1→3→1→1→1 minimizes the sum.</p>
+<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
+<li>二维DP问题<br>参照<a href="https://dolphinsboy.github.io/2018-02-01-dynamic-planning/">动态规划入门</a></li>
+</ul>
 <a id="more"></a>
-<h3 id="1、优化准则"><a href="#1、优化准则" class="headerlink" title="1、优化准则"></a>1、优化准则</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">L1 cache reference <span class="number">0.5</span> ns</span><br><span class="line">Branch mispredict <span class="number">5</span> ns</span><br><span class="line">L2 cache reference <span class="number">7</span> ns</span><br><span class="line">Mutex lock/unlock <span class="number">100</span> ns</span><br><span class="line">Main memory reference <span class="number">100</span> ns</span><br><span class="line">Compress <span class="number">1</span>K bytes <span class="keyword">with</span> Zippy <span class="number">10</span>,<span class="number">000</span> ns</span><br><span class="line">Send <span class="number">2</span>K bytes over <span class="number">1</span> Gbps network <span class="number">20</span>,<span class="number">000</span> ns</span><br><span class="line">Read <span class="number">1</span> MB sequentially <span class="keyword">from</span> memory <span class="number">250</span>,<span class="number">000</span> ns</span><br><span class="line">Round trip within same datacenter <span class="number">500</span>,<span class="number">000</span> ns</span><br><span class="line">Disk seek <span class="number">10</span>,<span class="number">000</span>,<span class="number">000</span> ns</span><br><span class="line">Read <span class="number">1</span> MB sequentially <span class="keyword">from</span> network <span class="number">10</span>,<span class="number">000</span>,<span class="number">000</span> ns</span><br><span class="line">Read <span class="number">1</span> MB sequentially <span class="keyword">from</span> disk <span class="number">30</span>,<span class="number">000</span>,<span class="number">000</span> ns</span><br><span class="line">Send packet CA-&gt;Netherlands-&gt;CA 150,000,000 ns</span><br></pre></td></tr></table></figure>
-<p><a href="http://highscalability.com/numbers-everyone-should-know" target="_blank" rel="external">http://highscalability.com/numbers-everyone-should-know</a></p>
-<h3 id="2、美团《MySQL索引原理及慢查询优化》"><a href="#2、美团《MySQL索引原理及慢查询优化》" class="headerlink" title="2、美团《MySQL索引原理及慢查询优化》"></a>2、美团《MySQL索引原理及慢查询优化》</h3><p><a href="http://tech.meituan.com/mysql-index.html" target="_blank" rel="external">http://tech.meituan.com/mysql-index.html</a></p>
-<h3 id="3、MySQL索引背后的数据结构及算法原理"><a href="#3、MySQL索引背后的数据结构及算法原理" class="headerlink" title="3、MySQL索引背后的数据结构及算法原理"></a>3、MySQL索引背后的数据结构及算法原理</h3><p><a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="external">http://blog.codinglabs.org/articles/theory-of-mysql-index.html</a></p>
-<h3 id="4、Join优化"><a href="#4、Join优化" class="headerlink" title="4、Join优化"></a>4、Join优化</h3><p>Join优化原则<br>&gt;</p>
-<ol>
-<li>查询所返回的结果集，通常查询返回的结果集很少，是有信心进行优化的；</li>
-<li>驱动表的选择至关重要，通过查看执行计划，可以看到优化器选择的驱动表<br>,从执行计划中的rows可以大致反映出问题的所在；</li>
-<li>理清各表之间的关联关系，注意关联字段上是否有合适的索引；</li>
-<li>使用straight_join关键词来强制表之间的关联顺序，可以方便我们验证某些猜想；</li>
-</ol>
-<p>主要参照这篇博客<a href="http://hidba.org/?p=974" target="_blank" rel="external">复杂关联SQL的优化</a></p>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go动态规划实现——二维"><a href="#Go动态规划实现——二维" class="headerlink" title="Go动态规划实现——二维"></a>Go动态规划实现——二维</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">min</span><span class="params">(a <span class="keyword">int</span>, b <span class="keyword">int</span>)</span><span class="title">int</span></span>  &#123;</span><br><span class="line">	<span class="keyword">if</span> a&lt;b &#123;</span><br><span class="line">		<span class="keyword">return</span> a</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> b</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">minPathSum</span><span class="params">(grid [][]<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	n := <span class="built_in">len</span>(grid)</span><br><span class="line">	m := <span class="built_in">len</span>(grid[<span class="number">0</span>])</span><br><span class="line">	<span class="keyword">if</span> n==<span class="number">0</span> || m==<span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	s := <span class="built_in">make</span>([][]<span class="keyword">int</span>,n)</span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>; i&lt;n;i++  &#123;</span><br><span class="line">		s[i] = <span class="built_in">make</span>([]<span class="keyword">int</span>,m)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n ;i++  &#123;</span><br><span class="line">		<span class="keyword">for</span> j:=<span class="number">0</span>;j&lt;m ; j++ &#123;</span><br><span class="line">			<span class="keyword">if</span> i==<span class="number">0</span> &amp;&amp; j==<span class="number">0</span> &#123;</span><br><span class="line">				s[i][j] = grid[i][j]</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span> i==<span class="number">0</span> &amp;&amp; j&gt;<span class="number">0</span> &#123;</span><br><span class="line">				s[i][j] = grid[i][j] + s[i][j<span class="number">-1</span>]</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span> i&gt;<span class="number">0</span> &amp;&amp; j==<span class="number">0</span> &#123;</span><br><span class="line">				s[i][j] = grid[i][j] + s[i<span class="number">-1</span>][j]</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				s[i][j] = grid[i][j] + min(s[i][j<span class="number">-1</span>], s[i<span class="number">-1</span>][j])</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> s[n<span class="number">-1</span>][m<span class="number">-1</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime:12ms, 100.0%</p>
+</blockquote>
 
       
     </div>
@@ -364,6 +340,14 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Dynamic-Planning/" rel="tag"># Dynamic Planning</a>
+          
+        </div>
+      
 
       
       
@@ -373,8 +357,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015-08-24-a-li-shu-ju-ku-xiang-guan-shi-pin-fen-xiang/" rel="next" title="阿里数据库相关视频分享">
-                <i class="fa fa-chevron-left"></i> 阿里数据库相关视频分享
+              <a href="/2018-03-05-L300-Longest-Increasing-Subsequence/" rel="next" title="L300  Longest Increasing Subsequence">
+                <i class="fa fa-chevron-left"></i> L300  Longest Increasing Subsequence
               </a>
             
           </div>
@@ -382,10 +366,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015-08-26-fu-wu-qi-fu-zai-na-xie-shi/" rel="prev" title="服务器负载那些事">
-                服务器负载那些事 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -519,7 +499,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、优化准则"><span class="nav-number">1.1.</span> <span class="nav-text">1、优化准则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、美团《MySQL索引原理及慢查询优化》"><span class="nav-number">1.2.</span> <span class="nav-text">2、美团《MySQL索引原理及慢查询优化》</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、MySQL索引背后的数据结构及算法原理"><span class="nav-number">1.3.</span> <span class="nav-text">3、MySQL索引背后的数据结构及算法原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、Join优化"><span class="nav-number">1.4.</span> <span class="nav-text">4、Join优化</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go动态规划实现——二维"><span class="nav-number">3.1.</span> <span class="nav-text">Go动态规划实现——二维</span></a></li></ol></li></ol></div>
             
 
           </div>
