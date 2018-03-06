@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="LeetCode,Binary Tree," />
+  <meta name="keywords" content="LeetCode,Dynamic Planning," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="题目描述Find the sum of all left leaves in a given binary tree. Example: 12345  3 / \9  20  /  \ 15   7 There are two left leaves in the binary tree, with values 9 and 15 respectively.Return 24. 解题思路 使用深度">
-<meta name="keywords" content="LeetCode,Binary Tree">
+<meta name="description" content="题目描述Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example: 123Input: &amp;quot;babad&amp;quot;Output: &amp;quot;bab&amp;quot; Note: “aba” is also">
+<meta name="keywords" content="LeetCode,Dynamic Planning">
 <meta property="og:type" content="article">
-<meta property="og:title" content="L404 Sum of Left Leaves">
-<meta property="og:url" content="http://dolphinsboy.github.io/2017-12-29-L404-Sum-of-Left-Leaves/index.html">
+<meta property="og:title" content="L5  Longest Palindromic Substring">
+<meta property="og:url" content="http://dolphinsboy.github.io/2018-03-06-L5-Longest-Palindromic-Substring/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="题目描述Find the sum of all left leaves in a given binary tree. Example: 12345  3 / \9  20  /  \ 15   7 There are two left leaves in the binary tree, with values 9 and 15 respectively.Return 24. 解题思路 使用深度">
+<meta property="og:description" content="题目描述Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example: 123Input: &amp;quot;babad&amp;quot;Output: &amp;quot;bab&amp;quot; Note: “aba” is also">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-29T09:03:51.000Z">
+<meta property="og:updated_time" content="2018-03-06T10:34:23.609Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="L404 Sum of Left Leaves">
-<meta name="twitter:description" content="题目描述Find the sum of all left leaves in a given binary tree. Example: 12345  3 / \9  20  /  \ 15   7 There are two left leaves in the binary tree, with values 9 and 15 respectively.Return 24. 解题思路 使用深度">
+<meta name="twitter:title" content="L5  Longest Palindromic Substring">
+<meta name="twitter:description" content="题目描述Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000. Example: 123Input: &amp;quot;babad&amp;quot;Output: &amp;quot;bab&amp;quot; Note: “aba” is also">
 
 
 
@@ -108,13 +108,13 @@
 
 
 
-  <link rel="canonical" href="http://dolphinsboy.github.io/2017-12-29-L404-Sum-of-Left-Leaves/"/>
+  <link rel="canonical" href="http://dolphinsboy.github.io/2018-03-06-L5-Longest-Palindromic-Substring/"/>
 
 
 
 
 
-  <title>L404 Sum of Left Leaves | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>L5  Longest Palindromic Substring | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -247,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2017-12-29-L404-Sum-of-Left-Leaves/">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-03-06-L5-Longest-Palindromic-Substring/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Guosong">
@@ -264,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">L404 Sum of Left Leaves</h1>
+          <h1 class="post-title" itemprop="name headline">L5  Longest Palindromic Substring</h1>
         
 
         <div class="post-meta">
@@ -276,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T16:56:23+08:00">
-                2017-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T18:30:29+08:00">
+                2018-03-06
               </time>
             
 
@@ -314,18 +314,19 @@
       
 
       
-        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/sum-of-left-leaves/description/" target="_blank" rel="external">题目描述</a></h3><p>Find the sum of all left leaves in a given binary tree.</p>
+        <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/longest-palindromic-substring/description/" target="_blank" rel="external">题目描述</a></h3><p>Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.</p>
 <p>Example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">  3</span><br><span class="line"> / \</span><br><span class="line">9  20</span><br><span class="line">  /  \</span><br><span class="line"> 15   7</span><br></pre></td></tr></table></figure>
-<p>There are two left leaves in the binary tree, with values 9 and 15 respectively.<br>Return 24.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;babad&quot;</span><br><span class="line"></span><br><span class="line">Output: &quot;bab&quot;</span><br></pre></td></tr></table></figure>
+<p>Note: “aba” is also a valid answer.</p>
+<p>Example:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: &quot;cbbd&quot;</span><br><span class="line"></span><br><span class="line">Output: &quot;bb&quot;</span><br></pre></td></tr></table></figure></p>
 <h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>使用深度遍历</li>
-<li>记录前一个节点prev，判断prev.Left是否等于当前叶子节点，如果等于说明才是其左叶子节点。</li>
-<li>递归和循环都实现一下<a id="more"></a>
+<li>使用O(N<em>N</em>logN)时间复杂度算法<br>各个子串进行逐一判断，获取最长的回文子串<a id="more"></a>
 </li>
 </ul>
-<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现——递归"><a href="#Go代码实现——递归" class="headerlink" title="Go代码实现——递归"></a>Go代码实现——递归</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sumOfLeftLeaves</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    sum := <span class="number">0</span></span><br><span class="line">    sumOfLeft(root, root, &amp;sum)</span><br><span class="line">    <span class="keyword">return</span> sum</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sumOfLeft</span><span class="params">(root *TreeNode, prev *TreeNode, sum *<span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Left == <span class="literal">nil</span> &amp;&amp; root.Right == <span class="literal">nil</span> &amp;&amp; prev.Left == root &#123;</span><br><span class="line">        *sum += root.Val</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Left != <span class="literal">nil</span> &#123;</span><br><span class="line">        sumOfLeft(root.Left, root, sum)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> root.Right != <span class="literal">nil</span> &#123;</span><br><span class="line">        sumOfLeft(root.Right, root, sum)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Go代码实现——循环"><a href="#Go代码实现——循环" class="headerlink" title="Go代码实现——循环"></a>Go代码实现——循环</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sumOfLeftLeaves</span><span class="params">(root *TreeNode)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> root == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    sum := <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> stack []*TreeNode</span><br><span class="line">    stack = <span class="built_in">append</span>(stack, root)</span><br><span class="line">    prev := root</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">len</span>(stack)&gt;<span class="number">0</span> &#123;</span><br><span class="line">        current := stack[<span class="built_in">len</span>(stack)<span class="number">-1</span>]</span><br><span class="line">        stack = stack[<span class="number">0</span>:<span class="built_in">len</span>(stack)<span class="number">-1</span>]</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> current.Left == <span class="literal">nil</span> &amp;&amp; current.Right == <span class="literal">nil</span> &amp;&amp; prev.Left == current &#123;</span><br><span class="line">            sum += current.Val</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> current.Right != <span class="literal">nil</span> &#123;</span><br><span class="line">            stack = <span class="built_in">append</span>(stack, current.Right)</span><br><span class="line">            prev = current</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> current.Left != <span class="literal">nil</span> &#123;</span><br><span class="line">            stack = <span class="built_in">append</span>(stack, current.Left)</span><br><span class="line">            prev = current</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sum</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h3><h4 id="Go代码实现1——时间复杂度O-NNlogN"><a href="#Go代码实现1——时间复杂度O-NNlogN" class="headerlink" title="Go代码实现1——时间复杂度O(NNlogN)"></a>Go代码实现1——时间复杂度O(N<em>N</em>logN)</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">isPalindrome</span><span class="params">(str <span class="keyword">string</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(str) == <span class="number">0</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	s := <span class="number">0</span></span><br><span class="line">	e := <span class="built_in">len</span>(str)<span class="number">-1</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> s&lt;e  &#123;</span><br><span class="line">		<span class="keyword">if</span> str[s] != str[e] &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">		&#125;</span><br><span class="line">		s++</span><br><span class="line">		e--</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">longestPalindrome</span><span class="params">(s <span class="keyword">string</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	n := <span class="built_in">len</span>(s)</span><br><span class="line">	<span class="keyword">if</span> n &lt;=<span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> s</span><br><span class="line">	&#125;</span><br><span class="line">	maxInt:=<span class="number">0</span></span><br><span class="line">	ret := <span class="string">""</span></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n<span class="number">-1</span>;i++ &#123;</span><br><span class="line">		<span class="keyword">for</span> j:=n;j&gt;i ;j--  &#123;</span><br><span class="line">			<span class="keyword">if</span> isPalindrome(s[i:j]) &amp;&amp; j-i+<span class="number">1</span>&gt;maxInt &#123;</span><br><span class="line">				maxInt = j-i+<span class="number">1</span></span><br><span class="line">				ret = s[i:j]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Runtime:756ms, 5.11%</p>
+</blockquote>
 
       
     </div>
@@ -345,7 +346,7 @@
           
             <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
           
-            <a href="/tags/Binary-Tree/" rel="tag"># Binary Tree</a>
+            <a href="/tags/Dynamic-Planning/" rel="tag"># Dynamic Planning</a>
           
         </div>
       
@@ -358,8 +359,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017-12-29-L145-Binary-Tree-Postorder-Traversal/" rel="next" title="L145 Binary Tree Postorder Traversal">
-                <i class="fa fa-chevron-left"></i> L145 Binary Tree Postorder Traversal
+              <a href="/2018-03-06-L64-Minimum-Path-Sum/" rel="next" title="L64  Minimum Path Sum">
+                <i class="fa fa-chevron-left"></i> L64  Minimum Path Sum
               </a>
             
           </div>
@@ -367,10 +368,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017-12-31-L236-Lowest-Common-Ancestor-of-a-Binary-Tree/" rel="prev" title="L236 Lowest Common Ancestor of a Binary Tree">
-                L236 Lowest Common Ancestor of a Binary Tree <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -504,7 +501,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现——递归"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现——递归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现——循环"><span class="nav-number">3.2.</span> <span class="nav-text">Go代码实现——循环</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#题目描述"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解题思路"><span class="nav-number">2.</span> <span class="nav-text">解题思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Go代码实现"><span class="nav-number">3.</span> <span class="nav-text">Go代码实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Go代码实现1——时间复杂度O-NNlogN"><span class="nav-number">3.1.</span> <span class="nav-text">Go代码实现1——时间复杂度O(NNlogN)</span></a></li></ol></li></ol></div>
             
 
           </div>
