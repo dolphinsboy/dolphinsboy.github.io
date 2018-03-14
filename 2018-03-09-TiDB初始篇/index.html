@@ -68,19 +68,19 @@
 
 
 
-<meta name="description" content="前言看到TiDB发布的微信公众账号文章，TiDB 源码阅读系列文章，开始研究TiDB学习一些基本的Go开发以及SQL开发知识。更多的可以参照TiDB官方博客 TiDB编译源码编译 go环境 12bogon:tidb guosong$ go versiongo version go1.10 darwin/amd64  编译二进制   123git clone https://github.com/p">
+<meta name="description" content="前言看到TiDB发布的微信公众账号文章，TiDB 源码阅读系列文章，开始研究TiDB学习一些基本的Go开发以及SQL开发知识。更多的可以参照TiDB官方博客 TiDB编译源码编译 go环境 12bogon:tidb guosong$ go versiongo version go1.10 darwin/amd64  编译二进制 123git clone https://github.com/pin">
 <meta name="keywords" content="TiDB">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TiDB初始篇">
 <meta property="og:url" content="http://dolphinsboy.github.io/2018-03-09-TiDB初始篇/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="前言看到TiDB发布的微信公众账号文章，TiDB 源码阅读系列文章，开始研究TiDB学习一些基本的Go开发以及SQL开发知识。更多的可以参照TiDB官方博客 TiDB编译源码编译 go环境 12bogon:tidb guosong$ go versiongo version go1.10 darwin/amd64  编译二进制   123git clone https://github.com/p">
+<meta property="og:description" content="前言看到TiDB发布的微信公众账号文章，TiDB 源码阅读系列文章，开始研究TiDB学习一些基本的Go开发以及SQL开发知识。更多的可以参照TiDB官方博客 TiDB编译源码编译 go环境 12bogon:tidb guosong$ go versiongo version go1.10 darwin/amd64  编译二进制 123git clone https://github.com/pin">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/tidb/tidb_ide.png">
-<meta property="og:updated_time" content="2018-03-09T06:36:56.328Z">
+<meta property="og:updated_time" content="2018-03-14T09:39:16.184Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TiDB初始篇">
-<meta name="twitter:description" content="前言看到TiDB发布的微信公众账号文章，TiDB 源码阅读系列文章，开始研究TiDB学习一些基本的Go开发以及SQL开发知识。更多的可以参照TiDB官方博客 TiDB编译源码编译 go环境 12bogon:tidb guosong$ go versiongo version go1.10 darwin/amd64  编译二进制   123git clone https://github.com/p">
+<meta name="twitter:description" content="前言看到TiDB发布的微信公众账号文章，TiDB 源码阅读系列文章，开始研究TiDB学习一些基本的Go开发以及SQL开发知识。更多的可以参照TiDB官方博客 TiDB编译源码编译 go环境 12bogon:tidb guosong$ go versiongo version go1.10 darwin/amd64  编译二进制 123git clone https://github.com/pin">
 <meta name="twitter:image" content="http://dolphinsboy.github.io/images/tidb/tidb_ide.png">
 
 
@@ -322,9 +322,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bogon:tidb guosong$ go version</span><br><span class="line">go version go1.10 darwin/amd64</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>编译二进制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb</span><br><span class="line">cd $GOPATH/src/github.com/pingcap/tidb</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/pingcap/tidb.git $GOPATH/src/github.com/pingcap/tidb</span><br><span class="line">cd $GOPATH/src/github.com/pingcap/tidb</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h4 id="IDE工具源码"><a href="#IDE工具源码" class="headerlink" title="IDE工具源码"></a>IDE工具源码</h4><p>使用intelliJ IDEA工具,打开tidb-server的main.go进行run</p>
 <p><img src="/images/tidb/tidb_ide.png" alt="tidb_ide"></p>
