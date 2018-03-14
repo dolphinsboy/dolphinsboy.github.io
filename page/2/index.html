@@ -244,6 +244,167 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-02-01-dynamic-planning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018-02-01-dynamic-planning/" itemprop="url">动态规划入门</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-01T16:03:06+08:00">
+                2018-02-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="硬币问题"><a href="#硬币问题" class="headerlink" title="硬币问题"></a>硬币问题</h3><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>我们有面值为1元、3元和5元的硬币若干，如何使用更少的硬币凑成11元？</p>
+<h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>规定dp[i] = j 表示凑成i元至少需要j个硬币。</p>
+<p>i = 0，显然需要0个硬币凑成0元，即有dp[0] = 0<br>i = 1，凑成1元需要硬币的数目为dp[1] = dp[0] + 1 = 1<br>i = 2，凑成2元需要硬币的数目为dp[2] = dp[1] + 1 = 2<br>i = 3，凑成3元需要硬币的数目有两种情况，dp[3] = dp[2] + 1 = 2 + 1= 3 , 还可以dp[3] = dp[3-3] + 1 = dp[0] + 1 = 1。通过比较两个最小值，可以获得dp[3] = 1<br>i = 4，可以使用1元硬币dp[4] = dp[4-1] + 1 = 2 ，也可以使用3元硬币dp[4] = dp[4-3] + 1 = dp[1] + 1 = 2<br>i = 5，要凑5元，可以使用下面三种：</p>
+<ul>
+<li>使用1元硬币，dp[5] = dp[5-1] + 1 = dp[4] + 1 = 3</li>
+<li>使用3元硬币，dp[5] = dp[5-3] + 1 = dp[2] + 1 = 3</li>
+<li>使用5元硬币，dp[5] = dp[5-5] + 1 = dp[0] + 1 = 1<br>于是dp[5] = 1</li>
+</ul>
+<p>可以递归公式：<br>d(i) = min{d[i-vj]+1 | vj属于{1,3,5}}</p>
+<p>伪代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Set Min[i] equal to Infinity for all of i</span><br><span class="line">Min[0]=0</span><br><span class="line">Min[1:S] = MaxValue</span><br><span class="line">For i = 1 to S</span><br><span class="line">For j = 0 to N - 1</span><br><span class="line">   If (Vj&lt;=i AND Min[i-Vj]+1&lt;Min[i])</span><br><span class="line">Then Min[i]=Min[i-Vj]+1</span><br><span class="line"></span><br><span class="line">Output Min[S]</span><br></pre></td></tr></table></figure>
+<h4 id="Go代码实现"><a href="#Go代码实现" class="headerlink" title="Go代码实现"></a>Go代码实现</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> DP</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">testDp</span><span class="params">(s <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	v := []<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>&#125;</span><br><span class="line">	dp := <span class="built_in">make</span>([]<span class="keyword">int</span>,s+<span class="number">1</span>)</span><br><span class="line">	dp[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">1</span>; i&lt;=s;i++ &#123;</span><br><span class="line">		dp[i] = s</span><br><span class="line">		<span class="keyword">for</span> j:=<span class="number">0</span>;j&lt;<span class="built_in">len</span>(v) ; j++ &#123;</span><br><span class="line">			<span class="keyword">if</span> v[j]&lt;=i &amp;&amp; dp[i-v[j]]+<span class="number">1</span>&lt;dp[i] &#123;</span><br><span class="line">				dp[i] = dp[i-v[j]] + <span class="number">1</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> dp[s]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>在求解凑成11元需要多少个硬币，没有直接计算dp[11]，而是将这个问题分解成许多个相同的子问题。<br>依赖这些子问题解得到最终解。</p>
+<h3 id="最长非降子序列长度"><a href="#最长非降子序列长度" class="headerlink" title="最长非降子序列长度"></a>最长非降子序列长度</h3><h4 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h4><p>一个序列有N个数，例如5, 3, 4, 8, 6, 7，求这个序列最长非降子序列长度。</p>
+<h4 id="问题分析-1"><a href="#问题分析-1" class="headerlink" title="问题分析"></a>问题分析</h4><p>LIS表示最长非降序子列长度</p>
+<ul>
+<li>前1个数的LIS长度为d(1)=1 (序列: 5)</li>
+<li>前2个数的LIS长度为d(2)=1 (序列: 3，3前面没有比3小的)</li>
+<li>前3个数的LIS长度为d(3)=2 (序列4有一个比它小的3)，所以等于d(2)+1</li>
+<li>前4个数的LIS长度为d(4)=(序列: 3, 4, 8)，d(4) = max{d(1), d(2), d(3)} + 1 = 3</li>
+<li>前5个数的LIS长度为d(5)=(序列：3，4，6), d(5) = max{d(1), d(2), d(3)} + 1 = 3</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">状态转移方程式</span><br><span class="line">d(i) = max&#123;1, d(j)+1&#125;，其中j&lt;i, A[j]&lt;=A[i]</span><br><span class="line"></span><br><span class="line">d(i)表示前i个数以A[i]结尾的LIS</span><br></pre></td></tr></table></figure>
+<h4 id="Go代码实现-1"><a href="#Go代码实现-1" class="headerlink" title="Go代码实现"></a>Go代码实现</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">LIS</span><span class="params">(nums []<span class="keyword">int</span>)</span><span class="title">int</span></span>  &#123;</span><br><span class="line">	n := <span class="built_in">len</span>(nums)</span><br><span class="line">	dp := <span class="built_in">make</span>([]<span class="keyword">int</span>, n)</span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n;i++ &#123;</span><br><span class="line">		dp[i] = <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	max := <span class="number">1</span></span><br><span class="line">	j := <span class="number">1</span></span><br><span class="line">	<span class="keyword">for</span> j&lt;n &#123;</span><br><span class="line">		<span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;j;i++&#123;</span><br><span class="line">			<span class="keyword">if</span> nums[j]&gt;nums[i] &amp;&amp; dp[j]&lt;dp[i]+<span class="number">1</span> &#123;</span><br><span class="line">				dp[j] = dp[i]+<span class="number">1</span></span><br><span class="line">				<span class="keyword">if</span> dp[j]&gt;max &#123;</span><br><span class="line">					max = dp[j]</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		j++</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> max</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="二维DP问题——中级"><a href="#二维DP问题——中级" class="headerlink" title="二维DP问题——中级"></a>二维DP问题——中级</h3><h4 id="题目描述-1"><a href="#题目描述-1" class="headerlink" title="题目描述"></a>题目描述</h4><p>平面上有N*M个格子，每个格子放着一定数量的苹果。从左上角的格子开始，每一步只能向下或者向右走，每次走到一个格子上就把格子里的苹果都收集起来。<br>问最多能收集多少个苹果？</p>
+<h4 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h4><ul>
+<li><p>状态<br>状态S[i][j]表示走到第(i,j)格子，最多能收集的苹果数目。从左边来S[i-1][j],从上边来S[i][j-1]。</p>
+</li>
+<li><p>状态转移方程式</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S[i][j] = A[i][j] + max&#123;S[i-1][j] if i &gt;0, S[i][j-1] if j &gt; 0&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Go代码实现-2"><a href="#Go代码实现-2" class="headerlink" title="Go代码实现"></a>Go代码实现</h4><h4 id="Go代码实现-3"><a href="#Go代码实现-3" class="headerlink" title="Go代码实现"></a>Go代码实现</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TwoDiDp</span><span class="params">(nums [][]<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	n := <span class="built_in">len</span>(nums)</span><br><span class="line">	m := <span class="built_in">len</span>(nums[<span class="number">0</span>])</span><br><span class="line">	s := <span class="built_in">make</span>([][]<span class="keyword">int</span>,n)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n ;i++  &#123;</span><br><span class="line">		s[i] = <span class="built_in">make</span>([]<span class="keyword">int</span>,m)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i:=<span class="number">0</span>;i&lt;n;i++&#123;</span><br><span class="line">		<span class="keyword">for</span> j:=<span class="number">0</span>;j&lt;m ;j++  &#123;</span><br><span class="line">			<span class="keyword">if</span> i==<span class="number">0</span> &amp;&amp;j == <span class="number">0</span> &#123;</span><br><span class="line">				s[i][j] = nums[i][j]</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span> i==<span class="number">0</span>&amp;&amp;j&gt;<span class="number">0</span> &#123;</span><br><span class="line">				s[i][j] = nums[i][j] + max(<span class="number">0</span>, s[i][j<span class="number">-1</span>])</span><br><span class="line">			&#125;<span class="keyword">else</span> <span class="keyword">if</span> j==<span class="number">0</span> &amp;&amp; i&gt;<span class="number">0</span> &#123;</span><br><span class="line">				s[i][j] = nums[i][j] + max(s[i<span class="number">-1</span>][j], <span class="number">0</span>)</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				s[i][j] = nums[i][j]+max(s[i<span class="number">-1</span>][j], s[i][j<span class="number">-1</span>])</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> s[n<span class="number">-1</span>][m<span class="number">-1</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="测试用例"><a href="#测试用例" class="headerlink" title="测试用例"></a>测试用例</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">TestCase3</span><span class="params">(t *testing.T)</span></span>  &#123;</span><br><span class="line">	nums := [][]<span class="keyword">int</span>&#123;&#123;<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;,&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;,&#123;<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;,&#123;<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>&#125;&#125;</span><br><span class="line"></span><br><span class="line">	ret := TwoDiDp(nums)</span><br><span class="line">	<span class="keyword">if</span> ret != <span class="number">45</span> &#123;</span><br><span class="line">		t.Error(<span class="string">"TestCase3 failed"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="LeetCode测试题目"><a href="#LeetCode测试题目" class="headerlink" title="LeetCode测试题目"></a>LeetCode测试题目</h4><ul>
+<li><p><a href="https://leetcode.com/problems/minimum-path-sum/description/" target="_blank" rel="external">L64. Minimum Path Sum</a></p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3></li>
+<li><p>动态规划专题 <a href="http://www.cnblogs.com/skydreamteam/p/3652971.html" target="_blank" rel="external">http://www.cnblogs.com/skydreamteam/p/3652971.html</a></p>
+</li>
+<li>动态规划入门之硬币问题 <a href="http://blog.csdn.net/kerryfish/article/details/25563937" target="_blank" rel="external">http://blog.csdn.net/kerryfish/article/details/25563937</a></li>
+<li>动态规划：从新手到专家 <a href="http://www.hawstein.com/posts/dp-novice-to-advanced.html" target="_blank" rel="external">http://www.hawstein.com/posts/dp-novice-to-advanced.html</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-31-L541-Reverse-String-II/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1422,138 +1583,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-01-15-L448-Find-All-Numbers-Disappeared-in-an-Array/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018-01-15-L448-Find-All-Numbers-Disappeared-in-an-Array/" itemprop="url">L448  Find All Numbers Disappeared in an Array</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-15T21:21:47+08:00">
-                2018-01-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/description/" target="_blank" rel="external">题目描述</a></h3><p>Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array), some elements appear twice and others appear once.</p>
-<p>Find all the elements of [1, n] inclusive that do not appear in this array.</p>
-<p>Could you do it without extra space and in O(n) runtime? You may assume the returned list does not count as extra space.</p>
-<p>Example:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Input:</span><br><span class="line">[4,3,2,7,8,2,3,1]</span><br><span class="line"></span><br><span class="line">Output:</span><br><span class="line">[5,6]</span><br></pre></td></tr></table></figure>
-<h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul>
-<li>借助O(n)空间，使用arr表示各个a[i]对应的数是否存在，返回所有0的i+1</li>
-<li>不借助额外空间，将a[i]对应的a[a[i]-1]设置为负，统计返回所有a[i]值为正的i+1</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018-01-15-L448-Find-All-Numbers-Disappeared-in-an-Array/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1604,7 +1633,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">178</span>
+                <span class="site-state-item-count">179</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1626,7 +1655,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

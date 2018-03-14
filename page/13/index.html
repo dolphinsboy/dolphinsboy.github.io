@@ -244,6 +244,167 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-10-26-mysqltian-jia-xin-de-cao-zuo-ming-ling/" itemprop="url">mysql添加新的操作命令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-10-26T14:33:59+08:00">
+                2016-10-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL源码/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL源码</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="一、添加新的SQL命令（以SHOW-DISK-USAGE为例）"><a href="#一、添加新的SQL命令（以SHOW-DISK-USAGE为例）" class="headerlink" title="一、添加新的SQL命令（以SHOW DISK_USAGE为例）"></a>一、添加新的SQL命令（以SHOW DISK_USAGE为例）</h2><h3 id="1、修改lex-h添加相关Token"><a href="#1、修改lex-h添加相关Token" class="headerlink" title="1、修改lex.h添加相关Token"></a>1、修改lex.h添加相关Token</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> SYMBOL symbols[] = &#123;</span><br><span class="line">...</span><br><span class="line">&#123; <span class="string">"DISK"</span>,     SYM(DISK_SYM)&#125;,</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/* Reason for Modification: */</span></span><br><span class="line"><span class="comment">/* Tokens for the SHOW DISK_USAGE command*/</span></span><br><span class="line">&#123;<span class="string">"DISK_USAGE"</span>, SYM(DISK_USAGE_SYM)&#125;,</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br><span class="line">&#123; <span class="string">"DISTINCT"</span>,     SYM(DISTINCT)&#125;,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="2、修改sql-lex-h添加相关新命令"><a href="#2、修改sql-lex-h添加相关新命令" class="headerlink" title="2、修改sql_lex.h添加相关新命令"></a>2、修改sql_lex.h添加相关新命令</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> enum_sql_command &#123;</span><br><span class="line">...</span><br><span class="line">SQLCOM_SHOW_TRIGGERS,</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION: */</span></span><br><span class="line"><span class="comment">/*Reason for this modification: */</span></span><br><span class="line"><span class="comment">/*Add SQLCOM_SHOW_DISK_USAGE reference*/</span></span><br><span class="line">SQLCOM_SHOW_DISK_USAGE,</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="3-修改sql-yacc-yy添加相关token"><a href="#3-修改sql-yacc-yy添加相关token" class="headerlink" title="3.修改sql_yacc.yy添加相关token"></a>3.修改sql_yacc.yy添加相关token</h3><p><strong>添加token</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">%token  DISK_SYM</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reasion for this modification:/*</span></span><br><span class="line"><span class="comment">/*Add DISK_USAGE_SYM */</span></span><br><span class="line">%token DISK_USAGE_SYM</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br><span class="line">%token  DISTINCT                      <span class="comment">/* SQL-2003-R */</span></span><br></pre></td></tr></table></figure>
+<p><strong>解析SHOW DISK_USAGE命令</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">show:</span><br><span class="line">SHOW</span><br><span class="line">&#123;</span><br><span class="line">LEX *lex=Lex;</span><br><span class="line">lex-&gt;wild=<span class="number">0</span>;</span><br><span class="line">lex-&gt;lock_option= TL_READ;</span><br><span class="line">mysql_init_select(lex);</span><br><span class="line">lex-&gt;current_select-&gt;parsing_place= SELECT_LIST;</span><br><span class="line">bzero((<span class="keyword">char</span>*) &amp;lex-&gt;create_info,<span class="keyword">sizeof</span>(lex-&gt;create_info));</span><br><span class="line">&#125;</span><br><span class="line">show_param</span><br><span class="line">&#123;&#125;</span><br><span class="line">;</span><br><span class="line"></span><br><span class="line">show_param:</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for this modification:*/</span></span><br><span class="line"><span class="comment">/*Add show disk usage symbol parsing*/</span></span><br><span class="line">DISK_USAGE_SYM</span><br><span class="line">&#123;</span><br><span class="line">LEX *lex = Lex;</span><br><span class="line">lex-&gt;sql_command = SQLCOM_SHOW_DISK_USAGE;</span><br><span class="line">&#125;</span><br><span class="line">| DATABASES wild_and_where</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
+<p>&gt;<br>注意是在show databases 前面添加，故在DATABASES前面需要添加 | 这个竖线</p>
+<h3 id="4-修改sql-parser-cc添加SHOW-DISK-USAGE命令的case"><a href="#4-修改sql-parser-cc添加SHOW-DISK-USAGE命令的case" class="headerlink" title="4.修改sql_parser.cc添加SHOW DISK_USAGE命令的case"></a>4.修改sql_parser.cc添加SHOW DISK_USAGE命令的case</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">case</span> SQLCOM_SHOW_AUTHORS:</span><br><span class="line">res= mysqld_show_authors(thd);</span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for this modification*/</span></span><br><span class="line"><span class="comment">/*Add SQLCOM_SHOW_DISK_USAGE case statement*/</span></span><br><span class="line"><span class="keyword">case</span> SQLCOM_SHOW_DISK_USAGE:</span><br><span class="line">&#123;</span><br><span class="line">res = mysqld_show_disk_usage(thd);</span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
+<p>添加函数声明，目前修改sql_priv.h文件添加</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for Modification*/</span></span><br><span class="line"><span class="comment">/*Declared mysqld_show_disk_usage function*/</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">mysqld_show_disk_usage</span><span class="params">(THD *thd)</span></span>;</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="5-在sql-show-cc中添加mysqld-show-disk-usage"><a href="#5-在sql-show-cc中添加mysqld-show-disk-usage" class="headerlink" title="5.在sql_show.cc中添加mysqld_show_disk_usage"></a>5.在sql_show.cc中添加mysqld_show_disk_usage</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for Modification*/</span></span><br><span class="line"><span class="comment">/*Add show disk uage method*/</span></span><br><span class="line"><span class="comment">/***************************************************************************</span></span><br><span class="line"><span class="comment">**List all database disk usage</span></span><br><span class="line"><span class="comment">***************************************************************************/</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">mysqld_show_disk_usage</span><span class="params">(THD *thd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">List&lt;Item&gt; field_list;</span><br><span class="line">Protocol *protocol = thd-&gt;protocol;</span><br><span class="line">DBUG_ENTER(<span class="string">"mysqld_show_disk_usage"</span>);</span><br><span class="line"></span><br><span class="line">field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"Database"</span>,<span class="number">50</span>));</span><br><span class="line">field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"Size_in_bytes"</span>, <span class="number">30</span>));</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(protocol-&gt;send_fields(&amp;field_list,</span><br><span class="line">¦   ¦   ¦   Protocol::SEND_NUM_ROWS | Protocol::SEND_EOF))</span><br><span class="line">¦   DBUG_RETURN(TRUE);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*send test data*/</span></span><br><span class="line">protocol-&gt;prepare_for_resend();</span><br><span class="line">protocol-&gt;store(<span class="string">"test_row"</span>, system_charset_info);</span><br><span class="line">protocol-&gt;store(<span class="string">"1024"</span>, system_charset_info);</span><br><span class="line"><span class="keyword">if</span>(protocol-&gt;write())</span><br><span class="line">¦ DBUG_RETURN(TRUE);</span><br><span class="line"></span><br><span class="line">my_eof(thd);</span><br><span class="line">DBUG_RETURN(FALSE);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*END GUSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-通过bison以及gen-lex-hash生成相关语法"><a href="#6-通过bison以及gen-lex-hash生成相关语法" class="headerlink" title="6. 通过bison以及gen_lex_hash生成相关语法"></a>6. 通过bison以及gen_lex_hash生成相关语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bison -y -p MYSQL -d sql_yacc.yy</span><br><span class="line">[guosong@dev-00 11:18:52 sql]$ll y.tab.</span><br><span class="line">y.tab.c  y.tab.h</span><br></pre></td></tr></table></figure>
+<p>使用y.tab.c和y.tab.h替换sql_yacc.cc和sql_yacc.h</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv y.tab.c sql_yacc.cc</span><br><span class="line">mv y.tab.h sql_yacc.h</span><br></pre></td></tr></table></figure>
+<p>通过gen_lex_hash命令生成新的lex_hash.h文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> 在源码的sql目录下</span><br><span class="line">./gen_lex_hash &gt; lex_hash.h</span><br></pre></td></tr></table></figure>
+<h3 id="7-make-install遇到错误"><a href="#7-make-install遇到错误" class="headerlink" title="7. make install遇到错误"></a>7. make install遇到错误</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">../include/my_global.h:482:53: error: size of array ‘compile_time_assert’ is negative</span><br><span class="line">__attribute__ ((unused));</span><br></pre></td></tr></table></figure>
+<p>修改mysqld.cc文件</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*BEGIN GUOSONG MODIFICATION*/</span></span><br><span class="line"><span class="comment">/*Reason for Modification*/</span></span><br><span class="line"><span class="comment">/*Solve make error*/</span></span><br><span class="line">compile_time_assert(<span class="keyword">sizeof</span>(com_status_vars)/<span class="keyword">sizeof</span>(com_status_vars[<span class="number">0</span>]) - <span class="number">1</span> ==</span><br><span class="line">¦   ¦   ¦   ¦   ¦SQLCOM_END + <span class="number">8</span><span class="number">-1</span>);</span><br><span class="line"><span class="comment">/*END GUOSONG MODIFICATION*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="8-测试"><a href="#8-测试" class="headerlink" title="8.测试"></a>8.测试</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; \s</span><br><span class="line"><span class="comment">--------------</span></span><br><span class="line">mysql  Ver 14.14 Distrib 5.5.42, for Linux (x86_64) using readline 5.1</span><br><span class="line"></span><br><span class="line">Connection id:          1</span><br><span class="line">Current database:</span><br><span class="line">Current user:           root@127.0.0.1</span><br><span class="line">SSL:                    Not in <span class="keyword">use</span></span><br><span class="line"><span class="keyword">Current</span> pager:          stdout</span><br><span class="line"><span class="keyword">Using</span> <span class="keyword">outfile</span>:          <span class="string">''</span></span><br><span class="line"><span class="keyword">Using</span> delimiter:        ;</span><br><span class="line">Server version:         5.1.45-debug-Guosong Modification Source distribution</span><br><span class="line">Protocol version:       10</span><br><span class="line">Connection:             127.0.0.1 via TCP/IP</span><br><span class="line">Server characterset:    utf8</span><br><span class="line">Db     characterset:    utf8</span><br><span class="line">Client characterset:    utf8</span><br><span class="line">Conn.  characterset:    utf8</span><br><span class="line">TCP port:               5145</span><br><span class="line">Uptime:                 14 sec</span><br><span class="line"></span><br><span class="line">Threads: 1  Questions: 5  Slow queries: 0  Opens: 15  <span class="keyword">Flush</span> <span class="keyword">tables</span>: <span class="number">1</span>  <span class="keyword">Open</span> <span class="keyword">tables</span>: <span class="number">8</span>  Queries per <span class="keyword">second</span> <span class="keyword">avg</span>: <span class="number">0.357</span></span><br><span class="line"><span class="comment">--------------</span></span><br><span class="line"></span><br><span class="line">mysql&gt; <span class="keyword">show</span> DISK_USAGE;</span><br><span class="line">+<span class="comment">----------+---------------+</span></span><br><span class="line">| Database | Size_in_bytes |</span><br><span class="line">+<span class="comment">----------+---------------+</span></span><br><span class="line">| test_row | 1024          |</span><br><span class="line">+<span class="comment">----------+---------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-08-25-innodb-buffer-dump-and-load/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1649,162 +1810,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-02-16-gdbduo-jin-cheng-diao-shi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-02-16-gdbduo-jin-cheng-diao-shi/" itemprop="url">GDB多进程调试</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-16T10:51:05+08:00">
-                2016-02-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/GDB/" itemprop="url" rel="index">
-                    <span itemprop="name">GDB</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="1、如何进行多进程调试"><a href="#1、如何进行多进程调试" class="headerlink" title="1、如何进行多进程调试"></a>1、如何进行多进程调试</h2><h3 id="1-1-代码"><a href="#1-1-代码" class="headerlink" title="1.1 代码"></a>1.1 代码</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="number">2</span> <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="number">3</span> <span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span> <span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function">6 </span>&#123;</span><br><span class="line"><span class="number">7</span>     <span class="keyword">pid_t</span> pid;</span><br><span class="line"><span class="number">8</span>     <span class="keyword">int</span> status;</span><br><span class="line"><span class="number">9</span>     <span class="keyword">int</span> a;</span><br><span class="line"><span class="number">10</span>     <span class="keyword">int</span> b;</span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span>     pid=fork();</span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span>     <span class="keyword">if</span> (pid &lt; <span class="number">0</span>)&#123;</span><br><span class="line"><span class="number">15</span>         <span class="built_in">printf</span>(<span class="string">"fork error"</span>);</span><br><span class="line"><span class="number">16</span>         <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"><span class="number">17</span>     &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123;</span><br><span class="line"><span class="number">18</span>         <span class="comment">//child</span></span><br><span class="line"><span class="number">19</span>         <span class="built_in">printf</span>(<span class="string">"in child\n"</span>);</span><br><span class="line"><span class="number">20</span>         fflush(<span class="built_in">stdout</span>);</span><br><span class="line"><span class="number">21</span>         sleep(<span class="number">100</span>);</span><br><span class="line"><span class="number">22</span>         a = <span class="number">5</span>;</span><br><span class="line"><span class="number">23</span>         b = <span class="number">10</span>;</span><br><span class="line"><span class="number">24</span>         <span class="built_in">printf</span>(<span class="string">"sum=%d\n"</span>,a+b);</span><br><span class="line"><span class="number">25</span>         fflush(<span class="built_in">stdout</span>);</span><br><span class="line"><span class="number">26</span></span><br><span class="line"><span class="number">27</span>     &#125;<span class="keyword">else</span>&#123;</span><br><span class="line"><span class="number">28</span>         <span class="comment">//parent</span></span><br><span class="line"><span class="number">29</span>         <span class="built_in">printf</span>(<span class="string">"in parent\n"</span>);</span><br><span class="line"><span class="number">30</span>         fflush(<span class="built_in">stdout</span>);</span><br><span class="line"><span class="number">31</span>         <span class="keyword">if</span>(waitpid(pid, &amp;status,<span class="number">0</span>) &lt; <span class="number">0</span>)&#123;</span><br><span class="line"><span class="number">32</span>             <span class="built_in">printf</span>(<span class="string">"failed to wait"</span>);</span><br><span class="line"><span class="number">33</span>             <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line"><span class="number">34</span>         &#125;</span><br><span class="line"><span class="number">35</span>     &#125;</span><br><span class="line"><span class="number">36</span>     <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line"><span class="number">37</span> &#125;</span><br></pre></td></tr></table></figure>
-<p>对应的makefile</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">test:test.c</span><br><span class="line">gcc -g -c test.c</span><br><span class="line">gcc -o test test.o</span><br><span class="line">clean:</span><br><span class="line">rm -rf test</span><br><span class="line">rm -rf *.o</span><br></pre></td></tr></table></figure>
-<p>默认设置下，在调试多进程时GDB只会调试主进程，但是GDB(&gt;V7.0)持多进程的分别以及同时调试，换句话说，GDB可以同时调试多个程序。只需要设置follow-fork-mode(默认值：parent)和detach-on-fork（默认值：on）即可。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(gdb) help set follow-fork-mode</span><br><span class="line">Set debugger response to a program call of fork or vfork.</span><br><span class="line">A fork or vfork creates a new process.  follow-fork-mode can be:</span><br><span class="line">parent  - the original process is debugged after a fork</span><br><span class="line">child   - the new process is debugged after a fork</span><br><span class="line">The unfollowed process will continue to run.</span><br><span class="line">By default, the debugger will follow the parent process.</span><br><span class="line"></span><br><span class="line">(gdb) help show detach-on-fork</span><br><span class="line">Show whether gdb will detach the child of a fork.</span><br><span class="line">Tells gdb whether to detach the child of a fork.</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">follow-fork-mode          detach-on-fork   说明</span><br><span class="line">parent                   on               只调试主进程（GDB默认）</span><br><span class="line">child                     on               只调试子进程</span><br><span class="line">parent                   off              同时调试两个进程，gdb跟主进程，子进程block在fork位置</span><br><span class="line">child                     off              同时调试两个进程，gdb跟子进程，主进程block在fork位置</span><br></pre></td></tr></table></figure>
-<h3 id="1-2-GDB调试"><a href="#1-2-GDB调试" class="headerlink" title="1.2 GDB调试"></a>1.2 GDB调试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">(gdb) set detach-on-fork off</span><br><span class="line">(gdb) show detach-on-fork</span><br><span class="line">Whether gdb will detach the child of a fork is off.</span><br><span class="line">(gdb) l</span><br><span class="line">warning: Source file is more recent than executable.</span><br><span class="line">3       #include &lt;unistd.h&gt;</span><br><span class="line">4</span><br><span class="line">5       int main(void)</span><br><span class="line">6       &#123;</span><br><span class="line">7           pid_t pid;</span><br><span class="line">8           int status;</span><br><span class="line">9           int a;</span><br><span class="line">10          int b;</span><br><span class="line">11</span><br><span class="line">12          pid=fork();</span><br><span class="line">(gdb) b 14</span><br><span class="line">Breakpoint 1 at 0x400700: file test.c, line 14.</span><br><span class="line">(gdb) r</span><br><span class="line">Starting program: /home/guosong/opdir/20160216/test</span><br><span class="line">[New process 7638]</span><br><span class="line">Missing separate debuginfos, use: debuginfo-install glibc-2.17-55.93.amzn1.x86_64</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at test.c:14</span><br><span class="line">14          if (pid &lt; 0)&#123;</span><br><span class="line">Missing separate debuginfos, use: debuginfo-install glibc-2.17-55.93.amzn1.x86_64</span><br><span class="line">(gdb) p pid</span><br><span class="line">$1 = 7638</span><br></pre></td></tr></table></figure>
-<p>默认是在parent进程中。</p>
-<p><strong>切换到子进程</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(gdb) info inferiors</span><br><span class="line">Num  Description       Executable</span><br><span class="line">2    process 9388      /home/guosong/opdir/20160216/test</span><br><span class="line">* 1    process 9356      /home/guosong/opdir/20160216/test</span><br><span class="line"></span><br><span class="line">(gdb) inferior 2</span><br><span class="line">[Switching to inferior 2 [process 9388] (/home/guosong/opdir/20160216/test)]</span><br><span class="line">[Switching to thread 2 (process 9388)]</span><br><span class="line"> 0  0x00007ffff7aecc7c in fork () from /lib64/libc.so.6</span><br><span class="line"></span><br><span class="line">Breakpoint 1, main () at test.c:14</span><br><span class="line">warning: Source file is more recent than executable.</span><br><span class="line">14          if (pid &lt; 0)&#123;</span><br><span class="line">(gdb) n</span><br><span class="line">17          &#125;else if(pid == 0)&#123;</span><br><span class="line">(gdb) n</span><br><span class="line">19              printf(&quot;in child\n&quot;);</span><br><span class="line">(gdb) info inferiors</span><br><span class="line">Num  Description       Executable</span><br><span class="line">* 2    process 9388      /home/guosong/opdir/20160216/test</span><br><span class="line">1    process 9356      /home/guosong/opdir/20160216/test</span><br></pre></td></tr></table></figure>
-<p><strong>再切换回去主进程</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(gdb) inferior 1</span><br><span class="line">[Switching to inferior 1 [process 9356] (/home/guosong/opdir/20160216/test)]</span><br><span class="line">[Switching to thread 1 (process 9356)]</span><br><span class="line"> 0  main () at test.c:33</span><br><span class="line">33                  exit(1);</span><br></pre></td></tr></table></figure>
-<h2 id="2、参考资料"><a href="#2、参考资料" class="headerlink" title="2、参考资料"></a>2、参考资料</h2><ul>
-<li><a href="http://blog.csdn.net/pbymw8iwm/article/details/7876797" target="_blank" rel="external">http://blog.csdn.net/pbymw8iwm/article/details/7876797</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1855,7 +1860,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">178</span>
+                <span class="site-state-item-count">179</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1877,7 +1882,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">18</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
