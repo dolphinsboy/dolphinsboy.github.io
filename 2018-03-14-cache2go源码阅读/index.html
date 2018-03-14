@@ -76,10 +76,12 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="背景介绍cache2go是具体并发安全golang缓存库，其key具有过期特性。本文研究其代码，学习Go的并发编程。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-14T09:38:55.878Z">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/cache2go/relation.png">
+<meta property="og:updated_time" content="2018-03-14T09:55:06.868Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cache2go源码阅读">
 <meta name="twitter:description" content="背景介绍cache2go是具体并发安全golang缓存库，其key具有过期特性。本文研究其代码，学习Go的并发编程。">
+<meta name="twitter:image" content="http://dolphinsboy.github.io/images/cache2go/relation.png">
 
 
 
@@ -346,7 +348,8 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cache = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]*CacheTable)</span><br></pre></td></tr></table></figure>
 <p>如果这个map中不存在myCache的话，重新创建一个。</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Cache</span><span class="params">(table <span class="keyword">string</span>)</span> *<span class="title">CacheTable</span></span> &#123;</span><br><span class="line">	mutex.RLock()</span><br><span class="line">	t, ok := cache[table]</span><br><span class="line">	mutex.RUnlock()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> !ok &#123;</span><br><span class="line">		mutex.Lock()</span><br><span class="line">		t, ok = cache[table]</span><br><span class="line">		<span class="comment">// Double check whether the table exists or not.</span></span><br><span class="line">		<span class="keyword">if</span> !ok &#123;</span><br><span class="line">			t = &amp;CacheTable&#123;</span><br><span class="line">				name:  table,</span><br><span class="line">				items: <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">interface</span>&#123;&#125;]*CacheItem),</span><br><span class="line">			&#125;</span><br><span class="line">			cache[table] = t</span><br><span class="line">		&#125;</span><br><span class="line">		mutex.Unlock()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> t</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这些涉及到RLock以及Lock，从而保证并行安全，<a href="https://golang.org/pkg/sync/#RWMutex.RLock" target="_blank" rel="external">RLock</a>为读锁, <a href="https://golang.org/pkg/sync/#Mutex.Lock" target="_blank" rel="external">Lock</a>为互斥锁。<br>判断以table为名对应CacheTable结构体是否存在使用RLock，如果不存在，使用Mutex进行创建。这里涉及到CacheTable以及CacheItem两个struct。</p>
+<p>这些涉及到RLock以及Lock，从而保证并行安全，<a href="https://golang.org/pkg/sync/#RWMutex.RLock" target="_blank" rel="external">RLock</a>为读锁, <a href="https://golang.org/pkg/sync/#Mutex.Lock" target="_blank" rel="external">Lock</a>为互斥锁。<br>判断以table为名对应CacheTable结构体是否存在使用RLock，如果不存在，使用Mutex进行创建。这里涉及到CacheTable以及CacheItem两个struct，其关系如下图。</p>
+<p><img src="/images/cache2go/relation.png" alt="relation"></p>
 <h4 id="CacheTable"><a href="#CacheTable" class="headerlink" title="CacheTable"></a>CacheTable</h4><h4 id="CacheItem"><a href="#CacheItem" class="headerlink" title="CacheItem"></a>CacheItem</h4>
       
     </div>
