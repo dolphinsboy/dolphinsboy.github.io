@@ -77,7 +77,7 @@
 <meta property="og:description" content="背景介绍cache2go是具体并发安全golang缓存库，其key具有过期特性。本文研究其代码，学习Go的并发编程。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/cache2go/relation.png">
-<meta property="og:updated_time" content="2018-03-15T02:37:52.040Z">
+<meta property="og:updated_time" content="2018-03-15T02:53:06.736Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cache2go源码阅读">
 <meta name="twitter:description" content="背景介绍cache2go是具体并发安全golang缓存库，其key具有过期特性。本文研究其代码，学习Go的并发编程。">
@@ -349,6 +349,63 @@
 <p>这些涉及到RLock以及Lock，从而保证并行安全，<a href="https://golang.org/pkg/sync/#RWMutex.RLock" target="_blank" rel="external">RLock</a>为读锁, <a href="https://golang.org/pkg/sync/#Mutex.Lock" target="_blank" rel="external">Lock</a>为互斥锁。<br>判断以table为名对应CacheTable结构体是否存在使用RLock，如果不存在，使用Mutex进行创建。这里涉及到CacheTable以及CacheItem两个struct，其关系如下图。</p>
 <p><img src="/images/cache2go/relation.png" alt="relation"></p>
 <h4 id="CacheTable"><a href="#CacheTable" class="headerlink" title="CacheTable"></a>CacheTable</h4><h4 id="CacheTable定义"><a href="#CacheTable定义" class="headerlink" title="CacheTable定义"></a>CacheTable定义</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> CacheTable <span class="keyword">struct</span> &#123;</span><br><span class="line">	sync.RWMutex</span><br><span class="line"></span><br><span class="line">	<span class="comment">// The table's name.</span></span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	<span class="comment">// All cached items.</span></span><br><span class="line">	items <span class="keyword">map</span>[<span class="keyword">interface</span>&#123;&#125;]*CacheItem</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Timer responsible for triggering cleanup.</span></span><br><span class="line">	cleanupTimer *time.Timer</span><br><span class="line">	<span class="comment">// Current timer duration.</span></span><br><span class="line">	cleanupInterval time.Duration</span><br><span class="line"></span><br><span class="line">	<span class="comment">// The logger used for this table.</span></span><br><span class="line">	logger *log.Logger</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Callback method triggered when trying to load a non-existing key.</span></span><br><span class="line">	loadData <span class="function"><span class="keyword">func</span><span class="params">(key <span class="keyword">interface</span>&#123;&#125;, args ...<span class="keyword">interface</span>&#123;&#125;)</span> *<span class="title">CacheItem</span></span></span><br><span class="line"><span class="function">	// <span class="title">Callback</span> <span class="title">method</span> <span class="title">triggered</span> <span class="title">when</span> <span class="title">adding</span> <span class="title">a</span> <span class="title">new</span> <span class="title">item</span> <span class="title">to</span> <span class="title">the</span> <span class="title">cache</span>.</span></span><br><span class="line"><span class="function">	<span class="title">addedItem</span> <span class="title">func</span><span class="params">(item *CacheItem)</span></span></span><br><span class="line"><span class="function">	// <span class="title">Callback</span> <span class="title">method</span> <span class="title">triggered</span> <span class="title">before</span> <span class="title">deleting</span> <span class="title">an</span> <span class="title">item</span> <span class="title">from</span> <span class="title">the</span> <span class="title">cache</span>.</span></span><br><span class="line"><span class="function">	<span class="title">aboutToDeleteItem</span> <span class="title">func</span><span class="params">(item *CacheItem)</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<h4 id="CacheTable说明"><a href="#CacheTable说明" class="headerlink" title="CacheTable说明"></a>CacheTable说明</h4><table>
+<thead>
+<tr>
+<th>成员</th>
+<th>成员类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sync.RWMutex</td>
+<td></td>
+<td>继承一个读写锁</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>cacheTable名称</td>
+</tr>
+<tr>
+<td>items</td>
+<td>map类型，key为任意类型，value为CacheItem</td>
+<td>cacheTable的各个item</td>
+</tr>
+<tr>
+<td>cleanupTimer</td>
+<td>time.Timer</td>
+<td>定时器，用于过期处理</td>
+</tr>
+<tr>
+<td>cleanupInterval</td>
+<td>time.Duration</td>
+<td>定时扫描interval</td>
+</tr>
+<tr>
+<td>logger</td>
+<td>log.Logger</td>
+<td>日志句柄</td>
+</tr>
+<tr>
+<td>loadData</td>
+<td>function</td>
+<td>回调函数，加载key使用</td>
+</tr>
+<tr>
+<td>addedItem</td>
+<td>function</td>
+<td>添加一个item，参数为CacheItem</td>
+</tr>
+<tr>
+<td>aboutToDeleteItem</td>
+<td>function</td>
+<td>在删除item之前回调</td>
+</tr>
+</tbody>
+</table>
+<p>#### </p>
 <h4 id="CacheItem"><a href="#CacheItem" class="headerlink" title="CacheItem"></a>CacheItem</h4>
       
     </div>
@@ -521,7 +578,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景介绍"><span class="nav-number">1.</span> <span class="nav-text">背景介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以Example中的mycachedapp-go为例"><span class="nav-number">2.</span> <span class="nav-text">以Example中的mycachedapp.go为例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建CacheTable"><span class="nav-number">2.1.</span> <span class="nav-text">创建CacheTable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CacheTable"><span class="nav-number">2.2.</span> <span class="nav-text">CacheTable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CacheTable定义"><span class="nav-number">2.3.</span> <span class="nav-text">CacheTable定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CacheItem"><span class="nav-number">2.4.</span> <span class="nav-text">CacheItem</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景介绍"><span class="nav-number">1.</span> <span class="nav-text">背景介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以Example中的mycachedapp-go为例"><span class="nav-number">2.</span> <span class="nav-text">以Example中的mycachedapp.go为例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建CacheTable"><span class="nav-number">2.1.</span> <span class="nav-text">创建CacheTable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CacheTable"><span class="nav-number">2.2.</span> <span class="nav-text">CacheTable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CacheTable定义"><span class="nav-number">2.3.</span> <span class="nav-text">CacheTable定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CacheTable说明"><span class="nav-number">2.4.</span> <span class="nav-text">CacheTable说明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CacheItem"><span class="nav-number">2.5.</span> <span class="nav-text">CacheItem</span></a></li></ol></li></ol></div>
             
 
           </div>
