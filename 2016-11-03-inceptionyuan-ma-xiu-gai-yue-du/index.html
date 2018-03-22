@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="Inception介绍去哪儿开源的Inception是一个集审核、执行、备份以及生成回滚语句集一身的MySQL自动化运维工具，其是基于MySQL5.6.10版本进行修改的。本博文主要研究其修改以及增加的相关代码。 增加Inception关键字相关命令修改lex.h增加INCEPTION关键字123456789static SYMBOL symbols[] = &amp;#123;...&amp;#123; &quot;IN">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-22T07:45:08.431Z">
+<meta property="og:updated_time" content="2018-03-22T07:50:55.661Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Inception源码修改阅读">
 <meta name="twitter:description" content="Inception介绍去哪儿开源的Inception是一个集审核、执行、备份以及生成回滚语句集一身的MySQL自动化运维工具，其是基于MySQL5.6.10版本进行修改的。本博文主要研究其修改以及增加的相关代码。 增加Inception关键字相关命令修改lex.h增加INCEPTION关键字123456789static SYMBOL symbols[] = &amp;#123;...&amp;#123; &quot;IN">
@@ -342,7 +342,7 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">%token  INCEPTION_START_SYM           <span class="comment">/* SQL-2003-R */</span></span><br><span class="line">%token  INCEPTION_COMMIT_SYM          <span class="comment">/* SQL-2003-R */</span></span><br><span class="line">%token  INCEPTION_SYM</span><br></pre></td></tr></table></figure>
 <p><strong>解析INCEPTION_相关命令</strong></p>
 <h4 id="INCEPTION命令包括如下三种"><a href="#INCEPTION命令包括如下三种" class="headerlink" title="INCEPTION命令包括如下三种:"></a>INCEPTION命令包括如下三种:</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">inception_magic_start</span><br><span class="line">inception_magic_commit</span><br><span class="line">inception get variables;</span><br><span class="line">inception get variables 'variable_name';</span><br><span class="line">inception <span class="keyword">set</span> [<span class="keyword">session</span>] variables_name=<span class="keyword">value</span>;</span><br><span class="line">inception get osc_percent '当前执行的SQL语句以及一些基本信息生成的SHA1哈希值';</span><br><span class="line">inception get processlist;</span><br></pre></td></tr></table></figure>
-<h2 id="自定义错误码"><a href="#自定义错误码" class="headerlink" title="自定义错误码"></a>自定义错误码</h2>
+
       
     </div>
     
@@ -512,7 +512,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Inception介绍"><span class="nav-number">1.</span> <span class="nav-text">Inception介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加Inception关键字相关命令"><span class="nav-number">2.</span> <span class="nav-text">增加Inception关键字相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改lex-h增加INCEPTION关键字"><span class="nav-number">2.1.</span> <span class="nav-text">修改lex.h增加INCEPTION关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改sql-cmd-h增加新的SQL-COMMAND"><span class="nav-number">2.2.</span> <span class="nav-text">修改sql_cmd.h增加新的SQL_COMMAND</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改sql-yacc-yy添加相关token"><span class="nav-number">3.</span> <span class="nav-text">修改sql_yacc.yy添加相关token</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#INCEPTION命令包括如下三种"><span class="nav-number">3.0.1.</span> <span class="nav-text">INCEPTION命令包括如下三种:</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义错误码"><span class="nav-number">4.</span> <span class="nav-text">自定义错误码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Inception介绍"><span class="nav-number">1.</span> <span class="nav-text">Inception介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#增加Inception关键字相关命令"><span class="nav-number">2.</span> <span class="nav-text">增加Inception关键字相关命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改lex-h增加INCEPTION关键字"><span class="nav-number">2.1.</span> <span class="nav-text">修改lex.h增加INCEPTION关键字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改sql-cmd-h增加新的SQL-COMMAND"><span class="nav-number">2.2.</span> <span class="nav-text">修改sql_cmd.h增加新的SQL_COMMAND</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改sql-yacc-yy添加相关token"><span class="nav-number">3.</span> <span class="nav-text">修改sql_yacc.yy添加相关token</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#INCEPTION命令包括如下三种"><span class="nav-number">3.0.1.</span> <span class="nav-text">INCEPTION命令包括如下三种:</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
