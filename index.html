@@ -348,24 +348,18 @@
 
       
         
-          
-            <h3 id="配置vimgdb"><a href="#配置vimgdb" class="headerlink" title="配置vimgdb"></a>配置vimgdb</h3><ul>
+          <h3 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h3><p>单独使用gdb时候，需要通过另外一个窗口看代码。有点麻烦，所以产生了vimgdb，vim和gdb的结合。</p>
+<h3 id="配置vimgdb"><a href="#配置vimgdb" class="headerlink" title="配置vimgdb"></a>配置vimgdb</h3><ul>
 <li><a href="https://github.com/cpiger/vimgdb-for-vim7.4" target="_blank" rel="external">https://github.com/cpiger/vimgdb-for-vim7.4</a></li>
 <li><a href="https://blog.easwy.com/archives/advanced-vim-skills-vim-gdb-vimgdb-faq/" target="_blank" rel="external">https://blog.easwy.com/archives/advanced-vim-skills-vim-gdb-vimgdb-faq/</a></li>
 </ul>
-<p><strong>检查vim是否包括gdb</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[guosong@dev-00 11:04:34 ~]$vim --version|grep gdb</span><br><span class="line">+cindent         +gdb             +multi_lang      +termresponse</span><br></pre></td></tr></table></figure>
-<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><ul>
-<li>启动vimgdb之后按space键</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">file /home/guosong/mysql5627/bin/mysqld</span><br><span class="line">run --defaults-file=/home/guosong/mysql5627/etc/my5627.cnf</span><br></pre></td></tr></table></figure>
-<ul>
-<li>打断点</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">b do_command</span><br><span class="line">b dispatch_command</span><br><span class="line">b mysql_parse</span><br><span class="line">b mysql_execute_command</span><br></pre></td></tr></table></figure>
-<h3 id="使用截图"><a href="#使用截图" class="headerlink" title="使用截图"></a>使用截图</h3><p><img src="images/vimgdb/usage.png" alt="demo"></p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018-04-09-vimgdb/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
