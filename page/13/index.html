@@ -404,6 +404,7 @@
 <li>inception_magic_commit 和inception</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/* Verb clauses, except begin */</span><br><span class="line">statement:</span><br><span class="line">          alter</span><br><span class="line">        | analyze</span><br><span class="line">        | binlog_base64_event</span><br><span class="line">        | call</span><br><span class="line">        | change</span><br><span class="line">        | check</span><br><span class="line">        | checksum</span><br><span class="line">        | commit</span><br><span class="line">        | inception_magic_commit</span><br><span class="line">        ...</span><br><span class="line">        | inception</span><br><span class="line">        ;</span><br></pre></td></tr></table></figure>
+<h3 id="完成修改无需用户名和密码登陆的认证"><a href="#完成修改无需用户名和密码登陆的认证" class="headerlink" title="完成修改无需用户名和密码登陆的认证"></a>完成修改无需用户名和密码登陆的认证</h3><p>修改文件sql/sql_acl.cc:acl_authenticate</p>
 <ul>
 <li>opt_variables_name Inception参数相关</li>
 </ul>
