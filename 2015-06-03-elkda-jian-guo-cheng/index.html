@@ -68,17 +68,17 @@
 
 
 
-<meta name="description" content="1、背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 2、ELK搭建过程文档之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:">
+<meta name="description" content="背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 ELK搭建过程文档">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ELK搭建过程">
 <meta property="og:url" content="http://dolphinsboy.github.io/2015-06-03-elkda-jian-guo-cheng/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="1、背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 2、ELK搭建过程文档之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:">
+<meta property="og:description" content="背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 ELK搭建过程文档">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-09T02:58:15.000Z">
+<meta property="og:updated_time" content="2018-04-13T06:53:03.122Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ELK搭建过程">
-<meta name="twitter:description" content="1、背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 2、ELK搭建过程文档之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:">
+<meta name="twitter:description" content="背景内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。 ELK搭建过程文档">
 
 
 
@@ -332,8 +332,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch-Logstash-Kibana/" itemprop="url" rel="index">
-                    <span itemprop="name">ElasticSearch Logstash Kibana</span>
+                  <a href="/categories/ELK/" itemprop="url" rel="index">
+                    <span itemprop="name">ELK</span>
                   </a>
                 </span>
 
@@ -369,14 +369,13 @@
       
 
       
-        <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。</p>
-<h3 id="2、ELK搭建过程文档"><a href="#2、ELK搭建过程文档" class="headerlink" title="2、ELK搭建过程文档"></a>2、ELK搭建过程文档</h3><p>之前写的《ELK日志分析搭建过程文档》，Slideshare上的链接:</p>
-<a id="more"></a>
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>内部系统MySQL API 每天都产生大量的日志，需要从这些日志分析接口的调用时间、请求超时、错误等趋势以及具体的接口，便于抓住重点进行分析。目前公司内部主要使用ELK进行日志分析，故在此也使用ELK进行API日志的分析。</p>
+<h3 id="ELK搭建过程文档"><a href="#ELK搭建过程文档" class="headerlink" title="ELK搭建过程文档"></a>ELK搭建过程文档</h3><a id="more"></a>
 <p>参照百度网盘上的链接<a href="http://pan.baidu.com/s/1pJKFoE3" target="_blank" rel="external">http://pan.baidu.com/s/1pJKFoE3</a></p>
-<h3 id="3、重点"><a href="#3、重点" class="headerlink" title="3、重点"></a>3、重点</h3><p>根据上面的文档就可以搭建出ELK了，其中对于日志分析的重点还是写正则表达式。<br>文档中提供Grok，在线工具非常值得推荐<a href="http://grokdebug.herokuapp.com/" target="_blank" rel="external">http://grokdebug.herokuapp.com/</a></p>
+<h3 id="重点"><a href="#重点" class="headerlink" title="重点"></a>重点</h3><p>根据上面的文档就可以搭建出ELK了，其中对于日志分析的重点还是写正则表达式。<br>文档中提供Grok，在线工具非常值得推荐<a href="http://grokdebug.herokuapp.com/" target="_blank" rel="external">http://grokdebug.herokuapp.com/</a></p>
 <p>常用的patterns：<a href="https://github.com/logstash/logstash/tree/v1.4.0/patterns" target="_blank" rel="external">https://github.com/logstash/logstash/tree/v1.4.0/patterns</a></p>
 <p>可以根据的日志格式生成定义的pattern，定义好的变量可以放在${LogstashHOME}/patterns/grok-patterns文件中。</p>
-<h3 id="4、新浪使用ELK进行日志分析"><a href="#4、新浪使用ELK进行日志分析" class="headerlink" title="4、新浪使用ELK进行日志分析"></a>4、新浪使用ELK进行日志分析</h3><p><a href="http://mp.weixin.qq.com/s?__biz=MzA5OTAyNzQ2OA==&amp;mid=207036526&amp;idx=1&amp;sn=b0de410e0d1026cd100ac2658e093160&amp;scene=5#rd" target="_blank" rel="external">新浪是如何分析处理32亿条实时日志的?</a></p>
+<h3 id="新浪使用ELK进行日志分析"><a href="#新浪使用ELK进行日志分析" class="headerlink" title="新浪使用ELK进行日志分析"></a>新浪使用ELK进行日志分析</h3><p><a href="http://mp.weixin.qq.com/s?__biz=MzA5OTAyNzQ2OA==&amp;mid=207036526&amp;idx=1&amp;sn=b0de410e0d1026cd100ac2658e093160&amp;scene=5#rd" target="_blank" rel="external">新浪是如何分析处理32亿条实时日志的?</a></p>
 
       
     </div>
@@ -501,7 +500,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">35</span>
+                <span class="site-state-item-count">37</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -547,7 +546,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、背景"><span class="nav-number">1.</span> <span class="nav-text">1、背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、ELK搭建过程文档"><span class="nav-number">2.</span> <span class="nav-text">2、ELK搭建过程文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、重点"><span class="nav-number">3.</span> <span class="nav-text">3、重点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、新浪使用ELK进行日志分析"><span class="nav-number">4.</span> <span class="nav-text">4、新浪使用ELK进行日志分析</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ELK搭建过程文档"><span class="nav-number">2.</span> <span class="nav-text">ELK搭建过程文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重点"><span class="nav-number">3.</span> <span class="nav-text">重点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新浪使用ELK进行日志分析"><span class="nav-number">4.</span> <span class="nav-text">新浪使用ELK进行日志分析</span></a></li></ol></div>
             
 
           </div>
