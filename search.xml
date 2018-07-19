@@ -2074,7 +2074,7 @@
       
       <categories>
           
-          <category> MySQL 5.7 </category>
+          <category> MySQL </category>
           
       </categories>
       
@@ -2089,7 +2089,7 @@
       
       <categories>
           
-          <category> MySQL源码 </category>
+          <category> MySQL </category>
           
       </categories>
       
@@ -2104,7 +2104,7 @@
       
       <categories>
           
-          <category> MySQL源码 </category>
+          <category> MySQL </category>
           
       </categories>
       
@@ -2179,7 +2179,7 @@
       
       <categories>
           
-          <category> MySQL故障 </category>
+          <category> MySQL </category>
           
       </categories>
       
@@ -2313,11 +2313,11 @@
       <title>mysql全文索引</title>
       <link href="/2015-12-23-mysqlquan-wen-suo-yin/"/>
       <url>/2015-12-23-mysqlquan-wen-suo-yin/</url>
-      <content type="html"><![CDATA[<p>=======</p><h2 id="categories-‘MySQL’"><a href="#categories-‘MySQL’" class="headerlink" title="categories: [‘MySQL’]"></a>categories: [‘MySQL’]</h2><h2 id="0、全文索引"><a href="#0、全文索引" class="headerlink" title="0、全文索引"></a>0、全文索引</h2><p>说明全文索引使用情况，文件组织格式、使用方式等。<br><a id="more"></a></p><h2 id="1、全文索引"><a href="#1、全文索引" class="headerlink" title="1、全文索引"></a>1、全文索引</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_1.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_2.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_3.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_4.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_5.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_6.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED.ibd</span><br><span class="line">FTS_000000000000004b_CONFIG.ibd</span><br><span class="line">FTS_000000000000004b_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_DELETED.ibd</span><br></pre></td></tr></table></figure><p>之前没有对全文索引研究过，一开始对这个ibd文件感到奇怪，原来使用到全文索引。</p><p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html</a></p>]]></content>
+      <content type="html"><![CDATA[<h2 id="0、全文索引"><a href="#0、全文索引" class="headerlink" title="0、全文索引"></a>0、全文索引</h2><p>说明全文索引使用情况，文件组织格式、使用方式等。<br><a id="more"></a></p><h2 id="1、全文索引"><a href="#1、全文索引" class="headerlink" title="1、全文索引"></a>1、全文索引</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_1.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_2.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_3.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_4.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_5.ibd</span><br><span class="line">FTS_000000000000004b_00000000000000a9_INDEX_6.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_BEING_DELETED.ibd</span><br><span class="line">FTS_000000000000004b_CONFIG.ibd</span><br><span class="line">FTS_000000000000004b_DELETED_CACHE.ibd</span><br><span class="line">FTS_000000000000004b_DELETED.ibd</span><br></pre></td></tr></table></figure><p>之前没有对全文索引研究过，一开始对这个ibd文件感到奇怪，原来使用到全文索引。</p><p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html" target="_blank" rel="external">https://dev.mysql.com/doc/refman/5.6/en/innodb-fulltext-index.html</a></p>]]></content>
       
       <categories>
           
-          <category> mysql </category>
+          <category> MySQL </category>
           
       </categories>
       
@@ -2475,21 +2475,6 @@
     </entry>
     
     <entry>
-      <title>Python爬虫</title>
-      <link href="/2015-09-16-pythonpa-chong/"/>
-      <url>/2015-09-16-pythonpa-chong/</url>
-      <content type="html"><![CDATA[<h2 id="1、Python抓取内部wiki保存为pdf文件"><a href="#1、Python抓取内部wiki保存为pdf文件" class="headerlink" title="1、Python抓取内部wiki保存为pdf文件"></a>1、Python抓取内部wiki保存为pdf文件</h2><h2 id="2、参考资料"><a href="#2、参考资料" class="headerlink" title="2、参考资料"></a>2、参考资料</h2><ul><li><a href="http://cuiqingcai.com/1052.html" target="_blank" rel="external">http://cuiqingcai.com/1052.html</a></li></ul>]]></content>
-      
-      <categories>
-          
-          <category> Python实战 </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    <entry>
       <title>工具类</title>
       <link href="/2015-09-06-gong-ju-lei/"/>
       <url>/2015-09-06-gong-ju-lei/</url>
@@ -2497,7 +2482,7 @@
       
       <categories>
           
-          <category> 工具类 </category>
+          <category> Linux Tools </category>
           
       </categories>
       
@@ -2512,7 +2497,7 @@
       
       <categories>
           
-          <category> MySQL运维案例汇总 </category>
+          <category> MySQL </category>
           
       </categories>
       
@@ -2527,7 +2512,7 @@
       
       <categories>
           
-          <category> 服务器 </category>
+          <category> Linux Tools </category>
           
       </categories>
       
@@ -2542,7 +2527,7 @@
       
       <categories>
           
-          <category> MySQL优化 </category>
+          <category> MySQL </category>
           
       </categories>
       
@@ -2572,7 +2557,7 @@
       
       <categories>
           
-          <category> Python知识点汇总 </category>
+          <category> Python </category>
           
       </categories>
       
@@ -2617,7 +2602,7 @@
       
       <categories>
           
-          <category> Unix高级环境编程 </category>
+          <category> Unix </category>
           
       </categories>
       
@@ -2632,7 +2617,7 @@
       
       <categories>
           
-          <category> Innodb内核 </category>
+          <category> MySQL </category>
           
       </categories>
       
@@ -2707,7 +2692,7 @@
       
       <categories>
           
-          <category> Python知识点汇总 </category>
+          <category> Python </category>
           
       </categories>
       
@@ -2737,22 +2722,7 @@
       
       <categories>
           
-          <category> Unix高级环境编程 </category>
-          
-      </categories>
-      
-      
-    </entry>
-    
-    <entry>
-      <title>监控相关</title>
-      <link href="/2015-06-16-jian-kong-cacti/"/>
-      <url>/2015-06-16-jian-kong-cacti/</url>
-      <content type="html"><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>本文记录一些开源监控的软件使用方法，目前包括Cacti、Zabbix。</p><h2 id="1-Cacti"><a href="#1-Cacti" class="headerlink" title=" 1. Cacti "></a><font color="green"> 1. Cacti </font></h2><p><img src="/images/cacti.png" alt="Cacti的图"></p><p>对于图上的m单位表示啥意思呢？</p><p>在数据比较接近0的时候，会出现这m单位。事实上，这里的单位 m 表示微，即需要除以1000。100m表示0.1。Cacti中使用如下单位：M（兆）、K（千）、m（微）。<br>默认下，Cacti是每隔五分钟采集一次数据，数据展示的是每秒的值。<br><a id="more"></a></p><p><img src="/images/cacti2.png" alt="Cacti的图2"><br>单秒的QPS为250左右。</p><p>Cacti参考链接：</p><p><a href="http://yjever.lofter.com/post/1cc2b267_3263d95" target="_blank" rel="external">使用Cacti监控MySQL</a></p><h2 id="2-Zabbix"><a href="#2-Zabbix" class="headerlink" title=" 2. Zabbix "></a><font color="orange"> 2. Zabbix </font></h2><p>####<font color="orange"> 2.1 PHP安装</font>### </p><figure class="highlight html"><figcaption><span>PHP源码安装configure</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr/local/php  --enable-fpm --with-mcrypt \</span><br><span class="line">--enable-mbstring --disable-pdo --with-curl --disable-debug  --disable-rpath \</span><br><span class="line">--enable-inline-optimization --with-bz2  --with-zlib --enable-sockets \</span><br><span class="line">--enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex \</span><br><span class="line">--with-mhash --enable-zip --with-pcre-regex  \</span><br><span class="line">--with-gd --with-jpeg-dir --enable-bcmath   --enable-gd-native-ttf --with-freetype-dir=/usr/lib64/ \</span><br><span class="line">--with-gettext --enable-pdo \</span><br><span class="line">--with-mysql=/data1/guosong/mysql5616 \</span><br><span class="line">--with-mysqli=mysqlnd \</span><br><span class="line">--with-pdo-mysql=mysqlnd</span><br></pre></td></tr></table></figure><p>###<font color="orange"> 2.2 php-fpm安装</font>###<br>PHP5.6版本已经支持，只需要在编译的时候开启即可，–enable-fpm</p><p>nginx本身不能处理PHP，它只是个web服务器，当接收到请求后，如果是php请求，则发给php解释器处理，并把结果返回给客户端。</p><p>nginx一般是把请求发fastcgi管理进程处理，fascgi管理进程选择cgi子进程处理结果并返回被nginx</p><p>php-fpm配置的参考链接：</p><p>1、 <a href="http://www.4wei.cn/archives/1002061" target="_blank" rel="external">php-fpm - 启动参数及重要配置详解</a></p><p>2、 <a href="http://www.nginx.cn/231.html" target="_blank" rel="external">nginx php-fpm安装配置</a></p><p>3、 <a href="http://gediminasm.org/post/compile-php" target="_blank" rel="external">Compile php on your own</a></p><p>php-fpm启动方式：</p><blockquote><p>/usr/local/php/sbin/php-fpm -c /etc/php.ini  -y /usr/local/php/etc/php-fpm.conf -D</p></blockquote><p>指定php.ini文件以及php-fpm.conf文件</p><p>###<font color="orange"> 2.3 Nginx配置</font>###<br><figure class="highlight html"><figcaption><span>Nginx配置访问php-fpm</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">listen       80;</span><br><span class="line">server_name  localhost;</span><br><span class="line"></span><br><span class="line">location ~ \.php$ &#123;</span><br><span class="line">root           /data1/zabbix-2.4.5/zabbix;</span><br><span class="line">fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">fastcgi_index  index.php;</span><br><span class="line">fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;</span><br><span class="line">include        fastcgi_params;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location / &#123;</span><br><span class="line">root    /data1/zabbix-2.4.5/zabbix;</span><br><span class="line">index   index.php;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>一开始没有设置 location /导致图片出不来，后来加上这个就可以了。因为第一个location设置只访问以php结尾的，对于其他格式的默认是拒绝的。</p><p>###<font color="orange"> 2.4 Zabbix安装</font>###<br><figure class="highlight html"><figcaption><span>Zabbix源码安装</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/data1/zabbix-2.4.5 --enable-server --enable-agent --with-mysql --with-net-snmp --with-libcurl --with-libxml2</span><br></pre></td></tr></table></figure></p><p>启动server之后，检查配置环境：<br><img src="/images/php_zabbix.png =600x400" alt="zabbix的PHP环境"></p><p>必须保证上面的都是ok才可以。<br>对于always_populate_raw_post_data关闭的处理方式如下：</p><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">always_populate_raw_post_data = -1</span><br><span class="line">gettext = On</span><br></pre></td></tr></table></figure><p>附件给出php.ini文件链接<a href="http://pan.baidu.com/s/1eQcZ7JO" target="_blank" rel="external">http://pan.baidu.com/s/1eQcZ7JO</a></p><font color="red">遇到最多的问题是gb的问题，通过安装一些devel包解决，对于FreeType support通过重新编译PHP解决</font>]]></content>
-      
-      <categories>
-          
-          <category> 监控相关 </category>
+          <category> Unix </category>
           
       </categories>
       
@@ -2782,7 +2752,7 @@
       
       <categories>
           
-          <category> Python知识点汇总 </category>
+          <category> Python </category>
           
       </categories>
       
@@ -2902,7 +2872,7 @@
       
       <categories>
           
-          <category> C知识点汇总 </category>
+          <category> C </category>
           
       </categories>
       
