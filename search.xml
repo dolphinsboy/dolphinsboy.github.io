@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[2018-08-31_Mariadb原理和实现Notes]]></title>
+    <title><![CDATA[Mariadb原理和实现Notes]]></title>
     <url>%2F2018-08-31-Mariadb%E5%8E%9F%E7%90%86%E5%92%8C%E5%AE%9E%E7%8E%B0Notes%2F</url>
     <content type="text"><![CDATA[背景学习Mariadb原理和实现，记录一些notes。 内存分配init_alloc_root测试 test.c 1234567891011121314#include &lt;stdio.h&gt;#include &lt;my_sys.h&gt;int main()&#123; MEM_ROOT mem_root; init_alloc_root(&amp;mem_root, 4096, 0, MY_THREAD_SPECIFIC); //char *p1 = (char*)alloc_root(&amp;mem_root, 128); //char *p2 = (char*)alloc_root(&amp;mem_root, 64); printf("HelloWorld!\n"); free_root(&amp;mem_root, 0); return 0;&#125; Makefile 12345678910MYSQL_INCLUDE= -I /home/guosong/source/mariadb-10.0.36/includeMYSQL_LIB = /home/guosong/source/mariadb-10.0.36/libmysql/libmysqlclient.aWALL = -fPIC -fno-exceptions -fno-rtti -g -DENABLED_DEBUG_SYNC -ggdb3 -DSAFE_MUTEX -DSAFEMALLOC -Wall -Wextra -Wformat-security -Wvla -Woverloaded-virtual -Wno-unused-parameter GCC=&quot;c++&quot;test:test.c $(GCC) -g $(WALL) -c test.c $(MYSQL_INCLUDE) $(GCC) -o test test.o $(MYSQL_LIB) -lpthread -lz -lm -ldl -lssl -lcrypto -ljemallocclean: rm -rf test *.o 方法 通过修改client/CMakeList.txt成功编译模拟编译此文件12MYSQL_ADD_EXECUTABLE(guosongtest guosongtest.c)TARGET_LINK_LIBRARIES(guosongtest mysqlclient) 然后查看其CMakeFiles/guosongtest.dir/link.txt找到其link的方式生成上面的Makefile]]></content>
       <categories>
