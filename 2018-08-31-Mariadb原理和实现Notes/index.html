@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="背景学习Mariadb原理和实现，记录一些notes。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-08-31T08:51:39.455Z">
+<meta property="og:updated_time" content="2018-08-31T08:55:10.928Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mariadb原理和实现Notes">
 <meta name="twitter:description" content="背景学习Mariadb原理和实现，记录一些notes。">
@@ -394,6 +394,10 @@
 </ul>
 <p>通过修改client/CMakeList.txt成功编译模拟编译此文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MYSQL_ADD_EXECUTABLE(guosongtest guosongtest.c)</span><br><span class="line">TARGET_LINK_LIBRARIES(guosongtest mysqlclient)</span><br></pre></td></tr></table></figure></p>
 <p>然后查看其CMakeFiles/guosongtest.dir/link.txt找到其link的方式生成上面的Makefile</p>
+<ul>
+<li>gdb</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(gdb) l</span><br><span class="line">1       #include &lt;stdio.h&gt;</span><br><span class="line">2       #include &lt;my_sys.h&gt;</span><br><span class="line">3</span><br><span class="line">4       int main()&#123;</span><br><span class="line">5           MEM_ROOT mem_root;</span><br><span class="line">6           init_alloc_root(&amp;mem_root, 4096, 4096,  MY_THREAD_SPECIFIC);</span><br><span class="line">7</span><br><span class="line">8           char *p1 = (char*)alloc_root(&amp;mem_root, 128);</span><br><span class="line">9           char *p2 = (char*)alloc_root(&amp;mem_root, 64);</span><br><span class="line">10          printf(&quot;HelloWorld!\n&quot;);</span><br><span class="line">(gdb) b 6</span><br><span class="line">Breakpoint 1 at 0x4025f8: file test.c, line 6.</span><br><span class="line">(gdb) s</span><br><span class="line">The program is not being run.</span><br><span class="line">(gdb) r</span><br><span class="line">Breakpoint 1, main () at test.c:6</span><br><span class="line">6           init_alloc_root(&amp;mem_root, 4096, 4096,  MY_THREAD_SPECIFIC);</span><br><span class="line">(gdb) s</span><br><span class="line">init_alloc_root (mem_root=0x7fffffffe040, block_size=4096, pre_alloc_size=4096, my_flags=65536) at /home/guosong/source/mariadb-10.0.36/mysys/my_alloc.c:60</span><br><span class="line">60        DBUG_ENTER(&quot;init_alloc_root&quot;);</span><br><span class="line">(gdb) bt</span><br><span class="line">#0  init_alloc_root (mem_root=0x7fffffffe040, block_size=4096, pre_alloc_size=4096, my_flags=65536) at /home/guosong/source/mariadb-10.0.36/mysys/my_alloc.c:60</span><br><span class="line">#1  0x0000000000402613 in main () at test.c:6</span><br></pre></td></tr></table></figure>
 
       
     </div>
