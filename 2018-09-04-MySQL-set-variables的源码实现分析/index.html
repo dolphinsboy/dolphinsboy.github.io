@@ -78,7 +78,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/inception/Sys_var_charptr.png">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/inception/Sys_var_enum.png">
-<meta property="og:updated_time" content="2018-09-05T09:09:40.952Z">
+<meta property="og:updated_time" content="2018-09-05T10:27:35.809Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL set variable的源码实现分析">
 <meta name="twitter:description" content="背景项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的–recursion-method。公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。">
@@ -396,15 +396,30 @@
 <p>但是实际pt-osc在设置dsn为如下模式:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dsn=h=192.40.120.26,P=4500,D=dpadmin,t=dsns_5627</span><br></pre></td></tr></table></figure>
 <p>这个不是一个固定的值，而是随着操作端口的不同，t的值是可以变化的，例如dsns_4300。<br>所以这里无法使用enum类型的，如果支持这种的话，需要使用Sys_var_charptr类型。</p>
-<h4 id="变量继承关系"><a href="#变量继承关系" class="headerlink" title="变量继承关系"></a>变量继承关系</h4><ul>
+<h4 id="将enum修改为string类型"><a href="#将enum修改为string类型" class="headerlink" title="将enum修改为string类型"></a>将enum修改为string类型</h4><h5 id="两者变量继承关系"><a href="#两者变量继承关系" class="headerlink" title="两者变量继承关系"></a>两者变量继承关系</h5><ul>
 <li>Sys_var_charptr</li>
 </ul>
 <p><img src="/images/inception/Sys_var_charptr.png" alt="Sys_var_charptr"></p>
 <ul>
-<li>Sys_var_enum</li>
+<li>Sys_var_enum<br><img src="/images/inception/Sys_var_enum.png" alt="Sys_var_enum"></li>
 </ul>
-<p><img src="/images/inception/Sys_var_enum.png" alt="Sys_var_enum"></p>
-<p><strong>但是Sys_var_charptr只支持Global变量</strong></p>
+<p><strong>Sys_var_charptr只支持Global变量</strong></p>
+<h4 id="修改代码"><a href="#修改代码" class="headerlink" title="修改代码"></a>修改代码</h4><ul>
+<li>修改sql/mysqld.h</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">char</span>* inception_osc_recursion_method;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改sql/mysqld.cc<br>Global变量需要修改sql/mysqld.cc，Session级别变量在sql/sql_class.h中定义即可。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Added by Guosong 20180905 START</span></span><br><span class="line"><span class="keyword">char</span>* inception_osc_recursion_method= <span class="literal">NULL</span>;</span><br><span class="line"><span class="comment">//Added by Guosong 20180905 END</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>sql/sys_var.cc</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Modified by Guosong START 20180905</span></span><br><span class="line"><span class="comment">/*const char *osc_recursion_method[]= &#123;"processlist", "hosts", "none", "dsn", NullS&#125;;</span></span><br><span class="line"><span class="comment">static Sys_var_charptr Sys_inception_osc_recursion_method(</span></span><br><span class="line"><span class="comment">    "inception_osc_recursion_method",</span></span><br><span class="line"><span class="comment">    "Preferred recursion method used to find slaves.",</span></span><br><span class="line"><span class="comment">    SESSION_VAR(inception_osc_recursion_method), CMD_LINE(REQUIRED_ARG),</span></span><br><span class="line"><span class="comment">    osc_recursion_method, DEFAULT("none"), </span></span><br><span class="line"><span class="comment">    NO_MUTEX_GUARD, NOT_IN_BINLOG);*/</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> Sys_var_charptr <span class="title">Sys_inception_osc_recursion_method</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="string">"inception_osc_recursion_method"</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="string">"Preferred recursion method used to find slaves."</span>,</span></span></span><br><span class="line">    GLOBAL_VAR(inception_osc_recursion_method), CMD_LINE(REQUIRED_ARG),</span><br><span class="line">    IN_FS_CHARSET, DEFAULT(<span class="number">0</span>), </span><br><span class="line">    NO_MUTEX_GUARD, NOT_IN_BINLOG);</span><br><span class="line"><span class="comment">//Modified by Guosong END 20190905</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>修改sql/sql_parse.cc</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sprintf(cmd_line, &quot;--recursion-method=%s&quot;, </span><br><span class="line">¦   inception_osc_recursion_method);</span><br></pre></td></tr></table></figure>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a href="https://blog.csdn.net/slwang001/article/details/77343172" target="_blank" rel="external">https://blog.csdn.net/slwang001/article/details/77343172</a></li>
 <li><a href="http://ourmysql.com/archives/945" target="_blank" rel="external">http://ourmysql.com/archives/945</a></li>
@@ -583,7 +598,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-gdb调试"><span class="nav-number">2.</span> <span class="nav-text">MySQL gdb调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以枚举变量为例"><span class="nav-number">3.</span> <span class="nav-text">以枚举变量为例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#set-variable调用关系"><span class="nav-number">3.1.</span> <span class="nav-text">set variable调用关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持recursion-method"><span class="nav-number">4.</span> <span class="nav-text">支持recursion_method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码分析"><span class="nav-number">5.</span> <span class="nav-text">代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#变量继承关系"><span class="nav-number">5.1.</span> <span class="nav-text">变量继承关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-gdb调试"><span class="nav-number">2.</span> <span class="nav-text">MySQL gdb调试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#以枚举变量为例"><span class="nav-number">3.</span> <span class="nav-text">以枚举变量为例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#set-variable调用关系"><span class="nav-number">3.1.</span> <span class="nav-text">set variable调用关系</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#支持recursion-method"><span class="nav-number">4.</span> <span class="nav-text">支持recursion_method</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码分析"><span class="nav-number">5.</span> <span class="nav-text">代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将enum修改为string类型"><span class="nav-number">5.1.</span> <span class="nav-text">将enum修改为string类型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#两者变量继承关系"><span class="nav-number">5.1.1.</span> <span class="nav-text">两者变量继承关系</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改代码"><span class="nav-number">5.2.</span> <span class="nav-text">修改代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
