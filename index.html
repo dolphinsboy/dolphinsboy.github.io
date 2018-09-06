@@ -380,7 +380,7 @@
 
       
         
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的<a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html#cmdoption-pt-online-schema-change-recursion-method" target="_blank" rel="external">–recursion-method</a>。<br>公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。<br>同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。<br>
+          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的<a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html#cmdoption-pt-online-schema-change-recursion-method" target="_blank" rel="external">–recursion-method</a>。<br>公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。<br>同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。<br>本篇目前在RDS数据库情况，使用Inception对于大表alter的操作保护方案，支持指定从库IP列表的dsn方式。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018-09-04-MySQL-set-variables的源码实现分析/#more" rel="contents">

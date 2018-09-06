@@ -68,20 +68,20 @@
 
 
 
-<meta name="description" content="背景项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的–recursion-method。公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。">
+<meta name="description" content="背景项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的–recursion-method。公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。本">
 <meta name="keywords" content="MySQL内核">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL set variable的源码实现分析">
 <meta property="og:url" content="http://dolphinsboy.github.io/2018-09-04-MySQL-set-variables的源码实现分析/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="背景项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的–recursion-method。公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。">
+<meta property="og:description" content="背景项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的–recursion-method。公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。本">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/inception/Sys_var_charptr.png">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/inception/Sys_var_enum.png">
-<meta property="og:updated_time" content="2018-09-06T10:26:29.940Z">
+<meta property="og:updated_time" content="2018-09-06T10:31:31.531Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL set variable的源码实现分析">
-<meta name="twitter:description" content="背景项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的–recursion-method。公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。">
+<meta name="twitter:description" content="背景项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的–recursion-method。公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。本">
 <meta name="twitter:image" content="http://dolphinsboy.github.io/images/inception/Sys_var_charptr.png">
 
 
@@ -383,7 +383,8 @@
       
 
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的<a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html#cmdoption-pt-online-schema-change-recursion-method" target="_blank" rel="external">–recursion-method</a>。<br>公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。<br>同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。<br><a id="more"></a></p>
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>项目在使用Inception的时候，对于大表需要考虑对延迟的控制，会使用到pt-online-schema-change的<a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html#cmdoption-pt-online-schema-change-recursion-method" target="_blank" rel="external">–recursion-method</a>。<br>公司在使用RDS数据库，故对于osc只能使用–recursion-method=dsn这种方式。目前inception不支持这种方式，故研究其代码。<br>同时也是对MySQL set variable这个SQL对应的背后知识有源码层次的了解。<br>本篇目前在RDS数据库情况，使用Inception对于大表alter的操作保护方案，支持指定从库IP列表的dsn方式。</p>
+<a id="more"></a>
 <h3 id="MySQL-gdb调试"><a href="#MySQL-gdb调试" class="headerlink" title="MySQL gdb调试"></a>MySQL gdb调试</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb --args /usr/local/mysql/bin/Inception --defaults-file=/usr/local/mysql/etc/inception.cnf</span><br></pre></td></tr></table></figure>
 <p>针对gdb过程中遇到的 optimized out，参照<a href="https://unix.stackexchange.com/questions/187455/how-to-compile-without-optimizations-o0-using-cmake" target="_blank" rel="external">How to compile without optimizations -O0 using CMake</a>进行处理。<br>选择方式在CMakeLists.txt中加入:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET(CMAKE_CXX_FLAGS &quot;-O0&quot;)</span><br><span class="line">SET(CMAKE_C_FLAGS &quot;-O0&quot;)</span><br></pre></td></tr></table></figure>
@@ -453,6 +454,7 @@
 </ul>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> Sys_var_charptr <span class="title">Sys_inception_osc_recursion_method</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="string">"inception_osc_recursion_method"</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="string">"Preferred recursion method used to find slaves."</span>,</span></span></span><br><span class="line">    READ_ONLY GLOBAL_VAR(inception_osc_recursion_method), CMD_LINE(REQUIRED_ARG),</span><br><span class="line">    IN_FS_CHARSET, DEFAULT(<span class="number">0</span>), </span><br><span class="line">    NO_MUTEX_GUARD, NOT_IN_BINLOG);</span><br></pre></td></tr></table></figure>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; inception get variables 'inception_osc_recursion_method';</span><br><span class="line">+<span class="comment">--------------------------------+----------------------+</span></span><br><span class="line">| Variable_name                  | Value                |</span><br><span class="line">+<span class="comment">--------------------------------+----------------------+</span></span><br><span class="line">| inception_osc_recursion_method | dsn=D=dpadmin,t=dsns |</span><br><span class="line">+<span class="comment">--------------------------------+----------------------+</span></span><br><span class="line">1 row in <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; inception <span class="keyword">set</span> inception_osc_recursion_method=<span class="string">'processlist'</span>;</span><br><span class="line">ERROR 2575 (HY000): Variable 'inception_osc_recursion_method' is a read only variable.</span><br></pre></td></tr></table></figure>
+<p>**这种方式可以支持dns的方式，不过需要操作的主库存在dpadmin.dsns表，其保存对应的从库IP列表，用于操作大表的保护工作。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
 <li><a href="https://blog.csdn.net/slwang001/article/details/77343172" target="_blank" rel="external">https://blog.csdn.net/slwang001/article/details/77343172</a></li>
 <li><a href="http://ourmysql.com/archives/945" target="_blank" rel="external">http://ourmysql.com/archives/945</a></li>
