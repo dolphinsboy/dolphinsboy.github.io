@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://dolphinsboy.github.io/images/mapreduce/14-class.png">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/mapreduce/15-build-jar.png">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/mapreduce/16-jar-package.png">
-<meta property="og:updated_time" content="2018-10-16T08:28:35.463Z">
+<meta property="og:updated_time" content="2018-10-16T09:41:48.725Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hadoop编写MapReduce程序测试记录">
 <meta name="twitter:description" content="背景阅读《Hadoop权威指南》第二章有MaxTemperature的MapReduce演示代码说明。本文主要记录自己测试的过程以及遇到的问题：  如何使用IntelliJ IDEA编写Java版本的MapReduce程序打包以及测试 如何编写MapReduce任务的Python版本代码以及测试 如何在Hadoop集群中运行Python和Java两个MapReduce任务">
@@ -414,6 +414,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[hadoop@qbj3-op-hadoop-001 20181015]$ cat inputs.txt |python MaxTemperatureMapper.py |sort|python MaxTemperatureReducer.py </span><br><span class="line">1949 111</span><br><span class="line">1950 22</span><br></pre></td></tr></table></figure>
 <h5 id="在hadoop集群中运行"><a href="#在hadoop集群中运行" class="headerlink" title="在hadoop集群中运行"></a>在hadoop集群中运行</h5><p>需要将Mapper和Reducer的代码发送DataNode节点上,然后在NameNode中运行:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar /home/hadoop/hadoop-2.9.1/share/hadoop/tools/lib/hadoop-streaming-2.9.1.jar </span><br><span class="line">	   -mapper /home/hadoop/opdir/20181015/MaxTemperatureMapper.py </span><br><span class="line">       -reducer /home/hadoop/opdir/20181015/MaxTemperatureReducer.py </span><br><span class="line">       -input /user/hadoop/input/inputs.txt </span><br><span class="line">       -output /user/hadoop/output</span><br></pre></td></tr></table></figure>
+<p><strong>Hadoop提供MapReduce的API接口Hadoop Streaming，运行使用非Java的其他语言实现自己的map和reduce函数。</strong></p>
 <h4 id="Java版本"><a href="#Java版本" class="headerlink" title="Java版本"></a>Java版本</h4><h5 id="创建Maven项目"><a href="#创建Maven项目" class="headerlink" title="创建Maven项目"></a>创建Maven项目</h5><ul>
 <li>1、创建Maven Project</li>
 </ul>
