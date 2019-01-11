@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="背景看微博上丁奇大牛转发的一条微博，看作者分析的有问题，故查看源码试着分析一下。 问题描述1234567891011121314151617181920212223 CREATE TABLE `z` (  `id` int(11) NOT NULL AUTO_INCREMENT,  `b` int(11) DEFAULT NULL,  PRIMARY KEY (`id`),  KEY `b` (`">
+<meta name="description" content="背景看微博上丁奇大牛转发的一条微博，看作者分析的过程有疑问，Insert操作会有插入意向锁的判断，文中没有提到， 故查看源码试着分析一下。">
 <meta name="keywords" content="MySQL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2019-01-11_MySQL-Insert-操作加锁分析">
+<meta property="og:title" content="MySQL-Insert-操作加锁分析">
 <meta property="og:url" content="http://dolphinsboy.github.io/2019-01-11-MySQL-Insert-操作加锁分析/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="背景看微博上丁奇大牛转发的一条微博，看作者分析的有问题，故查看源码试着分析一下。 问题描述1234567891011121314151617181920212223 CREATE TABLE `z` (  `id` int(11) NOT NULL AUTO_INCREMENT,  `b` int(11) DEFAULT NULL,  PRIMARY KEY (`id`),  KEY `b` (`">
+<meta property="og:description" content="背景看微博上丁奇大牛转发的一条微博，看作者分析的过程有疑问，Insert操作会有插入意向锁的判断，文中没有提到， 故查看源码试着分析一下。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-01-11T04:17:26.325Z">
+<meta property="og:updated_time" content="2019-01-11T04:23:26.470Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="2019-01-11_MySQL-Insert-操作加锁分析">
-<meta name="twitter:description" content="背景看微博上丁奇大牛转发的一条微博，看作者分析的有问题，故查看源码试着分析一下。 问题描述1234567891011121314151617181920212223 CREATE TABLE `z` (  `id` int(11) NOT NULL AUTO_INCREMENT,  `b` int(11) DEFAULT NULL,  PRIMARY KEY (`id`),  KEY `b` (`">
+<meta name="twitter:title" content="MySQL-Insert-操作加锁分析">
+<meta name="twitter:description" content="背景看微博上丁奇大牛转发的一条微博，看作者分析的过程有疑问，Insert操作会有插入意向锁的判断，文中没有提到， 故查看源码试着分析一下。">
 
 
 
@@ -114,7 +114,7 @@
 
 
 
-  <title>2019-01-11_MySQL-Insert-操作加锁分析 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>MySQL-Insert-操作加锁分析 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -308,7 +308,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">2019-01-11_MySQL-Insert-操作加锁分析</h1>
+          <h1 class="post-title" itemprop="name headline">MySQL-Insert-操作加锁分析</h1>
         
 
         <div class="post-meta">
@@ -380,7 +380,7 @@
       
 
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>看微博上丁奇大牛转发的一条微博，看作者分析的有问题，故查看源码试着分析一下。</p>
+        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>看微博上丁奇大牛转发的<a href="https://weibo.com/3515375313/HaT3kClQ8?type=comment#_rnd1547179052804" target="_blank" rel="external">一条微博</a>，看作者分析的过程有疑问，Insert操作会有插入意向锁的判断，文中没有提到， 故查看源码试着分析一下。<br><a id="more"></a></p>
 <h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`z`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`b`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>),</span><br><span class="line">  <span class="keyword">KEY</span> <span class="string">`b`</span> (<span class="string">`b`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> z (<span class="keyword">id</span>, b)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="number">1</span>,<span class="number">2</span>),</span><br><span class="line">(<span class="number">3</span>,<span class="number">4</span>),</span><br><span class="line">(<span class="number">5</span>,<span class="number">6</span>),</span><br><span class="line">(<span class="number">7</span>,<span class="number">8</span>),</span><br><span class="line">(<span class="number">9</span>,<span class="number">10</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">/* session A */</span></span><br><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> z <span class="keyword">where</span> b=<span class="number">6</span> <span class="keyword">for</span> <span class="keyword">update</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* session B*/</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> z <span class="keyword">values</span>(<span class="number">0</span>,<span class="number">4</span>); <span class="comment">/*blocked*/</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> z <span class="keyword">values</span>(<span class="number">-1</span>,<span class="number">4</span>); <span class="comment">/*success*/</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> z <span class="keyword">values</span>(<span class="number">4</span>,<span class="number">8</span>); <span class="comment">/*blocked*/</span></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> z <span class="keyword">values</span>(<span class="number">8</span>,<span class="number">8</span>); <span class="comment">/*success*/</span></span><br></pre></td></tr></table></figure>
 <p><a href="https://weibo.com/3515375313/HaT3kClQ8?type=comment#_rnd1547179052804" target="_blank" rel="external">文中</a>提到的(id=5,b=6)前面有Gap Lock这点觉得有疑问。</p>
 <h4 id="Innodb打印出的锁信息"><a href="#Innodb打印出的锁信息" class="headerlink" title="Innodb打印出的锁信息"></a>Innodb打印出的锁信息</h4><h5 id="设置参数开启Innodb打印SQL加锁详情"><a href="#设置参数开启Innodb打印SQL加锁详情" class="headerlink" title="设置参数开启Innodb打印SQL加锁详情"></a>设置参数开启Innodb打印SQL加锁详情</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set global innodb_status_output_locks=1;</span><br><span class="line">set global innodb_status_output=1;</span><br></pre></td></tr></table></figure>
