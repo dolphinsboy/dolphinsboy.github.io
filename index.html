@@ -298,6 +298,156 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-07-Inception执行远程命令分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-03-07-Inception执行远程命令分析/" itemprop="url">Inception执行远程命令分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-07T15:20:11+08:00">
+                2019-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL内核/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL内核</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在使用Inception过程中，线上有数据库字符集默认字符集是latin1的，出现过中文乱码问题。<br>故在使用Inception的时候，兼容表情字符，强制添加set names utf8mb4。</p>
+<p>具体demo如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MySQLdb</span><br><span class="line">sql=<span class="string">'/*--user=dba;--password=xx;--host=10.xx;--execute=1;--port=5627;*/\</span></span><br><span class="line"><span class="string">inception_magic_start;\</span></span><br><span class="line"><span class="string">use sakila;\</span></span><br><span class="line"><span class="string">set names utf8mb4;\</span></span><br><span class="line"><span class="string">alter table actor engine=Innodb;\</span></span><br><span class="line"><span class="string">inception_magic_commit;'</span></span><br></pre></td></tr></table></figure>
+<p>只是在execute的部分加了，但是没有check的部分加，后来发现通过inception osc percent无法获取的osc进度。</p>
+<p>因此针对这个问题，研究一下inception的源码。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019-03-07-Inception执行远程命令分析/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-02-15-SQL美化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1550,152 +1700,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-08-31-Mariadb原理和实现Notes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018-08-31-Mariadb原理和实现Notes/" itemprop="url">Mariadb原理和实现Notes</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-31T16:42:49+08:00">
-                2018-08-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL内核/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL内核</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>学习Mariadb原理和实现，记录一些notes。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018-08-31-Mariadb原理和实现Notes/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1746,7 +1750,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">189</span>
+                <span class="site-state-item-count">190</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

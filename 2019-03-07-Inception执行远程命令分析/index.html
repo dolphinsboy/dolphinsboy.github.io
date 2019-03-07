@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="背景在使用Inception过程中，线上有数据库字符集默认字符集是latin1的，出现过中文乱码问题。故在使用Inception的时候，兼容表情字符，强制添加set names utf8mb4。 具体demo如下: 1234567import MySQLdbsql=&apos;/*--user=dba;--password=xx;--host=10.xx;--execute=1;--port=5627;*/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Inception执行远程命令分析">
+<meta property="og:url" content="http://dolphinsboy.github.io/2019-03-07-Inception执行远程命令分析/index.html">
+<meta property="og:site_name" content="Guosong">
+<meta property="og:description" content="背景在使用Inception过程中，线上有数据库字符集默认字符集是latin1的，出现过中文乱码问题。故在使用Inception的时候，兼容表情字符，强制添加set names utf8mb4。 具体demo如下: 1234567import MySQLdbsql=&apos;/*--user=dba;--password=xx;--host=10.xx;--execute=1;--port=5627;*/">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-07T08:49:54.463Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Inception执行远程命令分析">
+<meta name="twitter:description" content="背景在使用Inception过程中，线上有数据库字符集默认字符集是latin1的，出现过中文乱码问题。故在使用Inception的时候，兼容表情字符，强制添加set names utf8mb4。 具体demo如下: 1234567import MySQLdbsql=&apos;/*--user=dba;--password=xx;--host=10.xx;--execute=1;--port=5627;*/">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://dolphinsboy.github.io/2019-03-07-Inception执行远程命令分析/"/>
+
+
+
+
+
+  <title>Inception执行远程命令分析 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Guosong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-blogs">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            好文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-07-Inception执行远程命令分析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Inception执行远程命令分析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-07T15:20:11+08:00">
+                2019-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL内核/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL内核</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在使用Inception过程中，线上有数据库字符集默认字符集是latin1的，出现过中文乱码问题。<br>故在使用Inception的时候，兼容表情字符，强制添加set names utf8mb4。</p>
+<p>具体demo如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MySQLdb</span><br><span class="line">sql=<span class="string">'/*--user=dba;--password=xx;--host=10.xx;--execute=1;--port=5627;*/\</span></span><br><span class="line"><span class="string">inception_magic_start;\</span></span><br><span class="line"><span class="string">use sakila;\</span></span><br><span class="line"><span class="string">set names utf8mb4;\</span></span><br><span class="line"><span class="string">alter table actor engine=Innodb;\</span></span><br><span class="line"><span class="string">inception_magic_commit;'</span></span><br></pre></td></tr></table></figure>
+<p>只是在execute的部分加了，但是没有check的部分加，后来发现通过inception osc percent无法获取的osc进度。</p>
+<p>因此针对这个问题，研究一下inception的源码。</p>
+<a id="more"></a>
+<h2 id="Inception执行远程命令"><a href="#Inception执行远程命令" class="headerlink" title="Inception执行远程命令"></a>Inception执行远程命令</h2><p>通过gdb调试，Inception执行远程命令的部分主要在mysql_execute_statement（sql/sql_parse.cc）中，具体如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mysql_execute_statement</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    THD* thd,</span></span></span><br><span class="line"><span class="function"><span class="params">    MYSQL* mysql,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">char</span>* statement,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">sql_cache_node_t</span>* sql_cache_node</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (sql_cache_node-&gt;use_osc)</span><br><span class="line">	&#123;</span><br><span class="line">		mysql_execute_alter_table_osc(thd, mysql, statement, sql_cache_node)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		mysql_real_query(mysql, statement, <span class="built_in">strlen</span>(statement))</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>根据判断的条件use_osc是执行osc命令，还是直接SQL命令。<br>直接执行SQL命令比较简单，直接调用MySQL C API的mysql_read_query函数。<br>这里问题关键是这个远程连接MYSQL结构如何初始化的？<br>打印对应的堆栈结构如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(gdb) bt</span><br><span class="line">#0  mysql_execute_statement</span><br><span class="line">#1   mysql_remote_execute_command</span><br><span class="line">#2   mysql_execute_all_statement</span><br><span class="line">#3   mysql_execute_commit</span><br><span class="line">#4   mysql_show_print_and_execute_simple</span><br><span class="line">#5   mysql_process_command </span><br><span class="line">#6   mysql_parse </span><br><span class="line">#7   dispatch_command </span><br><span class="line">#8   do_command </span><br><span class="line">#9   do_handle_one_connection </span><br><span class="line">#10  handle_one_connection </span><br><span class="line">#11  start_thread </span><br><span class="line">#12  clone ()</span><br></pre></td></tr></table></figure>
+<p>可以看到主题结构还是MySQL影响连接的过程，因此Inception本身就是基于MySQL5.6.10版本的改的哈。</p>
+<h2 id="远程命令的连接如何产生？"><a href="#远程命令的连接如何产生？" class="headerlink" title="远程命令的连接如何产生？"></a>远程命令的连接如何产生？</h2><h3 id="mysql连接产生的地方"><a href="#mysql连接产生的地方" class="headerlink" title="mysql连接产生的地方"></a>mysql连接产生的地方</h3><p>通过上面的bt路径逐个往上翻，在mysql_execute_all_statement(sql/sql_parse.cc)中:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mysql_execute_all_statement</span><span class="params">(THD* thd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	MYSQL*     mysql = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">if</span> ((mysql = thd-&gt;get_audit_connection()) == <span class="literal">NULL</span>)</span><br><span class="line">		<span class="keyword">return</span> TRUE;</span><br><span class="line">	<span class="comment">//里面上面python demo中多条语句</span></span><br><span class="line">	<span class="comment">//set names utf8mb4</span></span><br><span class="line">	<span class="comment">//use sakila</span></span><br><span class="line">	<span class="comment">//alter table actor engine=Innodb</span></span><br><span class="line">	sql_cache_node = LIST_GET_FIRST(thd-&gt;sql_cache-&gt;field_lst);</span><br><span class="line">	<span class="keyword">while</span> (!thd-&gt;killed &amp;&amp; sql_cache_node != <span class="literal">NULL</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		mysql_remote_execute_command(thd, mysql, sql_cache_node))</span><br><span class="line">		sql_cache_node = LIST_GET_NEXT(link, sql_cache_node);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要是通过THD::get_audit_connection获取到mysql连接，然后在遍历链表执行远程命令。</p>
+<h3 id="mysql连接初始化"><a href="#mysql连接初始化" class="headerlink" title="mysql连接初始化"></a>mysql连接初始化</h3><p>Inception对MySQL原生态的THD类进行修改，添加如下部分:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="function">MYSQL* <span class="title">get_audit_connection</span><span class="params">()</span></span>; </span><br><span class="line">  <span class="function">MYSQL* <span class="title">get_backup_connection</span><span class="params">()</span></span>;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">close_all_connections</span><span class="params">()</span></span>;  </span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">init_audit_connection</span><span class="params">()</span></span>;  </span><br><span class="line">  <span class="keyword">bool</span> audit_conn_inited;</span><br><span class="line">  <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    MYSQL mysql;</span><br><span class="line">    <span class="keyword">char</span>  user[USERNAME_CHAR_LENGTH + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">char</span>  passwd[MAX_PASSWORD_LENGTH + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">char</span>  host[HOSTNAME_LENGTH + <span class="number">1</span>];</span><br><span class="line">    uint port;</span><br><span class="line">  &#125; audit_conn;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">init_backup_connection</span><span class="params">()</span></span>; </span><br><span class="line">  <span class="keyword">bool</span> backup_conn_inited;    </span><br><span class="line">  MYSQL backup_conn;</span><br></pre></td></tr></table></figure>
+<p>每个THD维护一个audit_conn对象，根据audit_conn_inited进行判断只初始化一次，如果存在就直接返回。</p>
+<p>连接初始化部分如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> THD::init_audit_connection()</span><br><span class="line">&#123;</span><br><span class="line">	MYSQL *mysql = &amp;audit_conn.mysql;</span><br><span class="line">	mysql_init(mysql);</span><br><span class="line">	</span><br><span class="line">	...</span><br><span class="line">	<span class="comment">//尽管这里有设置utf8，但是在Latin1库，还是遇到乱码，故在语句中强制设置set names utf8mb4</span></span><br><span class="line">	mysql_options(mysql, MYSQL_SET_CHARSET_NAME, system_charset_info-&gt;csname); </span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">if</span> (mysql_real_connect(mysql, thd_sinfo-&gt;host, thd_sinfo-&gt;user</span><br><span class="line">		thd_sinfo-&gt;password, <span class="literal">NULL</span>, thd_sinfo-&gt;port, <span class="literal">NULL</span>, client_flag) == <span class="number">0</span>) </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//返回错误</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//将host、user、passwd赋值给THD的thd_sinfo，用于get_audit_conn复用判断</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="osc部分"><a href="#osc部分" class="headerlink" title="osc部分"></a>osc部分</h2><p>上面分析完直接执行远程命令，觉得很简单的吧。osc部分就相对比较复杂，Inception是MySQL多线程模式，<br>可以直接多个osc，每个osc直接通过sqlsha1值进行区分，首先来研究这个sqlsha1如何产生的？</p>
+<h3 id="osc中sqlsha1值生成原理"><a href="#osc中sqlsha1值生成原理" class="headerlink" title="osc中sqlsha1值生成原理"></a>osc中sqlsha1值生成原理</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mysql_compute_sql_sha1</span><span class="params">(THD* thd, <span class="keyword">sql_cache_node_t</span>* sql_cache_node)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">str_t</span>       sqlinfo_space;</span><br><span class="line">    <span class="keyword">str_t</span>*      sqlinfo;</span><br><span class="line">    <span class="keyword">char</span>        port[<span class="number">10</span>];</span><br><span class="line">                                                                                                                                                               </span><br><span class="line">    <span class="comment">//只有使用OSC的时候，才会返回这个HASH值</span></span><br><span class="line">    <span class="keyword">if</span> (!sql_cache_node-&gt;use_osc)</span><br><span class="line">    ¦   <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    sqlinfo = str_init(&amp;sqlinfo_space);</span><br><span class="line">    sqlinfo = str_append(sqlinfo, sql_cache_node-&gt;dbname);</span><br><span class="line">    sqlinfo = str_append(sqlinfo, thd-&gt;thd_sinfo-&gt;password);</span><br><span class="line">    sqlinfo = str_append(sqlinfo, thd-&gt;thd_sinfo-&gt;host);</span><br><span class="line">    sqlinfo = str_append(sqlinfo, thd-&gt;thd_sinfo-&gt;user);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">sprintf</span>(port, <span class="string">"%d"</span>, thd-&gt;thd_sinfo-&gt;port);</span><br><span class="line">    sqlinfo = str_append(sqlinfo, port);</span><br><span class="line">    <span class="comment">//add the seqno, to solve execute same sql in different database</span></span><br><span class="line">    <span class="built_in">sprintf</span>(port, <span class="string">"%d"</span>, sql_cache_node-&gt;seqno);</span><br><span class="line">    sqlinfo = str_append(sqlinfo, port);</span><br><span class="line"></span><br><span class="line">    sqlinfo = str_append_with_length(sqlinfo, thd-&gt;query(), thd-&gt;query_length());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> m_hashed_password_buffer[CRYPT_MAX_PASSWORD_SIZE + <span class="number">1</span>];</span><br><span class="line">    String str(str_get(sqlinfo), system_charset_info);</span><br><span class="line">	<span class="comment">//dbname、password、host、user、port、seqno以及query组成的字符串</span></span><br><span class="line">	<span class="comment">//再调用mysql原生态的生成password的函数产生这个sqlsha1值</span></span><br><span class="line">    calculate_password(&amp;str, m_hashed_password_buffer);</span><br><span class="line">    <span class="built_in">strcpy</span>(sql_cache_node-&gt;sqlsha1, m_hashed_password_buffer);</span><br><span class="line">    str_deinit(sqlinfo);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于添加seqno的，代码上注释也说明，此seqno是为了支持在不同的db中执行相关SQL。<br>故如下两种情况:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sql=<span class="string">'/*--user=dba;--password=xxx;--host=10.xx;\</span></span><br><span class="line"><span class="string">--enable-check=1;--port=5627;*/\</span></span><br><span class="line"><span class="string">inception_magic_start;\</span></span><br><span class="line"><span class="string">## 是否有这个set names</span></span><br><span class="line"><span class="string">set names utf8mb4;\</span></span><br><span class="line"><span class="string">alter table sbtest.cc_order_user engine=Innodb;\</span></span><br><span class="line"><span class="string">inception_magic_commit;'</span></span><br></pre></td></tr></table></figure>
+<p>两种情况对应的seqno，一个是0，一个是1，尽管在str这个字符中只有1位之差，其对应的sqlsha1就完全不同。（这里一开始在gdb调试的时候，没有发现这个，误以为和字符集system_charset_info有关，排查好久）</p>
+<h3 id="osc执行过程"><a href="#osc执行过程" class="headerlink" title="osc执行过程"></a>osc执行过程</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mysql_execute_alter_table_osc</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	THD* thd,</span></span></span><br><span class="line"><span class="function"><span class="params">	MYSQL* mysql,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">char</span>* statement,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">sql_cache_node_t</span>* sql_cache_node</span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//拼接pt-online-schema-change的命令</span></span><br><span class="line">	oscargv[count++] = strdup(<span class="string">"pt-online-schema-change"</span>);</span><br><span class="line">    oscargv[count++] = strdup(<span class="string">"--alter"</span>);</span><br><span class="line">	...</span><br><span class="line">	<span class="comment">//调用封装的process，fork子进程异步执行pt-osc</span></span><br><span class="line">	<span class="function">process <span class="title">proc</span> <span class="params">(thd, sql_cache_node, oscargv, <span class="string">"r"</span>)</span></span>;</span><br><span class="line">	<span class="comment">//主进程进此osc_percent加入到全局变量global_osc_cache.osc_lst中</span></span><br><span class="line">	mysql_add_new_percent_cache_node(sql_cache_node, &amp;proc);</span><br><span class="line">	<span class="keyword">if</span> (<span class="literal">NULL</span> != proc.pipe() &amp;&amp; !proc.error())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">while</span>(tmp &amp;&amp; !proc.error() )</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">//循环判断proc的标准输出，更新percent信息</span></span><br><span class="line">			mysql_analyze_osc_output(thd, tmp, sql_cache_node);</span><br><span class="line">			tmp = my_fgets (out, out_len, proc.pipe());</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="osc中percent状态更新"><a href="#osc中percent状态更新" class="headerlink" title="osc中percent状态更新"></a>osc中percent状态更新</h3><p>通过上面的while循环逐行分析proc的结果输出，更新percent信息</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mysql_analyze_osc_output</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    THD* thd,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">char</span>* tmp,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">sql_cache_node_t</span>* sql_cache_node                                                                                                                           </span></span></span><br><span class="line"><span class="function"><span class="params">)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">sprintf</span>(Successfully, <span class="string">"Successfully altered `%s`.`%s`."</span>, </span><br><span class="line">		sql_cache_node-&gt;dbname, sql_cache_node-&gt;tablename);	</span><br><span class="line">	<span class="keyword">if</span> (!strcasecmp(Successfully, tmp))</span><br><span class="line">	&#123;	</span><br><span class="line">		<span class="comment">//如果发现Successfully，将percent设置为100</span></span><br><span class="line">		percent = <span class="number">100</span>;</span><br><span class="line">		<span class="built_in">strcpy</span>(timeremain, <span class="string">"00:00"</span>);</span><br><span class="line">		sql_cache_node-&gt;oscpercent = <span class="number">100</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//从proc标准输出解析percent和timerremain</span></span><br><span class="line">		<span class="built_in">sscanf</span>(tmp, <span class="string">"Copying %*s %d%*s %s remain"</span>, &amp;percent, timeremain);</span><br><span class="line">		<span class="keyword">if</span>(percent==<span class="number">-1</span>)&#123;</span><br><span class="line">		<span class="comment">//如果没有解析到，返回再进行上一层的循环</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//如果解析到，遍历global_osc_cache.osc_list更新percent</span></span><br><span class="line">	<span class="comment">//使用mutex保护这个list</span></span><br><span class="line">	mysql_mutex_lock(&amp;osc_mutex); </span><br><span class="line">    osc_percent_node = LIST_GET_FIRST(global_osc_cache.osc_lst);</span><br><span class="line">	<span class="keyword">while</span>(osc_percent_node)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//根据sqlsha1进行比较</span></span><br><span class="line">		<span class="keyword">if</span> (!strcasecmp(osc_percent_node-&gt;sqlsha1, sql_cache_node-&gt;sqlsha1))</span><br><span class="line">		&#123;</span><br><span class="line">			osc_percent_node-&gt;percent = percent;</span><br><span class="line">			<span class="built_in">strcpy</span>(osc_percent_node-&gt;remaintime, timeremain);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">//遍历下一个节点</span></span><br><span class="line">		osc_percent_node = LIST_GET_NEXT(link, osc_percent_node);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//如果都没有找到，重新创建添加到osc_list中</span></span><br><span class="line">	mysql_mutex_unlock(&amp;osc_mutex);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="osc中get-osc-percent执行过程"><a href="#osc中get-osc-percent执行过程" class="headerlink" title="osc中get osc percent执行过程"></a>osc中get osc percent执行过程</h3><p>如果获取osc percent，Inception提供的命令如下:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">inception get osc percent '*94389A9158CEDA0F698B08EEB418A9CFCFCD568A'</span><br></pre></td></tr></table></figure>
+<p>这个就比较简单了，通过遍历上面的global_osc_cache.osc_list进行判断sqlsha1的判断，具体代码如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">mysql_execute_inception_osc_show</span><span class="params">(THD* thd)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//还是通过mutex进行保护</span></span><br><span class="line">	mysql_mutex_lock(&amp;osc_mutex); </span><br><span class="line">    osc_percent_node = LIST_GET_FIRST(global_osc_cache.osc_lst);</span><br><span class="line">    <span class="keyword">while</span>(osc_percent_node)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (!strcasecmp(osc_percent_node-&gt;sqlsha1, wild))</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		osc_percent_node = LIST_GET_NEXT(link, osc_percent_node);        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="comment">//设置返回列的信息</span></span><br><span class="line">	field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"DBNAME"</span>, FN_REFLEN));</span><br><span class="line">    field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"TABLENAME"</span>, FN_REFLEN));</span><br><span class="line">    field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"SQLSHA1"</span>, FN_REFLEN));</span><br><span class="line">    field_list.push_back(<span class="keyword">new</span> Item_return_int(<span class="string">"PERCENT"</span>, <span class="number">20</span>, MYSQL_TYPE_LONG));</span><br><span class="line">    field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"REMAINTIME"</span>, FN_REFLEN));</span><br><span class="line">    field_list.push_back(<span class="keyword">new</span> Item_empty_string(<span class="string">"INFOMATION"</span>, FN_REFLEN));</span><br><span class="line"></span><br><span class="line">	<span class="comment">//设置各个字段信息</span></span><br><span class="line">	<span class="keyword">if</span> (osc_percent_node)</span><br><span class="line">    &#123;</span><br><span class="line">        protocol-&gt;prepare_for_resend();</span><br><span class="line">        protocol-&gt;store(osc_percent_node-&gt;dbname, system_charset_info);</span><br><span class="line">        protocol-&gt;store(osc_percent_node-&gt;tablename, system_charset_info);</span><br><span class="line">        protocol-&gt;store(osc_percent_node-&gt;sqlsha1, system_charset_info);</span><br><span class="line">        protocol-&gt;store(osc_percent_node-&gt;percent);</span><br><span class="line">        protocol-&gt;store(osc_percent_node-&gt;remaintime, system_charset_info);</span><br><span class="line">        protocol-&gt;store(str_get(osc_percent_node-&gt;sql_cache_node-&gt;oscoutput), system_charset_info);</span><br><span class="line"></span><br><span class="line">        protocol-&gt;write();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mysql_mutex_unlock(&amp;osc_mutex);</span><br><span class="line">	my_eof(thd);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//这一部分也是标准的返回结果给client的过程</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过分析线上具体的问题，进一步对Inception的代码熟悉和了解，尽管过程花时间比较有点多，但最终还是解决了，还是蛮开心的哈。<br>主要分析的过程是通过grep关键字，找到对应的函数，然后gdb发现上下调用栈，然后找到关键的函数再进行分析。<br>通过源码分析，更加了解事物本质，是以后努力方向。尽管现在还是一知半解，越来越觉得，搞了多就好多了。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-02-15-SQL美化/" rel="next" title="SQL美化">
+                <i class="fa fa-chevron-left"></i> SQL美化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Guosong" />
+          <p class="site-author-name" itemprop="name">Guosong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">190</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Inception执行远程命令"><span class="nav-number">2.</span> <span class="nav-text">Inception执行远程命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#远程命令的连接如何产生？"><span class="nav-number">3.</span> <span class="nav-text">远程命令的连接如何产生？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql连接产生的地方"><span class="nav-number">3.1.</span> <span class="nav-text">mysql连接产生的地方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysql连接初始化"><span class="nav-number">3.2.</span> <span class="nav-text">mysql连接初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#osc部分"><span class="nav-number">4.</span> <span class="nav-text">osc部分</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#osc中sqlsha1值生成原理"><span class="nav-number">4.1.</span> <span class="nav-text">osc中sqlsha1值生成原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#osc执行过程"><span class="nav-number">4.2.</span> <span class="nav-text">osc执行过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#osc中percent状态更新"><span class="nav-number">4.3.</span> <span class="nav-text">osc中percent状态更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#osc中get-osc-percent执行过程"><span class="nav-number">4.4.</span> <span class="nav-text">osc中get osc percent执行过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Guosong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
