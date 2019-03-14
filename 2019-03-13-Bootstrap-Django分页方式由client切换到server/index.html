@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="背景公司内部项目分页在数据量超过700行之后，第一次表格加载的时候就变得有点慢(超过6s以上)。查看前端代码boostrap的分页模式还是client的，一次加载，然后静态展示。查看后台数据库对应的SQL发现没有慢查询，说明数据库执行比较快。client模式需要将所有需要的数据二次处理，故考虑使用server模式，这样每次处理的数据就变得很小(limit分页值，如10、20、30等)。">
+<meta name="description" content="背景公司内部项目分页在数据量超过700行之后，第一次表格加载的时候就变得有点慢(超过6s以上)。查看前端代码boostrap的分页模式还是client的，一次加载，然后静态展示。 查看后台数据库对应的SQL发现没有慢查询，说明数据库执行比较快。client模式需要将所有需要的数据二次处理，故考虑使用server模式，这样每次处理的数据就变得很小(limit分页值，如10、20、30等)。">
 <meta name="keywords" content="Django">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Bootstrap+Django分页方式由client切换到server">
 <meta property="og:url" content="http://dolphinsboy.github.io/2019-03-13-Bootstrap-Django分页方式由client切换到server/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="背景公司内部项目分页在数据量超过700行之后，第一次表格加载的时候就变得有点慢(超过6s以上)。查看前端代码boostrap的分页模式还是client的，一次加载，然后静态展示。查看后台数据库对应的SQL发现没有慢查询，说明数据库执行比较快。client模式需要将所有需要的数据二次处理，故考虑使用server模式，这样每次处理的数据就变得很小(limit分页值，如10、20、30等)。">
+<meta property="og:description" content="背景公司内部项目分页在数据量超过700行之后，第一次表格加载的时候就变得有点慢(超过6s以上)。查看前端代码boostrap的分页模式还是client的，一次加载，然后静态展示。 查看后台数据库对应的SQL发现没有慢查询，说明数据库执行比较快。client模式需要将所有需要的数据二次处理，故考虑使用server模式，这样每次处理的数据就变得很小(limit分页值，如10、20、30等)。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-03-13T11:03:50.479Z">
+<meta property="og:updated_time" content="2019-03-14T01:49:21.163Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bootstrap+Django分页方式由client切换到server">
-<meta name="twitter:description" content="背景公司内部项目分页在数据量超过700行之后，第一次表格加载的时候就变得有点慢(超过6s以上)。查看前端代码boostrap的分页模式还是client的，一次加载，然后静态展示。查看后台数据库对应的SQL发现没有慢查询，说明数据库执行比较快。client模式需要将所有需要的数据二次处理，故考虑使用server模式，这样每次处理的数据就变得很小(limit分页值，如10、20、30等)。">
+<meta name="twitter:description" content="背景公司内部项目分页在数据量超过700行之后，第一次表格加载的时候就变得有点慢(超过6s以上)。查看前端代码boostrap的分页模式还是client的，一次加载，然后静态展示。 查看后台数据库对应的SQL发现没有慢查询，说明数据库执行比较快。client模式需要将所有需要的数据二次处理，故考虑使用server模式，这样每次处理的数据就变得很小(limit分页值，如10、20、30等)。">
 
 
 
@@ -401,7 +401,8 @@
       
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>公司内部项目分页在数据量超过700行之后，第一次表格加载的时候就变得有点慢(超过6s以上)。查看前端代码boostrap的分页模式还是client的，一次加载，然后静态展示。<br>查看后台数据库对应的SQL发现没有慢查询，说明数据库执行比较快。client模式需要将所有需要的数据二次处理，故考虑使用server模式，这样每次处理的数据就变得很小(limit分页值，如10、20、30等)。</p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>公司内部项目分页在数据量超过700行之后，第一次表格加载的时候就变得有点慢(超过6s以上)。查看前端代码boostrap的分页模式还是client的，一次加载，然后静态展示。</p>
+<p>查看后台数据库对应的SQL发现没有慢查询，说明数据库执行比较快。client模式需要将所有需要的数据二次处理，故考虑使用server模式，这样每次处理的数据就变得很小(limit分页值，如10、20、30等)。</p>
 <a id="more"></a>
 <h2 id="页面修改"><a href="#页面修改" class="headerlink" title="页面修改"></a>页面修改</h2><p>查看<a href="https://bootstrap-table.com/docs/api/table-options/#queryparams" target="_blank" rel="external">bootstrapTable文档</a>，在javascript部分增加如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">     $(<span class="string">'#demo-table'</span>).bootstrapTable(&#123;</span><br><span class="line">         method: <span class="string">'get'</span>,</span><br><span class="line">         dataType: <span class="string">'json'</span>,</span><br><span class="line">         url: <span class="string">"&#123;% url 'p_perform_records_list' %&#125;"</span>,</span><br><span class="line">         cache: <span class="literal">false</span>,</span><br><span class="line">         #增加的部分</span><br><span class="line">         sidePagination: <span class="string">"server"</span>,</span><br><span class="line">         queryParamsType: <span class="string">"limit"</span>,</span><br></pre></td></tr></table></figure>
