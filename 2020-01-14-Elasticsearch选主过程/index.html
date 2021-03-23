@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="1、选举的入口12345678910//入口函数 #ZenDiscovery#innerJoinCluster    private void innerJoinCluster() &amp;#123;        DiscoveryNode masterNode = null;        final Thread currentThread = Thread.currentThread();">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-17T06:18:39.510Z">
+<meta property="og:updated_time" content="2021-03-23T05:00:21.573Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2020-01-14_Elasticsearch选主过程">
 <meta name="twitter:description" content="1、选举的入口12345678910//入口函数 #ZenDiscovery#innerJoinCluster    private void innerJoinCluster() &amp;#123;        DiscoveryNode masterNode = null;        final Thread currentThread = Thread.currentThread();">
@@ -380,6 +380,7 @@
       
         <h3 id="1、选举的入口"><a href="#1、选举的入口" class="headerlink" title="1、选举的入口"></a>1、选举的入口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//入口函数 #ZenDiscovery#innerJoinCluster</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">innerJoinCluster</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        DiscoveryNode masterNode = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">final</span> Thread currentThread = Thread.currentThread();</span><br><span class="line">        nodeJoinController.startElectionContext();</span><br><span class="line">        <span class="comment">//一直阻塞直到找到master节点，在集群刚刚启动合作或者master丢失的情况，这种阻塞能够保证集群一致性</span></span><br><span class="line">        <span class="keyword">while</span> (masterNode == <span class="keyword">null</span> &amp;&amp; joinThreadControl.joinThreadActive(currentThread)) &#123;</span><br><span class="line">            masterNode = findMaster();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 <p>初次启动的时候masterNode为null，需要进行findMaster。</p>
+<a id="more"></a>
 <p>findMaster首先ping各个候选节点(通过参数discovery.zen.ping.unicast.host进行指定)</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> DiscoveryNode <span class="title">findMaster</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//选举临时master</span></span><br><span class="line">    logger.trace(<span class="string">"starting to ping"</span>);</span><br><span class="line">    <span class="comment">//ping所有节点</span></span><br><span class="line">    List&lt;ZenPing.PingResponse&gt; fullPingResponses = pingAndWait(pingTimeout).toList();</span><br></pre></td></tr></table></figure>
 <p>这里的ping实际是调用UnicastZenPing#ping</p>
@@ -526,7 +527,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-count">200</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -548,7 +549,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

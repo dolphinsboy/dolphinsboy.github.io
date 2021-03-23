@@ -1,0 +1,107 @@
+---
+title: 2019-06-25_Elasticsearch各类日志解读
+date: 2019-06-25 15:05:41
+tags:
+---
+
+### Slow Log
+
+```
+[2020-11-11T11:52:48,899][WARN ][index.search.slowlog.query] [node-1] [cars1][0] took[9.9micros], took_millis[0], total_hits[0], types[], stats[], search_type[QUERY_THEN_FETCH], total_shards[89], 
+source[{"query":{"bool":{"must":[{"match":{"content":{"query":"full text search","operator":"AND","prefix_length":0,"max_expansions":50,"fuzzy_transpositions":true,"lenient":false,"zero_terms_query":"NONE","auto_generate_synonyms_phrase_query":true,"boost":1.0}}}],"should":[{"match":{"content":{"query":"Elasticsearch","operator":"OR","prefix_length":0,"max_expansions":50,"fuzzy_transpositions":true,"lenient":false,"zero_terms_query":"NONE","auto_generate_synonyms_phrase_query":true,"boost":1.0}}},{"match":{"content":{"query":"Lucene","operator":"OR","prefix_length":0,"max_expansions":50,"fuzzy_transpositions":true,"lenient":false,"zero_terms_query":"NONE","auto_generate_synonyms_phrase_query":true,"boost":1.0}}}],"adjust_pure_negative":true,"boost":1.0}}}], id[],
+
+```
+<!--more-->
+
+### GC Log
+
+#### 日志示例
+
+```
+[2020-03-17T09:08:12,670][WARN ][o.e.m.j.JvmGcMonitorService] [weixin_es_data3] 
+[gc][old][37795][15] 
+duration [1.2m],
+collections [1]/[1.3m], 
+total [1.2m]/[3.4m], 
+memory [28.8gb]->[27.2gb]/[29.8gb], 
+all_pools {[young] [802.5mb]->[94.4mb]/[1.1gb]}
+          {[survivor] [149.7mb]->[0b]/[149.7mb]}
+          {[old] [27.9gb]->[27.1gb]/[28.5gb]}
+```
+
+
+
+##### 解读
+
+
+- [gc\]\[本次是old gc\]\[这是第33795次 GC检查\]\[从JVM启动至今发生的第15次GC\]
+- duration [本次检查到的GC总耗时是1.2分钟]
+- collections [从上次检查至今总共发送1次GC]/[从上次检查至今已过去1.3分钟]
+- total [本次检查到的GC总耗时为1.2分钟]/[从JVM启动至今发生的GC总耗时为3.4分钟]
+- memory [GC前Heap Memory空间：28.8gb]->[GC后Heap Memory空间：27.2gb]/[Heap Memory总空间]
+- all_pools(分代部分详情)
+  - {[young区] [GC前Memory: 802.mb]->[GC后Memory: 94.4mb]/[young区Memory总大小]}
+  - {[survivor区] [GC前Memory:149.7mb]->[GC后Memory: 0b]/[survivor区Memory总大小]}
+  - {\[old区][GC前Memory: 27.9gb]-> [GC后Memory: 27.1gb]/[old区Memory总大小]}
+
+#### 代码解读
+
+```java
+    private static final String SLOW_GC_LOG_MESSAGE =
+        "[gc][{}][{}][{}] duration [{}], collections [{}]/[{}], total [{}]/[{}], memory [{}]->[{}]/[{}], all_pools {}";
+
+ static void logSlowGc(
+        final Logger logger,
+        final JvmMonitor.Threshold threshold,
+        final long seq,
+        final JvmMonitor.SlowGcEvent slowGcEvent,
+        BiFunction<JvmStats, JvmStats, String> pools) {
+
+        final String name = slowGcEvent.currentGc.getName();
+        final long elapsed = slowGcEvent.elapsed;
+        final long totalGcCollectionCount = slowGcEvent.currentGc.getCollectionCount();
+        final long currentGcCollectionCount = slowGcEvent.collectionCount;
+        final TimeValue totalGcCollectionTime = slowGcEvent.currentGc.getCollectionTime();
+        final TimeValue currentGcCollectionTime = slowGcEvent.collectionTime;
+        final JvmStats lastJvmStats = slowGcEvent.lastJvmStats;
+        final JvmStats currentJvmStats = slowGcEvent.currentJvmStats;
+        final ByteSizeValue maxHeapUsed = slowGcEvent.maxHeapUsed;
+
+        switch (threshold) {
+            case WARN:
+                if (logger.isWarnEnabled()) {
+                    logger.warn(
+                        SLOW_GC_LOG_MESSAGE,
+                        name,
+                        seq,
+                        totalGcCollectionCount,
+                        currentGcCollectionTime,
+                        currentGcCollectionCount,
+                        TimeValue.timeValueMillis(elapsed),
+                        currentGcCollectionTime,
+                        totalGcCollectionTime,
+                        lastJvmStats.getMem().getHeapUsed(),
+                        currentJvmStats.getMem().getHeapUsed(),
+                        maxHeapUsed,
+                        pools.apply(lastJvmStats, currentJvmStats));
+                }
+                break;
+```
+
+
+
+```
+name:old/young
+seq:37795
+totalGcCollectionCount:15
+currentGcCollectionTime:1.2m
+collections currentGcCollectionCount:1
+collections elapsed:1.3m
+total currentGcCollectionTime:1.2m
+total totalGcCollectionTime:3.4m
+memory lastJvmStats.getMem().getHeapUsed():28.8gb
+memory currentJvmStats.getMem().getHeapUsed():27.2gb
+memory maxHeapUsed:29.8gb
+all_pools:传入的参数 pools.apply(lastJvmStats, currentJvmStats));
+```
+

@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="checkpoint 推进1234srv_master_do_active_task    - log_free_checksrv_master_do_idle_task    - log_free_check  Flush List Flush 在刷脏页的时候会推进 更新操作，修改页面之前  checkpoint 更新 将buffer pool Flush List中，第一个dirty page">
+<meta name="description" content="checkpoint 作用 加速崩溃恢复 减少日志数量">
 <meta name="keywords" content="MySQL面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2019-03-26_Innodb-Checkpoint">
 <meta property="og:url" content="http://dolphinsboy.github.io/2019-03-26-Innodb-Checkpoint/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="checkpoint 推进1234srv_master_do_active_task    - log_free_checksrv_master_do_idle_task    - log_free_check  Flush List Flush 在刷脏页的时候会推进 更新操作，修改页面之前  checkpoint 更新 将buffer pool Flush List中，第一个dirty page">
+<meta property="og:description" content="checkpoint 作用 加速崩溃恢复 减少日志数量">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-05T09:12:42.000Z">
+<meta property="og:updated_time" content="2021-03-23T05:04:42.380Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2019-03-26_Innodb-Checkpoint">
-<meta name="twitter:description" content="checkpoint 推进1234srv_master_do_active_task    - log_free_checksrv_master_do_idle_task    - log_free_check  Flush List Flush 在刷脏页的时候会推进 更新操作，修改页面之前  checkpoint 更新 将buffer pool Flush List中，第一个dirty page">
+<meta name="twitter:description" content="checkpoint 作用 加速崩溃恢复 减少日志数量">
 
 
 
@@ -379,7 +379,12 @@
       
 
       
-        <h3 id="checkpoint-推进"><a href="#checkpoint-推进" class="headerlink" title="checkpoint 推进"></a>checkpoint 推进</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">srv_master_do_active_task</span><br><span class="line">    - log_free_check</span><br><span class="line">srv_master_do_idle_task</span><br><span class="line">    - log_free_check</span><br></pre></td></tr></table></figure>
+        <h3 id="checkpoint-作用"><a href="#checkpoint-作用" class="headerlink" title="checkpoint 作用"></a>checkpoint 作用</h3><ul>
+<li>加速崩溃恢复</li>
+<li>减少日志数量</li>
+</ul>
+<a id="more"></a>
+<h3 id="checkpoint-推进"><a href="#checkpoint-推进" class="headerlink" title="checkpoint 推进"></a>checkpoint 推进</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">srv_master_do_active_task</span><br><span class="line">    - log_free_check</span><br><span class="line">srv_master_do_idle_task</span><br><span class="line">    - log_free_check</span><br></pre></td></tr></table></figure>
 <ul>
 <li>Flush List Flush 在刷脏页的时候会推进</li>
 <li>更新操作，修改页面之前</li>
@@ -516,7 +521,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-count">200</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -538,7 +543,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -573,7 +578,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#checkpoint-推进"><span class="nav-number">1.</span> <span class="nav-text">checkpoint 推进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checkpoint-更新"><span class="nav-number">2.</span> <span class="nav-text">checkpoint 更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Innodb-Crash-Recovery"><span class="nav-number">3.</span> <span class="nav-text">Innodb Crash Recovery</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#checkpoint-作用"><span class="nav-number">1.</span> <span class="nav-text">checkpoint 作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checkpoint-推进"><span class="nav-number">2.</span> <span class="nav-text">checkpoint 推进</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#checkpoint-更新"><span class="nav-number">3.</span> <span class="nav-text">checkpoint 更新</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Innodb-Crash-Recovery"><span class="nav-number">4.</span> <span class="nav-text">Innodb Crash Recovery</span></a></li></ol></div>
             
 
           </div>

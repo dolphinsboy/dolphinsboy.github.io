@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="MySQL面试," />
+  <meta name="keywords" content="MySQL知识点," />
 
 
 
@@ -69,14 +69,14 @@
 
 
 <meta name="description" content="Innodb Change Buffer在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。 随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据">
-<meta name="keywords" content="MySQL面试">
+<meta name="keywords" content="MySQL知识点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2019-03-22_Innodb-Change-Buffer">
 <meta property="og:url" content="http://dolphinsboy.github.io/2019-03-22-Innodb-Change-Buffer/index.html">
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="Innodb Change Buffer在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。 随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-23T08:50:46.054Z">
+<meta property="og:updated_time" content="2021-03-23T05:06:00.895Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2019-03-22_Innodb-Change-Buffer">
 <meta name="twitter:description" content="Innodb Change Buffer在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。 随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据">
@@ -381,6 +381,7 @@
       
         <h2 id="Innodb-Change-Buffer"><a href="#Innodb-Change-Buffer" class="headerlink" title="Innodb Change Buffer"></a>Innodb Change Buffer</h2><p>在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。</p>
 <p>随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据结构-change buffer。（5.5版本之前叫insert buffer，5.5版本以及其以后版本，支持Delete\Update操作的缓存，故修改为change buffer）。</p>
+<a id="more"></a>
 <h2 id="9大问题总结"><a href="#9大问题总结" class="headerlink" title="9大问题总结"></a>9大问题总结</h2><h3 id="change-buffer支持哪些操作类型"><a href="#change-buffer支持哪些操作类型" class="headerlink" title="change buffer支持哪些操作类型?"></a>change buffer支持哪些操作类型?</h3><p>只是针对辅助索引的，对于非唯一索引支持INSERT、UPDATE、DELETE，对于唯一索引只支持DELETE。<br>还有一个前提是索引修改对应的页不在Buffer Pool中。</p>
 <h3 id="change-buffer有哪些好处？"><a href="#change-buffer有哪些好处？" class="headerlink" title="change buffer有哪些好处？"></a>change buffer有哪些好处？</h3><p>缓存那些不在buffer pool中的二级索引页面操作可以避免从磁盘加载索引页到内存中的随机IO操作。当涉及的索引被加载到内存中时，change buffer会被merge。</p>
 <h3 id="change-buffer是否支持其他类型的索引？"><a href="#change-buffer是否支持其他类型的索引？" class="headerlink" title="change buffer是否支持其他类型的索引？"></a>change buffer是否支持其他类型的索引？</h3><p>只支持辅助索引，聚簇索引、全文索引、空间索引都不支持。</p>
@@ -441,7 +442,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MySQL面试/" rel="tag"># MySQL面试</a>
+            <a href="/tags/MySQL知识点/" rel="tag"># MySQL知识点</a>
           
         </div>
       
@@ -543,7 +544,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-count">200</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -565,7 +566,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

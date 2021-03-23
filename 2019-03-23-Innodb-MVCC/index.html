@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="MySQL面试," />
+  <meta name="keywords" content="MySQL知识点," />
 
 
 
@@ -68,18 +68,18 @@
 
 
 
-<meta name="description" content="前言MVCC是Innodb实现高并发一种方式，对快照读不加锁，直接利用MVCC读取指定版本的数据。 Innodb行隐藏列Innodb数据行的结构，除了自身的信息外，还额外包括三个结构DB_TRX_ID、DB_ROLL_PTR以及DB_ROW_ID。 DB_TRX_ID：表示最近修改该行数据的事务IDDB_ROLL_PTR：表是该行回滚段的指针，该行上所有旧的版本，在undo中通过链表的方式组织，而">
-<meta name="keywords" content="MySQL面试">
+<meta name="description" content="前言MVCC是Innodb实现高并发一种方式，对快照读不加锁，直接利用MVCC读取指定版本的数据。">
+<meta name="keywords" content="MySQL知识点">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2019-03-23_Innodb-MVCC">
 <meta property="og:url" content="http://dolphinsboy.github.io/2019-03-23-Innodb-MVCC/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="前言MVCC是Innodb实现高并发一种方式，对快照读不加锁，直接利用MVCC读取指定版本的数据。 Innodb行隐藏列Innodb数据行的结构，除了自身的信息外，还额外包括三个结构DB_TRX_ID、DB_ROLL_PTR以及DB_ROW_ID。 DB_TRX_ID：表示最近修改该行数据的事务IDDB_ROLL_PTR：表是该行回滚段的指针，该行上所有旧的版本，在undo中通过链表的方式组织，而">
+<meta property="og:description" content="前言MVCC是Innodb实现高并发一种方式，对快照读不加锁，直接利用MVCC读取指定版本的数据。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-07-24T07:34:20.780Z">
+<meta property="og:updated_time" content="2021-03-23T05:06:09.910Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2019-03-23_Innodb-MVCC">
-<meta name="twitter:description" content="前言MVCC是Innodb实现高并发一种方式，对快照读不加锁，直接利用MVCC读取指定版本的数据。 Innodb行隐藏列Innodb数据行的结构，除了自身的信息外，还额外包括三个结构DB_TRX_ID、DB_ROLL_PTR以及DB_ROW_ID。 DB_TRX_ID：表示最近修改该行数据的事务IDDB_ROLL_PTR：表是该行回滚段的指针，该行上所有旧的版本，在undo中通过链表的方式组织，而">
+<meta name="twitter:description" content="前言MVCC是Innodb实现高并发一种方式，对快照读不加锁，直接利用MVCC读取指定版本的数据。">
 
 
 
@@ -380,6 +380,7 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MVCC是Innodb实现高并发一种方式，对快照读不加锁，直接利用MVCC读取指定版本的数据。</p>
+<a id="more"></a>
 <h2 id="Innodb行隐藏列"><a href="#Innodb行隐藏列" class="headerlink" title="Innodb行隐藏列"></a>Innodb行隐藏列</h2><p>Innodb数据行的结构，除了自身的信息外，还额外包括三个结构DB_TRX_ID、DB_ROLL_PTR以及DB_ROW_ID。</p>
 <p>DB_TRX_ID：表示最近修改该行数据的事务ID<br>DB_ROLL_PTR：表是该行回滚段的指针，该行上所有旧的版本，在undo中通过链表的方式组织，而该值，正式指向undo中该行的历史记录链表。</p>
 <p>整个MVCC的关键是通过DB_TRX_ID和DB_ROLL_PTR这两个隐藏列来实现的。</p>
@@ -411,7 +412,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/MySQL面试/" rel="tag"># MySQL面试</a>
+            <a href="/tags/MySQL知识点/" rel="tag"># MySQL知识点</a>
           
         </div>
       
@@ -513,7 +514,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-count">200</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -535,7 +536,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

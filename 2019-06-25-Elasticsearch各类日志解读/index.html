@@ -68,17 +68,17 @@
 
 
 
-<meta name="description" content="Slow LogGC Log日志示例123456789[2020-03-17T09:08:12,670][WARN ][o.e.m.j.JvmGcMonitorService] [weixin_es_data3] [gc][old][37795][15] duration [1.2m],collections [1]/[1.3m], total [1.2m]/[3.4m], memory [28.">
+<meta name="description" content="Slow Log12[2020-11-11T11:52:48,899][WARN ][index.search.slowlog.query] [node-1] [cars1][0] took[9.9micros], took_millis[0], total_hits[0], types[], stats[], search_type[QUERY_THEN_FETCH], total_shards">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2019-06-25_Elasticsearch各类日志解读">
 <meta property="og:url" content="http://dolphinsboy.github.io/2019-06-25-Elasticsearch各类日志解读/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="Slow LogGC Log日志示例123456789[2020-03-17T09:08:12,670][WARN ][o.e.m.j.JvmGcMonitorService] [weixin_es_data3] [gc][old][37795][15] duration [1.2m],collections [1]/[1.3m], total [1.2m]/[3.4m], memory [28.">
+<meta property="og:description" content="Slow Log12[2020-11-11T11:52:48,899][WARN ][index.search.slowlog.query] [node-1] [cars1][0] took[9.9micros], took_millis[0], total_hits[0], types[], stats[], search_type[QUERY_THEN_FETCH], total_shards">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-17T07:07:45.547Z">
+<meta property="og:updated_time" content="2021-03-23T05:03:30.587Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2019-06-25_Elasticsearch各类日志解读">
-<meta name="twitter:description" content="Slow LogGC Log日志示例123456789[2020-03-17T09:08:12,670][WARN ][o.e.m.j.JvmGcMonitorService] [weixin_es_data3] [gc][old][37795][15] duration [1.2m],collections [1]/[1.3m], total [1.2m]/[3.4m], memory [28.">
+<meta name="twitter:description" content="Slow Log12[2020-11-11T11:52:48,899][WARN ][index.search.slowlog.query] [node-1] [cars1][0] took[9.9micros], took_millis[0], total_hits[0], types[], stats[], search_type[QUERY_THEN_FETCH], total_shards">
 
 
 
@@ -378,7 +378,9 @@
       
 
       
-        <h3 id="Slow-Log"><a href="#Slow-Log" class="headerlink" title="Slow Log"></a>Slow Log</h3><h3 id="GC-Log"><a href="#GC-Log" class="headerlink" title="GC Log"></a>GC Log</h3><h4 id="日志示例"><a href="#日志示例" class="headerlink" title="日志示例"></a>日志示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[2020-03-17T09:08:12,670][WARN ][o.e.m.j.JvmGcMonitorService] [weixin_es_data3] </span><br><span class="line">[gc][old][37795][15] </span><br><span class="line">duration [1.2m],</span><br><span class="line">collections [1]/[1.3m], </span><br><span class="line">total [1.2m]/[3.4m], </span><br><span class="line">memory [28.8gb]-&gt;[27.2gb]/[29.8gb], </span><br><span class="line">all_pools &#123;[young] [802.5mb]-&gt;[94.4mb]/[1.1gb]&#125;</span><br><span class="line">          &#123;[survivor] [149.7mb]-&gt;[0b]/[149.7mb]&#125;</span><br><span class="line">          &#123;[old] [27.9gb]-&gt;[27.1gb]/[28.5gb]&#125;</span><br></pre></td></tr></table></figure>
+        <h3 id="Slow-Log"><a href="#Slow-Log" class="headerlink" title="Slow Log"></a>Slow Log</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[2020-11-11T11:52:48,899][WARN ][index.search.slowlog.query] [node-1] [cars1][0] took[9.9micros], took_millis[0], total_hits[0], types[], stats[], search_type[QUERY_THEN_FETCH], total_shards[89], </span><br><span class="line">source[&#123;&quot;query&quot;:&#123;&quot;bool&quot;:&#123;&quot;must&quot;:[&#123;&quot;match&quot;:&#123;&quot;content&quot;:&#123;&quot;query&quot;:&quot;full text search&quot;,&quot;operator&quot;:&quot;AND&quot;,&quot;prefix_length&quot;:0,&quot;max_expansions&quot;:50,&quot;fuzzy_transpositions&quot;:true,&quot;lenient&quot;:false,&quot;zero_terms_query&quot;:&quot;NONE&quot;,&quot;auto_generate_synonyms_phrase_query&quot;:true,&quot;boost&quot;:1.0&#125;&#125;&#125;],&quot;should&quot;:[&#123;&quot;match&quot;:&#123;&quot;content&quot;:&#123;&quot;query&quot;:&quot;Elasticsearch&quot;,&quot;operator&quot;:&quot;OR&quot;,&quot;prefix_length&quot;:0,&quot;max_expansions&quot;:50,&quot;fuzzy_transpositions&quot;:true,&quot;lenient&quot;:false,&quot;zero_terms_query&quot;:&quot;NONE&quot;,&quot;auto_generate_synonyms_phrase_query&quot;:true,&quot;boost&quot;:1.0&#125;&#125;&#125;,&#123;&quot;match&quot;:&#123;&quot;content&quot;:&#123;&quot;query&quot;:&quot;Lucene&quot;,&quot;operator&quot;:&quot;OR&quot;,&quot;prefix_length&quot;:0,&quot;max_expansions&quot;:50,&quot;fuzzy_transpositions&quot;:true,&quot;lenient&quot;:false,&quot;zero_terms_query&quot;:&quot;NONE&quot;,&quot;auto_generate_synonyms_phrase_query&quot;:true,&quot;boost&quot;:1.0&#125;&#125;&#125;],&quot;adjust_pure_negative&quot;:true,&quot;boost&quot;:1.0&#125;&#125;&#125;], id[],</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="GC-Log"><a href="#GC-Log" class="headerlink" title="GC Log"></a>GC Log</h3><h4 id="日志示例"><a href="#日志示例" class="headerlink" title="日志示例"></a>日志示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[2020-03-17T09:08:12,670][WARN ][o.e.m.j.JvmGcMonitorService] [weixin_es_data3] </span><br><span class="line">[gc][old][37795][15] </span><br><span class="line">duration [1.2m],</span><br><span class="line">collections [1]/[1.3m], </span><br><span class="line">total [1.2m]/[3.4m], </span><br><span class="line">memory [28.8gb]-&gt;[27.2gb]/[29.8gb], </span><br><span class="line">all_pools &#123;[young] [802.5mb]-&gt;[94.4mb]/[1.1gb]&#125;</span><br><span class="line">          &#123;[survivor] [149.7mb]-&gt;[0b]/[149.7mb]&#125;</span><br><span class="line">          &#123;[old] [27.9gb]-&gt;[27.1gb]/[28.5gb]&#125;</span><br></pre></td></tr></table></figure>
 <h5 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h5><ul>
 <li>[gc][本次是old gc][这是第33795次 GC检查][从JVM启动至今发生的第15次GC]</li>
 <li>duration [本次检查到的GC总耗时是1.2分钟]</li>
@@ -507,7 +509,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-count">200</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -529,7 +531,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

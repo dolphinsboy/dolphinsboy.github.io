@@ -68,20 +68,20 @@
 
 
 
-<meta name="description" content="HomeWork说明 Mac 编译执行1234/Users/guosong/GoglandProjects/src/github.com/pingcap/tidb/tidb-server/main.go指定参数：-log-file=/tmp/tidb.log--store=tikv --path=127.0.0.1:2379 开启事务打印日志代码修改位置1234567891011121314151">
+<meta name="description" content="HomeWork说明">
 <meta property="og:type" content="article">
 <meta property="og:title" content="High Performance TiDB-总体架构">
 <meta property="og:url" content="http://dolphinsboy.github.io/2020-12-17-high-performance-tidb-1/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="HomeWork说明 Mac 编译执行1234/Users/guosong/GoglandProjects/src/github.com/pingcap/tidb/tidb-server/main.go指定参数：-log-file=/tmp/tidb.log--store=tikv --path=127.0.0.1:2379 开启事务打印日志代码修改位置1234567891011121314151">
+<meta property="og:description" content="HomeWork说明">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dolphinsboy.github.io/2020-12-17-high-performance-tidb-1/images/tidb/TiDB-Homework-1.png">
-<meta property="og:image" content="http://dolphinsboy.github.io/2020-12-17-high-performance-tidb-1/images/tidb/TiDB-Localhost.png">
-<meta property="og:updated_time" content="2020-12-18T04:42:51.694Z">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/tidb/TiDB-Homework-1.png">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/tidb/TiDB-Localhost.png">
+<meta property="og:updated_time" content="2021-03-23T04:59:53.423Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="High Performance TiDB-总体架构">
-<meta name="twitter:description" content="HomeWork说明 Mac 编译执行1234/Users/guosong/GoglandProjects/src/github.com/pingcap/tidb/tidb-server/main.go指定参数：-log-file=/tmp/tidb.log--store=tikv --path=127.0.0.1:2379 开启事务打印日志代码修改位置1234567891011121314151">
-<meta name="twitter:image" content="http://dolphinsboy.github.io/2020-12-17-high-performance-tidb-1/images/tidb/TiDB-Homework-1.png">
+<meta name="twitter:description" content="HomeWork说明">
+<meta name="twitter:image" content="http://dolphinsboy.github.io/images/tidb/TiDB-Homework-1.png">
 
 
 
@@ -381,7 +381,8 @@
       
 
       
-        <h3 id="HomeWork说明"><a href="#HomeWork说明" class="headerlink" title="HomeWork说明"></a>HomeWork说明</h3><p><img src="./images/tidb/TiDB-Homework-1.png" alt="homework"></p>
+        <h3 id="HomeWork说明"><a href="#HomeWork说明" class="headerlink" title="HomeWork说明"></a>HomeWork说明</h3><p><img src="/images/tidb/TiDB-Homework-1.png" alt="homework"></p>
+<a id="more"></a>
 <h3 id="Mac-编译执行"><a href="#Mac-编译执行" class="headerlink" title="Mac 编译执行"></a>Mac 编译执行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/Users/guosong/GoglandProjects/src/github.com/pingcap/tidb/tidb-server/main.go</span><br><span class="line"></span><br><span class="line">指定参数：-log-file=/tmp/tidb.log</span><br><span class="line">--store=tikv --path=127.0.0.1:2379</span><br></pre></td></tr></table></figure>
 <h3 id="开启事务打印日志"><a href="#开启事务打印日志" class="headerlink" title="开启事务打印日志"></a>开启事务打印日志</h3><h4 id="代码修改位置"><a href="#代码修改位置" class="headerlink" title="代码修改位置"></a>代码修改位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error &#123;</span><br><span class="line">	// If BEGIN is the first statement in TxnCtx, we can reuse the existing transaction, without the</span><br><span class="line">	// need to call NewTxn, which commits the existing transaction and begins a new one.</span><br><span class="line">    // 如果是BEGIN是TxnCtx的第一条语句，可以复用现有事务，无需调用NewTxn</span><br><span class="line">	txnCtx := e.ctx.GetSessionVars().TxnCtx</span><br><span class="line">	if txnCtx.History != nil &#123;</span><br><span class="line">		err := e.ctx.NewTxn(ctx)</span><br><span class="line">		if err != nil &#123;</span><br><span class="line">			return err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">	//Added by Guosong START 2020-12-17</span><br><span class="line">	if e.ctx.GetSessionVars().ConnectionID != 0 &#123;</span><br><span class="line">		logutil.BgLogger().Info(&quot;hello transaction in executeBegin############ by Guosong&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	//Added by Guosong END 2020-12-17</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into t values(22);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; commit;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
@@ -390,7 +391,7 @@
 <p>默认提交的事务是不打的。</p>
 <p>代码需要判断一下，否则Connection ID 0的线程一直打印：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[2020/12/17 17:10:33.407 +08:00] [INFO] [simple.go:556] [&quot;hello transaction in executeBegin############ by Guosong&quot;]</span><br><span class="line">[2020/12/17 17:10:33.407 +08:00] [INFO] [simple.go:557] [ConnectionID:0]</span><br><span class="line">[2020/12/17 17:10:36.406 +08:00] [INFO] [simple.go:556] [&quot;hello transaction in executeBegin############ by Guosong&quot;]</span><br><span class="line">[2020/12/17 17:10:36.406 +08:00] [INFO] [simple.go:557] [ConnectionID:0]</span><br><span class="line">[2020/12/17 17:10:36.408 +08:00] [INFO] [simple.go:556] [&quot;hello transaction in executeBegin############ by Guosong&quot;]</span><br><span class="line">[2020/12/17 17:10:36.408 +08:00] [INFO] [simple.go:557] [ConnectionID:0]</span><br></pre></td></tr></table></figure>
-<h3 id="本地测试"><a href="#本地测试" class="headerlink" title="本地测试"></a>本地测试</h3><p><img src="./images/tidb/TiDB-Localhost.png" alt="TiDB_Local"></p>
+<h3 id="本地测试"><a href="#本地测试" class="headerlink" title="本地测试"></a>本地测试</h3><p><img src="/images/tidb/TiDB-Localhost.png" alt="TiDB_Local"></p>
 
       
     </div>
@@ -500,7 +501,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-count">200</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -522,7 +523,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
