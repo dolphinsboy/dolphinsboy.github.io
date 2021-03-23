@@ -298,6 +298,1341 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2020-12-17-high-performance-tidb-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020-12-17-high-performance-tidb-1/" itemprop="url">High Performance TiDB-总体架构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-12-17T16:53:27+08:00">
+                2020-12-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020-12-17-high-performance-tidb-1/" class="leancloud_visitors" data-flag-title="High Performance TiDB-总体架构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="HomeWork说明"><a href="#HomeWork说明" class="headerlink" title="HomeWork说明"></a>HomeWork说明</h3><p><img src="./images/tidb/TiDB-Homework-1.png" alt="homework"></p>
+<h3 id="Mac-编译执行"><a href="#Mac-编译执行" class="headerlink" title="Mac 编译执行"></a>Mac 编译执行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/Users/guosong/GoglandProjects/src/github.com/pingcap/tidb/tidb-server/main.go</span><br><span class="line"></span><br><span class="line">指定参数：-log-file=/tmp/tidb.log</span><br><span class="line">--store=tikv --path=127.0.0.1:2379</span><br></pre></td></tr></table></figure>
+<h3 id="开启事务打印日志"><a href="#开启事务打印日志" class="headerlink" title="开启事务打印日志"></a>开启事务打印日志</h3><h4 id="代码修改位置"><a href="#代码修改位置" class="headerlink" title="代码修改位置"></a>代码修改位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error &#123;</span><br><span class="line">	// If BEGIN is the first statement in TxnCtx, we can reuse the existing transaction, without the</span><br><span class="line">	// need to call NewTxn, which commits the existing transaction and begins a new one.</span><br><span class="line">    // 如果是BEGIN是TxnCtx的第一条语句，可以复用现有事务，无需调用NewTxn</span><br><span class="line">	txnCtx := e.ctx.GetSessionVars().TxnCtx</span><br><span class="line">	if txnCtx.History != nil &#123;</span><br><span class="line">		err := e.ctx.NewTxn(ctx)</span><br><span class="line">		if err != nil &#123;</span><br><span class="line">			return err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">	//Added by Guosong START 2020-12-17</span><br><span class="line">	if e.ctx.GetSessionVars().ConnectionID != 0 &#123;</span><br><span class="line">		logutil.BgLogger().Info(&quot;hello transaction in executeBegin############ by Guosong&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	//Added by Guosong END 2020-12-17</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; begin;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into t values(22);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; commit;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+<p><strong>tidb的日志</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2020/12/17 17:00:30.475 +08:00] [INFO] [simple.go:556] [&quot;hello transaction in executeBegin############ by Guosong&quot;]</span><br></pre></td></tr></table></figure>
+<p>默认提交的事务是不打的。</p>
+<p>代码需要判断一下，否则Connection ID 0的线程一直打印：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[2020/12/17 17:10:33.407 +08:00] [INFO] [simple.go:556] [&quot;hello transaction in executeBegin############ by Guosong&quot;]</span><br><span class="line">[2020/12/17 17:10:33.407 +08:00] [INFO] [simple.go:557] [ConnectionID:0]</span><br><span class="line">[2020/12/17 17:10:36.406 +08:00] [INFO] [simple.go:556] [&quot;hello transaction in executeBegin############ by Guosong&quot;]</span><br><span class="line">[2020/12/17 17:10:36.406 +08:00] [INFO] [simple.go:557] [ConnectionID:0]</span><br><span class="line">[2020/12/17 17:10:36.408 +08:00] [INFO] [simple.go:556] [&quot;hello transaction in executeBegin############ by Guosong&quot;]</span><br><span class="line">[2020/12/17 17:10:36.408 +08:00] [INFO] [simple.go:557] [ConnectionID:0]</span><br></pre></td></tr></table></figure>
+<h3 id="本地测试"><a href="#本地测试" class="headerlink" title="本地测试"></a>本地测试</h3><p><img src="./images/tidb/TiDB-Localhost.png" alt="TiDB_Local"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2020-01-14-Elasticsearch选主过程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020-01-14-Elasticsearch选主过程/" itemprop="url">2020-01-14_Elasticsearch选主过程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-01-14T10:41:10+08:00">
+                2020-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020-01-14-Elasticsearch选主过程/" class="leancloud_visitors" data-flag-title="2020-01-14_Elasticsearch选主过程">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="1、选举的入口"><a href="#1、选举的入口" class="headerlink" title="1、选举的入口"></a>1、选举的入口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//入口函数 #ZenDiscovery#innerJoinCluster</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">innerJoinCluster</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        DiscoveryNode masterNode = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">final</span> Thread currentThread = Thread.currentThread();</span><br><span class="line">        nodeJoinController.startElectionContext();</span><br><span class="line">        <span class="comment">//一直阻塞直到找到master节点，在集群刚刚启动合作或者master丢失的情况，这种阻塞能够保证集群一致性</span></span><br><span class="line">        <span class="keyword">while</span> (masterNode == <span class="keyword">null</span> &amp;&amp; joinThreadControl.joinThreadActive(currentThread)) &#123;</span><br><span class="line">            masterNode = findMaster();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>初次启动的时候masterNode为null，需要进行findMaster。</p>
+<p>findMaster首先ping各个候选节点(通过参数discovery.zen.ping.unicast.host进行指定)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> DiscoveryNode <span class="title">findMaster</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//选举临时master</span></span><br><span class="line">    logger.trace(<span class="string">"starting to ping"</span>);</span><br><span class="line">    <span class="comment">//ping所有节点</span></span><br><span class="line">    List&lt;ZenPing.PingResponse&gt; fullPingResponses = pingAndWait(pingTimeout).toList();</span><br></pre></td></tr></table></figure>
+<p>这里的ping实际是调用UnicastZenPing#ping</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">ping</span><span class="params">(<span class="keyword">final</span> Consumer&lt;PingCollection&gt; resultsConsumer,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">final</span> TimeValue scheduleDuration,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">final</span> TimeValue requestDuration)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">final</span> List&lt;DiscoveryNode&gt; seedNodes;</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">          seedNodes = resolveHostsLists(</span><br><span class="line">              unicastZenPingExecutorService,</span><br><span class="line">              logger,</span><br><span class="line">              configuredHosts,</span><br><span class="line">              limitPortCounts,</span><br><span class="line">              transportService,</span><br><span class="line">              UNICAST_NODE_PREFIX,</span><br><span class="line">              resolveTimeout);</span><br><span class="line">      &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">          <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>在pingTimeout时间内收到各个ping结果之后，将本节点添加到其中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// add our selves</span></span><br><span class="line">      <span class="keyword">assert</span> fullPingResponses.stream().map(ZenPing.PingResponse::node)</span><br><span class="line">          .filter(n -&gt; n.equals(localNode)).findAny().isPresent() == <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">      fullPingResponses.add(<span class="keyword">new</span> ZenPing.PingResponse(localNode, <span class="keyword">null</span>, <span class="keyword">this</span>.clusterState()));</span><br><span class="line"></span><br><span class="line">      <span class="comment">// filter responses</span></span><br><span class="line">      <span class="keyword">final</span> List&lt;ZenPing.PingResponse&gt; pingResponses = filterPingResponses(fullPingResponses, masterElectionIgnoreNonMasters, logger);</span><br></pre></td></tr></table></figure>
+<p>discovery.zen.master_election.ignore_non_master_pings设置为true的话，节点设置node.master为false的节点会被过滤掉，不能作为候选的master。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将每个节点所认为的master节点加入到activeMasters列表中</span></span><br><span class="line">List&lt;DiscoveryNode&gt; activeMasters = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (ZenPing.PingResponse pingResponse : pingResponses) &#123;</span><br><span class="line">    <span class="comment">// We can't include the local node in pingMasters list, otherwise we may up electing ourselves without</span></span><br><span class="line">    <span class="comment">// any check / verifications from other nodes in ZenDiscover#innerJoinCluster()</span></span><br><span class="line">    <span class="comment">//不包括本节点</span></span><br><span class="line">    <span class="keyword">if</span> (pingResponse.master() != <span class="keyword">null</span> &amp;&amp; !localNode.equals(pingResponse.master())) &#123;</span><br><span class="line">        activeMasters.add(pingResponse.master());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// nodes discovered during pinging</span></span><br><span class="line"><span class="comment">//存储master候选者列表</span></span><br><span class="line">List&lt;ElectMasterService.MasterCandidate&gt; masterCandidates = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (ZenPing.PingResponse pingResponse : pingResponses) &#123;</span><br><span class="line">    <span class="comment">//只添加节点角色是master的节点</span></span><br><span class="line">    <span class="keyword">if</span> (pingResponse.node().isMasterNode()) &#123;</span><br><span class="line">        masterCandidates.add(<span class="keyword">new</span> ElectMasterService.MasterCandidate(pingResponse.node(), pingResponse.getClusterStateVersion()));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-如何确定候选人？"><a href="#2-如何确定候选人？" class="headerlink" title="2.如何确定候选人？"></a>2.如何确定候选人？</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (activeMasters.isEmpty()) &#123;</span><br><span class="line">    <span class="comment">//如果当前活跃的master列表为空，前提是候选者足够</span></span><br><span class="line">    <span class="keyword">if</span> (electMaster.hasEnoughCandidates(masterCandidates)) &#123;</span><br><span class="line">        <span class="comment">//从master候选列表中选举一个新的主</span></span><br><span class="line">        <span class="keyword">final</span> ElectMasterService.MasterCandidate winner = electMaster.electMaster(masterCandidates);</span><br><span class="line">        logger.trace(<span class="string">"candidate &#123;&#125; won election"</span>, winner);</span><br><span class="line">        <span class="keyword">return</span> winner.getNode();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">//从候选中选举新的master失败</span></span><br><span class="line">        <span class="comment">// if we don't have enough master nodes, we bail, because there are not enough master to elect from</span></span><br><span class="line">        logger.warn(<span class="string">"not enough master nodes discovered during pinging (found [&#123;&#125;], but needed [&#123;&#125;]), pinging again"</span>,</span><br><span class="line">                    masterCandidates, electMaster.minimumMasterNodes());</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">assert</span> !activeMasters.contains(localNode) : <span class="string">"local node should never be elected as master when other nodes indicate an active master"</span>;</span><br><span class="line">    <span class="comment">// lets tie break between discovered nodes</span></span><br><span class="line">    <span class="comment">//从activeMasters中选择最合适的作为master</span></span><br><span class="line">    <span class="keyword">return</span> electMaster.tieBreakActiveMasters(activeMasters);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要的判断在ElectMasterService类中，主要是如下两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Elects a new master out of the possible nodes, returning it. Returns &lt;tt&gt;null&lt;/tt&gt;</span></span><br><span class="line"><span class="comment"> * if no master has been elected.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> MasterCandidate <span class="title">electMaster</span><span class="params">(Collection&lt;MasterCandidate&gt; candidates)</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">hasEnoughCandidates</span><span class="params">(candidates)</span></span>;</span><br><span class="line">    List&lt;MasterCandidate&gt; sortedCandidates = <span class="keyword">new</span> ArrayList&lt;&gt;(candidates);</span><br><span class="line">    <span class="comment">//通过自定义的比较函数对候选者节点从小到大排序</span></span><br><span class="line">    sortedCandidates.sort(MasterCandidate::compare);</span><br><span class="line">    <span class="comment">//返回最新的作为Master</span></span><br><span class="line">    <span class="keyword">return</span> sortedCandidates.get(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/** selects the best active master to join, where multiple are discovered */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> DiscoveryNode <span class="title">tieBreakActiveMasters</span><span class="params">(Collection&lt;DiscoveryNode&gt; activeMasters)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//从已知的Master节点中选择一个最小值作为新的主</span></span><br><span class="line">    <span class="keyword">return</span> activeMasters.stream().min(ElectMasterService::compareNodes).get();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasEnoughMasterNodes</span><span class="params">(Iterable&lt;DiscoveryNode&gt; nodes)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> count = countMasterNodes(nodes);</span><br><span class="line">    <span class="keyword">return</span> count &gt; <span class="number">0</span> &amp;&amp; (minimumMasterNodes &lt; <span class="number">0</span> || count &gt;= minimumMasterNodes);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比较函数实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * compares two candidates to indicate which the a better master.</span></span><br><span class="line"><span class="comment"> * A higher cluster state version is better</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> -1 if c1 is a batter candidate, 1 if c2.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(MasterCandidate c1, MasterCandidate c2)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// we explicitly swap c1 and c2 here. the code expects "better" is lower in a sorted</span></span><br><span class="line">    <span class="comment">// list, so if c2 has a higher cluster state version, it needs to come first.</span></span><br><span class="line">    <span class="comment">//先比较集群状态的版本号，集群状态版本号是啥？</span></span><br><span class="line">    <span class="keyword">int</span> ret = Long.compare(c2.clusterStateVersion, c1.clusterStateVersion);</span><br><span class="line">    <span class="comment">//如果版本号相同，则比较节点ID,NodeId为第一次启动时随机生成</span></span><br><span class="line">    <span class="keyword">if</span> (ret == <span class="number">0</span>) &#123;</span><br><span class="line">        ret = compareNodes(c1.getNode(), c2.getNode());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>clusterStateVersion越大，优先级越高，这是为了保证新Master拥有最新的clusterState（集群的元数据）。Master当选之后以<br>此clusterState为基础进行更新。clusterStateVersion是long类型的版本号。</p>
+<h3 id="3、什么时候选举成功？"><a href="#3、什么时候选举成功？" class="headerlink" title="3、什么时候选举成功？"></a>3、什么时候选举成功？</h3><p>当一个master-eligible node（Node_A）发起一次选举时，它会按照上述排序策略选出一个它认为的master。</p>
+<ul>
+<li>假如Node_A选自己当master</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (transportService.getLocalNode().equals(masterNode)) &#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">int</span> requiredJoins = Math.max(<span class="number">0</span>, electMaster.minimumMasterNodes() - <span class="number">1</span>); <span class="comment">// we count as one</span></span><br><span class="line">    logger.debug(<span class="string">"elected as master, waiting for incoming joins ([&#123;&#125;] needed)"</span>, requiredJoins);</span><br><span class="line">    nodeJoinController.waitToBeElectedAsMaster(requiredJoins, masterElectionWaitForJoinsTimeout,</span><br><span class="line">            <span class="keyword">new</span> NodeJoinController.ElectionCallback() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onElectedAsMaster</span><span class="params">(ClusterState state)</span> </span>&#123;</span><br><span class="line">                    <span class="keyword">synchronized</span> (stateMutex) &#123;</span><br><span class="line">                        joinThreadControl.markThreadAsDone(currentThread);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onFailure</span><span class="params">(Throwable t)</span> </span>&#123;</span><br><span class="line">                    logger.trace(<span class="string">"failed while waiting for nodes to join, rejoining"</span>, t);</span><br><span class="line">                    <span class="keyword">synchronized</span> (stateMutex) &#123;</span><br><span class="line">                        joinThreadControl.markThreadAsDoneAndStartNew(currentThread);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">    );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时NodeA会等待别的node来join，即等待别的node选票，当收集超过半数（requiredJoins）的选票时，认为自己成为master，然后变更cluster_state中的master node为自己，并向集群发布这一消息。</p>
+<ul>
+<li>假设Node_A选Node_B当master</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// process any incoming joins (they will fail because we are not the master)</span></span><br><span class="line">            nodeJoinController.stopElectionContext(masterNode + <span class="string">" elected"</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// send join request</span></span><br><span class="line">            <span class="keyword">final</span> <span class="keyword">boolean</span> success = joinElectedMaster(masterNode);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">synchronized</span> (stateMutex) &#123;</span><br><span class="line">                <span class="keyword">if</span> (success) &#123;</span><br><span class="line">                    DiscoveryNode currentMasterNode = <span class="keyword">this</span>.clusterState().getNodes().getMasterNode();</span><br><span class="line">                    <span class="keyword">if</span> (currentMasterNode == <span class="keyword">null</span>) &#123;</span><br><span class="line">                        <span class="comment">// Post 1.3.0, the master should publish a new cluster state before acking our join request. we now should have</span></span><br><span class="line">                        <span class="comment">// a valid master.</span></span><br><span class="line">                        logger.debug(<span class="string">"no master node is set, despite of join request completing. retrying pings."</span>);</span><br><span class="line">                        joinThreadControl.markThreadAsDoneAndStartNew(currentThread);</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (currentMasterNode.equals(masterNode) == <span class="keyword">false</span>) &#123;</span><br><span class="line">                        <span class="comment">// update cluster state</span></span><br><span class="line">                        joinThreadControl.stopRunningThreadAndRejoin(<span class="string">"master_switched_while_finalizing_join"</span>);</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    joinThreadControl.markThreadAsDone(currentThread);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// failed to join. Try again...</span></span><br><span class="line">                    joinThreadControl.markThreadAsDoneAndStartNew(currentThread);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>Node_A会向Node_B发送join请求，那么此时：</p>
+<p>1）如果Node_B已经成为Master，Node_B就会把Node_A加入到集群中，然后发布最新的cluster_state，最新的cluster_state就包含Node_A信息。<br>相当于一次正常情况的新节点加入。对于Node_A，等待新的cluster_state发布到Node_A的时候，Node_A也就完成join。</p>
+<p>2）如果Node_B在竞选Master，那么Node_B会把这次join当做一张选票。对于这种情况，Node_A会等待一段时间，看Node_B是否能成为真正的Master，直到超时或者有别的master选成功。</p>
+<p>3）如果Node_B认为自己不是master，Node_B拒绝这次加入。</p>
+<h3 id="4、选举怎么保证不脑裂？"><a href="#4、选举怎么保证不脑裂？" class="headerlink" title="4、选举怎么保证不脑裂？"></a>4、选举怎么保证不脑裂？</h3><p>基本原则是多数派策略，通过参数discovery.zen.minimum_master_nodes来约束。</p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/34830403" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/34830403</a></li>
+<li><a href="https://www.jianshu.com/p/bba684897544" target="_blank" rel="external">https://www.jianshu.com/p/bba684897544</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-06-25-Elasticsearch各类日志解读/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-06-25-Elasticsearch各类日志解读/" itemprop="url">2019-06-25_Elasticsearch各类日志解读</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-25T15:05:41+08:00">
+                2019-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-06-25-Elasticsearch各类日志解读/" class="leancloud_visitors" data-flag-title="2019-06-25_Elasticsearch各类日志解读">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Slow-Log"><a href="#Slow-Log" class="headerlink" title="Slow Log"></a>Slow Log</h3><h3 id="GC-Log"><a href="#GC-Log" class="headerlink" title="GC Log"></a>GC Log</h3><h4 id="日志示例"><a href="#日志示例" class="headerlink" title="日志示例"></a>日志示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[2020-03-17T09:08:12,670][WARN ][o.e.m.j.JvmGcMonitorService] [weixin_es_data3] </span><br><span class="line">[gc][old][37795][15] </span><br><span class="line">duration [1.2m],</span><br><span class="line">collections [1]/[1.3m], </span><br><span class="line">total [1.2m]/[3.4m], </span><br><span class="line">memory [28.8gb]-&gt;[27.2gb]/[29.8gb], </span><br><span class="line">all_pools &#123;[young] [802.5mb]-&gt;[94.4mb]/[1.1gb]&#125;</span><br><span class="line">          &#123;[survivor] [149.7mb]-&gt;[0b]/[149.7mb]&#125;</span><br><span class="line">          &#123;[old] [27.9gb]-&gt;[27.1gb]/[28.5gb]&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="解读"><a href="#解读" class="headerlink" title="解读"></a>解读</h5><ul>
+<li>[gc][本次是old gc][这是第33795次 GC检查][从JVM启动至今发生的第15次GC]</li>
+<li>duration [本次检查到的GC总耗时是1.2分钟]</li>
+<li>collections [从上次检查至今总共发送1次GC]/[从上次检查至今已过去1.3分钟]</li>
+<li>total [本次检查到的GC总耗时为1.2分钟]/[从JVM启动至今发生的GC总耗时为3.4分钟]</li>
+<li>memory [GC前Heap Memory空间：28.8gb]-&gt;[GC后Heap Memory空间：27.2gb]/[Heap Memory总空间]</li>
+<li>all_pools(分代部分详情)<ul>
+<li>{[young区] [GC前Memory: 802.mb]-&gt;[GC后Memory: 94.4mb]/[young区Memory总大小]}</li>
+<li>{[survivor区] [GC前Memory:149.7mb]-&gt;[GC后Memory: 0b]/[survivor区Memory总大小]}</li>
+<li>{[old区][GC前Memory: 27.9gb]-&gt; [GC后Memory: 27.1gb]/[old区Memory总大小]}</li>
+</ul>
+</li>
+</ul>
+<h4 id="代码解读"><a href="#代码解读" class="headerlink" title="代码解读"></a>代码解读</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String SLOW_GC_LOG_MESSAGE =</span><br><span class="line">       <span class="string">"[gc][&#123;&#125;][&#123;&#125;][&#123;&#125;] duration [&#123;&#125;], collections [&#123;&#125;]/[&#123;&#125;], total [&#123;&#125;]/[&#123;&#125;], memory [&#123;&#125;]-&gt;[&#123;&#125;]/[&#123;&#125;], all_pools &#123;&#125;"</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">logSlowGc</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">       <span class="keyword">final</span> Logger logger,</span></span></span><br><span class="line"><span class="function"><span class="params">       <span class="keyword">final</span> JvmMonitor.Threshold threshold,</span></span></span><br><span class="line"><span class="function"><span class="params">       <span class="keyword">final</span> <span class="keyword">long</span> seq,</span></span></span><br><span class="line"><span class="function"><span class="params">       <span class="keyword">final</span> JvmMonitor.SlowGcEvent slowGcEvent,</span></span></span><br><span class="line"><span class="function"><span class="params">       BiFunction&lt;JvmStats, JvmStats, String&gt; pools)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">final</span> String name = slowGcEvent.currentGc.getName();</span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">long</span> elapsed = slowGcEvent.elapsed;</span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">long</span> totalGcCollectionCount = slowGcEvent.currentGc.getCollectionCount();</span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">long</span> currentGcCollectionCount = slowGcEvent.collectionCount;</span><br><span class="line">       <span class="keyword">final</span> TimeValue totalGcCollectionTime = slowGcEvent.currentGc.getCollectionTime();</span><br><span class="line">       <span class="keyword">final</span> TimeValue currentGcCollectionTime = slowGcEvent.collectionTime;</span><br><span class="line">       <span class="keyword">final</span> JvmStats lastJvmStats = slowGcEvent.lastJvmStats;</span><br><span class="line">       <span class="keyword">final</span> JvmStats currentJvmStats = slowGcEvent.currentJvmStats;</span><br><span class="line">       <span class="keyword">final</span> ByteSizeValue maxHeapUsed = slowGcEvent.maxHeapUsed;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">switch</span> (threshold) &#123;</span><br><span class="line">           <span class="keyword">case</span> WARN:</span><br><span class="line">               <span class="keyword">if</span> (logger.isWarnEnabled()) &#123;</span><br><span class="line">                   logger.warn(</span><br><span class="line">                       SLOW_GC_LOG_MESSAGE,</span><br><span class="line">                       name,</span><br><span class="line">                       seq,</span><br><span class="line">                       totalGcCollectionCount,</span><br><span class="line">                       currentGcCollectionTime,</span><br><span class="line">                       currentGcCollectionCount,</span><br><span class="line">                       TimeValue.timeValueMillis(elapsed),</span><br><span class="line">                       currentGcCollectionTime,</span><br><span class="line">                       totalGcCollectionTime,</span><br><span class="line">                       lastJvmStats.getMem().getHeapUsed(),</span><br><span class="line">                       currentJvmStats.getMem().getHeapUsed(),</span><br><span class="line">                       maxHeapUsed,</span><br><span class="line">                       pools.apply(lastJvmStats, currentJvmStats));</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">break</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">name:old/young</span><br><span class="line">seq:37795</span><br><span class="line">totalGcCollectionCount:15</span><br><span class="line">currentGcCollectionTime:1.2m</span><br><span class="line">collections currentGcCollectionCount:1</span><br><span class="line">collections elapsed:1.3m</span><br><span class="line">total currentGcCollectionTime:1.2m</span><br><span class="line">total totalGcCollectionTime:3.4m</span><br><span class="line">memory lastJvmStats.getMem().getHeapUsed():28.8gb</span><br><span class="line">memory currentJvmStats.getMem().getHeapUsed():27.2gb</span><br><span class="line">memory maxHeapUsed:29.8gb</span><br><span class="line">all_pools:传入的参数 pools.apply(lastJvmStats, currentJvmStats));</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-26-Innodb-Checkpoint/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-03-26-Innodb-Checkpoint/" itemprop="url">2019-03-26_Innodb-Checkpoint</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-26T16:09:33+08:00">
+                2019-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-26-Innodb-Checkpoint/" class="leancloud_visitors" data-flag-title="2019-03-26_Innodb-Checkpoint">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="checkpoint-推进"><a href="#checkpoint-推进" class="headerlink" title="checkpoint 推进"></a>checkpoint 推进</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">srv_master_do_active_task</span><br><span class="line">    - log_free_check</span><br><span class="line">srv_master_do_idle_task</span><br><span class="line">    - log_free_check</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Flush List Flush 在刷脏页的时候会推进</li>
+<li>更新操作，修改页面之前</li>
+</ul>
+<h3 id="checkpoint-更新"><a href="#checkpoint-更新" class="headerlink" title="checkpoint 更新"></a>checkpoint 更新</h3><ul>
+<li>将buffer pool Flush List中，第一个dirty page的oldest_modification(最小)作为新的Checkpoint LSN</li>
+<li>在此之前，必须保证新的checkpoint LSN之前的dirty pages全部Flush到磁盘。</li>
+</ul>
+<p>所以在Flush List Flush的时候会更新checkpoint</p>
+<h3 id="Innodb-Crash-Recovery"><a href="#Innodb-Crash-Recovery" class="headerlink" title="Innodb Crash Recovery"></a>Innodb Crash Recovery</h3><ul>
+<li>Q1: CrashRecovery的起点，Checkpoint LSN存储在何处？</li>
+<li>Q2：InnoDB如何完成Redo日志的重做？</li>
+<li>Q3：InnoDB如何定位哪些事务需要Rollback？</li>
+<li>Q4：CrashRecovery需要等待Rollback完成吗？</li>
+<li>Q5：InnoDB各版本，在CrashRecovery流程上做了哪些优化？</li>
+<li>Q6: InnoDB各版本涉及的参数含义，已经在不同版本上的变化</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-24-Innodb-Log相关/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-03-24-Innodb-Log相关/" itemprop="url">2019-03-24_Innodb-Log相关</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T14:01:44+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-24-Innodb-Log相关/" class="leancloud_visitors" data-flag-title="2019-03-24_Innodb-Log相关">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录Innodb的Redo和Undo的一些关键功能对应的相关代码。</p>
+<h3 id="Redo"><a href="#Redo" class="headerlink" title="Redo"></a>Redo</h3><ul>
+<li>Redo刷盘机制</li>
+</ul>
+<h3 id="Undo"><a href="#Undo" class="headerlink" title="Undo"></a>Undo</h3><ul>
+<li>Undo的存储</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019-03-24-Innodb-Log相关/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-24-Innodb-buffer-pool结构/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-03-24-Innodb-buffer-pool结构/" itemprop="url">2019-03-24_Innodb-buffer-pool结构</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T14:01:28+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-24-Innodb-buffer-pool结构/" class="leancloud_visitors" data-flag-title="2019-03-24_Innodb-buffer-pool结构">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p><a href="https://developer.aliyun.com/article/700436?spm=a2c6h.13262185.0.0.6fd97667dUWnre" target="_blank" rel="external">https://developer.aliyun.com/article/700436?spm=a2c6h.13262185.0.0.6fd97667dUWnre</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-24-Innodb-刷脏页原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-03-24-Innodb-刷脏页原理/" itemprop="url">2019-03-24_Innodb-刷脏页原理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T14:00:27+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-24-Innodb-刷脏页原理/" class="leancloud_visitors" data-flag-title="2019-03-24_Innodb-刷脏页原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Innodb刷脏页的两个目的：</p>
+<ul>
+<li>加快崩溃恢复(checkpoint)，已经刷到磁盘上的页面在做redo的时候其LSN小于checkpoint，因此不需要重做</li>
+<li>增加内存可用的buffer数量，脏页是不能被重用的,只有被刷到磁盘上，才可用被使用。</li>
+</ul>
+<p>针对这两个目的操作涉及两个List：</p>
+<ul>
+<li>目的1：Flush List Flush</li>
+<li>目的2：LRU List Flush</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019-03-24-Innodb-刷脏页原理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-23-Innodb-MVCC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-03-23-Innodb-MVCC/" itemprop="url">2019-03-23_Innodb-MVCC</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-23T18:40:55+08:00">
+                2019-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-23-Innodb-MVCC/" class="leancloud_visitors" data-flag-title="2019-03-23_Innodb-MVCC">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MVCC是Innodb实现高并发一种方式，对快照读不加锁，直接利用MVCC读取指定版本的数据。</p>
+<h2 id="Innodb行隐藏列"><a href="#Innodb行隐藏列" class="headerlink" title="Innodb行隐藏列"></a>Innodb行隐藏列</h2><p>Innodb数据行的结构，除了自身的信息外，还额外包括三个结构DB_TRX_ID、DB_ROLL_PTR以及DB_ROW_ID。</p>
+<p>DB_TRX_ID：表示最近修改该行数据的事务ID<br>DB_ROLL_PTR：表是该行回滚段的指针，该行上所有旧的版本，在undo中通过链表的方式组织，而该值，正式指向undo中该行的历史记录链表。</p>
+<p>整个MVCC的关键是通过DB_TRX_ID和DB_ROLL_PTR这两个隐藏列来实现的。</p>
+<h2 id="事务链表"><a href="#事务链表" class="headerlink" title="事务链表"></a>事务链表</h2><p>Innodb事务通过trx_sys这个全局变量进行管理，有当前活跃事务的list。</p>
+<p>MySQL中的事务在开始到提交这段过程中，都会被保存trx_sys的事务链表中。</p>
+<h2 id="Read-View"><a href="#Read-View" class="headerlink" title="Read View"></a>Read View</h2><ul>
+<li>ReadView 中的low_limit_id、up_limit_id以及trx_ids如何初始化的？</li>
+<li>可见性判断？</li>
+</ul>
+<p>在5.7中是storage/innobase/include/read0types.h中定义ReadView类</p>
+<p>在5.6中是结构体read_view_t</p>
+<p>在RC模式下，事务中的每一条SQL都创建一个ReadView，在RR模式下，事务开始的时候创建一个ReadView，直到事务结束。</p>
+<p>ha_innobase::index_read-&gt;row_search_mvcc</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://mysql.taobao.org/monthly/2018/11/04/" target="_blank" rel="external">http://mysql.taobao.org/monthly/2018/11/04/</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-22-Innodb-Change-Buffer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019-03-22-Innodb-Change-Buffer/" itemprop="url">2019-03-22_Innodb-Change-Buffer</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-22T23:44:39+08:00">
+                2019-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-22-Innodb-Change-Buffer/" class="leancloud_visitors" data-flag-title="2019-03-22_Innodb-Change-Buffer">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Innodb-Change-Buffer"><a href="#Innodb-Change-Buffer" class="headerlink" title="Innodb Change Buffer"></a>Innodb Change Buffer</h2><p>在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。</p>
+<p>随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据结构-change buffer。（5.5版本之前叫insert buffer，5.5版本以及其以后版本，支持Delete\Update操作的缓存，故修改为change buffer）。</p>
+<h2 id="9大问题总结"><a href="#9大问题总结" class="headerlink" title="9大问题总结"></a>9大问题总结</h2><h3 id="change-buffer支持哪些操作类型"><a href="#change-buffer支持哪些操作类型" class="headerlink" title="change buffer支持哪些操作类型?"></a>change buffer支持哪些操作类型?</h3><p>只是针对辅助索引的，对于非唯一索引支持INSERT、UPDATE、DELETE，对于唯一索引只支持DELETE。<br>还有一个前提是索引修改对应的页不在Buffer Pool中。</p>
+<h3 id="change-buffer有哪些好处？"><a href="#change-buffer有哪些好处？" class="headerlink" title="change buffer有哪些好处？"></a>change buffer有哪些好处？</h3><p>缓存那些不在buffer pool中的二级索引页面操作可以避免从磁盘加载索引页到内存中的随机IO操作。当涉及的索引被加载到内存中时，change buffer会被merge。</p>
+<h3 id="change-buffer是否支持其他类型的索引？"><a href="#change-buffer是否支持其他类型的索引？" class="headerlink" title="change buffer是否支持其他类型的索引？"></a>change buffer是否支持其他类型的索引？</h3><p>只支持辅助索引，聚簇索引、全文索引、空间索引都不支持。</p>
+<h3 id="change-buffer使用多大的空间？"><a href="#change-buffer使用多大的空间？" class="headerlink" title="change buffer使用多大的空间？"></a>change buffer使用多大的空间？</h3><p>change buffer的最大空间通过innodb_change_buffer_max_size进行设定，默认是25%，最大可以是50%。<br>change buffer对应的page不需要持序在buffer pool中，可能会LRU操作替换出去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global variables like &apos;%change_buffer%&apos;;</span><br><span class="line">+-------------------------------+-------+</span><br><span class="line">| Variable_name                 | Value |</span><br><span class="line">+-------------------------------+-------+</span><br><span class="line">| innodb_change_buffer_max_size | 25    |</span><br><span class="line">| innodb_change_buffering       | all   |</span><br><span class="line">| innodb_change_buffering_debug | 0     |</span><br><span class="line">+-------------------------------+-------+</span><br></pre></td></tr></table></figure>
+<h3 id="如何获取当前change-buffer的大小"><a href="#如何获取当前change-buffer的大小" class="headerlink" title="如何获取当前change buffer的大小?"></a>如何获取当前change buffer的大小?</h3><p>通过show engine innodb status可以获取到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-------------------------------------</span><br><span class="line">INSERT BUFFER AND ADAPTIVE HASH INDEX</span><br><span class="line">-------------------------------------</span><br><span class="line">Ibuf: size 1, free list len 258, seg size 260, 0 merges</span><br><span class="line">merged operations:</span><br><span class="line"> insert 0, delete mark 0, delete 0</span><br><span class="line">discarded operations:</span><br><span class="line"> insert 0, delete mark 0, delete 0</span><br></pre></td></tr></table></figure>
+<p>size表示change buffer使用到的页面数量，seg size表示change buffer的大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">size = seg size - (1+free list len)</span><br></pre></td></tr></table></figure>
+<h3 id="change-buffer-何时发生merge操作？"><a href="#change-buffer-何时发生merge操作？" class="headerlink" title="change buffer 何时发生merge操作？"></a>change buffer 何时发生merge操作？</h3><ul>
+<li>当页面被读取到buffer pool中，在页面可用之前，会进行merge操作。</li>
+<li>主线程后台有任务进行定时操作，参数innodb_io_capacity可以设置每次merge的页面数量</li>
+<li>在崩溃恢复的时候，从系统表空间里面回访这些change，然后再将对应的页面加载到buffer pool中。</li>
+<li>在innodb-fast-shutdow=0的时候会进行merge。</li>
+</ul>
+<h3 id="change-buffer何时会flushed？"><a href="#change-buffer何时会flushed？" class="headerlink" title="change buffer何时会flushed？"></a>change buffer何时会flushed？</h3><p>和buffer pool一样的flush机制，change buffer占内存比较大，需要进行flush。</p>
+<h3 id="change-buffer的选择时机？"><a href="#change-buffer的选择时机？" class="headerlink" title="change buffer的选择时机？"></a>change buffer的选择时机？</h3><p>如果比较少涉及到辅助索引操作时候，可以关闭change buffer。或者磁盘性能能保证随机IO和顺序IO一样的话，也可以关闭change buffer。<br>当然在设置之前需要进行测试。</p>
+<h3 id="如何获取额外的change-buffer信息？"><a href="#如何获取额外的change-buffer信息？" class="headerlink" title="如何获取额外的change buffer信息？"></a>如何获取额外的change buffer信息？</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT (SELECT COUNT(*) FROM INFORMATION_SCHEMA.INNODB_BUFFER_PAGE</span><br><span class="line">    -&gt;        WHERE PAGE_TYPE LIKE 'IBUF%') AS change_buffer_pages,</span><br><span class="line">    -&gt;        (SELECT COUNT(*) FROM INFORMATION_SCHEMA.INNODB_BUFFER_PAGE) AS total_pages,</span><br><span class="line">    -&gt;        (SELECT ((change_buffer_pages/total_pages)*100))</span><br><span class="line">    -&gt;        AS change_buffer_page_percentage;</span><br><span class="line">+<span class="comment">---------------------+-------------+-------------------------------+</span></span><br><span class="line">| change_buffer_pages | total_pages | change_buffer_page_percentage |</span><br><span class="line">+<span class="comment">---------------------+-------------+-------------------------------+</span></span><br><span class="line">|                   3 |        8191 |                        0.0366 |</span><br><span class="line">+<span class="comment">---------------------+-------------+-------------------------------+</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT NAME, COMMENT,COUNT FROM INFORMATION_SCHEMA.INNODB_METRICS WHERE NAME LIKE '%ibuf%';</span><br><span class="line">+<span class="comment">-----------------------------------------+-------------------------------------------------------------+-------+</span></span><br><span class="line">| NAME                                    | <span class="keyword">COMMENT</span>                                                     | <span class="keyword">COUNT</span> |</span><br><span class="line">+<span class="comment">-----------------------------------------+-------------------------------------------------------------+-------+</span></span><br><span class="line">| buffer_page_read_index_ibuf_leaf        | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Index</span> Leaf Pages <span class="keyword">read</span>               |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_read_index_ibuf_non_leaf    | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Index</span> Non-Leaf Pages <span class="keyword">read</span>           |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_read_ibuf_free_list         | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer Free <span class="keyword">List</span> Pages <span class="keyword">read</span>                |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_read_ibuf_bitmap            | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Bitmap</span> Pages <span class="keyword">read</span>                   |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_written_index_ibuf_leaf     | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Index</span> Leaf Pages written            |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_written_index_ibuf_non_leaf | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Index</span> Non-Leaf Pages written        |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_written_ibuf_free_list      | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer Free <span class="keyword">List</span> Pages written             |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_written_ibuf_bitmap         | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Bitmap</span> Pages written                |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_insert                      | <span class="built_in">Number</span> <span class="keyword">of</span> inserted <span class="keyword">records</span> merged <span class="keyword">by</span> <span class="keyword">change</span> buffering       |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_delete_mark                 | <span class="built_in">Number</span> <span class="keyword">of</span> deleted <span class="keyword">records</span> merged <span class="keyword">by</span> <span class="keyword">change</span> buffering        |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_delete                      | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">purge</span> <span class="keyword">records</span> merged <span class="keyword">by</span> <span class="keyword">change</span> buffering          |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_discard_insert              | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">insert</span> merged <span class="keyword">operations</span> discarded                |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_discard_delete_mark         | <span class="built_in">Number</span> <span class="keyword">of</span> deleted merged <span class="keyword">operations</span> discarded               |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_discard_delete              | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">purge</span> merged  <span class="keyword">operations</span> discarded                |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges                             | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">change</span> buffer merges                              |     <span class="number">0</span> |</span><br><span class="line">| ibuf_size                               | <span class="keyword">Change</span> buffer <span class="keyword">size</span> <span class="keyword">in</span> pages                                 |     <span class="number">1</span> |</span><br><span class="line">| innodb_ibuf_merge_usec                  | <span class="keyword">Time</span> (<span class="keyword">in</span> microseconds) spent <span class="keyword">to</span> process <span class="keyword">change</span> buffer <span class="keyword">merge</span> |     <span class="number">0</span> |</span><br><span class="line">+<span class="comment">-----------------------------------------+-------------------------------------------------------------+-------+</span></span><br><span class="line"><span class="number">17</span> <span class="keyword">rows</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<p>更多<a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-change-buffer.html#innodb-change-buffer-maximum-size" target="_blank" rel="external">参照文档</a></p>
+<h2 id="内核层次分析"><a href="#内核层次分析" class="headerlink" title="内核层次分析"></a>内核层次分析</h2><h3 id="ibuf的初始化"><a href="#ibuf的初始化" class="headerlink" title="ibuf的初始化"></a>ibuf的初始化</h3><p>change buffer本身也是B-Tree结构，其持久化在系统表空间中。change buffer的root页固定在系统表空间(space_id=0)的第4个页面(FSP_IBUF_TREE_ROOT_PAGE_NO)，其初始化函数为ibuf_init_at_db_start。</p>
+<p>其调用链条为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ibuf_init_at_db_start</span><br><span class="line">dict_boot</span><br><span class="line">innobase_start_or_create_for_mysql</span><br><span class="line">innobase_init</span><br></pre></td></tr></table></figure>
+<p>其中innobase_init(handler/ha_innodb.cc)是在存储引擎定义的时候设置：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mysql_declare_plugin(innobase)</span><br><span class="line">&#123;</span><br><span class="line">  MYSQL_STORAGE_ENGINE_PLUGIN,</span><br><span class="line">  &amp;innobase_storage_engine,</span><br><span class="line">  innobase_hton_name,</span><br><span class="line">  plugin_author,</span><br><span class="line">  <span class="string">"Supports transactions, row-level locking, and foreign keys"</span>,</span><br><span class="line">  PLUGIN_LICENSE_GPL,</span><br><span class="line">  innobase_init, <span class="comment">/* Plugin Init */</span></span><br><span class="line">  <span class="literal">NULL</span>, <span class="comment">/* Plugin Deinit */</span></span><br><span class="line">  INNODB_VERSION_SHORT,</span><br><span class="line">  innodb_status_variables_export,<span class="comment">/* status variables             */</span></span><br><span class="line">  innobase_system_variables, <span class="comment">/* system variables */</span></span><br><span class="line">  <span class="literal">NULL</span>, <span class="comment">/* reserved */</span></span><br><span class="line">  <span class="number">0</span>,    <span class="comment">/* flags */</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>重点看看ibuf_init_at_db_start实现:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ibuf_t</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="comment">//当前ibuf大小</span></span><br><span class="line">	ulint size;</span><br><span class="line">	<span class="comment">//ibuf的max_size</span></span><br><span class="line">	ulint max_size;</span><br><span class="line">	<span class="comment">//ibuf header和tree对应的分配页面多少</span></span><br><span class="line">	ulint seg_size;</span><br><span class="line">	<span class="comment">//ibuf tree是否为空</span></span><br><span class="line">	<span class="keyword">bool</span> empty;</span><br><span class="line">	<span class="comment">//free list长度</span></span><br><span class="line">	ulint free_list_len;</span><br><span class="line">	<span class="comment">//ibuf tree的高度</span></span><br><span class="line">	ulint height;</span><br><span class="line">	<span class="comment">//insert buffer index(最关键的结构)</span></span><br><span class="line">	<span class="keyword">dict_index_t</span> *index;</span><br><span class="line">	<span class="comment">//ibuf merged的pages数量</span></span><br><span class="line">	ulint n_merges;</span><br><span class="line">	<span class="comment">//ibuf三个类型各个页面的merged操作数</span></span><br><span class="line">	ulint n_merged_ops[IBUF_OP_COUNT];</span><br><span class="line">	<span class="comment">//由于索引或表被删除之后丢弃的操作数</span></span><br><span class="line">	ulint n_discarded_ops[IBUF_OP_COUNT];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ibuf_init_at_db_start</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//对应的数据结构为ibuf_t</span></span><br><span class="line">	ibuf = <span class="keyword">static_cast</span>&lt;<span class="keyword">ibuf_t</span>*&gt;(mem_zalloc(<span class="keyword">sizeof</span>(<span class="keyword">ibuf_t</span>)));</span><br><span class="line"></span><br><span class="line">	<span class="comment">//ibuf最大size，和参数innodb_change_buffer_max_size有关</span></span><br><span class="line">	ibuf-&gt;max_size = ((buf_pool_get_curr_size() / UNIV_PAGE_SIZE)</span><br><span class="line">		* CHANGE_BUFFER_DEFAULT_SIZE) / <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//通过min-transaction保证原子性？？</span></span><br><span class="line">	mtr_start(&amp;mtr);	</span><br><span class="line"></span><br><span class="line">	<span class="comment">//有单独的mutex进行保护</span></span><br><span class="line">	mutex_enter(&amp;ibuf_mutex);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取IBUF_SPACE_ID=0的latch(对页面的保护)</span></span><br><span class="line">	mtr_x_lock(fil_space_get_latch(IBUF_SPACE_ID, <span class="literal">NULL</span>), &amp;mtr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//page header存储位置</span></span><br><span class="line">	<span class="comment">//对应space_id=0 page_no=3的页面</span></span><br><span class="line">	header_page = ibuf_header_page_get(&amp;mtr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//page root初始化</span></span><br><span class="line">	<span class="comment">//page都通过block(page_header进行管理)</span></span><br><span class="line">	&#123;</span><br><span class="line">        <span class="keyword">buf_block_t</span>*    block;</span><br><span class="line">        <span class="comment">//space=0，page_no=4</span></span><br><span class="line">        <span class="comment">//FSP_IBUF_TREE_ROOT_PAGE_NO=4</span></span><br><span class="line">        block = buf_page_get(</span><br><span class="line">            IBUF_SPACE_ID, <span class="number">0</span>, FSP_IBUF_TREE_ROOT_PAGE_NO,</span><br><span class="line">            RW_X_LATCH, &amp;mtr);</span><br><span class="line">        root = buf_block_get_frame(block);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Use old-style record format for the insert buffer. */</span></span><br><span class="line">    <span class="comment">//初始化系统表空间的ibuf部分？</span></span><br><span class="line">    <span class="comment">//IBUF_TABLE_NAME为SYS_IBUF_TABLE，ibuf表名字,该系统表实现了insert buffer的管理功能</span></span><br><span class="line">    table = dict_mem_table_create(IBUF_TABLE_NAME, IBUF_SPACE_ID, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//创建index</span></span><br><span class="line">    index = dict_mem_index_create(</span><br><span class="line">    IBUF_TABLE_NAME, <span class="string">"CLUST_IND"</span>,</span><br><span class="line">    IBUF_SPACE_ID, DICT_CLUSTERED | DICT_UNIVERSAL | DICT_IBUF, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ibuf-&gt;index作用是啥？</span></span><br><span class="line">    <span class="comment">//insert buffer index</span></span><br><span class="line">    ibuf-&gt;index = dict_table_get_first_index(table);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ibuf操作的三种类型"><a href="#ibuf操作的三种类型" class="headerlink" title="ibuf操作的三种类型:"></a>ibuf操作的三种类型:</h3><p>Change buffer主要是针对非唯一辅助索引的。Innodb buffer操作的三种类型：insert、delete marking、delete。<br>疑问：Innodb是标记删除，那个这个delete是啥？这里没有UPDATE？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Possible operations buffered in the insert/whatever buffer. See</span></span><br><span class="line"><span class="comment">ibuf_insert(). DO NOT CHANGE THE VALUES OF THESE, THEY ARE STORED ON DISK. */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> &#123;</span><br><span class="line">    IBUF_OP_INSERT = <span class="number">0</span>,</span><br><span class="line">    IBUF_OP_DELETE_MARK = <span class="number">1</span>,</span><br><span class="line">    IBUF_OP_DELETE = <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Number of different operation types. */</span></span><br><span class="line">    IBUF_OP_COUNT = <span class="number">3</span></span><br><span class="line">&#125; <span class="keyword">ibuf_op_t</span>;</span><br></pre></td></tr></table></figure>
+<p>记住一点change buffer是面向叶页面(leaf page)。为什么引起叶页面分裂的话，就不进行ibuf操作呢？</p>
+<p>使用bitmap page管理页面的空余空间，来判断是否进行change buffer操作。</p>
+<h3 id="purge"><a href="#purge" class="headerlink" title="purge"></a>purge</h3><p>change buffer内存占用最大是buffer pool的25%。为了保证change buffer的恢复能在较短时间内完成，change buffer pages也会由dirty page flush操作写回磁盘。在系统崩溃时，就能保证change buffer(SYS_IBUF_TABLE)快速恢复。</p>
+<h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h3><p>主线程的中每秒都调用后台任务</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">srv_master_thread()</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//SRV_SHUTDOWN_NONE 表示MySQL正在运行</span></span><br><span class="line">    <span class="keyword">while</span> (srv_shutdown_state == SRV_SHUTDOWN_NONE) &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//sleep 1秒</span></span><br><span class="line">        srv_master_sleep();</span><br><span class="line"></span><br><span class="line">        MONITOR_INC(MONITOR_MASTER_THREAD_SLEEP);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (srv_check_activity(old_activity_count)) &#123;</span><br><span class="line">            old_activity_count = srv_get_activity_count();</span><br><span class="line">            srv_master_do_active_tasks();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            srv_master_do_idle_tasks();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里判断集群是否活跃是通过，activity_count这个atomic变量，每个SQL操作之后都会对这个activity_count进行加1。</p>
+<p>merge ibuf函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*********************************************************************/</span><span class="comment">/**</span></span><br><span class="line"><span class="comment">Contracts insert buffer trees by reading pages to the buffer pool.</span></span><br><span class="line"><span class="comment">@return a lower limit for the combined size in bytes of entries which</span></span><br><span class="line"><span class="comment">will be merged from ibuf trees to the pages read, 0 if ibuf is</span></span><br><span class="line"><span class="comment">empty */</span></span><br><span class="line">UNIV_INTERN</span><br><span class="line">ulint</span><br><span class="line">ibuf_contract_in_background(</span><br><span class="line"><span class="comment">/*========================*/</span></span><br><span class="line">    <span class="keyword">table_id_t</span>  table_id,   <span class="comment">/*!&lt; in: if merge should be done only</span></span><br><span class="line"><span class="comment">                    for a specific table, for all tables</span></span><br><span class="line"><span class="comment">                    this should be 0 */</span></span><br><span class="line">    ibool       full)       <span class="comment">/*!&lt; in: TRUE if the caller wants to</span></span><br><span class="line"><span class="comment">                    do a full contract based on PCT_IO(100).</span></span><br><span class="line"><span class="comment">                    If FALSE then the size of contract</span></span><br><span class="line"><span class="comment">                    batch is determined based on the</span></span><br><span class="line"><span class="comment">                    current size of the ibuf tree. */</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//根据full是否为true，刷不同数量的页面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">srv_master_do_idle_tasks(void)</span><br><span class="line">&#123;</span><br><span class="line">	/* make sure that there is enough reusable space in the redo log files*/</span><br><span class="line">	// 检查redo log是否有足够的可用空间</span><br><span class="line">	log_free_check();</span><br><span class="line">	</span><br><span class="line">	/* Do an ibuf merge */</span><br><span class="line">	// 执行ibuf的合并</span><br><span class="line">	ibuf_merge_in_background(true);</span><br><span class="line">	</span><br><span class="line">	// 强制执行table cache</span><br><span class="line">	srv_main_thread_op_info = &quot;enforcing dict cache limit&quot;;</span><br><span class="line">	ulint   n_evicted = srv_master_evict_from_table_cache(100);</span><br><span class="line">	</span><br><span class="line">	/* Flush logs if needed */</span><br><span class="line">	// 持久化log buffer,innodb_flush_log_at_trx_commit配置0的时候就是此操作</span><br><span class="line">	srv_sync_log_buffer_in_background()；</span><br><span class="line">	</span><br><span class="line">	/* Make a new checkpoint */</span><br><span class="line">	// 创建一个新的检查点</span><br><span class="line">	log_checkpoint(TRUE, FALSE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> srv_master_do_active_tasks基本相同，在执行操作的条件上会判断更加严格。</span><br></pre></td></tr></table></figure>
+<h3 id="在shutdown和start时候对ibuf处理情况"><a href="#在shutdown和start时候对ibuf处理情况" class="headerlink" title="在shutdown和start时候对ibuf处理情况"></a>在shutdown和start时候对ibuf处理情况</h3><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://mysqlserverteam.com/the-innodb-change-buffer/" target="_blank" rel="external">https://mysqlserverteam.com/the-innodb-change-buffer/</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/5.6/en/faqs-innodb-change-buffer.html" target="_blank" rel="external">FAQ</a></li>
+<li><a href="http://mysql.taobao.org/monthly/2015/07/01/" target="_blank" rel="external">http://mysql.taobao.org/monthly/2015/07/01/</a></li>
+<li><a href="http://hedengcheng.com/?p=94" target="_blank" rel="external">http://hedengcheng.com/?p=94</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-13-Bootstrap-Django分页方式由client切换到server/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -443,1378 +1778,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-12-Inception语法解析过程浅析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019-03-12-Inception语法解析过程浅析/" itemprop="url">Inception语法解析过程浅析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-12T17:58:42+08:00">
-                2019-03-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL内核/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL内核</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019-03-12-Inception语法解析过程浅析/" class="leancloud_visitors" data-flag-title="Inception语法解析过程浅析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在<a href="https://dolphinsboy.github.io/2019-03-07-Inception%E6%89%A7%E8%A1%8C%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E5%88%86%E6%9E%90/">Inception执行远程命令分析</a>中分析Inception执行命令的过程，但是文中给出的SQL如何解析的呢，例如comment涉及的相关信息(如远程的host、port等)是如何解析到的呢？还有，alter语句又是如何解析到的呢？</p>
-<p>本文针对这些问题进行源码分析:</p>
-<ul>
-<li>如何解析comment信息，获取inception支持的选项信息。</li>
-<li>Inception涉及的语句。</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019-03-12-Inception语法解析过程浅析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-07-Inception执行远程命令分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019-03-07-Inception执行远程命令分析/" itemprop="url">Inception执行远程命令分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-07T15:20:11+08:00">
-                2019-03-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL内核/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL内核</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019-03-07-Inception执行远程命令分析/" class="leancloud_visitors" data-flag-title="Inception执行远程命令分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在使用Inception过程中，线上有数据库字符集默认字符集是latin1的，出现过中文乱码问题。因此在使用Inception的时候，兼容表情字符，强制添加set names utf8mb4。</p>
-<p>具体demo如下:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> MySQLdb</span><br><span class="line">sql=<span class="string">'/*--user=dba;--password=xx;--host=10.xx;--execute=1;--port=5627;*/\</span></span><br><span class="line"><span class="string">inception_magic_start;\</span></span><br><span class="line"><span class="string">use sakila;\</span></span><br><span class="line"><span class="string">set names utf8mb4;\</span></span><br><span class="line"><span class="string">alter table actor engine=Innodb;\</span></span><br><span class="line"><span class="string">inception_magic_commit;'</span></span><br></pre></td></tr></table></figure>
-<p>只是在execute的部分加了，但是没有check的部分加，后来发现通过inception osc percent无法获取的osc进度。因此针对这个问题，研究一下inception的源码。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019-03-07-Inception执行远程命令分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-02-15-SQL美化/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019-02-15-SQL美化/" itemprop="url">SQL美化</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-15T15:36:28+08:00">
-                2019-02-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019-02-15-SQL美化/" class="leancloud_visitors" data-flag-title="SQL美化">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>公司内部SQL工单系统中使用SQL格式化的功能，一开始使用python的<a href="https://github.com/andialbrecht/sqlparse" target="_blank" rel="external">sqlparse包</a>，它还有个在线网站<a href="https://sqlformat.org/" target="_blank" rel="external">https://sqlformat.org/</a>。<br>随着公司工单数据越来越多，发现有些SQL它就格式化不好，故选择其他方案进行替换。</p>
-<p><strong>sqlparse格式效果如下</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`wk_adsense`</span>.<span class="string">`wk_cct_extend_area`</span>(<span class="string">`business_type`</span>,<span class="string">`province_id`</span>,<span class="string">`city_id`</span>,<span class="string">`remark`</span>,<span class="string">`create_time`</span>,<span class="string">`tencent_id`</span>)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="number">290</span>,</span><br><span class="line">        <span class="number">101</span>,</span><br><span class="line">        <span class="number">101001</span>,</span><br><span class="line">        <span class="string">"北京"</span>,</span><br><span class="line">        <span class="keyword">unix_timestamp</span>(<span class="keyword">now</span>()),</span><br><span class="line">        <span class="number">110100</span>),(<span class="number">290</span>,</span><br><span class="line">                 <span class="number">102</span>,</span><br><span class="line">                 <span class="number">102001</span>,</span><br><span class="line">                 <span class="string">"天津"</span>,</span><br><span class="line">                 <span class="keyword">unix_timestamp</span>(<span class="keyword">now</span>()),</span><br><span class="line">                 <span class="number">120100</span>),(<span class="number">290</span>,</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>SQL更多内容可以参照git <a href="https://github.com/dolphinsboy/FormatSQL/blob/master/input.                                          sql" target="_blank" rel="external">input.sql</a><br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019-02-15-SQL美化/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-01-11-MySQL-Insert-操作加锁分析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019-01-11-MySQL-Insert-操作加锁分析/" itemprop="url">MySQL-Insert-操作加锁分析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-11T11:53:18+08:00">
-                2019-01-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019-01-11-MySQL-Insert-操作加锁分析/" class="leancloud_visitors" data-flag-title="MySQL-Insert-操作加锁分析">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>看微博上丁奇大牛转发的<a href="https://weibo.com/3515375313/HaT3kClQ8?type=comment#_rnd1547179052804" target="_blank" rel="external">一条微博</a>，看作者分析的过程有疑问，Insert操作会有插入意向锁的判断，文中没有提到， 故查看源码试着分析一下。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019-01-11-MySQL-Insert-操作加锁分析/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-12-18-Python调用Golang-rpc服务/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018-12-18-Python调用Golang-rpc服务/" itemprop="url">Python调用Golang-rpc服务</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-18T12:02:10+08:00">
-                2018-12-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Go/" itemprop="url" rel="index">
-                    <span itemprop="name">Go</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018-12-18-Python调用Golang-rpc服务/" class="leancloud_visitors" data-flag-title="Python调用Golang-rpc服务">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>看open-falcon的transfer部分代码，发现有个python测试脚本，使用python调用golang的rpc服务。<br>故对这个点进行整理一下。<br>python调用golang rpc服务，前提是使用json rpc机制。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018-12-18-Python调用Golang-rpc服务/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-12-13-Go使用defer实现python中的装饰器功能/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018-12-13-Go使用defer实现python中的装饰器功能/" itemprop="url">Go使用defer机制记录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-13T15:47:48+08:00">
-                2018-12-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Go/" itemprop="url" rel="index">
-                    <span itemprop="name">Go</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018-12-13-Go使用defer实现python中的装饰器功能/" class="leancloud_visitors" data-flag-title="Go使用defer机制记录">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="defer"><a href="#defer" class="headerlink" title="defer"></a>defer</h3><ul>
-<li>多个defer执行顺序如何</li>
-<li>如何使用defer机制记录何时进入和退出函数</li>
-<li>defer和return返回值</li>
-<li>循环体使用defer注意点</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018-12-13-Go使用defer实现python中的装饰器功能/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-12-05-Go基准测试/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018-12-05-Go基准测试/" itemprop="url">Go基准测试</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T12:14:45+08:00">
-                2018-12-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Go/" itemprop="url" rel="index">
-                    <span itemprop="name">Go</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018-12-05-Go基准测试/" class="leancloud_visitors" data-flag-title="Go基准测试">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Go基准测试"><a href="#Go基准测试" class="headerlink" title="Go基准测试"></a>Go基准测试</h2><p>记录Go如下编写基准测试用例。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018-12-05-Go基准测试/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-11-13-L14-Longest-Common-Prefix/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018-11-13-L14-Longest-Common-Prefix/" itemprop="url">L14  Longest Common Prefix</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T11:01:49+08:00">
-                2018-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018-11-13-L14-Longest-Common-Prefix/" class="leancloud_visitors" data-flag-title="L14  Longest Common Prefix">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/longest-common-prefix/" target="_blank" rel="external">题目描述</a></h3><p>Write a function to find the longest common prefix string amongst an array of strings.</p>
-<p>If there is no common prefix, return an empty string “”.</p>
-<p>Example 1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [&quot;flower&quot;,&quot;flow&quot;,&quot;flight&quot;]</span><br><span class="line">Output: &quot;fl&quot;</span><br></pre></td></tr></table></figure></p>
-<p>Example 2:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: [&quot;dog&quot;,&quot;racecar&quot;,&quot;car&quot;]</span><br><span class="line">Output: &quot;&quot;</span><br></pre></td></tr></table></figure></p>
-<p>Explanation: There is no common prefix among the input strings.<br>Note:All given inputs are in lowercase letters a-z.</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018-11-13-L14-Longest-Common-Prefix/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2018-11-02-L13-Roman-to-Integer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018-11-02-L13-Roman-to-Integer/" itemprop="url">L13 Roman to Integer</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-02T17:37:46+08:00">
-                2018-11-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018-11-02-L13-Roman-to-Integer/" class="leancloud_visitors" data-flag-title="L13 Roman to Integer">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a><a href="https://leetcode.com/problems/roman-to-integer/" target="_blank" rel="external">题目描述</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">罗马数字包含以下七种字符: I， V， X， L，C，D 和 M。</span><br><span class="line">字符          数值</span><br><span class="line">I             1</span><br><span class="line">V             5</span><br><span class="line">X             10</span><br><span class="line">L             50</span><br><span class="line">C             100</span><br><span class="line">D             500</span><br><span class="line">M             1000</span><br><span class="line">例如， 罗马数字 2 写做 II ，即为两个并列的 1。12 写做 XII ，即为 X + II 。 27 写做  XXVII, 即为 XX + V + II 。</span><br><span class="line"></span><br><span class="line">通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 IIII，而是 IV。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 IX。这个特殊的规则只适用于以下六种情况：</span><br><span class="line"></span><br><span class="line">I 可以放在 V (5) 和 X (10) 的左边，来表示 4 和 9。</span><br><span class="line">X 可以放在 L (50) 和 C (100) 的左边，来表示 40 和 90。 </span><br><span class="line">C 可以放在 D (500) 和 M (1000) 的左边，来表示 400 和 900。</span><br><span class="line"></span><br><span class="line">示例 4:</span><br><span class="line"></span><br><span class="line">输入: &quot;LVIII&quot;</span><br><span class="line">输出: 58</span><br><span class="line">解释: L = 50, V= 5, III = 3.</span><br><span class="line">示例 5:</span><br><span class="line"></span><br><span class="line">输入: &quot;MCMXCIV&quot;</span><br><span class="line">输出: 1994</span><br><span class="line">解释: M = 1000, CM = 900, XC = 90, IV = 4.</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018-11-02-L13-Roman-to-Integer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/">20</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/21/">21</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1860,7 +1828,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">192</span>
+                <span class="site-state-item-count">201</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1882,7 +1850,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-count">29</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -1924,7 +1892,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2019</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

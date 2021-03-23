@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL面试," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="背景Innodb刷脏页的两个目的：  加快崩溃恢复(checkpoint)，已经刷到磁盘上的页面在做redo的时候其LSN小于checkpoint，因此不需要重做 增加内存可用的buffer数量，脏页是不能被重用的,只有被刷到磁盘上，才可用被使用。  针对这两个目的操作涉及两个List：  目的1：Flush List Flush 目的2：LRU List Flush">
+<meta name="keywords" content="MySQL面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019-03-24_Innodb-刷脏页原理">
+<meta property="og:url" content="http://dolphinsboy.github.io/2019-03-24-Innodb-刷脏页原理/index.html">
+<meta property="og:site_name" content="Guosong">
+<meta property="og:description" content="背景Innodb刷脏页的两个目的：  加快崩溃恢复(checkpoint)，已经刷到磁盘上的页面在做redo的时候其LSN小于checkpoint，因此不需要重做 增加内存可用的buffer数量，脏页是不能被重用的,只有被刷到磁盘上，才可用被使用。  针对这两个目的操作涉及两个List：  目的1：Flush List Flush 目的2：LRU List Flush">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-24T11:05:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2019-03-24_Innodb-刷脏页原理">
+<meta name="twitter:description" content="背景Innodb刷脏页的两个目的：  加快崩溃恢复(checkpoint)，已经刷到磁盘上的页面在做redo的时候其LSN小于checkpoint，因此不需要重做 增加内存可用的buffer数量，脏页是不能被重用的,只有被刷到磁盘上，才可用被使用。  针对这两个目的操作涉及两个List：  目的1：Flush List Flush 目的2：LRU List Flush">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://dolphinsboy.github.io/2019-03-24-Innodb-刷脏页原理/"/>
+
+
+
+
+
+  <title>2019-03-24_Innodb-刷脏页原理 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Guosong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-blogs">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            好文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-24-Innodb-刷脏页原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2019-03-24_Innodb-刷脏页原理</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T14:00:27+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-24-Innodb-刷脏页原理/" class="leancloud_visitors" data-flag-title="2019-03-24_Innodb-刷脏页原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Innodb刷脏页的两个目的：</p>
+<ul>
+<li>加快崩溃恢复(checkpoint)，已经刷到磁盘上的页面在做redo的时候其LSN小于checkpoint，因此不需要重做</li>
+<li>增加内存可用的buffer数量，脏页是不能被重用的,只有被刷到磁盘上，才可用被使用。</li>
+</ul>
+<p>针对这两个目的操作涉及两个List：</p>
+<ul>
+<li>目的1：Flush List Flush</li>
+<li>目的2：LRU List Flush</li>
+</ul>
+<a id="more"></a>
+<h2 id="脏页结构"><a href="#脏页结构" class="headerlink" title="脏页结构"></a>脏页结构</h2><p>Innodb Buffer Pool通过维护Flush List链表将所有脏页管理起来，并按照oldest_modification升序排列，按照这个顺序刷脏页。</p>
+<h2 id="用户线程触发"><a href="#用户线程触发" class="headerlink" title="用户线程触发"></a>用户线程触发</h2><p>需要读取一个页面时，先根据space_id和page_no找到对应的buffer pool insance,然后根据page_hash查询其页面是否在内存中，如果没有，则表示需要从磁盘中读取。在读取前需要分配一个空闲block。当free List上没有空闲的block，会从LUR链表上flush 一个页面替换使用。</p>
+<p>参考函数buf_LRU_scan_and_free_block（5.6.27）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">buf_LRU_get_free_block()</span><br><span class="line">	buf_flush_single_page_from_LRU(buf_pool)</span><br><span class="line">		buf_flush_page(buf_pool, bpage, BUF_FLUSH_SINGLE_PAGE, true)</span><br></pre></td></tr></table></figure>
+<h2 id="单个Page-Cleaner线程-5-6-27版本"><a href="#单个Page-Cleaner线程-5-6-27版本" class="headerlink" title="单个Page Cleaner线程(5.6.27版本)"></a>单个Page Cleaner线程(5.6.27版本)</h2><p>Page cleaner线程针对LRU List和Flush List都会有定时任务操作</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">buf_flush_page_cleaner_thread()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span> (srv_shutdown_state == SRV_SHUTDOWN_NONE) &#123;</span><br><span class="line">		<span class="comment">//server空闲的时候或者没有IOs操作的时候跳过sleep</span></span><br><span class="line">		<span class="keyword">if</span>(srv_check_activity(last_activity)</span><br><span class="line">			|| buf_get_n_pending_read_ios()</span><br><span class="line">			|| n_flushed==<span class="number">0</span>)&#123;<span class="comment">//当前没有脏页可刷，则进入sleep</span></span><br><span class="line">			<span class="comment">// 大概sleep 1秒</span></span><br><span class="line">			page_cleaner_sleep_if_needed(next_loop_time);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 当server 处于active状态时候</span></span><br><span class="line">		<span class="keyword">if</span> (srv_check_activity(last_activity))&#123;</span><br><span class="line">			<span class="comment">/* Flush pages from end of LRU if required */</span></span><br><span class="line">			n_flushed = buf_flush_LRU_tail();</span><br><span class="line"></span><br><span class="line">			<span class="comment">/* Flush pages from flush_list if required */</span></span><br><span class="line">			n_flushed += page_cleaner_flush_pages_if_needed();</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="comment">//根据innodb_io_capacity全量刷</span></span><br><span class="line">			<span class="comment">//PCT_IO(5)，表示innodb_io_capacity的5%值</span></span><br><span class="line">			n_flushed = page_cleaner_do_flush_batch(</span><br><span class="line">				PCT_IO(<span class="number">100</span>),LSN_MAX);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">do</span>&#123;</span><br><span class="line">		<span class="comment">//当shutdown处于cleanup状态下，持续全量刷</span></span><br><span class="line">		n_flushed = page_cleaner_do_flush_batch(PCT_IO(<span class="number">100</span>), LSN_MAX);</span><br><span class="line">	&#125;<span class="keyword">while</span> (srv_shutdown_state == SRV_SHUTDOWN_CLEANUP);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要包含三个函数:</p>
+<ul>
+<li>buf_flush_LRU_tail: 从LRU维护flush脏页</li>
+<li>page_cleaner_flush_pages_if_needed: 从Flush List flush脏页</li>
+<li>page_cleaner_do_flush_batch</li>
+</ul>
+<h3 id="buf-flush-LRU-tail"><a href="#buf-flush-LRU-tail" class="headerlink" title="buf_flush_LRU_tail"></a>buf_flush_LRU_tail</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ulint <span class="title">buf_flush_LRU_tail</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	ulint   total_flushed = <span class="number">0</span>;</span><br><span class="line">	<span class="comment">//遍历各个buffer pool instance</span></span><br><span class="line">	<span class="keyword">for</span> (ulint i=<span class="number">0</span>; i&lt;srv_buf_pool_instances; i++)&#123;</span><br><span class="line">		<span class="comment">//获取当前buffer pool指针</span></span><br><span class="line">		<span class="keyword">buf_pool_t</span>* buf_pool = buf_pool_from_array(i);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//获取buffer pool中LRU链表的长度</span></span><br><span class="line">		scan_depth = UT_LIST_GET_LEN(buf_pool-&gt;LRU);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//取参数innodb_lru_scan_depth和当前lru页面数两者最小值</span></span><br><span class="line">		scan_depth = ut_min(srv_LRU_scan_depth, scan_depth);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//将LRU flush 分为多个小chunks，chunk size为100</span></span><br><span class="line">		<span class="comment">//避免用户线程在buf_LRU_get_free_block()中等待刷新完成</span></span><br><span class="line">		<span class="comment">//因为需要需要等待buffer pool mutex，flush操作由mutex进行保护的</span></span><br><span class="line">		<span class="keyword">for</span> (ulint j=<span class="number">0</span>; j&lt;scan_depth; </span><br><span class="line">			j += PAGE_CLEANER_LRU_BATCH_CHUNK_SIZE)&#123;</span><br><span class="line">			<span class="comment">//buf_flush_LRU，刷脏页并将其加入到free list中</span></span><br><span class="line">			<span class="keyword">if</span> (buf_flush_LRU(buf_pool,</span><br><span class="line">				PAGE_CLEANER_LRU_BATCH_CHUNK_SIZE,</span><br><span class="line">				&amp;n_flushed)) &#123;</span><br><span class="line">				<span class="comment">//等待刷脏页结束</span></span><br><span class="line">				buf_flush_wait_batch_end(</span><br><span class="line">					buf_pool, BUF_FLUSH_LRU);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span>(n_flushed)&#123;</span><br><span class="line">				total_flushed += n_flushed</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				<span class="comment">//没有脏页可刷退出</span></span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Flush-List-Flush策略"><a href="#Flush-List-Flush策略" class="headerlink" title="Flush List Flush策略"></a>Flush List Flush策略</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//page_cleaner线程几乎每秒调用一次</span></span><br><span class="line"><span class="function">ulint <span class="title">page_cleaner_flush_pages_if_needed</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">	<span class="comment">//当前lsn</span></span><br><span class="line">	cur_lsn = log_get_lsn();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span>(prev_lsn == cur_lsn)&#123;</span><br><span class="line">		<span class="comment">//没有新的lsn产生</span></span><br><span class="line">		<span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//和参数innodb_flushing_avg_loops有关的优化，这里暂时省略</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取buffer pool中最老的页面对应的lsn</span></span><br><span class="line">	<span class="comment">//每个buffer pool中flush list最后一个page对应的首次修改时间lsn</span></span><br><span class="line">	oldest_lsn = buf_pool_get_oldest_modification();</span><br><span class="line">	<span class="comment">//判断lsn的age</span></span><br><span class="line">	age = cur_lsn &gt; oldest_lsn ? cur_lsn - oldest_lsn : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取脏页的比例，和参数innodb_max_dirty_pages_pct[lwm]有关</span></span><br><span class="line">	pct_for_dirty = af_get_pct_for_dirty();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//redo log产生速度的比例</span></span><br><span class="line">	<span class="comment">//前提是开启自适应flush策略,innodb_adaptive_flushing为ON</span></span><br><span class="line">	<span class="comment">//和参数innodb_adaptive_flushing_lwm、innodb_io_capacity有关</span></span><br><span class="line">	pct_for_lsn = af_get_pct_for_lsn(age);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//选择两个比例的最大值</span></span><br><span class="line">	pct_total = ut_max(pct_for_dirty, pct_for_lsn);</span><br><span class="line">	<span class="comment">//计算出需要刷新的页面数量</span></span><br><span class="line">	n_pages = (PCT_IO(pct_total) + avg_page_rate) / <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//最多每次只flush这么多(和innodb_io_capacity_max有关)</span></span><br><span class="line">	<span class="keyword">if</span> (n_pages &gt; srv_max_io_capacity) &#123;</span><br><span class="line">		n_pages = srv_max_io_capacity;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//根据上面算出需要刷新的页面数量之后再进行批量刷新</span></span><br><span class="line">	n_pages = page_cleaner_do_flush_batch(</span><br><span class="line">		n_pages, oldest_lsn + lsn_avg_rate * (age_factor + <span class="number">1</span>));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="af-get-pct-for-dirty"><a href="#af-get-pct-for-dirty" class="headerlink" title="af_get_pct_for_dirty"></a>af_get_pct_for_dirty</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> ulint  <span class="title">af_get_pct_for_dirty</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//ratio = (100 * flush_list_len) / (1 + lru_len + free_len);</span></span><br><span class="line">    ulint dirty_pct = buf_get_modified_ratio_pct();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (dirty_pct &gt; <span class="number">0</span> &amp;&amp; srv_max_buf_pool_modified_pct == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>(<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//低水位设置为参数innodb_max_dirty_pages_pct_lwm</span></span><br><span class="line">    <span class="keyword">if</span> (srv_max_dirty_pages_pct_lwm == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">/* The user has not set the option to preflush dirty</span></span><br><span class="line"><span class="comment">        pages as we approach the high water mark. */</span></span><br><span class="line">      	<span class="comment">//srv_max_buf_pool_modified_pct和innodb_max_dirty_pages_pct参数有关</span></span><br><span class="line">      	<span class="comment">//如果脏页数量超过设置buffer pool总数量75%的高水位，</span></span><br><span class="line">        <span class="keyword">if</span> (dirty_pct &gt; srv_max_buf_pool_modified_pct) &#123;</span><br><span class="line">            <span class="comment">/* We have crossed the high water mark of dirty</span></span><br><span class="line"><span class="comment">            pages In this case we start flushing at 100% of</span></span><br><span class="line"><span class="comment">            innodb_io_capacity. */</span></span><br><span class="line">            <span class="keyword">return</span>(<span class="number">100</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (dirty_pct &gt; srv_max_dirty_pages_pct_lwm) &#123;</span><br><span class="line">        <span class="comment">/* We should start flushing pages gradually. */</span></span><br><span class="line">        <span class="comment">//鉴于低水位和高水位之间</span></span><br><span class="line">        <span class="keyword">return</span>((dirty_pct * <span class="number">100</span>)</span><br><span class="line">               / (srv_max_buf_pool_modified_pct + <span class="number">1</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="af-get-pct-for-lsn"><a href="#af-get-pct-for-lsn" class="headerlink" title="af_get_pct_for_lsn"></a>af_get_pct_for_lsn</h4><p>此函数涉及到redo_log以及checkpoint，故重点介绍一下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//基于redo log产生的比率计算是否进行flush脏页</span></span><br><span class="line"><span class="function">ulint <span class="title">af_get_pct_for_lsn</span><span class="params">(<span class="keyword">lsn_t</span> age)</span></span>&#123;</span><br><span class="line">	<span class="comment">//innodb_adaptive_flushing_lwm,触发flush的低水位</span></span><br><span class="line">	<span class="keyword">lsn_t</span> af_lwm = (srv_adaptive_flushing_lwm * </span><br><span class="line">		<span class="comment">//innodb_log_file_size以及innodb_log_files_in_group的90%</span></span><br><span class="line">		log_get_capacity())/<span class="number">100</span></span><br><span class="line">	<span class="comment">//最大修改lsn age</span></span><br><span class="line">	max_async_age = log_get_max_modified_age_async();</span><br><span class="line"></span><br><span class="line">	<span class="comment">//如果没有超过最大修改lsn_age，也不做flush</span></span><br><span class="line">	<span class="keyword">if</span>(age &lt; max_async_age &amp;&amp; !srv_adaptive_flushing)&#123;</span><br><span class="line">		<span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//如果超过这个，计算lsn修改age因子</span></span><br><span class="line">	lsn_age_factor = (age * <span class="number">100</span>) / max_async_age;</span><br><span class="line"></span><br><span class="line">	ut_ad(srv_max_io_capacity &gt;= srv_io_capacity);</span><br><span class="line">	<span class="comment">//innodb_io_capacity_max(2000)和innodb_io_capacity(50)</span></span><br><span class="line">	<span class="comment">//再和这个age因子结合计算出这个lsn比例</span></span><br><span class="line">    <span class="keyword">return</span>(<span class="keyword">static_cast</span>&lt;ulint&gt;(</span><br><span class="line">        ((srv_max_io_capacity / srv_io_capacity)</span><br><span class="line">        * (lsn_age_factor * <span class="built_in">sqrt</span>((<span class="keyword">double</span>)lsn_age_factor)))</span><br><span class="line">        / <span class="number">7.5</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="checkpoint涉及的几个参数"><a href="#checkpoint涉及的几个参数" class="headerlink" title="checkpoint涉及的几个参数"></a>checkpoint涉及的几个参数</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">log_sys-&gt;log_group_capacity = smallest_capacity;</span><br><span class="line"></span><br><span class="line">log_sys-&gt;max_modified_age_async = margin</span><br><span class="line">    - margin / LOG_POOL_PREFLUSH_RATIO_ASYNC;</span><br><span class="line">log_sys-&gt;max_modified_age_sync = margin</span><br><span class="line">    - margin / LOG_POOL_PREFLUSH_RATIO_SYNC;</span><br><span class="line"></span><br><span class="line">log_sys-&gt;max_checkpoint_age_async = margin - margin</span><br><span class="line">    / LOG_POOL_CHECKPOINT_RATIO_ASYNC;</span><br><span class="line">log_sys-&gt;max_checkpoint_age = margin;</span><br></pre></td></tr></table></figure>
+<h3 id="page-cleaner-do-flush-batch"><a href="#page-cleaner-do-flush-batch" class="headerlink" title="page_cleaner_do_flush_batch"></a>page_cleaner_do_flush_batch</h3><p>在server是ACTIVE和IDLE情况，除了每次刷新不同的页面数量外，都是调用下面函数完成Flush List的刷脏页操作。<br>page_cleaner_do_flush_batch 函数是buf_flush_list的封装。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">buf_flush_list(n_to_flush, lsn_limit, &amp;n_flushed);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">buf_flush_list</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	ulint min_n, <span class="comment">//需要flush page的最小数量</span></span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="comment">//BUF_FLUSH_LIST所有block的oldest_modification要小于lsn_limit</span></span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">lsn_t</span> lsn_limit, </span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="comment">//flush的页面计数</span></span></span></span><br><span class="line"><span class="function"><span class="params">	ulint *n_processed</span></span></span><br><span class="line"><span class="function"><span class="params">	)</span></span>&#123;</span><br><span class="line">	<span class="comment">/* Flush to lsn_limit in all buffer pool instances */</span></span><br><span class="line">	<span class="comment">//所有buffer pool instance都flush到lsn_limit</span></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; srv_buf_pool_instances; i++) &#123;</span><br><span class="line">		<span class="comment">//获取buf_pool指针</span></span><br><span class="line">		buf_pool = buf_pool_from_array(i);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//通过min_n和lsn_limit获取到最小的flush页面数量</span></span><br><span class="line">		page_count = buf_flush_batch(</span><br><span class="line">			buf_pool, BUF_FLUSH_LIST, min_n, lsn_limit);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//刷页面操作，第一个参数类型，包括BUF_LRU_LIST</span></span><br><span class="line">		buf_flush_common(BUF_FLUSH_LIST, page_count);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="buf-flush-batch"><a href="#buf-flush-batch" class="headerlink" title="buf_flush_batch"></a>buf_flush_batch</h3><p>buf_flush_t支持三种类型:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** Flags for flush types */</span></span><br><span class="line"><span class="keyword">enum</span> <span class="keyword">buf_flush_t</span> &#123;</span><br><span class="line">    BUF_FLUSH_LRU = <span class="number">0</span>,      <span class="comment">/*!&lt; flush via the LRU list */</span></span><br><span class="line">    BUF_FLUSH_LIST,         <span class="comment">/*!&lt; flush via the flush list</span></span><br><span class="line"><span class="comment">                    of dirty blocks */</span></span><br><span class="line">    BUF_FLUSH_SINGLE_PAGE,      <span class="comment">/*!&lt; flush via the LRU list</span></span><br><span class="line"><span class="comment">                    but only a single page */</span></span><br><span class="line">    BUF_FLUSH_N_TYPES       <span class="comment">/*!&lt; index of last element + 1  */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function">ulint <span class="title">buf_flush_batch</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">buf_pool_t</span>* buf_pool, <span class="comment">//buffer pool instance</span></span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">buf_flush_t</span> flush_type, <span class="comment">//list类型，</span></span></span></span><br><span class="line"><span class="function"><span class="params">	ulint min_n,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">lsn_t</span> lsn_limit</span></span></span><br><span class="line"><span class="function"><span class="params">	)</span></span>&#123;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//只负责处理多个页面的flush</span></span><br><span class="line">	<span class="keyword">switch</span>(flush_type)&#123;</span><br><span class="line">	<span class="keyword">case</span> BUF_FLUSH_LRU:</span><br><span class="line">		<span class="comment">//LRU List Flush策略,先从LRU_zip上，再从LRU上</span></span><br><span class="line">		count = buf_do_LRU_batch(buf_pool, min_n);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	<span class="keyword">case</span> BUF_FLUSH_LIST:</span><br><span class="line">		<span class="comment">//FLush List Flush策略</span></span><br><span class="line">		count = buf_do_flush_list_batch(buf_pool, min_n, lsn_limit);</span><br><span class="line">		<span class="keyword">break</span>;</span><br><span class="line">	defaut:</span><br><span class="line">		ut_error;		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="LRU-Flush策略"><a href="#LRU-Flush策略" class="headerlink" title="LRU Flush策略"></a>LRU Flush策略</h4><p>LRU Flush的时候会先从LRU unzip List找是否有页面可以flush，如果flush的数量不够，再从LRU上flush，这里重点说明从LRU List flush的过程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function">ulint <span class="title">buf_flush_LRU_list_batch</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">buf_pool_t</span>* buf_pool,</span></span></span><br><span class="line"><span class="function"><span class="params">	ulint max)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//free list的长度</span></span><br><span class="line">	ulint free_len = UT_LIST_GET_LEN(buf_pool-&gt;<span class="built_in">free</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//lru list的长度</span></span><br><span class="line">	ulint lru_len = UT_LIST_GET_LEN(buf_pool-&gt;LRU);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取LRU链表的尾部</span></span><br><span class="line">	bpage = UT_LIST_GET_LAST(buf_pool-&gt;LRU);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//重点说明free_len&lt;innodb_lru_scan_depth=1024</span></span><br><span class="line">	<span class="comment">//说明只有在free不足的情况下才进行flush LRU list</span></span><br><span class="line">	<span class="keyword">while</span>（bpage != <span class="literal">NULL</span> &amp;&amp; count&lt;max</span><br><span class="line">		&amp;&amp; free_len&lt;srv_LRU_scan_depth</span><br><span class="line">	    &amp;&amp; lru_len &gt; BUF_LRU_MIN_LEN)&#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//判断当前页面是否适合替换出去</span></span><br><span class="line">		<span class="comment">//判断原则：oldest_modification==0 &amp;&amp; buf_fix_count==0</span></span><br><span class="line">		<span class="comment">//还有io_fix==BUF_IO_NONE</span></span><br><span class="line">		evict = buf_flush_ready_for_replace(bpage);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(evict)&#123;</span><br><span class="line">			<span class="comment">//这里做了简化说明，释放页面，遍历下一个page</span></span><br><span class="line">			buf_LRU_free_page(bpage, <span class="literal">true</span>)</span><br><span class="line">			bpage = UT_LIST_GET_LAST(buf_pool-&gt;LRU);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="comment">//找邻居页面进行替换</span></span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//重新计算两个list的长度</span></span><br><span class="line">		free_len = UT_LIST_GET_LEN(buf_pool-&gt;<span class="built_in">free</span>);</span><br><span class="line">		lru_len = UT_LIST_GET_LEN(buf_pool-&gt;LRU);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Flush-List-Flush策略-1"><a href="#Flush-List-Flush策略-1" class="headerlink" title="Flush List Flush策略"></a>Flush List Flush策略</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ulint <span class="title">buf_do_flush_list_batch</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">buf_pool_t</span>* buf_pool,</span></span></span><br><span class="line"><span class="function"><span class="params">	ulint min_n,</span></span></span><br><span class="line"><span class="function"><span class="params">	<span class="keyword">lsn_t</span> lsn_limit)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//当前脏页的数量</span></span><br><span class="line">	ulint len = UT_LIST_GET_LEN(buf_pool-&gt;flush_list);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//从flush list的尾部进行遍历</span></span><br><span class="line">	<span class="comment">//判断bpage的oldest_modification，首次修改时间</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">buf_page_t</span>* bpage = UT_LIST_GET_LAST(buf_pool-&gt;flush_list);</span><br><span class="line">		ount &lt; min_n &amp;&amp; bpage != <span class="literal">NULL</span> &amp;&amp; len &gt; <span class="number">0</span></span><br><span class="line">		&amp;&amp; bpage-&gt;oldest_modification &lt; lsn_limit;</span><br><span class="line">		++scanned) &#123;</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//当前页面会被加到free list，故先保存prev指针用于循环遍历</span></span><br><span class="line">		prev = UT_LIST_GET_PREV(<span class="built_in">list</span>, bpage);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//判断当前页面是否适合flush，如果适合的话，flush并尝试flush它的邻居</span></span><br><span class="line">		<span class="comment">//也是调用buf_flush_ready_for_flush(bpage, flush_type)进行判断</span></span><br><span class="line">		<span class="comment">//基本规则是没有latch，也没有pin</span></span><br><span class="line">		buf_flush_page_and_try_neighbors(</span><br><span class="line">			bpage, BUF_FLUSH_LIST, min_n, &amp;count);</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="多个Page-Cleaner线程-5-7-17版本"><a href="#多个Page-Cleaner线程-5-7-17版本" class="headerlink" title="多个Page Cleaner线程(5.7.17版本)"></a>多个Page Cleaner线程(5.7.17版本)</h2><p>Page cleaner并未和buffer pool绑定，其模型为一个协调线程+多个工作线程，协调线程本身也是工作线程。<br>innodb_page_cleaners设置为4，那么就是一个协调线程，3个工作线程，工作方式为生产者-消费者。工作队列长度为buffer pool instance的个数，使用一个全局的slot数组表示。</p>
+<h3 id="初始化多线程"><a href="#初始化多线程" class="headerlink" title="初始化多线程"></a>初始化多线程</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">innodb_init -&gt; innobase_start_or_create_for_mysql(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">	buf_flush_page_cleaner_init();</span><br><span class="line">	<span class="comment">//page cleaner线程的协作者</span></span><br><span class="line">	os_thread_create(buf_flush_page_cleaner_coordinator,</span><br><span class="line">         <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//page cleaner线程的工作者，具体数量可以通过innodb_page_cleaners参数设置</span></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; srv_n_page_cleaners; ++i) &#123;</span><br><span class="line">    	os_thread_create(buf_flush_page_cleaner_worker,</span><br><span class="line">             <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="buf-flush-page-cleaner-coordinator"><a href="#buf-flush-page-cleaner-coordinator" class="headerlink" title="buf_flush_page_cleaner_coordinator"></a>buf_flush_page_cleaner_coordinator</h3><p>协调线程在决定了需要flush的page数和lsn_limit后，会设置slot数组，将其中每个slot的状态设置为PAGE_CLEANER_STATE_REQUESTED, 并设置目标page数及lsn_limit，然后唤醒工作线程 (pc_request)</p>
+<h3 id="buf-flush-page-cleaner-worker"><a href="#buf-flush-page-cleaner-worker" class="headerlink" title="buf_flush_page_cleaner_worker"></a>buf_flush_page_cleaner_worker</h3><p>worker的基本工作和5.6版本应该差不多。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="http://mysql.taobao.org/monthly/2015/02/01/" target="_blank" rel="external">http://mysql.taobao.org/monthly/2015/02/01/</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL面试/" rel="tag"># MySQL面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-03-23-Innodb-MVCC/" rel="next" title="2019-03-23_Innodb-MVCC">
+                <i class="fa fa-chevron-left"></i> 2019-03-23_Innodb-MVCC
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019-03-24-Innodb-buffer-pool结构/" rel="prev" title="2019-03-24_Innodb-buffer-pool结构">
+                2019-03-24_Innodb-buffer-pool结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Guosong" />
+          <p class="site-author-name" itemprop="name">Guosong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#脏页结构"><span class="nav-number">2.</span> <span class="nav-text">脏页结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户线程触发"><span class="nav-number">3.</span> <span class="nav-text">用户线程触发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单个Page-Cleaner线程-5-6-27版本"><span class="nav-number">4.</span> <span class="nav-text">单个Page Cleaner线程(5.6.27版本)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#buf-flush-LRU-tail"><span class="nav-number">4.1.</span> <span class="nav-text">buf_flush_LRU_tail</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flush-List-Flush策略"><span class="nav-number">4.2.</span> <span class="nav-text">Flush List Flush策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#af-get-pct-for-dirty"><span class="nav-number">4.2.1.</span> <span class="nav-text">af_get_pct_for_dirty</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#af-get-pct-for-lsn"><span class="nav-number">4.2.2.</span> <span class="nav-text">af_get_pct_for_lsn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#checkpoint涉及的几个参数"><span class="nav-number">4.2.3.</span> <span class="nav-text">checkpoint涉及的几个参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#page-cleaner-do-flush-batch"><span class="nav-number">4.3.</span> <span class="nav-text">page_cleaner_do_flush_batch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#buf-flush-batch"><span class="nav-number">4.4.</span> <span class="nav-text">buf_flush_batch</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LRU-Flush策略"><span class="nav-number">4.4.1.</span> <span class="nav-text">LRU Flush策略</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Flush-List-Flush策略-1"><span class="nav-number">4.5.</span> <span class="nav-text">Flush List Flush策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多个Page-Cleaner线程-5-7-17版本"><span class="nav-number">5.</span> <span class="nav-text">多个Page Cleaner线程(5.7.17版本)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化多线程"><span class="nav-number">5.1.</span> <span class="nav-text">初始化多线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#buf-flush-page-cleaner-coordinator"><span class="nav-number">5.2.</span> <span class="nav-text">buf_flush_page_cleaner_coordinator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#buf-flush-page-cleaner-worker"><span class="nav-number">5.3.</span> <span class="nav-text">buf_flush_page_cleaner_worker</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">6.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Guosong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9kcST9vPJNzYBSHm66Q3hGTs-gzGzoHsz", "mptvYpkmzqyHsKU0t4fAgzlt");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

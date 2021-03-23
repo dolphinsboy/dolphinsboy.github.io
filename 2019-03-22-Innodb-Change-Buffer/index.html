@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL面试," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="Innodb Change Buffer在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。 随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据">
+<meta name="keywords" content="MySQL面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019-03-22_Innodb-Change-Buffer">
+<meta property="og:url" content="http://dolphinsboy.github.io/2019-03-22-Innodb-Change-Buffer/index.html">
+<meta property="og:site_name" content="Guosong">
+<meta property="og:description" content="Innodb Change Buffer在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。 随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-07-23T08:50:46.054Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2019-03-22_Innodb-Change-Buffer">
+<meta name="twitter:description" content="Innodb Change Buffer在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。 随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://dolphinsboy.github.io/2019-03-22-Innodb-Change-Buffer/"/>
+
+
+
+
+
+  <title>2019-03-22_Innodb-Change-Buffer | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Guosong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-blogs">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            好文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-22-Innodb-Change-Buffer/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2019-03-22_Innodb-Change-Buffer</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-22T23:44:39+08:00">
+                2019-03-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-22-Innodb-Change-Buffer/" class="leancloud_visitors" data-flag-title="2019-03-22_Innodb-Change-Buffer">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Innodb-Change-Buffer"><a href="#Innodb-Change-Buffer" class="headerlink" title="Innodb Change Buffer"></a>Innodb Change Buffer</h2><p>在写操作的时候， 随机IO是存储引擎设计挑战之一。在Innodb中，一个表包括一个聚簇索引，0个或者多个辅助索引。每个索引都是B-Tree结构，当一条记录插入到表中的时候，该记录首先进行聚簇索引插入的操作，然后再进行辅助索引的插入操作，所以其对应的IO操作是随机分布在磁盘上的。</p>
+<p>随机IO会带来性能问题，为了缓和这一问题，Innodb存储引擎设计一种特别的数据结构-change buffer。（5.5版本之前叫insert buffer，5.5版本以及其以后版本，支持Delete\Update操作的缓存，故修改为change buffer）。</p>
+<h2 id="9大问题总结"><a href="#9大问题总结" class="headerlink" title="9大问题总结"></a>9大问题总结</h2><h3 id="change-buffer支持哪些操作类型"><a href="#change-buffer支持哪些操作类型" class="headerlink" title="change buffer支持哪些操作类型?"></a>change buffer支持哪些操作类型?</h3><p>只是针对辅助索引的，对于非唯一索引支持INSERT、UPDATE、DELETE，对于唯一索引只支持DELETE。<br>还有一个前提是索引修改对应的页不在Buffer Pool中。</p>
+<h3 id="change-buffer有哪些好处？"><a href="#change-buffer有哪些好处？" class="headerlink" title="change buffer有哪些好处？"></a>change buffer有哪些好处？</h3><p>缓存那些不在buffer pool中的二级索引页面操作可以避免从磁盘加载索引页到内存中的随机IO操作。当涉及的索引被加载到内存中时，change buffer会被merge。</p>
+<h3 id="change-buffer是否支持其他类型的索引？"><a href="#change-buffer是否支持其他类型的索引？" class="headerlink" title="change buffer是否支持其他类型的索引？"></a>change buffer是否支持其他类型的索引？</h3><p>只支持辅助索引，聚簇索引、全文索引、空间索引都不支持。</p>
+<h3 id="change-buffer使用多大的空间？"><a href="#change-buffer使用多大的空间？" class="headerlink" title="change buffer使用多大的空间？"></a>change buffer使用多大的空间？</h3><p>change buffer的最大空间通过innodb_change_buffer_max_size进行设定，默认是25%，最大可以是50%。<br>change buffer对应的page不需要持序在buffer pool中，可能会LRU操作替换出去。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global variables like &apos;%change_buffer%&apos;;</span><br><span class="line">+-------------------------------+-------+</span><br><span class="line">| Variable_name                 | Value |</span><br><span class="line">+-------------------------------+-------+</span><br><span class="line">| innodb_change_buffer_max_size | 25    |</span><br><span class="line">| innodb_change_buffering       | all   |</span><br><span class="line">| innodb_change_buffering_debug | 0     |</span><br><span class="line">+-------------------------------+-------+</span><br></pre></td></tr></table></figure>
+<h3 id="如何获取当前change-buffer的大小"><a href="#如何获取当前change-buffer的大小" class="headerlink" title="如何获取当前change buffer的大小?"></a>如何获取当前change buffer的大小?</h3><p>通过show engine innodb status可以获取到。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-------------------------------------</span><br><span class="line">INSERT BUFFER AND ADAPTIVE HASH INDEX</span><br><span class="line">-------------------------------------</span><br><span class="line">Ibuf: size 1, free list len 258, seg size 260, 0 merges</span><br><span class="line">merged operations:</span><br><span class="line"> insert 0, delete mark 0, delete 0</span><br><span class="line">discarded operations:</span><br><span class="line"> insert 0, delete mark 0, delete 0</span><br></pre></td></tr></table></figure>
+<p>size表示change buffer使用到的页面数量，seg size表示change buffer的大小。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">size = seg size - (1+free list len)</span><br></pre></td></tr></table></figure>
+<h3 id="change-buffer-何时发生merge操作？"><a href="#change-buffer-何时发生merge操作？" class="headerlink" title="change buffer 何时发生merge操作？"></a>change buffer 何时发生merge操作？</h3><ul>
+<li>当页面被读取到buffer pool中，在页面可用之前，会进行merge操作。</li>
+<li>主线程后台有任务进行定时操作，参数innodb_io_capacity可以设置每次merge的页面数量</li>
+<li>在崩溃恢复的时候，从系统表空间里面回访这些change，然后再将对应的页面加载到buffer pool中。</li>
+<li>在innodb-fast-shutdow=0的时候会进行merge。</li>
+</ul>
+<h3 id="change-buffer何时会flushed？"><a href="#change-buffer何时会flushed？" class="headerlink" title="change buffer何时会flushed？"></a>change buffer何时会flushed？</h3><p>和buffer pool一样的flush机制，change buffer占内存比较大，需要进行flush。</p>
+<h3 id="change-buffer的选择时机？"><a href="#change-buffer的选择时机？" class="headerlink" title="change buffer的选择时机？"></a>change buffer的选择时机？</h3><p>如果比较少涉及到辅助索引操作时候，可以关闭change buffer。或者磁盘性能能保证随机IO和顺序IO一样的话，也可以关闭change buffer。<br>当然在设置之前需要进行测试。</p>
+<h3 id="如何获取额外的change-buffer信息？"><a href="#如何获取额外的change-buffer信息？" class="headerlink" title="如何获取额外的change buffer信息？"></a>如何获取额外的change buffer信息？</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SELECT (SELECT COUNT(*) FROM INFORMATION_SCHEMA.INNODB_BUFFER_PAGE</span><br><span class="line">    -&gt;        WHERE PAGE_TYPE LIKE 'IBUF%') AS change_buffer_pages,</span><br><span class="line">    -&gt;        (SELECT COUNT(*) FROM INFORMATION_SCHEMA.INNODB_BUFFER_PAGE) AS total_pages,</span><br><span class="line">    -&gt;        (SELECT ((change_buffer_pages/total_pages)*100))</span><br><span class="line">    -&gt;        AS change_buffer_page_percentage;</span><br><span class="line">+<span class="comment">---------------------+-------------+-------------------------------+</span></span><br><span class="line">| change_buffer_pages | total_pages | change_buffer_page_percentage |</span><br><span class="line">+<span class="comment">---------------------+-------------+-------------------------------+</span></span><br><span class="line">|                   3 |        8191 |                        0.0366 |</span><br><span class="line">+<span class="comment">---------------------+-------------+-------------------------------+</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">mysql&gt; SELECT NAME, COMMENT,COUNT FROM INFORMATION_SCHEMA.INNODB_METRICS WHERE NAME LIKE '%ibuf%';</span><br><span class="line">+<span class="comment">-----------------------------------------+-------------------------------------------------------------+-------+</span></span><br><span class="line">| NAME                                    | <span class="keyword">COMMENT</span>                                                     | <span class="keyword">COUNT</span> |</span><br><span class="line">+<span class="comment">-----------------------------------------+-------------------------------------------------------------+-------+</span></span><br><span class="line">| buffer_page_read_index_ibuf_leaf        | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Index</span> Leaf Pages <span class="keyword">read</span>               |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_read_index_ibuf_non_leaf    | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Index</span> Non-Leaf Pages <span class="keyword">read</span>           |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_read_ibuf_free_list         | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer Free <span class="keyword">List</span> Pages <span class="keyword">read</span>                |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_read_ibuf_bitmap            | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Bitmap</span> Pages <span class="keyword">read</span>                   |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_written_index_ibuf_leaf     | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Index</span> Leaf Pages written            |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_written_index_ibuf_non_leaf | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Index</span> Non-Leaf Pages written        |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_written_ibuf_free_list      | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer Free <span class="keyword">List</span> Pages written             |     <span class="number">0</span> |</span><br><span class="line">| buffer_page_written_ibuf_bitmap         | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">Insert</span> Buffer <span class="keyword">Bitmap</span> Pages written                |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_insert                      | <span class="built_in">Number</span> <span class="keyword">of</span> inserted <span class="keyword">records</span> merged <span class="keyword">by</span> <span class="keyword">change</span> buffering       |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_delete_mark                 | <span class="built_in">Number</span> <span class="keyword">of</span> deleted <span class="keyword">records</span> merged <span class="keyword">by</span> <span class="keyword">change</span> buffering        |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_delete                      | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">purge</span> <span class="keyword">records</span> merged <span class="keyword">by</span> <span class="keyword">change</span> buffering          |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_discard_insert              | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">insert</span> merged <span class="keyword">operations</span> discarded                |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_discard_delete_mark         | <span class="built_in">Number</span> <span class="keyword">of</span> deleted merged <span class="keyword">operations</span> discarded               |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges_discard_delete              | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">purge</span> merged  <span class="keyword">operations</span> discarded                |     <span class="number">0</span> |</span><br><span class="line">| ibuf_merges                             | <span class="built_in">Number</span> <span class="keyword">of</span> <span class="keyword">change</span> buffer merges                              |     <span class="number">0</span> |</span><br><span class="line">| ibuf_size                               | <span class="keyword">Change</span> buffer <span class="keyword">size</span> <span class="keyword">in</span> pages                                 |     <span class="number">1</span> |</span><br><span class="line">| innodb_ibuf_merge_usec                  | <span class="keyword">Time</span> (<span class="keyword">in</span> microseconds) spent <span class="keyword">to</span> process <span class="keyword">change</span> buffer <span class="keyword">merge</span> |     <span class="number">0</span> |</span><br><span class="line">+<span class="comment">-----------------------------------------+-------------------------------------------------------------+-------+</span></span><br><span class="line"><span class="number">17</span> <span class="keyword">rows</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+<p>更多<a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-change-buffer.html#innodb-change-buffer-maximum-size" target="_blank" rel="external">参照文档</a></p>
+<h2 id="内核层次分析"><a href="#内核层次分析" class="headerlink" title="内核层次分析"></a>内核层次分析</h2><h3 id="ibuf的初始化"><a href="#ibuf的初始化" class="headerlink" title="ibuf的初始化"></a>ibuf的初始化</h3><p>change buffer本身也是B-Tree结构，其持久化在系统表空间中。change buffer的root页固定在系统表空间(space_id=0)的第4个页面(FSP_IBUF_TREE_ROOT_PAGE_NO)，其初始化函数为ibuf_init_at_db_start。</p>
+<p>其调用链条为：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ibuf_init_at_db_start</span><br><span class="line">dict_boot</span><br><span class="line">innobase_start_or_create_for_mysql</span><br><span class="line">innobase_init</span><br></pre></td></tr></table></figure>
+<p>其中innobase_init(handler/ha_innodb.cc)是在存储引擎定义的时候设置：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">mysql_declare_plugin(innobase)</span><br><span class="line">&#123;</span><br><span class="line">  MYSQL_STORAGE_ENGINE_PLUGIN,</span><br><span class="line">  &amp;innobase_storage_engine,</span><br><span class="line">  innobase_hton_name,</span><br><span class="line">  plugin_author,</span><br><span class="line">  <span class="string">"Supports transactions, row-level locking, and foreign keys"</span>,</span><br><span class="line">  PLUGIN_LICENSE_GPL,</span><br><span class="line">  innobase_init, <span class="comment">/* Plugin Init */</span></span><br><span class="line">  <span class="literal">NULL</span>, <span class="comment">/* Plugin Deinit */</span></span><br><span class="line">  INNODB_VERSION_SHORT,</span><br><span class="line">  innodb_status_variables_export,<span class="comment">/* status variables             */</span></span><br><span class="line">  innobase_system_variables, <span class="comment">/* system variables */</span></span><br><span class="line">  <span class="literal">NULL</span>, <span class="comment">/* reserved */</span></span><br><span class="line">  <span class="number">0</span>,    <span class="comment">/* flags */</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>重点看看ibuf_init_at_db_start实现:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ibuf_t</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="comment">//当前ibuf大小</span></span><br><span class="line">	ulint size;</span><br><span class="line">	<span class="comment">//ibuf的max_size</span></span><br><span class="line">	ulint max_size;</span><br><span class="line">	<span class="comment">//ibuf header和tree对应的分配页面多少</span></span><br><span class="line">	ulint seg_size;</span><br><span class="line">	<span class="comment">//ibuf tree是否为空</span></span><br><span class="line">	<span class="keyword">bool</span> empty;</span><br><span class="line">	<span class="comment">//free list长度</span></span><br><span class="line">	ulint free_list_len;</span><br><span class="line">	<span class="comment">//ibuf tree的高度</span></span><br><span class="line">	ulint height;</span><br><span class="line">	<span class="comment">//insert buffer index(最关键的结构)</span></span><br><span class="line">	<span class="keyword">dict_index_t</span> *index;</span><br><span class="line">	<span class="comment">//ibuf merged的pages数量</span></span><br><span class="line">	ulint n_merges;</span><br><span class="line">	<span class="comment">//ibuf三个类型各个页面的merged操作数</span></span><br><span class="line">	ulint n_merged_ops[IBUF_OP_COUNT];</span><br><span class="line">	<span class="comment">//由于索引或表被删除之后丢弃的操作数</span></span><br><span class="line">	ulint n_discarded_ops[IBUF_OP_COUNT];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ibuf_init_at_db_start</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">//对应的数据结构为ibuf_t</span></span><br><span class="line">	ibuf = <span class="keyword">static_cast</span>&lt;<span class="keyword">ibuf_t</span>*&gt;(mem_zalloc(<span class="keyword">sizeof</span>(<span class="keyword">ibuf_t</span>)));</span><br><span class="line"></span><br><span class="line">	<span class="comment">//ibuf最大size，和参数innodb_change_buffer_max_size有关</span></span><br><span class="line">	ibuf-&gt;max_size = ((buf_pool_get_curr_size() / UNIV_PAGE_SIZE)</span><br><span class="line">		* CHANGE_BUFFER_DEFAULT_SIZE) / <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//通过min-transaction保证原子性？？</span></span><br><span class="line">	mtr_start(&amp;mtr);	</span><br><span class="line"></span><br><span class="line">	<span class="comment">//有单独的mutex进行保护</span></span><br><span class="line">	mutex_enter(&amp;ibuf_mutex);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//获取IBUF_SPACE_ID=0的latch(对页面的保护)</span></span><br><span class="line">	mtr_x_lock(fil_space_get_latch(IBUF_SPACE_ID, <span class="literal">NULL</span>), &amp;mtr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//page header存储位置</span></span><br><span class="line">	<span class="comment">//对应space_id=0 page_no=3的页面</span></span><br><span class="line">	header_page = ibuf_header_page_get(&amp;mtr);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//page root初始化</span></span><br><span class="line">	<span class="comment">//page都通过block(page_header进行管理)</span></span><br><span class="line">	&#123;</span><br><span class="line">        <span class="keyword">buf_block_t</span>*    block;</span><br><span class="line">        <span class="comment">//space=0，page_no=4</span></span><br><span class="line">        <span class="comment">//FSP_IBUF_TREE_ROOT_PAGE_NO=4</span></span><br><span class="line">        block = buf_page_get(</span><br><span class="line">            IBUF_SPACE_ID, <span class="number">0</span>, FSP_IBUF_TREE_ROOT_PAGE_NO,</span><br><span class="line">            RW_X_LATCH, &amp;mtr);</span><br><span class="line">        root = buf_block_get_frame(block);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Use old-style record format for the insert buffer. */</span></span><br><span class="line">    <span class="comment">//初始化系统表空间的ibuf部分？</span></span><br><span class="line">    <span class="comment">//IBUF_TABLE_NAME为SYS_IBUF_TABLE，ibuf表名字,该系统表实现了insert buffer的管理功能</span></span><br><span class="line">    table = dict_mem_table_create(IBUF_TABLE_NAME, IBUF_SPACE_ID, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="comment">//创建index</span></span><br><span class="line">    index = dict_mem_index_create(</span><br><span class="line">    IBUF_TABLE_NAME, <span class="string">"CLUST_IND"</span>,</span><br><span class="line">    IBUF_SPACE_ID, DICT_CLUSTERED | DICT_UNIVERSAL | DICT_IBUF, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//ibuf-&gt;index作用是啥？</span></span><br><span class="line">    <span class="comment">//insert buffer index</span></span><br><span class="line">    ibuf-&gt;index = dict_table_get_first_index(table);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="ibuf操作的三种类型"><a href="#ibuf操作的三种类型" class="headerlink" title="ibuf操作的三种类型:"></a>ibuf操作的三种类型:</h3><p>Change buffer主要是针对非唯一辅助索引的。Innodb buffer操作的三种类型：insert、delete marking、delete。<br>疑问：Innodb是标记删除，那个这个delete是啥？这里没有UPDATE？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Possible operations buffered in the insert/whatever buffer. See</span></span><br><span class="line"><span class="comment">ibuf_insert(). DO NOT CHANGE THE VALUES OF THESE, THEY ARE STORED ON DISK. */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> &#123;</span><br><span class="line">    IBUF_OP_INSERT = <span class="number">0</span>,</span><br><span class="line">    IBUF_OP_DELETE_MARK = <span class="number">1</span>,</span><br><span class="line">    IBUF_OP_DELETE = <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Number of different operation types. */</span></span><br><span class="line">    IBUF_OP_COUNT = <span class="number">3</span></span><br><span class="line">&#125; <span class="keyword">ibuf_op_t</span>;</span><br></pre></td></tr></table></figure>
+<p>记住一点change buffer是面向叶页面(leaf page)。为什么引起叶页面分裂的话，就不进行ibuf操作呢？</p>
+<p>使用bitmap page管理页面的空余空间，来判断是否进行change buffer操作。</p>
+<h3 id="purge"><a href="#purge" class="headerlink" title="purge"></a>purge</h3><p>change buffer内存占用最大是buffer pool的25%。为了保证change buffer的恢复能在较短时间内完成，change buffer pages也会由dirty page flush操作写回磁盘。在系统崩溃时，就能保证change buffer(SYS_IBUF_TABLE)快速恢复。</p>
+<h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h3><p>主线程的中每秒都调用后台任务</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">srv_master_thread()</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">//SRV_SHUTDOWN_NONE 表示MySQL正在运行</span></span><br><span class="line">    <span class="keyword">while</span> (srv_shutdown_state == SRV_SHUTDOWN_NONE) &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//sleep 1秒</span></span><br><span class="line">        srv_master_sleep();</span><br><span class="line"></span><br><span class="line">        MONITOR_INC(MONITOR_MASTER_THREAD_SLEEP);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (srv_check_activity(old_activity_count)) &#123;</span><br><span class="line">            old_activity_count = srv_get_activity_count();</span><br><span class="line">            srv_master_do_active_tasks();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            srv_master_do_idle_tasks();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里判断集群是否活跃是通过，activity_count这个atomic变量，每个SQL操作之后都会对这个activity_count进行加1。</p>
+<p>merge ibuf函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*********************************************************************/</span><span class="comment">/**</span></span><br><span class="line"><span class="comment">Contracts insert buffer trees by reading pages to the buffer pool.</span></span><br><span class="line"><span class="comment">@return a lower limit for the combined size in bytes of entries which</span></span><br><span class="line"><span class="comment">will be merged from ibuf trees to the pages read, 0 if ibuf is</span></span><br><span class="line"><span class="comment">empty */</span></span><br><span class="line">UNIV_INTERN</span><br><span class="line">ulint</span><br><span class="line">ibuf_contract_in_background(</span><br><span class="line"><span class="comment">/*========================*/</span></span><br><span class="line">    <span class="keyword">table_id_t</span>  table_id,   <span class="comment">/*!&lt; in: if merge should be done only</span></span><br><span class="line"><span class="comment">                    for a specific table, for all tables</span></span><br><span class="line"><span class="comment">                    this should be 0 */</span></span><br><span class="line">    ibool       full)       <span class="comment">/*!&lt; in: TRUE if the caller wants to</span></span><br><span class="line"><span class="comment">                    do a full contract based on PCT_IO(100).</span></span><br><span class="line"><span class="comment">                    If FALSE then the size of contract</span></span><br><span class="line"><span class="comment">                    batch is determined based on the</span></span><br><span class="line"><span class="comment">                    current size of the ibuf tree. */</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//根据full是否为true，刷不同数量的页面</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">srv_master_do_idle_tasks(void)</span><br><span class="line">&#123;</span><br><span class="line">	/* make sure that there is enough reusable space in the redo log files*/</span><br><span class="line">	// 检查redo log是否有足够的可用空间</span><br><span class="line">	log_free_check();</span><br><span class="line">	</span><br><span class="line">	/* Do an ibuf merge */</span><br><span class="line">	// 执行ibuf的合并</span><br><span class="line">	ibuf_merge_in_background(true);</span><br><span class="line">	</span><br><span class="line">	// 强制执行table cache</span><br><span class="line">	srv_main_thread_op_info = &quot;enforcing dict cache limit&quot;;</span><br><span class="line">	ulint   n_evicted = srv_master_evict_from_table_cache(100);</span><br><span class="line">	</span><br><span class="line">	/* Flush logs if needed */</span><br><span class="line">	// 持久化log buffer,innodb_flush_log_at_trx_commit配置0的时候就是此操作</span><br><span class="line">	srv_sync_log_buffer_in_background()；</span><br><span class="line">	</span><br><span class="line">	/* Make a new checkpoint */</span><br><span class="line">	// 创建一个新的检查点</span><br><span class="line">	log_checkpoint(TRUE, FALSE);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> srv_master_do_active_tasks基本相同，在执行操作的条件上会判断更加严格。</span><br></pre></td></tr></table></figure>
+<h3 id="在shutdown和start时候对ibuf处理情况"><a href="#在shutdown和start时候对ibuf处理情况" class="headerlink" title="在shutdown和start时候对ibuf处理情况"></a>在shutdown和start时候对ibuf处理情况</h3><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://mysqlserverteam.com/the-innodb-change-buffer/" target="_blank" rel="external">https://mysqlserverteam.com/the-innodb-change-buffer/</a></li>
+<li><a href="https://dev.mysql.com/doc/refman/5.6/en/faqs-innodb-change-buffer.html" target="_blank" rel="external">FAQ</a></li>
+<li><a href="http://mysql.taobao.org/monthly/2015/07/01/" target="_blank" rel="external">http://mysql.taobao.org/monthly/2015/07/01/</a></li>
+<li><a href="http://hedengcheng.com/?p=94" target="_blank" rel="external">http://hedengcheng.com/?p=94</a></li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL面试/" rel="tag"># MySQL面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-03-13-Bootstrap-Django分页方式由client切换到server/" rel="next" title="Bootstrap+Django分页方式由client切换到server">
+                <i class="fa fa-chevron-left"></i> Bootstrap+Django分页方式由client切换到server
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019-03-23-Innodb-MVCC/" rel="prev" title="2019-03-23_Innodb-MVCC">
+                2019-03-23_Innodb-MVCC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Guosong" />
+          <p class="site-author-name" itemprop="name">Guosong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Innodb-Change-Buffer"><span class="nav-number">1.</span> <span class="nav-text">Innodb Change Buffer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9大问题总结"><span class="nav-number">2.</span> <span class="nav-text">9大问题总结</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#change-buffer支持哪些操作类型"><span class="nav-number">2.1.</span> <span class="nav-text">change buffer支持哪些操作类型?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-buffer有哪些好处？"><span class="nav-number">2.2.</span> <span class="nav-text">change buffer有哪些好处？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-buffer是否支持其他类型的索引？"><span class="nav-number">2.3.</span> <span class="nav-text">change buffer是否支持其他类型的索引？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-buffer使用多大的空间？"><span class="nav-number">2.4.</span> <span class="nav-text">change buffer使用多大的空间？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何获取当前change-buffer的大小"><span class="nav-number">2.5.</span> <span class="nav-text">如何获取当前change buffer的大小?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-buffer-何时发生merge操作？"><span class="nav-number">2.6.</span> <span class="nav-text">change buffer 何时发生merge操作？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-buffer何时会flushed？"><span class="nav-number">2.7.</span> <span class="nav-text">change buffer何时会flushed？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#change-buffer的选择时机？"><span class="nav-number">2.8.</span> <span class="nav-text">change buffer的选择时机？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何获取额外的change-buffer信息？"><span class="nav-number">2.9.</span> <span class="nav-text">如何获取额外的change buffer信息？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内核层次分析"><span class="nav-number">3.</span> <span class="nav-text">内核层次分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ibuf的初始化"><span class="nav-number">3.1.</span> <span class="nav-text">ibuf的初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ibuf操作的三种类型"><span class="nav-number">3.2.</span> <span class="nav-text">ibuf操作的三种类型:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#purge"><span class="nav-number">3.3.</span> <span class="nav-text">purge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#merge"><span class="nav-number">3.4.</span> <span class="nav-text">merge</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在shutdown和start时候对ibuf处理情况"><span class="nav-number">3.5.</span> <span class="nav-text">在shutdown和start时候对ibuf处理情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Guosong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9kcST9vPJNzYBSHm66Q3hGTs-gzGzoHsz", "mptvYpkmzqyHsKU0t4fAgzlt");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

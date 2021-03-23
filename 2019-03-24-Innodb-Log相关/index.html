@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="MySQL面试题," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="前言记录Innodb的Redo和Undo的一些关键功能对应的相关代码。 Redo Redo刷盘机制  Undo Undo的存储">
+<meta name="keywords" content="MySQL面试题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019-03-24_Innodb-Log相关">
+<meta property="og:url" content="http://dolphinsboy.github.io/2019-03-24-Innodb-Log相关/index.html">
+<meta property="og:site_name" content="Guosong">
+<meta property="og:description" content="前言记录Innodb的Redo和Undo的一些关键功能对应的相关代码。 Redo Redo刷盘机制  Undo Undo的存储">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-03-27T08:59:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="2019-03-24_Innodb-Log相关">
+<meta name="twitter:description" content="前言记录Innodb的Redo和Undo的一些关键功能对应的相关代码。 Redo Redo刷盘机制  Undo Undo的存储">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://dolphinsboy.github.io/2019-03-24-Innodb-Log相关/"/>
+
+
+
+
+
+  <title>2019-03-24_Innodb-Log相关 | Guosong</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Guosong</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-blogs">
+          <a href="/blog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br />
+            
+            好文
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2019-03-24-Innodb-Log相关/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">2019-03-24_Innodb-Log相关</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-24T14:01:44+08:00">
+                2019-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019-03-24-Innodb-Log相关/" class="leancloud_visitors" data-flag-title="2019-03-24_Innodb-Log相关">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录Innodb的Redo和Undo的一些关键功能对应的相关代码。</p>
+<h3 id="Redo"><a href="#Redo" class="headerlink" title="Redo"></a>Redo</h3><ul>
+<li>Redo刷盘机制</li>
+</ul>
+<h3 id="Undo"><a href="#Undo" class="headerlink" title="Undo"></a>Undo</h3><ul>
+<li>Undo的存储</li>
+</ul>
+<a id="more"></a>
+<h2 id="Redo-Log"><a href="#Redo-Log" class="headerlink" title="Redo Log"></a>Redo Log</h2><h3 id="Log-Buffer-刷盘"><a href="#Log-Buffer-刷盘" class="headerlink" title="Log Buffer 刷盘"></a>Log Buffer 刷盘</h3><h4 id="innodb-flush-log-at-trx-commit"><a href="#innodb-flush-log-at-trx-commit" class="headerlink" title="innodb_flush_log_at_trx_commit"></a>innodb_flush_log_at_trx_commit</h4><p>在事务提交的时候根据innodb_flush_log_at_trx_commit参数设置的不同，进行刷log buffer。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**********************************************************************/</span><span class="comment">/**</span></span><br><span class="line"><span class="comment">If required, flushes the log to disk based on the value of</span></span><br><span class="line"><span class="comment">innodb_flush_log_at_trx_commit. */</span></span><br><span class="line"><span class="keyword">static</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">trx_flush_log_if_needed_low(</span><br><span class="line"><span class="comment">/*========================*/</span></span><br><span class="line">    <span class="keyword">lsn_t</span>   lsn)    <span class="comment">/*!&lt; in: lsn up to which logs are to be</span></span><br><span class="line"><span class="comment">            flushed. */</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _WIN32</span></span><br><span class="line">    <span class="keyword">bool</span>    flush = <span class="literal">true</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">    <span class="keyword">bool</span>    flush = srv_unix_file_flush_method != SRV_UNIX_NOSYNC;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* _WIN32 */</span></span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (srv_flush_log_at_trx_commit) &#123;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        <span class="comment">/* Write the log but do not flush it to disk */</span></span><br><span class="line">        flush = <span class="literal">false</span>;</span><br><span class="line">        <span class="comment">/* fall through */</span></span><br><span class="line">    <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="comment">/* Write the log and optionally flush it to disk */</span></span><br><span class="line">        log_write_up_to(lsn, flush);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">        <span class="comment">/* Do nothing */</span></span><br><span class="line">		<span class="comment">//设置为零的时候，此处不做什么。由master thread负责每秒进行检查</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ut_error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Master-Thread"><a href="#Master-Thread" class="headerlink" title="Master Thread"></a>Master Thread</h3><p>主线程根据繁忙程度每秒调用一次：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">srv_master_do_dile_tasks</span><br><span class="line">srv_master_do_active_tasks</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//log_free_check在用户线程也会被调用</span></span><br><span class="line"></span><br><span class="line">srv_master_do_idle_tasks()</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//检查redolog files是否有足够的可用空间</span></span><br><span class="line">    srv_main_thread_op_info = <span class="string">"checking free log space"</span>;</span><br><span class="line">	<span class="comment">//同步刷盘</span></span><br><span class="line">    log_free_check();</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Flush logs if needed */</span></span><br><span class="line">	<span class="comment">//判断是否需要刷日志</span></span><br><span class="line">	<span class="comment">//异步刷盘</span></span><br><span class="line">    srv_sync_log_buffer_in_background();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">主线程后台每秒刷一次，确保在设置innodb_flush_logs_at_trx_commit的时候至多只有<span class="number">1</span>秒的数据丢失</span><br><span class="line">srv_sync_log_buffer_in_background(<span class="keyword">void</span>)</span><br><span class="line"><span class="comment">/*===================================*/</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">time_t</span>  current_time = time(<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    srv_main_thread_op_info = <span class="string">"flushing log"</span>;</span><br><span class="line">    <span class="keyword">if</span> (difftime(current_time, srv_last_log_flush_time)</span><br><span class="line">    ¦   &gt;= srv_flush_log_at_timeout) &#123;</span><br><span class="line">        log_buffer_sync_in_background(<span class="literal">true</span>);</span><br><span class="line">        srv_last_log_flush_time = current_time;</span><br><span class="line">        srv_log_writes_and_flush++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当然在srv_master_do_active_tasks的时候也会做上面两个操作。</p>
+<h3 id="用户线程检查"><a href="#用户线程检查" class="headerlink" title="用户线程检查"></a>用户线程检查</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">storage/innobase/row/row0ins.cc:done by calling log_free_check(). The reason for checking the</span><br><span class="line">storage/innobase/row/row0ins.cc:                        log_free_check();</span><br><span class="line">storage/innobase/row/row0merge.cc:                              log_free_check();</span><br><span class="line">storage/innobase/row/row0purge.cc:done by calling log_free_check(). The reason for checking the</span><br><span class="line">storage/innobase/row/row0purge.cc:      log_free_check();</span><br><span class="line">storage/innobase/row/row0uins.cc:introduced where a call to log_free_check() is bypassed. */</span><br><span class="line">storage/innobase/row/row0umod.cc:done by calling log_free_check(). The reason for checking the</span><br><span class="line">storage/innobase/row/row0umod.cc:       log_free_check();</span><br><span class="line">storage/innobase/row/row0upd.cc:                log_free_check();</span><br><span class="line"><span class="comment">//master thread中</span></span><br><span class="line">storage/innobase/srv/srv0srv.cc:        log_free_check();</span><br></pre></td></tr></table></figure>
+<p>可以看到log_free_check的地方很多。</p>
+<h3 id="log-free-check实现关键"><a href="#log-free-check实现关键" class="headerlink" title="log_free_check实现关键"></a>log_free_check实现关键</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断是否需要flush log buffer 或者生成一个新的checkpoint</span></span><br><span class="line"></span><br><span class="line">log_free_check()&#123;</span><br><span class="line">	<span class="keyword">if</span> (log_sys-&gt;check_flush_or_checkpoint) &#123;</span><br><span class="line">		log_check_margins();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个log_sys-&gt;check_flush_or_checkpoint啥时候为True：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">log_margin_checkpoint_age()&#123;</span><br><span class="line">	<span class="comment">//max_checkpoint_age</span></span><br><span class="line">	<span class="keyword">if</span> (log_sys-&gt;lsn - log_sys-&gt;last_checkpoint_lsn + margin</span><br><span class="line">			&gt; log_sys-&gt;log_group_capacity) &#123;</span><br><span class="line">		log_sys-&gt;check_flush_or_checkpoint = <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Undo-1"><a href="#Undo-1" class="headerlink" title="Undo"></a>Undo</h2><h3 id="Undo的功能"><a href="#Undo的功能" class="headerlink" title="Undo的功能"></a>Undo的功能</h3><ul>
+<li>用户DML操作，均需要记录Undo</li>
+<li>对于回滚的事务，Undo可用来将事务的操作全部撤销-Rollback</li>
+<li>对于提交的事务，Undo可用来将事务产生的过期版本回收-Purge。（delete_markde的版本）</li>
+<li>一致性多MVCC通过Undo实现</li>
+</ul>
+<h3 id="Undo在内存中的存储"><a href="#Undo在内存中的存储" class="headerlink" title="Undo在内存中的存储"></a>Undo在内存中的存储</h3><h4 id="trx-undo-t主要结构"><a href="#trx-undo-t主要结构" class="headerlink" title="trx_undo_t主要结构"></a>trx_undo_t主要结构</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">trx_undo_t</span>&#123;</span></span><br><span class="line">	<span class="comment">//undo的类型，包括TRX_UNDO_INSERT和TRX_UNDO_UPDATE</span></span><br><span class="line">	ulint type;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//del_marks，只有TRX_UNDO_UPDATE才为true</span></span><br><span class="line">	ibool del_marks</span><br><span class="line"></span><br><span class="line">	<span class="comment">//事务id</span></span><br><span class="line">	<span class="keyword">trx_id_t</span> trx_id;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//对应的回滚段</span></span><br><span class="line">	<span class="keyword">trx_rseg_t</span>* rseg;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//在回滚段中undo log的链表</span></span><br><span class="line">	UT_LIST_NODE_T(<span class="keyword">trx_undo_t</span>) undo_list;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="回滚段"><a href="#回滚段" class="headerlink" title="回滚段"></a>回滚段</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/** The transaction system central memory data structure. */</span><br><span class="line">//内存结构中的全局事务系统</span><br><span class="line"></span><br><span class="line">struct trx_sys_t&#123;</span><br><span class="line"></span><br><span class="line">	MVCC*       mvcc; //MVCC多版本的Manager</span><br><span class="line">	//回滚段指针数组，单线程产生和销毁，没有使用锁保护</span><br><span class="line">	//TRX_SYS_N_RSEGS=128</span><br><span class="line">	trx_rseg_t* rseg_array[TRX_SYS_N_RSEGS];</span><br><span class="line">	//待purge的回滚段</span><br><span class="line">	trx_rseg_t* const pending_purge_rseg_array[TRX_SYS_N_RSEGS];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Undo在外存中的存储"><a href="#Undo在外存中的存储" class="headerlink" title="Undo在外存中的存储"></a>Undo在外存中的存储</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">srv_undo_tablespaces_init()&#123;</span><br><span class="line">	ulint   undo_tablespace_ids[TRX_SYS_N_RSEGS + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; create_new_db &amp;&amp; i &lt; n_conf_tablespaces; ++i) &#123;</span><br><span class="line">        <span class="keyword">char</span>    name[OS_FILE_MAX_PATH];</span><br><span class="line"></span><br><span class="line">		<span class="comment">//拼接成undo的名字</span></span><br><span class="line">        ut_snprintf(</span><br><span class="line">            name, <span class="keyword">sizeof</span>(name),</span><br><span class="line">            <span class="string">"%s%cundo%03lu"</span>,</span><br><span class="line">			<span class="comment">//srv_undo_dir 可以单独设置</span></span><br><span class="line">            srv_undo_dir, OS_PATH_SEPARATOR, i + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Undo space ids start from 1. */</span></span><br><span class="line">		<span class="comment">//从name对应的文件中读取undo seg</span></span><br><span class="line">        err = srv_undo_tablespace_create(</span><br><span class="line">            name, SRV_UNDO_TABLESPACE_SIZE_IN_PAGES);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (err != DB_SUCCESS) &#123;</span><br><span class="line">            ib::error() &lt;&lt; <span class="string">"Could not create undo tablespace '"</span></span><br><span class="line">                &lt;&lt; name &lt;&lt; <span class="string">"'."</span>;</span><br><span class="line">            <span class="keyword">return</span>(err);</span><br><span class="line">        &#125;    </span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>回滚段默认的是使用系统表空间(space=0),在5.6.3之后，可通过单独设置：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">innobase_init()&#123;</span><br><span class="line">	<span class="keyword">if</span> (!srv_undo_dir) &#123;</span><br><span class="line">        srv_undo_dir = default_path;   </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    os_normalize_path(srv_undo_dir);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">strchr</span>(srv_undo_dir, <span class="string">';'</span>)) &#123;</span><br><span class="line">        sql_print_error(<span class="string">"syntax error in innodb_undo_directory"</span>);</span><br><span class="line">        DBUG_RETURN(innobase_init_abort());</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>主要涉及如下几个参数:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">innodb_trx_rseg_n_slots_debug</span><br><span class="line">innodb_undo_directory</span><br><span class="line">innodb_undo_log_truncate</span><br><span class="line">innodb_undo_logs</span><br><span class="line">innodb_undo_tablespaces</span><br></pre></td></tr></table></figure>
+<p><a href="http://mysql.taobao.org/monthly/2016/07/01/" target="_blank" rel="external">http://mysql.taobao.org/monthly/2016/07/01/</a></p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h3 id="初始化事务系统对应的file-page"><a href="#初始化事务系统对应的file-page" class="headerlink" title="初始化事务系统对应的file page"></a>初始化事务系统对应的file page</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*****************************************************************/</span><span class="comment">/**</span></span><br><span class="line"><span class="comment">Creates the file page for the transaction system. This function is called only</span></span><br><span class="line"><span class="comment">at the database creation, before trx_sys_init. */</span></span><br><span class="line"><span class="keyword">static</span></span><br><span class="line"><span class="keyword">void</span></span><br><span class="line">trx_sysf_create(</span><br><span class="line"><span class="comment">/*============*/</span></span><br><span class="line">    <span class="keyword">mtr_t</span>*  mtr)    <span class="comment">/*!&lt; in: mtr */</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">trx_sysf_t</span>* sys_header;</span><br><span class="line">    ulint       slot_no;</span><br><span class="line">    <span class="keyword">buf_block_t</span>*    block;</span><br><span class="line">    <span class="keyword">page_t</span>*     page;</span><br><span class="line">    ulint       page_no;</span><br><span class="line">    byte*       ptr; </span><br><span class="line">    ulint       len; </span><br><span class="line"></span><br><span class="line">    ut_ad(mtr);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Note that below we first reserve the file space x-latch, and</span></span><br><span class="line"><span class="comment">    then enter the kernel: we must do it in this order to conform</span></span><br><span class="line"><span class="comment">    to the latching order rules. */</span></span><br><span class="line"></span><br><span class="line">    mtr_x_lock_space(TRX_SYS_SPACE, mtr);</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* Create the trx sys file block in a new allocated file segment */</span></span><br><span class="line">    block = fseg_create(TRX_SYS_SPACE, <span class="number">0</span>, TRX_SYS + TRX_SYS_FSEG_HEADER,</span><br><span class="line">            ¦   mtr);</span><br><span class="line">    buf_block_dbg_add_level(block, SYNC_TRX_SYS_HEADER);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//FSP_TRX_SYS_PAGE_NO     5   </span></span><br><span class="line">	<span class="comment">//transaction system header, in tablespace 0</span></span><br><span class="line">    ut_a(block-&gt;page.id.page_no() == TRX_SYS_PAGE_NO);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="transaction和undo相关的关键数据结构"><a href="#transaction和undo相关的关键数据结构" class="headerlink" title="transaction和undo相关的关键数据结构"></a>transaction和undo相关的关键数据结构</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">trx_t</span>&#123;</span></span><br><span class="line">	<span class="comment">//事务id</span></span><br><span class="line">	<span class="keyword">trx_id_t</span> id;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//标识事务写的undo记录数量</span></span><br><span class="line">	<span class="keyword">undo_no_t</span>   undo_no;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//undo log的对应space_no</span></span><br><span class="line">	ulint undo_rseg_space;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//事务上一条执行成功的最后一条undo记录的undo_no</span></span><br><span class="line">	<span class="comment">//语句级别回滚</span></span><br><span class="line">	<span class="keyword">trx_savept_t</span> last_sql_stat_start;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//事务所使用的回滚段</span></span><br><span class="line">	<span class="keyword">trx_rsegs_t</span> rsegs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">trx_rsegs_t</span>&#123;</span></span><br><span class="line">	<span class="keyword">trx_undo_ptr_t</span>  m_redo;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">trx_undo_ptr_t</span>&#123;</span></span><br><span class="line">	<span class="keyword">trx_rseg_t</span>* rseg; </span><br><span class="line">	<span class="comment">//两种类型的undo</span></span><br><span class="line">	<span class="comment">//事务内的insert写入这里</span></span><br><span class="line">	<span class="comment">//insert不需要进行purge，在commit之后直接删除 </span></span><br><span class="line">	<span class="keyword">trx_undo_t</span>* insert_undo;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//事务内update、delete写入这里</span></span><br><span class="line">	<span class="comment">//需要等待purge线程进行回收</span></span><br><span class="line">	<span class="keyword">trx_undo_t</span>* update_undo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Purge"><a href="#Purge" class="headerlink" title="Purge"></a>Purge</h3><p>innodb_max_purge_lag, 如果超过这个，所有的DML操作都会hang住。<br>默认是关闭的</p>
+<p>根据Undo日志，回收聚簇索引/二级索引上的被标记为删除(DEL_BIT=1),并且不会被当前活跃事务以及新事务看到的过期版本记录。<br>Insert操作不会产生Del_Bit=1的删除项，因此purge不需要使用 insert_undo</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">srv_purge_coordinator_thread()&#123;</span><br><span class="line">	slot = srv_reserve_slot(SRV_PURGE);</span><br><span class="line">	<span class="comment">//获取历史的回滚段</span></span><br><span class="line">	ulint rseg_history_len = trx_sys-&gt;rseg_history_len; </span><br><span class="line">	</span><br><span class="line">	<span class="keyword">do</span>&#123;</span><br><span class="line">		rseg_history_len = srv_do_purge( </span><br><span class="line">			<span class="comment">//多线程进行purge，通过参数innodb_purge_threads设置</span></span><br><span class="line">			srv_n_purge_threads, &amp;n_total_purged);</span><br><span class="line">	&#125;<span class="keyword">while</span> (!srv_purge_should_exit(n_total_purged));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">srv_do_purge真正涉及的purge函数为trx_purge</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">This function runs a purge batch.</span><br><span class="line">@<span class="keyword">return</span> number of undo <span class="built_in">log</span> pages handled in the batch */</span><br><span class="line">ulint  </span><br><span class="line">trx_purge(</span><br><span class="line"><span class="comment">/*======*/</span></span><br><span class="line">    ulint   n_purge_threads,    <span class="comment">/*!&lt; in: number of purge tasks </span></span><br><span class="line"><span class="comment">                    to submit to the work queue */</span></span><br><span class="line">    ulint   batch_size,     <span class="comment">/*!&lt; in: the maximum number of records</span></span><br><span class="line"><span class="comment">                    to purge in one batch */</span></span><br><span class="line">    <span class="keyword">bool</span>    truncate)       <span class="comment">/*!&lt; in: truncate history if true */</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* Fetch the UNDO recs that need to be purged. */</span></span><br><span class="line"></span><br><span class="line">    n_pages_handled = trx_purge_attach_undo_recs(</span><br><span class="line">        n_purge_threads, purge_sys, batch_size);	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>innodb_max_purge_lag_delay 设置等待的最长时间</li>
+<li>innodb_purge_threads 设置purge的线程数</li>
+<li>innodb_purge_batch_size 设置每次purge，回收的事务数量</li>
+</ul>
+<p>purge 过程的可见性也是通过read view来判断。</p>
+<p><a href="http://mysql.taobao.org/monthly/2018/03/01/" target="_blank" rel="external">http://mysql.taobao.org/monthly/2018/03/01/</a><br><a href="https://yq.aliyun.com/articles/41050" target="_blank" rel="external">https://yq.aliyun.com/articles/41050</a></p>
+<h4 id="purge线程的创建"><a href="#purge线程的创建" class="headerlink" title="purge线程的创建"></a>purge线程的创建</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过这个全局变量管理</span></span><br><span class="line"><span class="comment">/** The global data structure coordinating a purge */</span>  </span><br><span class="line"><span class="keyword">trx_purge_t</span>*    purge_sys = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">innobase_start_or_create_for_mysql()&#123;</span><br><span class="line">	<span class="comment">/* The purge system needs to create the purge view and</span></span><br><span class="line"><span class="comment">	therefore requires that the trx_sys is inited. */</span></span><br><span class="line">	<span class="comment">//purge需要purge view，因此需要trx_sys先被初始化</span></span><br><span class="line">	trx_purge_sys_create(srv_n_purge_threads, purge_queue);</span><br><span class="line"></span><br><span class="line">	<span class="comment">//创建purge线程</span></span><br><span class="line">        os_thread_create(</span><br><span class="line">            srv_purge_coordinator_thread,  </span><br><span class="line">            <span class="literal">NULL</span>, thread_ids + <span class="number">5</span> + SRV_MAX_N_IO_THREADS);</span><br><span class="line"></span><br><span class="line">        ut_a(UT_ARR_SIZE(thread_ids)   </span><br><span class="line">          ¦  &gt; <span class="number">5</span> + srv_n_purge_threads + SRV_MAX_N_IO_THREADS);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* We've already created the purge coordinator thread above. */</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; srv_n_purge_threads; ++i) &#123;</span><br><span class="line">            os_thread_create(</span><br><span class="line">                srv_worker_thread, <span class="literal">NULL</span>,       </span><br><span class="line">                thread_ids + <span class="number">5</span> + i + SRV_MAX_N_IO_THREADS); </span><br><span class="line">        &#125;</span><br><span class="line">                                                                                                                                                                       </span><br><span class="line">        srv_start_wait_for_purge_to_start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL面试题/" rel="tag"># MySQL面试题</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019-03-24-Innodb-buffer-pool结构/" rel="next" title="2019-03-24_Innodb-buffer-pool结构">
+                <i class="fa fa-chevron-left"></i> 2019-03-24_Innodb-buffer-pool结构
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019-03-26-Innodb-Checkpoint/" rel="prev" title="2019-03-26_Innodb-Checkpoint">
+                2019-03-26_Innodb-Checkpoint <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Guosong" />
+          <p class="site-author-name" itemprop="name">Guosong</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">201</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redo"><span class="nav-number">1.1.</span> <span class="nav-text">Redo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Undo"><span class="nav-number">1.2.</span> <span class="nav-text">Undo</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redo-Log"><span class="nav-number">2.</span> <span class="nav-text">Redo Log</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Log-Buffer-刷盘"><span class="nav-number">2.1.</span> <span class="nav-text">Log Buffer 刷盘</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#innodb-flush-log-at-trx-commit"><span class="nav-number">2.1.1.</span> <span class="nav-text">innodb_flush_log_at_trx_commit</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Master-Thread"><span class="nav-number">2.2.</span> <span class="nav-text">Master Thread</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户线程检查"><span class="nav-number">2.3.</span> <span class="nav-text">用户线程检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#log-free-check实现关键"><span class="nav-number">2.4.</span> <span class="nav-text">log_free_check实现关键</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Undo-1"><span class="nav-number">3.</span> <span class="nav-text">Undo</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Undo的功能"><span class="nav-number">3.1.</span> <span class="nav-text">Undo的功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Undo在内存中的存储"><span class="nav-number">3.2.</span> <span class="nav-text">Undo在内存中的存储</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#trx-undo-t主要结构"><span class="nav-number">3.2.1.</span> <span class="nav-text">trx_undo_t主要结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#回滚段"><span class="nav-number">3.2.2.</span> <span class="nav-text">回滚段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Undo在外存中的存储"><span class="nav-number">3.3.</span> <span class="nav-text">Undo在外存中的存储</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#事务"><span class="nav-number">4.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化事务系统对应的file-page"><span class="nav-number">4.1.</span> <span class="nav-text">初始化事务系统对应的file page</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#transaction和undo相关的关键数据结构"><span class="nav-number">4.2.</span> <span class="nav-text">transaction和undo相关的关键数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Purge"><span class="nav-number">4.3.</span> <span class="nav-text">Purge</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#purge线程的创建"><span class="nav-number">4.3.1.</span> <span class="nav-text">purge线程的创建</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Guosong</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9kcST9vPJNzYBSHm66Q3hGTs-gzGzoHsz", "mptvYpkmzqyHsKU0t4fAgzlt");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
