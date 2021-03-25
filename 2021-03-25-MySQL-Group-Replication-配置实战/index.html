@@ -76,7 +76,7 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="背景从MySQL5.7.17就开始支持Group Replication，以MySQL插件的模式，支持单主、多主更新，自动分区恢复、冲突检测等特性，其主要好处如下：  自动剔除故障节点 提供容错机制 支持多节点更新 自动组配置管理（处理宕机、故障以及重连接） 提供高可用复制数据库  本文主要测试如何配置、单主和多主区别、多主数据更新冲突等。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-03-25T06:35:51.322Z">
+<meta property="og:updated_time" content="2021-03-25T07:17:34.403Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL-Group-Replication-配置实战">
 <meta name="twitter:description" content="背景从MySQL5.7.17就开始支持Group Replication，以MySQL插件的模式，支持单主、多主更新，自动分区恢复、冲突检测等特性，其主要好处如下：  自动剔除故障节点 提供容错机制 支持多节点更新 自动组配置管理（处理宕机、故障以及重连接） 提供高可用复制数据库  本文主要测试如何配置、单主和多主区别、多主数据更新冲突等。">
@@ -447,7 +447,7 @@
 <li>server3</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">begin;</span><br><span class="line">update t set id=100 where id=10;</span><br><span class="line">commit;</span><br><span class="line">ERROR 3101 (HY000): Plugin instructed the server to rollback the current transaction.</span><br></pre></td></tr></table></figure>
-<p>可以看到update都可以进入prepare状态，使用乐观模式，但是在commit的时候会判断冲突，然后回滚。</p>
+<p>可以看到update都可以进入prepare状态，使用乐观执行的模式，但是在commit的时候会判断冲突，然后回滚。</p>
 <h4 id="多主自增主键测试"><a href="#多主自增主键测试" class="headerlink" title="多主自增主键测试"></a>多主自增主键测试</h4><ul>
 <li>server1</li>
 </ul>
