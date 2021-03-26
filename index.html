@@ -752,7 +752,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020-01-14-Elasticsearch选主过程/" itemprop="url">2020-01-14_Elasticsearch选主过程</a></h1>
+                <a class="post-title-link" href="/2020-01-14-Elasticsearch选主过程/" itemprop="url">Elasticsearch选主过程</a></h1>
         
 
         <div class="post-meta">
@@ -782,7 +782,7 @@
 
           
           
-             <span id="/2020-01-14-Elasticsearch选主过程/" class="leancloud_visitors" data-flag-title="2020-01-14_Elasticsearch选主过程">
+             <span id="/2020-01-14-Elasticsearch选主过程/" class="leancloud_visitors" data-flag-title="Elasticsearch选主过程">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -814,7 +814,8 @@
 
       
         
-          <h3 id="1、选举的入口"><a href="#1、选举的入口" class="headerlink" title="1、选举的入口"></a>1、选举的入口</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//入口函数 #ZenDiscovery#innerJoinCluster</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">innerJoinCluster</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        DiscoveryNode masterNode = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">final</span> Thread currentThread = Thread.currentThread();</span><br><span class="line">        nodeJoinController.startElectionContext();</span><br><span class="line">        <span class="comment">//一直阻塞直到找到master节点，在集群刚刚启动合作或者master丢失的情况，这种阻塞能够保证集群一致性</span></span><br><span class="line">        <span class="keyword">while</span> (masterNode == <span class="keyword">null</span> &amp;&amp; joinThreadControl.joinThreadActive(currentThread)) &#123;</span><br><span class="line">            masterNode = findMaster();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+          <h3 id="选举的入口"><a href="#选举的入口" class="headerlink" title="选举的入口"></a>选举的入口</h3><p>本代码基于Elasticsearch6.7.0版本</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//入口函数 #ZenDiscovery#innerJoinCluster</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">innerJoinCluster</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        DiscoveryNode masterNode = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">final</span> Thread currentThread = Thread.currentThread();</span><br><span class="line">        nodeJoinController.startElectionContext();</span><br><span class="line">        <span class="comment">//一直阻塞直到找到master节点，在集群刚刚启动合作或者master丢失的情况，这种阻塞能够保证集群一致性</span></span><br><span class="line">        <span class="keyword">while</span> (masterNode == <span class="keyword">null</span> &amp;&amp; joinThreadControl.joinThreadActive(currentThread)) &#123;</span><br><span class="line">            masterNode = findMaster();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
 <p>初次启动的时候masterNode为null，需要进行findMaster。</p>
           <!--noindex-->
           <div class="post-button text-center">
@@ -1757,7 +1758,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">29</span>
+                <span class="site-state-item-count">30</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
