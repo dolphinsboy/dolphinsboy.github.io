@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="TiDB," />
 
 
 
@@ -68,20 +68,20 @@
 
 
 
-<meta name="description" content="HomeWork说明">
+<meta name="description" content="HomeWork说明题目描述本地下载TiDB，TiKV，PD源代码，改写源代码并编译部署以下环境：  1 TiDB 1 PD 3 TiKV  改写后  使得TiDB启动事务时，会打一个“hello transaction”的日志">
+<meta name="keywords" content="TiDB">
 <meta property="og:type" content="article">
 <meta property="og:title" content="High Performance TiDB-HomeWork第一篇">
 <meta property="og:url" content="http://dolphinsboy.github.io/2020-12-17-high-performance-tidb-1/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="HomeWork说明">
+<meta property="og:description" content="HomeWork说明题目描述本地下载TiDB，TiKV，PD源代码，改写源代码并编译部署以下环境：  1 TiDB 1 PD 3 TiKV  改写后  使得TiDB启动事务时，会打一个“hello transaction”的日志">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://dolphinsboy.github.io/images/tidb/TiDB-Homework-1.png">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/tidb/TiDB-Localhost.png">
-<meta property="og:updated_time" content="2021-03-23T09:21:00.804Z">
+<meta property="og:updated_time" content="2021-04-06T10:11:50.063Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="High Performance TiDB-HomeWork第一篇">
-<meta name="twitter:description" content="HomeWork说明">
-<meta name="twitter:image" content="http://dolphinsboy.github.io/images/tidb/TiDB-Homework-1.png">
+<meta name="twitter:description" content="HomeWork说明题目描述本地下载TiDB，TiKV，PD源代码，改写源代码并编译部署以下环境：  1 TiDB 1 PD 3 TiKV  改写后  使得TiDB启动事务时，会打一个“hello transaction”的日志">
+<meta name="twitter:image" content="http://dolphinsboy.github.io/images/tidb/TiDB-Localhost.png">
 
 
 
@@ -343,6 +343,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/TiDB/" itemprop="url" rel="index">
+                    <span itemprop="name">TiDB</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -381,7 +403,16 @@
       
 
       
-        <h3 id="HomeWork说明"><a href="#HomeWork说明" class="headerlink" title="HomeWork说明"></a>HomeWork说明</h3><p><img src="/images/tidb/TiDB-Homework-1.png" alt="homework"></p>
+        <h3 id="HomeWork说明"><a href="#HomeWork说明" class="headerlink" title="HomeWork说明"></a>HomeWork说明</h3><p><strong>题目描述</strong><br>本地下载TiDB，TiKV，PD源代码，改写源代码并编译部署以下环境：</p>
+<ul>
+<li>1 TiDB</li>
+<li>1 PD</li>
+<li>3 TiKV</li>
+</ul>
+<p>改写后</p>
+<ul>
+<li>使得TiDB启动事务时，会打一个“hello transaction”的日志</li>
+</ul>
 <a id="more"></a>
 <h3 id="Mac-编译执行"><a href="#Mac-编译执行" class="headerlink" title="Mac 编译执行"></a>Mac 编译执行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/Users/guosong/GoglandProjects/src/github.com/pingcap/tidb/tidb-server/main.go</span><br><span class="line"></span><br><span class="line">指定参数：-log-file=/tmp/tidb.log</span><br><span class="line">--store=tikv --path=127.0.0.1:2379</span><br></pre></td></tr></table></figure>
 <h3 id="开启事务打印日志"><a href="#开启事务打印日志" class="headerlink" title="开启事务打印日志"></a>开启事务打印日志</h3><h4 id="代码修改位置"><a href="#代码修改位置" class="headerlink" title="代码修改位置"></a>代码修改位置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">func (e *SimpleExec) executeBegin(ctx context.Context, s *ast.BeginStmt) error &#123;</span><br><span class="line">	// If BEGIN is the first statement in TxnCtx, we can reuse the existing transaction, without the</span><br><span class="line">	// need to call NewTxn, which commits the existing transaction and begins a new one.</span><br><span class="line">    // 如果是BEGIN是TxnCtx的第一条语句，可以复用现有事务，无需调用NewTxn</span><br><span class="line">	txnCtx := e.ctx.GetSessionVars().TxnCtx</span><br><span class="line">	if txnCtx.History != nil &#123;</span><br><span class="line">		err := e.ctx.NewTxn(ctx)</span><br><span class="line">		if err != nil &#123;</span><br><span class="line">			return err</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">	//Added by Guosong START 2020-12-17</span><br><span class="line">	if e.ctx.GetSessionVars().ConnectionID != 0 &#123;</span><br><span class="line">		logutil.BgLogger().Info(&quot;hello transaction in executeBegin############ by Guosong&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">	//Added by Guosong END 2020-12-17</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -407,6 +438,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/TiDB/" rel="tag"># TiDB</a>
+          
+        </div>
+      
 
       
       
@@ -426,8 +463,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2021-03-23-HDFS机架感知配置/" rel="prev" title="2021-03-23_HDFS机架感知配置">
-                2021-03-23_HDFS机架感知配置 <i class="fa fa-chevron-right"></i>
+              <a href="/2021-03-23-HDFS机架感知配置/" rel="prev" title="HDFS机架感知配置">
+                HDFS机架感知配置 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -505,7 +542,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">202</span>
+                <span class="site-state-item-count">208</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -516,7 +553,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -527,7 +564,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">30</span>
+                <span class="site-state-item-count">27</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
