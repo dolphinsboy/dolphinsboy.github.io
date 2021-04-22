@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="前言 分析重启SaltMinon导致MySQL Crash原因，包括SaltMinion重启过程、KillThread导致对应进程Crash原因分析以及验证、pid和ThreadId分配规则以及最后给出原因解释。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-19T02:32:06.000Z">
+<meta property="og:updated_time" content="2021-04-09T08:29:02.069Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="重启SaltMinion导致MySQL Crash">
 <meta name="twitter:description" content="前言 分析重启SaltMinon导致MySQL Crash原因，包括SaltMinion重启过程、KillThread导致对应进程Crash原因分析以及验证、pid和ThreadId分配规则以及最后给出原因解释。">
@@ -404,22 +404,15 @@
 <p>分析重启SaltMinon导致MySQL Crash原因，包括SaltMinion重启过程、KillThread导致对应进程Crash原因分析以及验证、pid和ThreadId分配规则以及最后给出原因解释。</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="本文目录"><a href="#本文目录" class="headerlink" title="本文目录"></a>本文目录</h2><ul>
-<li><font size="4"><sup><a href="#saltrestart">1. SaltMinion重启过程</a></sup></font></li>
-<li><font size="4"><sup><a href="#killthread">2. Kill Thread导致对应的进程Crash</a></sup></font></li>
-<li><font size="4"><sup><a href="#pid_threadid">3. Pid和Thread_id分配规则</a></sup></font></li>
-<li><font size="4"><sup><a href="#conclusion">4. SaltMinion重启为什么和MySQL的thread相重合呢？？</a></sup></font>
-
-</li>
-</ul>
-<h2 id="1-Salt-Minion重启过程"><a href="#1-Salt-Minion重启过程" class="headerlink" title="1.Salt-Minion重启过程"></a><a name="saltrestart">1.Salt-Minion重启过程</a></h2><h2 id="2-Kill-Thread导致对应的进程Crash"><a href="#2-Kill-Thread导致对应的进程Crash" class="headerlink" title="2.Kill Thread导致对应的进程Crash"></a><a name="killthread">2.Kill Thread导致对应的进程Crash</a></h2><h3 id="2-1-kill-和-kill-9方式"><a href="#2-1-kill-和-kill-9方式" class="headerlink" title="2.1 kill  和 kill -9方式"></a>2.1 kill  和 kill -9方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pstree -n -p |grep mysql|less</span><br><span class="line">|-mysqld_safe(18573)---mysqld(20122)-+-&#123;mysqld&#125;(20134)</span><br><span class="line">|                                    |-&#123;mysqld&#125;(20135)</span><br><span class="line">|                                    |-&#123;mysqld&#125;(20136)</span><br><span class="line">|                                    |-&#123;mysqld&#125;(20137)</span><br><span class="line">|                                    |-&#123;mysqld&#125;(20138)</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<h2 id="Salt-Minion重启过程"><a href="#Salt-Minion重启过程" class="headerlink" title="Salt-Minion重启过程"></a>Salt-Minion重启过程</h2><h2 id="Kill-Thread导致对应的进程Crash"><a href="#Kill-Thread导致对应的进程Crash" class="headerlink" title="Kill Thread导致对应的进程Crash"></a>Kill Thread导致对应的进程Crash</h2><h3 id="kill-和-kill-9方式"><a href="#kill-和-kill-9方式" class="headerlink" title="kill  和 kill -9方式"></a>kill  和 kill -9方式</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">pstree -n -p |grep mysql|less</span><br><span class="line">|-mysqld_safe(18573)---mysqld(20122)-+-&#123;mysqld&#125;(20134)</span><br><span class="line">|                                    |-&#123;mysqld&#125;(20135)</span><br><span class="line">|                                    |-&#123;mysqld&#125;(20136)</span><br><span class="line">|                                    |-&#123;mysqld&#125;(20137)</span><br><span class="line">|                                    |-&#123;mysqld&#125;(20138)</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
 <p>进行两种kill的模拟</p>
-<h3 id="2-2-mysqld-safe作用"><a href="#2-2-mysqld-safe作用" class="headerlink" title="2.2 mysqld_safe作用"></a>2.2 mysqld_safe作用</h3><h3 id="2-3-验证"><a href="#2-3-验证" class="headerlink" title="2.3 验证"></a>2.3 验证</h3><p>将下面的代码保存在test.c文件中：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"> include &lt;stdio.h&gt;</span><br><span class="line"> include &lt;stdlib.h&gt;</span><br><span class="line"> include &lt;signal.h&gt;</span><br><span class="line"> include &lt;pthread.h&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thread_func</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"thread create\n"</span>);</span><br><span class="line">sleep(<span class="number">100000</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"thread ended\n"</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="keyword">pthread_t</span> tid;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> rc = pthread_create(&amp;tid, <span class="literal">NULL</span>, thread_func, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">pthread_join(tid, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"pthread_id = %d\n"</span>, tid);</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="mysqld-safe作用"><a href="#mysqld-safe作用" class="headerlink" title="mysqld_safe作用"></a>mysqld_safe作用</h3><h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>将下面的代码保存在test.c文件中：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;signal.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">thread_func</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"thread create\n"</span>);</span><br><span class="line">    sleep(<span class="number">100000</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"thread ended\n"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">pthread_t</span> tid;</span><br><span class="line">    <span class="keyword">int</span> rc = pthread_create(&amp;tid, <span class="literal">NULL</span>, thread_func, <span class="literal">NULL</span>);</span><br><span class="line">    pthread_join(tid, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"pthread_id = %d\n"</span>, tid);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>编译：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc -g -c test.c</span><br><span class="line">gcc -o test test.o -lpthread</span><br></pre></td></tr></table></figure>
 <p>模拟发现kill 和kill -9输出结果</p>
-<h2 id="3-Pid和Thread-id分配规则"><a href="#3-Pid和Thread-id分配规则" class="headerlink" title="3.Pid和Thread_id分配规则"></a><a name="pid_threadid">3.Pid和Thread_id分配规则</a></h2><h2 id="4-SaltMinion重启为什么和MySQL的thread相重合呢？？"><a href="#4-SaltMinion重启为什么和MySQL的thread相重合呢？？" class="headerlink" title="4.SaltMinion重启为什么和MySQL的thread相重合呢？？"></a><a name="conclusion">4.SaltMinion重启为什么和MySQL的thread相重合呢？？</a></h2>
+<p>本质原因在于SaltMinion重启和MySQL的thread相重合，kill之后导致MySQL Crash。</p>
+
       
     </div>
     
@@ -453,8 +446,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015-09-06-gong-ju-lei/" rel="prev" title="工具类">
-                工具类 <i class="fa fa-chevron-right"></i>
+              <a href="/2015-10-08-mysql-replication-listener/" rel="prev" title="MySQL-replication-listener">
+                MySQL-replication-listener <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -532,7 +525,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-count">203</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -543,7 +536,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -589,7 +582,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#本文目录"><span class="nav-number">2.</span> <span class="nav-text">本文目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Salt-Minion重启过程"><span class="nav-number">3.</span> <span class="nav-text">1.Salt-Minion重启过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Kill-Thread导致对应的进程Crash"><span class="nav-number">4.</span> <span class="nav-text">2.Kill Thread导致对应的进程Crash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-kill-和-kill-9方式"><span class="nav-number">4.1.</span> <span class="nav-text">2.1 kill  和 kill -9方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-mysqld-safe作用"><span class="nav-number">4.2.</span> <span class="nav-text">2.2 mysqld_safe作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-验证"><span class="nav-number">4.3.</span> <span class="nav-text">2.3 验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Pid和Thread-id分配规则"><span class="nav-number">5.</span> <span class="nav-text">3.Pid和Thread_id分配规则</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-SaltMinion重启为什么和MySQL的thread相重合呢？？"><span class="nav-number">6.</span> <span class="nav-text">4.SaltMinion重启为什么和MySQL的thread相重合呢？？</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Salt-Minion重启过程"><span class="nav-number">2.</span> <span class="nav-text">Salt-Minion重启过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kill-Thread导致对应的进程Crash"><span class="nav-number">3.</span> <span class="nav-text">Kill Thread导致对应的进程Crash</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#kill-和-kill-9方式"><span class="nav-number">3.1.</span> <span class="nav-text">kill  和 kill -9方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mysqld-safe作用"><span class="nav-number">3.2.</span> <span class="nav-text">mysqld_safe作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证"><span class="nav-number">3.3.</span> <span class="nav-text">验证</span></a></li></ol></li></ol></div>
             
 
           </div>

@@ -75,7 +75,7 @@
 <meta property="og:site_name" content="Guosong">
 <meta property="og:description" content="前言汇总各种比较好的优化博客，便于在遇到实际问题的时候查看，包括优化准则、美团的索引博文、Join优化。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-19T02:30:35.000Z">
+<meta property="og:updated_time" content="2021-04-09T08:21:11.096Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="MySQL优化">
 <meta name="twitter:description" content="前言汇总各种比较好的优化博客，便于在遇到实际问题的时候查看，包括优化准则、美团的索引博文、Join优化。">
@@ -400,19 +400,16 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>汇总各种比较好的优化博客，便于在遇到实际问题的时候查看，包括优化准则、美团的索引博文、Join优化。</p>
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>汇总各种比较好的优化博客，便于在遇到实际问题的时候查看，包括优化准则、美团的索引博文、Join优化。</p>
 <a id="more"></a>
-<h3 id="1、优化准则"><a href="#1、优化准则" class="headerlink" title="1、优化准则"></a>1、优化准则</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">L1 cache reference <span class="number">0.5</span> ns</span><br><span class="line">Branch mispredict <span class="number">5</span> ns</span><br><span class="line">L2 cache reference <span class="number">7</span> ns</span><br><span class="line">Mutex lock/unlock <span class="number">100</span> ns</span><br><span class="line">Main memory reference <span class="number">100</span> ns</span><br><span class="line">Compress <span class="number">1</span>K bytes <span class="keyword">with</span> Zippy <span class="number">10</span>,<span class="number">000</span> ns</span><br><span class="line">Send <span class="number">2</span>K bytes over <span class="number">1</span> Gbps network <span class="number">20</span>,<span class="number">000</span> ns</span><br><span class="line">Read <span class="number">1</span> MB sequentially <span class="keyword">from</span> memory <span class="number">250</span>,<span class="number">000</span> ns</span><br><span class="line">Round trip within same datacenter <span class="number">500</span>,<span class="number">000</span> ns</span><br><span class="line">Disk seek <span class="number">10</span>,<span class="number">000</span>,<span class="number">000</span> ns</span><br><span class="line">Read <span class="number">1</span> MB sequentially <span class="keyword">from</span> network <span class="number">10</span>,<span class="number">000</span>,<span class="number">000</span> ns</span><br><span class="line">Read <span class="number">1</span> MB sequentially <span class="keyword">from</span> disk <span class="number">30</span>,<span class="number">000</span>,<span class="number">000</span> ns</span><br><span class="line">Send packet CA-&gt;Netherlands-&gt;CA 150,000,000 ns</span><br></pre></td></tr></table></figure>
+<h3 id="优化准则"><a href="#优化准则" class="headerlink" title="优化准则"></a>优化准则</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">L1 cache reference 0.5 ns</span><br><span class="line">Branch mispredict 5 ns</span><br><span class="line">L2 cache reference 7 ns</span><br><span class="line">Mutex lock/unlock 100 ns</span><br><span class="line">Main memory reference 100 ns</span><br><span class="line">Compress 1K bytes with Zippy 10,000 ns</span><br><span class="line">Send 2K bytes over 1 Gbps network 20,000 ns</span><br><span class="line">Read 1 MB sequentially from memory 250,000 ns</span><br><span class="line">Round trip within same datacenter 500,000 ns</span><br><span class="line">Disk seek 10,000,000 ns</span><br><span class="line">Read 1 MB sequentially from network 10,000,000 ns</span><br><span class="line">Read 1 MB sequentially from disk 30,000,000 ns</span><br><span class="line">Send packet CA-&gt;Netherlands-&gt;CA 150,000,000 ns</span><br></pre></td></tr></table></figure>
 <p><a href="http://highscalability.com/numbers-everyone-should-know" target="_blank" rel="external">http://highscalability.com/numbers-everyone-should-know</a></p>
-<h3 id="2、美团《MySQL索引原理及慢查询优化》"><a href="#2、美团《MySQL索引原理及慢查询优化》" class="headerlink" title="2、美团《MySQL索引原理及慢查询优化》"></a>2、美团《MySQL索引原理及慢查询优化》</h3><p><a href="http://tech.meituan.com/mysql-index.html" target="_blank" rel="external">http://tech.meituan.com/mysql-index.html</a></p>
-<h3 id="3、MySQL索引背后的数据结构及算法原理"><a href="#3、MySQL索引背后的数据结构及算法原理" class="headerlink" title="3、MySQL索引背后的数据结构及算法原理"></a>3、MySQL索引背后的数据结构及算法原理</h3><p><a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="external">http://blog.codinglabs.org/articles/theory-of-mysql-index.html</a></p>
-<h3 id="4、Join优化"><a href="#4、Join优化" class="headerlink" title="4、Join优化"></a>4、Join优化</h3><p>Join优化原则<br>&gt;</p>
-<ol>
-<li>查询所返回的结果集，通常查询返回的结果集很少，是有信心进行优化的；</li>
-<li>驱动表的选择至关重要，通过查看执行计划，可以看到优化器选择的驱动表<br>,从执行计划中的rows可以大致反映出问题的所在；</li>
-<li>理清各表之间的关联关系，注意关联字段上是否有合适的索引；</li>
-<li>使用straight_join关键词来强制表之间的关联顺序，可以方便我们验证某些猜想；</li>
-</ol>
+<h3 id="美团《MySQL索引原理及慢查询优化》"><a href="#美团《MySQL索引原理及慢查询优化》" class="headerlink" title="美团《MySQL索引原理及慢查询优化》"></a>美团《MySQL索引原理及慢查询优化》</h3><p><a href="http://tech.meituan.com/mysql-index.html" target="_blank" rel="external">http://tech.meituan.com/mysql-index.html</a></p>
+<h3 id="MySQL索引背后的数据结构及算法原理"><a href="#MySQL索引背后的数据结构及算法原理" class="headerlink" title="MySQL索引背后的数据结构及算法原理"></a>MySQL索引背后的数据结构及算法原理</h3><p><a href="http://blog.codinglabs.org/articles/theory-of-mysql-index.html" target="_blank" rel="external">http://blog.codinglabs.org/articles/theory-of-mysql-index.html</a></p>
+<h3 id="Join优化"><a href="#Join优化" class="headerlink" title="Join优化"></a>Join优化</h3><p>Join优化原则</p>
+<blockquote>
+<p>查询所返回的结果集，通常查询返回的结果集很少，是有信心进行优化的；<br>驱动表的选择至关重要，通过查看执行计划，可以看到优化器选择的驱动表<br>从执行计划中的rows可以大致反映出问题的所在；<br>理清各表之间的关联关系，注意关联字段上是否有合适的索引；<br>使用straight_join关键词来强制表之间的关联顺序，可以方便我们验证某些猜想；</p>
+</blockquote>
 <p>主要参照这篇博客<a href="http://hidba.org/?p=974" target="_blank" rel="external">复杂关联SQL的优化</a></p>
 
       
@@ -527,7 +524,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-count">203</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -538,7 +535,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -584,7 +581,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、优化准则"><span class="nav-number">1.1.</span> <span class="nav-text">1、优化准则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、美团《MySQL索引原理及慢查询优化》"><span class="nav-number">1.2.</span> <span class="nav-text">2、美团《MySQL索引原理及慢查询优化》</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、MySQL索引背后的数据结构及算法原理"><span class="nav-number">1.3.</span> <span class="nav-text">3、MySQL索引背后的数据结构及算法原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、Join优化"><span class="nav-number">1.4.</span> <span class="nav-text">4、Join优化</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化准则"><span class="nav-number">2.</span> <span class="nav-text">优化准则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#美团《MySQL索引原理及慢查询优化》"><span class="nav-number">3.</span> <span class="nav-text">美团《MySQL索引原理及慢查询优化》</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL索引背后的数据结构及算法原理"><span class="nav-number">4.</span> <span class="nav-text">MySQL索引背后的数据结构及算法原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Join优化"><span class="nav-number">5.</span> <span class="nav-text">Join优化</span></a></li></ol></div>
             
 
           </div>

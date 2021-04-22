@@ -298,6 +298,900 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-04-18-how-to-install-yii2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-18-how-to-install-yii2/" itemprop="url">How to install Yii2</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-18T20:05:53+08:00">
+                2016-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index">
+                    <span itemprop="name">PHP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-18-how-to-install-yii2/" class="leancloud_visitors" data-flag-title="How to install Yii2">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-Install-From-Archived-File"><a href="#1-Install-From-Archived-File" class="headerlink" title="1. Install From Archived File"></a>1. Install From Archived File</h2><p>Edit file /var/www/basic/config/web.php, set cookieValidationKey</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;cookieValidationKey&apos; =&gt; &apos;chuchujie&apos;</span><br></pre></td></tr></table></figure>
+<h2 id="2-Call-to-undefined-function-mb-strlen"><a href="#2-Call-to-undefined-function-mb-strlen" class="headerlink" title="2. Call to undefined function mb_strlen"></a>2. Call to undefined function mb_strlen</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Fatal error: Call to undefined function mb_strlen()</span><br></pre></td></tr></table></figure>
+<p>yum install php55-mbstring module.</p>
+<p>Version is import.</p>
+<h2 id="3-The-directory-is-not-writable-by-the-Web-process"><a href="#3-The-directory-is-not-writable-by-the-Web-process" class="headerlink" title="3. The directory is not writable by the Web process"></a>3. The directory is not writable by the Web process</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ec2-user 13898  0.0  0.1 393312 20952 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13900  0.0  0.1 395592 22116 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13901  0.0  0.1 393048 20048 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 13975  0.0  0.1 392024 19528 ?        S    19:47   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14493  0.0  0.1 396096 23296 ?        S    19:48   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14494  0.0  0.1 392024 19396 ?        S    19:48   0:00 /usr/sbin/httpd</span><br><span class="line">ec2-user 14495  0.0  0.0 389784 14824 ?        S    19:48   0:00 /usr/sbin/httpd</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chown -R ec2-user.ec2-user /var/www/basic</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.g-loaded.eu/2008/12/09/making-a-directory-writable-by-the-webserver/" target="_blank" rel="external">http://www.g-loaded.eu/2008/12/09/making-a-directory-writable-by-the-webserver/</a></p>
+<h2 id="4-Class-‘PDO’-not-found"><a href="#4-Class-‘PDO’-not-found" class="headerlink" title="4. Class ‘PDO’ not found"></a>4. Class ‘PDO’ not found</h2><p>could not find driver Caused by: PDOException</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum install php55-pdo.x86_64 -y</span><br><span class="line">yum install php-ZendFramework-Db-Adapter-Pdo-Mysql.noarch -y</span><br></pre></td></tr></table></figure>
+<h2 id="5-Yii2-Gii-Forbidden-code-403-You-are-not-allowed-to-access-this-page"><a href="#5-Yii2-Gii-Forbidden-code-403-You-are-not-allowed-to-access-this-page" class="headerlink" title="5. Yii2 Gii Forbidden code 403 You are not allowed to access this page"></a>5. Yii2 Gii Forbidden code 403 You are not allowed to access this page</h2><p>Edit config/web.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$config[<span class="string">'modules'</span>][<span class="string">'gii'</span>] = [</span><br><span class="line"><span class="string">'class'</span> =&gt; <span class="string">'yii\gii\Module'</span>,</span><br><span class="line"><span class="string">'allowedIPs'</span> =&gt; [<span class="string">'127.0.0.1'</span>, <span class="string">'::1'</span>, <span class="string">'10.3xxxx'</span>],</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>Due to company vpn , choose the ip by Apache access log.</p>
+<p><a href="http://jeepxiaozi.github.io/yii2xue-xi-bi-ji-xi-lie-6-generating-code-with-giishi-yong-giisheng-cheng-dai-ma.html" target="_blank" rel="external">http://jeepxiaozi.github.io/yii2xue-xi-bi-ji-xi-lie-6-generating-code-with-giishi-yong-giisheng-cheng-dai-ma.html</a></p>
+<h2 id="6-Yii2-Programing-Style"><a href="#6-Yii2-Programing-Style" class="headerlink" title="6. Yii2 Programing Style"></a>6. Yii2 Programing Style</h2><p><a href="https://github.com/yii2-chinesization/yii2-zh-cn/blob/master/internals-zh-CN/core-code-style.md" target="_blank" rel="external">https://github.com/yii2-chinesization/yii2-zh-cn/blob/master/internals-zh-CN/core-code-style.md</a></p>
+<h2 id="7-Reference"><a href="#7-Reference" class="headerlink" title="7. Reference"></a>7. Reference</h2><p><a href="https://github.com/forecho/awesome-yii2" target="_blank" rel="external">https://github.com/forecho/awesome-yii2</a></p>
+<h2 id="8-Tree-Manager"><a href="#8-Tree-Manager" class="headerlink" title="8. Tree Manager"></a>8. Tree Manager</h2><p><a href="http://demos.krajee.com/tree-manager#comment-2288987974" target="_blank" rel="external">http://demos.krajee.com/tree-manager#comment-2288987974</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-04-15-redis-info-memoryyan-jiu/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-15-redis-info-memoryyan-jiu/" itemprop="url">Redis info memory研究</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-15T10:01:33+08:00">
+                2016-04-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-15-redis-info-memoryyan-jiu/" class="leancloud_visitors" data-flag-title="Redis info memory研究">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="info-memory输出信息"><a href="#info-memory输出信息" class="headerlink" title="info memory输出信息"></a>info memory输出信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">info memory</span><br><span class="line">  Memory</span><br><span class="line">used_memory:5198608840</span><br><span class="line">used_memory_human:4.84G</span><br><span class="line">used_memory_rss:11156660224</span><br><span class="line">used_memory_peak:9816601560</span><br><span class="line">used_memory_peak_human:9.14G</span><br><span class="line">used_memory_lua:36864</span><br><span class="line">mem_fragmentation_ratio:2.15</span><br><span class="line">mem_allocator:libc</span><br></pre></td></tr></table></figure>
+<p><a href="http://www.cnblogs.com/mushroom/p/4738170.html" target="_blank" rel="external">http://www.cnblogs.com/mushroom/p/4738170.html</a></p>
+<p>对应的代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Memory */</span></span><br><span class="line"><span class="keyword">if</span> (allsections || defsections || !strcasecmp(section,<span class="string">"memory"</span>)) &#123;</span><br><span class="line"><span class="keyword">char</span> hmem[<span class="number">64</span>];</span><br><span class="line"><span class="keyword">char</span> peak_hmem[<span class="number">64</span>];</span><br><span class="line"><span class="keyword">size_t</span> zmalloc_used = zmalloc_used_memory();</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Peak memory is updated from time to time by serverCron() so it</span></span><br><span class="line"><span class="comment">* may happen that the instantaneous value is slightly bigger than</span></span><br><span class="line"><span class="comment">* the peak value. This may confuse users, so we update the peak</span></span><br><span class="line"><span class="comment">* if found smaller than the current memory usage. */</span></span><br><span class="line"><span class="keyword">if</span> (zmalloc_used &gt; server.stat_peak_memory)</span><br><span class="line">server.stat_peak_memory = zmalloc_used;</span><br><span class="line"></span><br><span class="line">bytesToHuman(hmem,zmalloc_used);</span><br><span class="line">bytesToHuman(peak_hmem,server.stat_peak_memory);</span><br><span class="line"><span class="keyword">if</span> (sections++) info = sdscat(info,<span class="string">"\r\n"</span>);</span><br><span class="line">info = sdscatprintf(info,</span><br><span class="line"><span class="string">"# Memory\r\n"</span></span><br><span class="line"><span class="string">"used_memory:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_human:%s\r\n"</span></span><br><span class="line"><span class="string">"used_memory_rss:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_peak:%zu\r\n"</span></span><br><span class="line"><span class="string">"used_memory_peak_human:%s\r\n"</span></span><br><span class="line"><span class="string">"used_memory_lua:%lld\r\n"</span></span><br><span class="line"><span class="string">"mem_fragmentation_ratio:%.2f\r\n"</span></span><br><span class="line"><span class="string">"mem_allocator:%s\r\n"</span>,</span><br><span class="line">zmalloc_used,</span><br><span class="line">hmem,</span><br><span class="line">server.resident_set_size,</span><br><span class="line">server.stat_peak_memory,</span><br><span class="line">peak_hmem,</span><br><span class="line">((<span class="keyword">long</span> <span class="keyword">long</span>)lua_gc(server.lua,LUA_GCCOUNT,<span class="number">0</span>))*<span class="number">1024L</span>L,</span><br><span class="line">zmalloc_get_fragmentation_ratio(server.resident_set_size),</span><br><span class="line">ZMALLOC_LIB</span><br><span class="line">);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>used_memory</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-04-11-mysqlxing-neng-pai-cha-an-li-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-11-mysqlxing-neng-pai-cha-an-li-1/" itemprop="url">MySQL性能排查案例1</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-11T14:50:50+08:00">
+                2016-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-11-mysqlxing-neng-pai-cha-an-li-1/" class="leancloud_visitors" data-flag-title="MySQL性能排查案例1">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1、简单查询问题排查"><a href="#1、简单查询问题排查" class="headerlink" title="1、简单查询问题排查"></a>1、简单查询问题排查</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  Scores: V/M = 0.14</span><br><span class="line">  Attribute    pct   total     min     max     avg     95%  stddev  median</span><br><span class="line">  ============ === ======= ======= ======= ======= ======= ======= =======</span><br><span class="line">  Count          2       5</span><br><span class="line">  Exec time      4     27s      4s      6s      5s      6s   878ms      6s</span><br><span class="line">  <span class="keyword">Lock</span> <span class="keyword">time</span>      <span class="number">4</span>   <span class="number">246</span>us    <span class="number">43</span>us    <span class="number">64</span>us    <span class="number">49</span>us    <span class="number">63</span>us     <span class="number">7</span>us    <span class="number">44</span>us</span><br><span class="line">  <span class="keyword">Rows</span> sent      <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span>       <span class="number">0</span></span><br><span class="line">  <span class="keyword">Rows</span> examine   <span class="number">0</span>       <span class="number">5</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">1</span>       <span class="number">0</span>       <span class="number">1</span></span><br><span class="line">  <span class="keyword">Query</span> <span class="keyword">size</span>     <span class="number">3</span>     <span class="number">583</span>     <span class="number">116</span>     <span class="number">117</span>  <span class="number">116.60</span>  <span class="number">112.70</span>       <span class="number">0</span>  <span class="number">112.70</span></span><br><span class="line"><span class="keyword">UPDATE</span> <span class="string">`cc_product_skus`</span> <span class="keyword">SET</span> <span class="string">`stock`</span>=<span class="string">'578'</span> <span class="keyword">WHERE</span> ( <span class="string">`id`</span> = <span class="string">'20081272'</span> ) <span class="keyword">AND</span> ( <span class="string">`product_id`</span> = <span class="string">'100122171387'</span> ) <span class="keyword">LIMIT</span> <span class="number">1</span>\G</span><br><span class="line">  Converted <span class="keyword">for</span> <span class="keyword">EXPLAIN</span></span><br><span class="line">  <span class="keyword">EXPLAIN</span> <span class="comment">/*!50100 PARTITIONS*/</span></span><br><span class="line"><span class="keyword">select</span>  <span class="string">`stock`</span>=<span class="string">'578'</span> <span class="keyword">from</span> <span class="string">`cc_product_skus`</span> <span class="keyword">where</span>  ( <span class="string">`id`</span> = <span class="string">'20081272'</span> ) <span class="keyword">AND</span> ( <span class="string">`product_id`</span> = <span class="string">'100122171387'</span> )  <span class="keyword">LIMIT</span> <span class="number">1</span> \G</span><br></pre></td></tr></table></figure>
+<p>通过pt-query-digest的可以看出上面简单的update语句耗时会在4s-6s之间。</p>
+<h3 id="问题1-Lock-time是否包括innodb-wait-lock呢？"><a href="#问题1-Lock-time是否包括innodb-wait-lock呢？" class="headerlink" title="问题1-Lock_time是否包括innodb wait lock呢？"></a>问题1-Lock_time是否包括innodb wait lock呢？</h3><p><a href="http://lists.mysql.com/commits/115766" target="_blank" rel="external">http://lists.mysql.com/commits/115766</a><br>MySQL 5.5.6版本之后已经改进这个问题。</p>
+<p>目前线上使用MySQL 5.6.19版本，且通过下面的实验进行验证：</p>
+<p>通过2个session，1个session持有锁，另外一个session等待这个锁，模拟innodb wait lock，对应的慢查询如下：</p>
+<p><img src="/images/slowlog_locktime.jpg" alt="slowlog_locktime.jpg"></p>
+<h3 id="2、在慢查询里面看到Commit提交慢"><a href="#2、在慢查询里面看到Commit提交慢" class="headerlink" title="2、在慢查询里面看到Commit提交慢"></a>2、在慢查询里面看到Commit提交慢</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  Time: 160411  2:02:51</span><br><span class="line">  User@Host: shop2[shop2] @  [10.30.11.253]  Id: 5888814786</span><br><span class="line">  Query_time: 7.139016  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0</span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">timestamp</span>=<span class="number">1460340171</span>;</span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br><span class="line">  User@Host: shop2[shop2] @  [10.30.10.50]  Id: 5888814819</span><br><span class="line">  Query_time: 7.052946  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0</span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">timestamp</span>=<span class="number">1460340171</span>;</span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br><span class="line">  User@Host: shop2[shop2] @  [10.30.9.251]  Id: 5888814800</span><br><span class="line">  Query_time: 7.089021  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0</span><br><span class="line"><span class="keyword">SET</span> <span class="keyword">timestamp</span>=<span class="number">1460340171</span>;</span><br><span class="line"><span class="keyword">COMMIT</span>;</span><br></pre></td></tr></table></figure>
+<p>根据thread_id查看整个连接做了哪些操作：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">160411  2:02:44   5888814800 Connect    shop2@10.xx.xxx.xxx on shop</span><br><span class="line">160411  2:02:44   5888814800 Query      <span class="keyword">SET</span> <span class="keyword">NAMES</span> <span class="string">'utf8'</span></span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">44</span>   <span class="number">5888814800</span> <span class="keyword">Query</span>      <span class="keyword">SET</span> sql_mode=<span class="string">''</span></span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">44</span>   <span class="number">5888814800</span> <span class="keyword">Query</span>      <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`cc_order_user`</span> <span class="keyword">WHERE</span> ( <span class="string">`order_sn`</span> = <span class="string">'xxx'</span> ) <span class="keyword">LIMIT</span> <span class="number">1</span></span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">44</span>   <span class="number">5888814800</span> <span class="keyword">Query</span>      <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`cc_order_products_user`</span> <span class="keyword">WHERE</span> ( <span class="string">`order_id`</span> = <span class="string">'xxx'</span> )</span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">44</span>   <span class="number">5888814800</span> <span class="keyword">Query</span>      <span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`cc_refund_order`</span> <span class="keyword">WHERE</span> ( <span class="string">`order_sn`</span> = <span class="string">'xxx'</span> ) <span class="keyword">AND</span> ( <span class="string">`status`</span> = <span class="number">0</span> ) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">id</span> <span class="keyword">desc</span> <span class="keyword">LIMIT</span> <span class="number">0</span>,<span class="number">10</span></span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">44</span>   <span class="number">5888814800</span> <span class="keyword">Query</span>      <span class="keyword">SET</span> AUTOCOMMIT=<span class="number">0</span></span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">44</span>   <span class="number">5888814800</span> <span class="keyword">Query</span>      <span class="keyword">UPDATE</span> <span class="string">`cc_order_user`</span> <span class="keyword">SET</span> <span class="string">`shipping_sn`</span>=<span class="string">'1xxx'</span>,<span class="string">`shipping_company_id`</span>=<span class="string">'yxxx'</span>,<span class="string">`status_delivery`</span>=<span class="number">2</span>,<span class="string">`delivery_time`</span>=<span class="number">1460340164</span> WHE</span><br><span class="line">RE ( <span class="string">`order_sn`</span> = <span class="string">'xxxx'</span> )</span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">44</span>   <span class="number">5888814800</span> <span class="keyword">Query</span>      <span class="keyword">COMMIT</span></span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">51</span>   <span class="number">5888814800</span> <span class="keyword">Query</span>      <span class="keyword">SET</span> AUTOCOMMIT=<span class="number">1</span></span><br><span class="line"><span class="number">160411</span>  <span class="number">2</span>:<span class="number">02</span>:<span class="number">51</span>   <span class="number">5888814800</span> Quit</span><br></pre></td></tr></table></figure>
+<p><strong>可以看到COMMIT就耗时7s</strong></p>
+<h3 id="2-1-COMMIT的时候做了哪些操作呢？"><a href="#2-1-COMMIT的时候做了哪些操作呢？" class="headerlink" title="2.1 COMMIT的时候做了哪些操作呢？"></a>2.1 COMMIT的时候做了哪些操作呢？</h3><p><strong>undolog日志</strong></p>
+<p><img src="/images/commit_undo.png" alt="commit_undolog"></p>
+<p><strong>redlog日志</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">m3306:shangcheng-m1 &gt;show variables like '%flush_log%';</span><br><span class="line">+<span class="comment">--------------------------------+-------+</span></span><br><span class="line">| Variable_name                  | Value |</span><br><span class="line">+<span class="comment">--------------------------------+-------+</span></span><br><span class="line">| innodb_flush_log_at_timeout    | 1     |</span><br><span class="line">| innodb_flush_log_at_trx_commit | 2     |</span><br><span class="line">+<span class="comment">--------------------------------+-------+</span></span><br></pre></td></tr></table></figure>
+<p>关于innodb_flush_log_at_trx_commit参数的含义如下图解释：</p>
+<p><img src="/images/innodb_flush_log_at_commit.jpg" alt="innodb_flush_log_at_commit"></p>
+<h3 id="2-2-查看redo-log更新的情况"><a href="#2-2-查看redo-log更新的情况" class="headerlink" title="2.2 查看redo log更新的情况"></a>2.2 查看redo log更新的情况</h3><p><strong>innodb_log_file_size参数大小</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">m3306:shangcheng-m1 &gt;show variables like '%innodb_log_file%';</span><br><span class="line">+<span class="comment">---------------------------+-----------+</span></span><br><span class="line">| Variable_name             | Value     |</span><br><span class="line">+<span class="comment">---------------------------+-----------+</span></span><br><span class="line">| innodb_log_file_size      | 134217728 |</span><br><span class="line">| innodb_log_files_in_group | 2         |</span><br><span class="line">+<span class="comment">---------------------------+-----------+</span></span><br><span class="line"></span><br><span class="line">m3306:shangcheng-m1 &gt;select 134217728/1024/1024;</span><br><span class="line">+<span class="comment">---------------------+</span></span><br><span class="line">| 134217728/1024/1024 |</span><br><span class="line">+<span class="comment">---------------------+</span></span><br><span class="line">|        128.00000000 |</span><br><span class="line">+<span class="comment">---------------------+</span></span><br></pre></td></tr></table></figure>
+<p>可以看出innodb_log_file_size只有128M，这和以往的经验差别很大（一般设置为&gt;1G）。</p>
+<p>根据performance的给出计算参考：</p>
+<p><a href="https://www.percona.com/blog/2008/11/21/how-to-calculate-a-good-innodb-log-file-size/" target="_blank" rel="external">https://www.percona.com/blog/2008/11/21/how-to-calculate-a-good-innodb-log-file-size/</a></p>
+<p><a href="https://www.percona.com/blog/2006/07/03/choosing-proper-innodb_log_file_size/" target="_blank" rel="external">https://www.percona.com/blog/2006/07/03/choosing-proper-innodb_log_file_size/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> 最大值</span><br><span class="line">MAX_SIZE=18.90M</span><br><span class="line"> 业务高峰开启的时候</span><br><span class="line">2016-04-11 02:00:01 10.20</span><br><span class="line">2016-04-11 02:01:01 18.90</span><br><span class="line">2016-04-11 02:02:01 12.27</span><br><span class="line">2016-04-11 02:03:01 13.22</span><br></pre></td></tr></table></figure>
+<p>按照上述参考计算值为18.9*60/2=567G,按照128M round，至少需要设置640M。</p>
+<p><strong>MySQL测试推荐</strong></p>
+<p><a href="http://dimitrik.free.fr/blog/archives/2015/10/mysql-performance-yes-we-can-do-more-than-16m-qps-sql-on-mysql-57-ga.html" target="_blank" rel="external">http://dimitrik.free.fr/blog/archives/2015/10/mysql-performance-yes-we-can-do-more-than-16m-qps-sql-on-mysql-57-ga.html</a></p>
+<p><strong>Handler情况</strong></p>
+<p><img src="/images/shangcheng_handler.png" alt="handler"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-03-16-mysqlgu-zhang-zong-jie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-03-16-mysqlgu-zhang-zong-jie/" itemprop="url">mysql故障总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-16T12:53:56+08:00">
+                2016-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-16-mysqlgu-zhang-zong-jie/" class="leancloud_visitors" data-flag-title="mysql故障总结">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="一、MetaTable-Lock"><a href="#一、MetaTable-Lock" class="headerlink" title="一、MetaTable Lock"></a>一、MetaTable Lock</h2><p><strong>1、问题现象:</strong><br><img src="/images/processlist.png" alt="img"></p>
+<p><strong>2、问题追查:</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> INNODB_TRX\G</span><br><span class="line">*************************** <span class="number">1.</span> <span class="keyword">row</span> ***************************</span><br><span class="line">trx_id: <span class="number">119520700800</span></span><br><span class="line">trx_state: RUNNING</span><br><span class="line">trx_started: <span class="number">2016</span><span class="number">-03</span><span class="number">-16</span> <span class="number">04</span>:<span class="number">45</span>:<span class="number">25</span></span><br><span class="line">trx_requested_lock_id: <span class="literal">NULL</span></span><br><span class="line">trx_wait_started: <span class="literal">NULL</span></span><br><span class="line">trx_weight: <span class="number">0</span></span><br><span class="line">trx_mysql_thread_id: <span class="number">17427746</span></span><br><span class="line">trx_query: <span class="literal">NULL</span></span><br><span class="line">trx_operation_state: <span class="literal">NULL</span></span><br><span class="line">trx_tables_in_use: <span class="number">0</span></span><br><span class="line">trx_tables_locked: <span class="number">0</span></span><br><span class="line">trx_lock_structs: <span class="number">0</span></span><br><span class="line">trx_lock_memory_bytes: <span class="number">360</span></span><br><span class="line">trx_rows_locked: <span class="number">0</span></span><br><span class="line">trx_rows_modified: <span class="number">0</span></span><br><span class="line">trx_concurrency_tickets: <span class="number">0</span></span><br><span class="line">trx_isolation_level: REPEATABLE <span class="keyword">READ</span></span><br><span class="line">trx_unique_checks: <span class="number">1</span></span><br><span class="line">trx_foreign_key_checks: <span class="number">1</span></span><br><span class="line">trx_last_foreign_key_error: <span class="literal">NULL</span></span><br><span class="line">trx_adaptive_hash_latched: <span class="number">0</span></span><br><span class="line">trx_adaptive_hash_timeout: <span class="number">10000</span></span><br><span class="line">trx_is_read_only: <span class="number">0</span></span><br><span class="line">trx_autocommit_non_locking: <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p><strong>3、上面的thread对应的查询语句</strong><br><img src="/images/metalock_query1.png" alt="img"></p>
+<font color="red">这个对thread_id对应的用户是搜索的。</font>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">160316  3:47:48   17424544 Connect  shop_search@10.30.23.222 on shop</span><br></pre></td></tr></table></figure>
+<p><strong>4、Metalock原理:</strong><br><a href="http://dev.mysql.com/doc/refman/5.6/en/metadata-locking.html" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.6/en/metadata-locking.html</a><br><a href="http://blog.itpub.net/25704976/viewspace-1379568/" target="_blank" rel="external">http://blog.itpub.net/25704976/viewspace-1379568/</a></p>
+<p><img src="/images/metalock3.png" alt="img"></p>
+<p>Binlog内操作的记录是基于事务的提交顺序进行的，如果有一个事务未执行完成，而这个时候drop了表，这样在从库的执行顺序就会出现问题。<br>MySQL在5.5.3版本后引入了Metadata lock锁，事务释放后才会释放Metadata lock，这样在事务完成期间，是不能进行DDL操作的。</p>
+<p><img src="/images/metalock4.png" alt="img"></p>
+<font color="red"><strong>从官方文档可以看出，对于Session1的SQL语句，不仅限于更新的SQL，对于SELECT语句一样如此，且其对Metalock的锁持有时间一直到事务结束。</strong></font>
+
+
+<p><strong>5、问题模拟:</strong></p>
+<p>手动开启事务然后进行alter table操作:<br><img src="/images/metalock.png" alt="img"></p>
+<p>回滚事务alter table操作成功:<br><img src="/images/metalock2.png" alt="img"></p>
+<p><strong>6、改进方案</strong><br>1、开启事务(set autocommit=0)，一定要显示的commit或者rollback，且事务里面不要包括太多的语句。<br>2、对于只是Select的查询，一定不要加事务，Innodb引擎是MVCC模式，加事务不起到任何作用。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-03-11-redis-sentinel/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Guosong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Guosong">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-03-11-redis-sentinel/" itemprop="url">Redis Sentinel</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-11T16:32:42+08:00">
+                2016-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-11-redis-sentinel/" class="leancloud_visitors" data-flag-title="Redis Sentinel">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1、Redis哨兵搭建测试"><a href="#1、Redis哨兵搭建测试" class="headerlink" title="1、Redis哨兵搭建测试"></a>1、Redis哨兵搭建测试</h2><h3 id="1-1-Redis主从信息"><a href="#1-1-Redis主从信息" class="headerlink" title="1.1 Redis主从信息"></a>1.1 Redis主从信息</h3><p><strong>主从信息:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis主库:10.30.6.184(service-test2)</span><br><span class="line">redis从库1:10.30.6.183(service-test3)</span><br><span class="line">redis从库2:10.30.6.217（service-test1）</span><br></pre></td></tr></table></figure>
+<p><strong>redis部署的目录结构:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">├── bin</span><br><span class="line">│   ├── redis-benchmark</span><br><span class="line">│   ├── redis-check-aof</span><br><span class="line">│   ├── redis-check-dump</span><br><span class="line">│   ├── redis-cli</span><br><span class="line">│   ├── redis-sentinel</span><br><span class="line">│   ├── redis-server</span><br><span class="line">│   └── redis-trib.rb</span><br><span class="line">├── conf</span><br><span class="line">│   ├── r3050.conf</span><br><span class="line">│   └── sentinel.conf</span><br><span class="line">├── data</span><br><span class="line">│   ├── appendonly.aof</span><br><span class="line">│   └── r3050.rdb</span><br><span class="line">├── log</span><br><span class="line">│   └── r3050.log</span><br><span class="line">└── tmp</span><br><span class="line">└── redis3050.pid</span><br></pre></td></tr></table></figure>
+<p><strong>redis配置文件:</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes</span><br><span class="line">pidfile /home/op/redis3050/tmp/redis3050.pid</span><br><span class="line">port 3050</span><br><span class="line">timeout 172800</span><br><span class="line">loglevel notice</span><br><span class="line">logfile /home/op/redis3050/log/r3050.log</span><br><span class="line">databases 16</span><br><span class="line">rdbcompression yes</span><br><span class="line">dbfilename r3050.rdb</span><br><span class="line">dir /home/op/redis3050/data/</span><br><span class="line">slave-serve-stale-data yes</span><br><span class="line">appendonly yes</span><br><span class="line">appendfilename appendonly.aof</span><br><span class="line">appendfsync everysec</span><br><span class="line">no-appendfsync-on-rewrite yes</span><br><span class="line">auto-aof-rewrite-percentage 0</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br><span class="line">slowlog-log-slower-than 10000</span><br><span class="line">slowlog-max-len 1024</span><br><span class="line">list-max-ziplist-entries 512</span><br><span class="line">list-max-ziplist-value 64</span><br><span class="line">set-max-intset-entries 512</span><br><span class="line">zset-max-ziplist-entries 128</span><br><span class="line">zset-max-ziplist-value 64</span><br><span class="line">activerehashing yes</span><br><span class="line">maxmemory-policy noeviction</span><br><span class="line">maxmemory 5G</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-哨兵配置"><a href="#1-2-哨兵配置" class="headerlink" title="1.2 哨兵配置"></a>1.2 哨兵配置</h3><p>以上三台机器上初始化sentinel配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 10.30.6.184 3050 2</span><br><span class="line">sentinel down-after-milliseconds mymaster 60000</span><br><span class="line">sentinel failover-timeout mymaster 18000</span><br><span class="line">sentinel config-epoch mymaster 0</span><br></pre></td></tr></table></figure>
+<p>通过下面命令在三台机器上启动哨兵:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/redis-sentinel ./conf/sentinel.conf &amp;</span><br></pre></td></tr></table></figure>
+<p>在主上可以看到收到下面消息，说明各个哨兵联合在一起了:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">22210:X 11 Mar 16:37:22.505 * +sentinel sentinel 10.30.6.183:26379 10.30.6.183 26379 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 16:37:46.050 * +sentinel sentinel 10.30.6.217:26379 10.30.6.217 26379 @ mymaster 10.30.6.184 3050</span><br></pre></td></tr></table></figure>
+<p>这个时候的哨兵配置文件内容变成如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 10.30.6.184 3050 2</span><br><span class="line">sentinel down-after-milliseconds mymaster 60000</span><br><span class="line">sentinel failover-timeout mymaster 18000</span><br><span class="line">sentinel config-epoch mymaster 0</span><br><span class="line">  Generated by CONFIG REWRITE</span><br><span class="line">port 26379</span><br><span class="line">dir &quot;/home/op/redis3050&quot;</span><br><span class="line">sentinel leader-epoch mymaster 0</span><br><span class="line">sentinel known-slave mymaster 10.30.6.217 3050</span><br><span class="line">sentinel known-slave mymaster 10.30.6.183 3050</span><br><span class="line">sentinel known-sentinel mymaster 10.30.6.217 26379 86aefa154fe695f9e0ea56312e01a14c24e79129</span><br><span class="line">sentinel known-sentinel mymaster 10.30.6.183 26379 61c53d7c01409da6b5e831d0fa26f49026909809</span><br><span class="line">sentinel current-epoch 0</span><br></pre></td></tr></table></figure>
+<p>每台均是如此。</p>
+<h2 id="2、Sentinel基本操作"><a href="#2、Sentinel基本操作" class="headerlink" title="2、Sentinel基本操作"></a>2、Sentinel基本操作</h2><h3 id="2-1-Sentinel-masters"><a href="#2-1-Sentinel-masters" class="headerlink" title="2.1 Sentinel masters"></a>2.1 Sentinel masters</h3><p>列出所有被见识的主Redis服务实例，以及这些主服务实例的当前状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:26379&gt; sentinel masters</span><br><span class="line">1)  1) &quot;name&quot;</span><br><span class="line">2) &quot;mymaster&quot;</span><br><span class="line">3) &quot;ip&quot;</span><br><span class="line">4) &quot;10.30.6.184&quot;</span><br><span class="line">5) &quot;port&quot;</span><br><span class="line">6) &quot;3050&quot;</span><br><span class="line">7) &quot;runid&quot;</span><br><span class="line">8) &quot;680b4c8c7cb4a05fadbe968e03c2c9e3de42e09e&quot;</span><br><span class="line">9) &quot;flags&quot;</span><br><span class="line">10) &quot;master&quot;</span><br><span class="line">......</span><br><span class="line">37) &quot;parallel-syncs&quot;</span><br><span class="line">38) &quot;1&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="2-2-Sentinel-Slaves"><a href="#2-2-Sentinel-Slaves" class="headerlink" title="2.2 Sentinel Slaves"></a>2.2 Sentinel Slaves</h3><p>列出给定主服务实例的所有从实例，以及这些从实例的当前状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:26379&gt; sentinel slaves mymaster</span><br><span class="line">1)  1) &quot;name&quot;</span><br><span class="line">2) &quot;10.30.6.217:3050&quot;</span><br><span class="line">3) &quot;ip&quot;</span><br><span class="line">4) &quot;10.30.6.217&quot;</span><br><span class="line">5) &quot;port&quot;</span><br><span class="line">6) &quot;3050&quot;</span><br><span class="line">7) &quot;runid&quot;</span><br><span class="line">8) &quot;9ae75482b5c770c7c0cf8aa2092eab7e450ec232&quot;</span><br><span class="line">9) &quot;flags&quot;</span><br><span class="line">10) &quot;slave&quot;</span><br><span class="line">......</span><br><span class="line">37) &quot;slave-repl-offset&quot;</span><br><span class="line">38) &quot;186791&quot;</span><br><span class="line">2)  1) &quot;name&quot;</span><br><span class="line">2) &quot;10.30.6.183:3050&quot;</span><br><span class="line">3) &quot;ip&quot;</span><br><span class="line">4) &quot;10.30.6.183&quot;</span><br><span class="line">5) &quot;port&quot;</span><br><span class="line">6) &quot;3050&quot;</span><br><span class="line">7) &quot;runid&quot;</span><br><span class="line">8) &quot;390beeec7d4ebfd0d4c0317eed3e97e498f4d9fd&quot;</span><br><span class="line">9) &quot;flags&quot;</span><br><span class="line">10) &quot;slave&quot;</span><br><span class="line">......</span><br><span class="line">38) &quot;186791&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-Sentinel-get-master-addr-by-name"><a href="#2-3-Sentinel-get-master-addr-by-name" class="headerlink" title="2.3 Sentinel get-master-addr-by-name"></a>2.3 Sentinel get-master-addr-by-name</h3><p>返回给定名字的主实例IP地址和端口号。如果这个主实例正在进行故障转移操作，<br>或者针对这个主实例的故障转移操作已经完成，那么这个命令返回新的主服务器的IP地址和端口号。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:26379&gt; sentinel get-master-addr-by-name mymaster</span><br><span class="line">1) &quot;10.30.6.184&quot;</span><br><span class="line">2) &quot;3050&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="2-4-Sentinel-failover"><a href="#2-4-Sentinel-failover" class="headerlink" title="2.4 Sentinel failover"></a>2.4 Sentinel failover</h3><p>进行一次主动的failover，即在不询问Sentinel意见的情况下，强制开始一次自动故障迁移。<br>发起故障迁移的Sentinel会向其他Sentinel发送一个新的配置，其他Sentinel会根据这个配置进行相应的更新。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">sentinel failover mymaster</span><br><span class="line">22210:X 11 Mar 17:03:59.846 # Executing user requested FAILOVER of &apos;mymaster&apos;</span><br><span class="line">22210:X 11 Mar 17:03:59.846 # +new-epoch 1</span><br><span class="line">22210:X 11 Mar 17:03:59.846 # +try-failover master mymaster 10.30.6.184 3050</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:26379&gt; 22210:X 11 Mar 17:03:59.890 # +vote-for-leader 8da81bbf7a87e42440046a8978b2fa69adc11fae 1</span><br><span class="line">22210:X 11 Mar 17:03:59.890 # +elected-leader master mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:03:59.890 # +failover-state-select-slave master mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:03:59.973 # +selected-slave slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:03:59.973 * +failover-state-send-slaveof-noone slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:00.031 * +failover-state-wait-promotion slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:00.901 # +promoted-slave slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:00.901 # +failover-state-reconf-slaves master mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:00.981 * +slave-reconf-sent slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:01.947 * +slave-reconf-inprog slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:01.947 * +slave-reconf-done slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:02.024 # +failover-end master mymaster 10.30.6.184 3050</span><br><span class="line">22210:X 11 Mar 17:04:02.024 # +switch-master mymaster 10.30.6.184 3050 10.30.6.183 3050</span><br><span class="line">22210:X 11 Mar 17:04:02.024 * +slave slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050</span><br><span class="line">22210:X 11 Mar 17:04:02.024 * +slave slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050</span><br><span class="line"></span><br><span class="line">127.0.0.1:26379&gt; sentinel get-master-addr-by-name mymaster</span><br><span class="line">1) &quot;10.30.6.183&quot;</span><br><span class="line">2) &quot;3050&quot;</span><br></pre></td></tr></table></figure>
+<p>可以看出来新的主，原来主变成新库的从库:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">11826:M 11 Mar 17:04:00.032 # Connection with slave 10.30.6.183:3050 lost.</span><br><span class="line">11826:M 11 Mar 17:04:00.982 # Connection with slave 10.30.6.217:3050 lost.</span><br><span class="line">11826:S 11 Mar 17:04:11.079 * SLAVE OF 10.30.6.183:3050 enabled (user request from &apos;id=23 addr=10.30.6.217:35942 fd=9 name=sentinel-86aefa15-cmd age=10 idle=0 flags=x db=0 sub=0</span><br><span class="line">psub=0 multi=3 qbuf=0 qbuf-free=32768 obl=36 oll=0 omem=0 events=rw cmd=exec&apos;)</span><br><span class="line">11826:S 11 Mar 17:04:11.079 # CONFIG REWRITE executed with success.</span><br><span class="line">11826:S 11 Mar 17:04:11.602 * Connecting to MASTER 10.30.6.183:3050</span><br><span class="line">11826:S 11 Mar 17:04:11.602 * MASTER &lt;-&gt; SLAVE sync started</span><br><span class="line">11826:S 11 Mar 17:04:11.602 * Non blocking connect for SYNC fired the event.</span><br><span class="line">11826:S 11 Mar 17:04:11.603 * Master replied to PING, replication can continue...</span><br><span class="line">11826:S 11 Mar 17:04:11.603 * Partial resynchronization not possible (no cached master)</span><br><span class="line">11826:S 11 Mar 17:04:11.605 * Full resync from master: 390beeec7d4ebfd0d4c0317eed3e97e498f4d9fd:357200</span><br><span class="line">11826:S 11 Mar 17:04:11.683 * MASTER &lt;-&gt; SLAVE sync: receiving 55 bytes from master</span><br><span class="line">11826:S 11 Mar 17:04:11.683 * MASTER &lt;-&gt; SLAVE sync: Flushing old data</span><br><span class="line">11826:S 11 Mar 17:04:11.683 * MASTER &lt;-&gt; SLAVE sync: Loading DB in memory</span><br><span class="line">11826:S 11 Mar 17:04:11.684 * MASTER &lt;-&gt; SLAVE sync: Finished with success</span><br><span class="line">11826:S 11 Mar 17:04:11.684 * Background append only file rewriting started by pid 27191</span><br><span class="line">11826:S 11 Mar 17:04:11.712 * AOF rewrite child asks to stop sending diffs.</span><br><span class="line">27191:C 11 Mar 17:04:11.712 * Parent agreed to stop sending diffs. Finalizing AOF...</span><br><span class="line">27191:C 11 Mar 17:04:11.712 * Concatenating 0.00 MB of AOF diff received from parent.</span><br><span class="line">27191:C 11 Mar 17:04:11.712 * SYNC append only file rewrite performed</span><br><span class="line">27191:C 11 Mar 17:04:11.712 * AOF rewrite: 0 MB of memory used by copy-on-write</span><br><span class="line">11826:S 11 Mar 17:04:11.802 * Background AOF rewrite terminated with success</span><br><span class="line">11826:S 11 Mar 17:04:11.802 * Residual parent diff successfully flushed to the rewritten AOF (0.00 MB)</span><br><span class="line">11826:S 11 Mar 17:04:11.802 * Background AOF rewrite finished successfully</span><br><span class="line">11826:S 11 Mar 17:16:59.969 * SLAVE OF would result into synchronization with the master we are already connected with. No operation performed.</span><br><span class="line">11826:M 11 Mar 17:17:16.301 # Connection with master lost.</span><br><span class="line">11826:M 11 Mar 17:17:16.301 * Caching the disconnected master state.</span><br><span class="line">11826:M 11 Mar 17:17:16.301 * Discarding previously cached master state.</span><br></pre></td></tr></table></figure>
+<h3 id="2-5-订阅哨兵的消息"><a href="#2-5-订阅哨兵的消息" class="headerlink" title="2.5 订阅哨兵的消息"></a>2.5 订阅哨兵的消息</h3><p>通过接受sentinel发送的通知:<br>当执行故障转移操作，或者某个被监视的实例被判断为主观下线或者客观下线时，Sentinel就会发送想要的信息。<br>一个频道能够接收和这个名字相同的事件。<br>通过执行PUBSCRIBE *命令接收所有事件信息。例如:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">10.30.6.184:26379&gt; PSUBSCRIBE *</span><br><span class="line">Reading messages... (press Ctrl-C to quit)</span><br><span class="line">1) &quot;psubscribe&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) (integer) 1</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+new-epoch&quot;</span><br><span class="line">4) &quot;2&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+try-failover&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+vote-for-leader&quot;</span><br><span class="line">4) &quot;8da81bbf7a87e42440046a8978b2fa69adc11fae 2&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+elected-leader&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-state-select-slave&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+selected-slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-state-send-slaveof-noone&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-state-wait-promotion&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;-role-change&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050 new reported role is master&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+promoted-slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-state-reconf-slaves&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave-reconf-sent&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave-reconf-inprog&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave-reconf-done&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+failover-end&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+switch-master&quot;</span><br><span class="line">4) &quot;mymaster 10.30.6.183 3050 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;-role-change&quot;</span><br><span class="line">4) &quot;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050 new reported role is master&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+role-change&quot;</span><br><span class="line">4) &quot;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050 new reported role is slave&quot;</span><br></pre></td></tr></table></figure>
+<p>从订阅的信息可以看出，故障检测、vote、以及修改其他从库同步。</p>
+<h3 id="2-6-模拟故障，手动kill主库的进程"><a href="#2-6-模拟故障，手动kill主库的进程" class="headerlink" title="2.6 模拟故障，手动kill主库的进程"></a>2.6 模拟故障，手动kill主库的进程</h3><p>从订阅的信息中可以看到+sdown的信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+sdown&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+new-epoch&quot;</span><br><span class="line">4) &quot;3&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+vote-for-leader&quot;</span><br><span class="line">4) &quot;86aefa154fe695f9e0ea56312e01a14c24e79129 3&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+odown&quot;</span><br><span class="line">4) &quot;master mymaster 10.30.6.184 3050 #quorum 3/2&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;-role-change&quot;</span><br><span class="line">4) &quot;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.184 3050 new reported role is master&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+config-update-from&quot;</span><br><span class="line">4) &quot;sentinel 10.30.6.217:26379 10.30.6.217 26379 @ mymaster 10.30.6.184 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+switch-master&quot;</span><br><span class="line">4) &quot;mymaster 10.30.6.184 3050 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&quot;</span><br><span class="line">1) &quot;pmessage&quot;</span><br><span class="line">2) &quot;*&quot;</span><br><span class="line">3) &quot;+slave&quot;</span><br><span class="line">4) &quot;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&quot;</span><br></pre></td></tr></table></figure>
+<p>当将老主库的实例启动起来之后，自动同步新主库。</p>
+<p><strong>SDOWN 主观下线</strong><br>如果服务器在给定的毫秒数之内，没有返回Sentinel发送的PING命令回复或者返回一个错误，那么Sentinel将这个服务器标记为主观下线(SDOWN)。</p>
+<p><strong>ODOWN 客观下线</strong><br>只有一个Sentinel将服务器标记为主观下线并不一定会引起服务器的自动故障迁移：只有在足够数量的Sentinel都将一个服务器标记为主观下线之后，服务器才会被标记为客观下线（ODOWN），这时自动故障迁移才会执行。</p>
+<p>将服务器标记为客观下线所需的Sentinel数量由对主服务器的配置决定。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster 10.30.6.184 3050 2</span><br></pre></td></tr></table></figure>
+<h3 id="2-7-Sentinel客户端"><a href="#2-7-Sentinel客户端" class="headerlink" title="2.7 Sentinel客户端"></a>2.7 Sentinel客户端</h3><p>如果要做到应用程序对Redis的failover透明，客户端需要监控sentinel的平道信息，并自动连接新的主节点。</p>
+<p>这里就需要整合sentinel的redis driver。</p>
+<h3 id="2-8-故障通知以及配置修改"><a href="#2-8-故障通知以及配置修改" class="headerlink" title="2.8 故障通知以及配置修改"></a>2.8 故障通知以及配置修改</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sentinel notification-script mymaster /var/redis/notify.sh</span><br><span class="line"></span><br><span class="line">  Call the specified notification script for any sentinel event that is</span><br><span class="line">  generated in the WARNING level (for instance -sdown, -odown, and so forth).</span><br><span class="line">  This script should notify the system administrator via email, SMS, or any</span><br><span class="line">  other messaging system, that there is something wrong with the monitored</span><br><span class="line">  Redis systems.</span><br><span class="line"></span><br><span class="line">sentinel client-reconfig-script mymaster /var/redis/reconfig.sh</span><br><span class="line">  When the master changed because of a failover a script can be called in</span><br><span class="line">  order to perform application-specific tasks to notify the clients that the</span><br><span class="line">  configuration has changed and the master is at a different address.</span><br></pre></td></tr></table></figure>
+<h3 id="2-9-哨兵切换过程"><a href="#2-9-哨兵切换过程" class="headerlink" title="2.9 哨兵切换过程"></a>2.9 哨兵切换过程</h3><p>一次故障转移操作步骤:</p>
+<ul>
+<li>发下主服务器已经进入客观下线状态</li>
+<li>对我们的当前纪元进行自增，并尝试在这个纪元中当选</li>
+<li>如果当选失败，那么在设定的故障迁移超时时间的两倍之后，重新尝试当选。如果当选成功，那么执行以下步骤</li>
+<li>选出一个从服务器，并将它升级为主服务器</li>
+<li>向被选中的从服务器发送SLAVEOF NO ONE命令，让它转变为主服务器</li>
+<li>通过发布与订阅功能，将更新后的配置传播给所有其他Sentinel，其他Sentinel队它们自己的配置进行更新</li>
+<li>向已下线主服务器的从服务器发送SLAVEOF命令，让它们去复制新的主服务器<br>+当所有从服务器都已经开始复制新的主服务器时，领头的Sentinel终止这次故障迁移操作。</li>
+</ul>
+<h3 id="2-10-后续处理"><a href="#2-10-后续处理" class="headerlink" title="2.10 后续处理"></a>2.10 后续处理</h3><p>什么时候知道从库已经全部同步完成？？</p>
+<p>通过python的订阅信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;pattern&apos;: None, &apos;type&apos;: &apos;psubscribe&apos;, &apos;channel&apos;: &apos;*&apos;, &apos;data&apos;: 1L&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+new-epoch&apos;, &apos;data&apos;: &apos;9&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+config-update-from&apos;, &apos;data&apos;: &apos;sentinel 10.30.6.217:26379 10.30.6.217 26379 @ mymaster 10.30.6.217 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+switch-master&apos;, &apos;data&apos;: &apos;mymaster 10.30.6.217 3050 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;-role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050 new reported role is master&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050 new reported role is slave&apos;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;pattern&apos;: None, &apos;type&apos;: &apos;psubscribe&apos;, &apos;channel&apos;: &apos;*&apos;, &apos;data&apos;: 1L&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+new-epoch&apos;, &apos;data&apos;: &apos;8&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+try-failover&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+vote-for-leader&apos;, &apos;data&apos;: &apos;558204b27aada22f980284b9447fa34c30ea2fa0 8&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+elected-leader&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-state-select-slave&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+selected-slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-state-send-slaveof-noone&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-state-wait-promotion&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;-role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050 new reported role is master&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+promoted-slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.217:3050 10.30.6.217 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-state-reconf-slaves&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave-reconf-sent&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave-reconf-inprog&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave-reconf-done&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+failover-end&apos;, &apos;data&apos;: &apos;master mymaster 10.30.6.183 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+switch-master&apos;, &apos;data&apos;: &apos;mymaster 10.30.6.183 3050 10.30.6.217 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.184:3050 10.30.6.184 3050 @ mymaster 10.30.6.217 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+slave&apos;, &apos;data&apos;: &apos;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.217 3050&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;-role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.217 3050 new reported role is master&apos;&#125;</span><br><span class="line">&#123;&apos;pattern&apos;: &apos;*&apos;, &apos;type&apos;: &apos;pmessage&apos;, &apos;channel&apos;: &apos;+role-change&apos;, &apos;data&apos;: &apos;slave 10.30.6.183:3050 10.30.6.183 3050 @ mymaster 10.30.6.217 3050 new reported role is slave&apos;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-11-问题"><a href="#2-11-问题" class="headerlink" title="2.11 问题"></a>2.11 问题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-failover-abort-slave-timeout master mytest 10.30.11.225 8379</span><br></pre></td></tr></table></figure>
+<p><a href="http://grokbase.com/t/gg/redis-db/147hea9vmm/redis-sentinel-manual-failover-hangs-on-failover-state-wait-promotion" target="_blank" rel="external">http://grokbase.com/t/gg/redis-db/147hea9vmm/redis-sentinel-manual-failover-hangs-on-failover-state-wait-promotion</a><br><a href="https://github.com/antirez/redis/pull/2097" target="_blank" rel="external">https://github.com/antirez/redis/pull/2097</a></p>
+<font color="red">原因在于修改对于config命令进行重命名操作了。</font>
+
+<p><a href="https://github.com/jipperinbham/redis/blob/sentinel-rename-command-3.0/sentinel.conf" target="_blank" rel="external">https://github.com/jipperinbham/redis/blob/sentinel-rename-command-3.0/sentinel.conf</a></p>
+<p><strong>添加对rename操作支持(支持config以及slaveof 的patch)</strong><br>一共存在两个分支，支持全局rename以及按照cluster的rename配置<br><a href="https://github.com/antirez/redis/pull/2068/commits/78b5be6833d627de96136cc41896b7d01bceaaed" target="_blank" rel="external">https://github.com/antirez/redis/pull/2068/commits/78b5be6833d627de96136cc41896b7d01bceaaed</a></p>
+<p>去哪儿使用的方式是使用patch的方式禁用高危命令，这些高危名利只对哨兵机器开放。</p>
+<p><strong>脚本调用超时</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[19809] 22 Mar 18:16:44.906 # +switch-master myredis 10.30.7.211 25379 10.30.7.212 25379</span><br><span class="line">[19809] 22 Mar 18:16:44.906 * +slave slave 10.30.7.213:25379 10.30.7.213 25379 @ myredis 10.30.7.212 25379</span><br><span class="line">[19809] 22 Mar 18:16:44.909 * +slave slave 10.30.7.211:25379 10.30.7.211 25379 @ myredis 10.30.7.212 25379</span><br><span class="line">[19809] 22 Mar 18:17:26.937 # -script-timeout /home/op/sentinel/reconfig.py 24081</span><br><span class="line">[19809] 22 Mar 18:18:57.183 # -script-timeout /home/op/sentinel/reconfig.py 24283</span><br></pre></td></tr></table></figure>
+<p><strong>单个从库出现问题之后如何处理？？</strong></p>
+<p><strong>订阅消息的地方如何处理？？</strong></p>
+<h2 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h2><ul>
+<li><a href="http://debugo.com/redis-sentinel/" target="_blank" rel="external">http://debugo.com/redis-sentinel/</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-03-08-greenpluman-zhuang/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1060,835 +1954,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-01-15-redisxiang-guan-lian-jie/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-01-15-redisxiang-guan-lian-jie/" itemprop="url">redis相关链接</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-15T11:51:43+08:00">
-                2016-01-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Redis/" itemprop="url" rel="index">
-                    <span itemprop="name">Redis</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-01-15-redisxiang-guan-lian-jie/" class="leancloud_visitors" data-flag-title="redis相关链接">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Redis-AOF相关"><a href="#Redis-AOF相关" class="headerlink" title="Redis AOF相关"></a>Redis AOF相关</h1><ol>
-<li><a href="http://idning.github.io/redis-aof-replay.html#aof-replay" target="_blank" rel="external">AOF Replay</a></li>
-<li><a href="http://www.cnblogs.com/daoluanxiaozi/p/3664922.html" target="_blank" rel="external">AOF 代码详解</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2016-01-05-mysqlda-xiao-can-shu-she-zhi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-01-05-mysqlda-xiao-can-shu-she-zhi/" itemprop="url">mysql大小参数设置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-05T10:22:40+08:00">
-                2016-01-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-01-05-mysqlda-xiao-can-shu-she-zhi/" class="leancloud_visitors" data-flag-title="mysql大小参数设置">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制"><a href="#MySQL5-5及其以下在同步的时候对lower-case-table-names有比较严格限制" class="headerlink" title="MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制"></a>MySQL5.5及其以下在同步的时候对lower_case_table_names有比较严格限制</h2><p>&gt;<br>It is strongly recommended that you always use the same setting for the lower_case_table_names system variable on both master and slave. In particular, when a case-sensitive file system is used, setting this variable to 1 on the slave, but to a different value on the master, can cause two types of problems: Names of databases are not converted to lowercase; in addition, when using row-based replication names of tables are also not converted. Either of these problems can cause replication to fail. This is a known issue, which is fixed in MySQL 5.6.</p>
-<p>否则会出现同步错误：<br>&gt;<br>Last_SQL_Errno: 1146<br>Last_SQL_Error: Error executing row event: ‘Table’ 10futu.commentAZXI’ doesn’t exist</p>
-<p><a href="http://dev.mysql.com/doc/refman/5.5/en/replication-features-variables.html" target="_blank" rel="external">http://dev.mysql.com/doc/refman/5.5/en/replication-features-variables.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/" itemprop="url">pt-online-schema-change使用方法</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-29T18:21:43+08:00">
-                2015-12-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/" class="leancloud_visitors" data-flag-title="pt-online-schema-change使用方法">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>经常使用pt-osc，需要哪些参数以及如何设置，这里给出个demo。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015-12-29-pt-online-schema-changeshi-yong-fang-fa/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-23-mysqlquan-wen-suo-yin/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015-12-23-mysqlquan-wen-suo-yin/" itemprop="url">mysql全文索引</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-23T15:07:57+08:00">
-                2015-12-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015-12-23-mysqlquan-wen-suo-yin/" class="leancloud_visitors" data-flag-title="mysql全文索引">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="0、全文索引"><a href="#0、全文索引" class="headerlink" title="0、全文索引"></a>0、全文索引</h2><p>说明全文索引使用情况，文件组织格式、使用方式等。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015-12-23-mysqlquan-wen-suo-yin/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dolphinsboy.github.io/2015-12-21-mysqlxing-neng-ce-shi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Guosong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Guosong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015-12-21-mysqlxing-neng-ce-shi/" itemprop="url">mysql性能测试</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-12-21T17:00:06+08:00">
-                2015-12-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index">
-                    <span itemprop="name">MySQL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015-12-21-mysqlxing-neng-ce-shi/" class="leancloud_visitors" data-flag-title="mysql性能测试">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="0、前言"><a href="#0、前言" class="headerlink" title="0、前言"></a>0、前言</h2><p>介绍sysbench相关的使用方法。</p>
-<h2 id="1、sysbench生成数据"><a href="#1、sysbench生成数据" class="headerlink" title="1、sysbench生成数据"></a>1、sysbench生成数据</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sysbench --<span class="built_in">test</span>=/home/guosong/<span class="built_in">source</span>/sysbench/sysbench/tests/db/oltp.lua</span><br><span class="line">--mysql-host=10.30.21.179 --mysql-port=4000</span><br><span class="line">--mysql-user=superdba --mysql-password=nUSP9RAOXXqTrNq50rRw</span><br><span class="line">--mysql-table-engine=innodb --oltp-table-size=20000000</span><br><span class="line">--max-time=180 --num-threads=30 --max-requests=0 prepare</span><br></pre></td></tr></table></figure>
-<p>直接使用otlp报错：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[guosong@dev-00 db]$ sysbench --<span class="built_in">test</span>=oltp <span class="built_in">help</span></span><br><span class="line">sysbench 0.5:  multi-threaded system evaluation benchmark</span><br><span class="line">PANIC: unprotected error <span class="keyword">in</span> call to Lua API (cannot open oltp: No such file or directory)</span><br></pre></td></tr></table></figure>
-<p>原因是这个0.5版本的特性，与0.4版本不同。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2 000 0000  行数据 4.8G</span><br><span class="line">2 0000 0000 行数据 48G</span><br></pre></td></tr></table></figure>
-<h2 id="2、运行"><a href="#2、运行" class="headerlink" title="2、运行"></a>2、运行</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">sysbench --num-threads=256 --<span class="built_in">test</span>=/home/guosong/<span class="built_in">source</span>/sysbench/sysbench/tests/db/oltp.lua</span><br><span class="line">--oltp-dist-type=uniform --oltp-table-name=sbtest_1</span><br><span class="line">--max-requests=0 --max-time=720</span><br><span class="line">--mysql-host=shangcheng-online-s1-d0.db --mysql-port=3306</span><br><span class="line">--mysql-user=dba --mysql-password=xxxxxx</span><br><span class="line">--mysql-db=sbtest --mysql-table-engine=INNODB</span><br><span class="line">--db-driver=mysql --oltp-point-selects=1</span><br><span class="line">--oltp-simple-ranges=0</span><br><span class="line">--oltp-sum-ranges=0</span><br><span class="line">--oltp-order-ranges=0</span><br><span class="line">--oltp-distinct-ranges=0</span><br><span class="line">--oltp-skip-trx=on</span><br><span class="line">--oltp-read-only=on run</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th style="text-align:left">含义</th>
-<th style="text-align:center">默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>–oltp-simple-ranges</td>
-<td style="text-align:left">Range size for range queries</td>
-<td style="text-align:center">100</td>
-</tr>
-<tr>
-<td>–oltp-sum-ranges</td>
-<td style="text-align:left">Number of SUM range queries in a single transaction</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td>–oltp-order-ranges</td>
-<td style="text-align:left">Number of ORDER range queries in a single transaction</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td>–oltp-distinct-ranges</td>
-<td style="text-align:left">Number of DISTINCT range queries in a single 1 transaction</td>
-<td style="text-align:center">1</td>
-</tr>
-<tr>
-<td>–oltp-skip-trx</td>
-<td style="text-align:left">Omit BEGIN/COMMIT statements, i.e. run the same queries as the test would normally run but without off using transactions.</td>
-<td style="text-align:center">off</td>
-</tr>
-<tr>
-<td>–oltp-read-only</td>
-<td style="text-align:left">Read-only mode. No UPDATE, DELETE or INSERT queries off will be performed.</td>
-<td style="text-align:center">off</td>
-</tr>
-</tbody>
-</table>
-<p><img src="/images/sysbench_demo.png" alt="../image/sysbench_demo.png"></p>
-<h2 id="3、参考资料"><a href="#3、参考资料" class="headerlink" title="3、参考资料"></a>3、参考资料</h2><ul>
-<li><a href="http://wiki.mikejung.biz/Benchmarking" target="_blank" rel="external">http://wiki.mikejung.biz/Benchmarking</a></li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1939,7 +2004,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-count">203</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1950,7 +2015,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

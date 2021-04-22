@@ -84,7 +84,7 @@
 <meta property="og:image" content="http://dolphinsboy.github.io/images/semi/how_after_sync.jpeg">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/semi/how_after_commit.jpeg">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/semi/failover.png">
-<meta property="og:updated_time" content="2021-04-02T09:38:37.461Z">
+<meta property="og:updated_time" content="2021-04-22T02:18:40.142Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="半同步复制">
 <meta name="twitter:description" content="前言传统的MySQL复制是主从异步复制的模式，在主库故障的时候，存在binlog未传到从库的场景，从而引发丢失的问题。为了解决这个问题，在MySQL5.5版本引入半同步复制功能。半同步同步机制是怎么样的？半同步是否完全解决数据丢失问题以及主从数据一致呢？本文一一介绍一下。">
@@ -428,14 +428,15 @@
 <p>对标的从库上sync_relay_log参数，如果是非1的情况，从库在Crash的时候就会丢失已经回复的主库ACK的事务。<br><img src="/images/semi/sync_relay_log.png" alt="sync_relay_log"></p>
 <h3 id="MySQL二阶段提交"><a href="#MySQL二阶段提交" class="headerlink" title="MySQL二阶段提交"></a>MySQL二阶段提交</h3><p>二阶段提交是Binlog和Redolog两者之间的，协调者为Binlog，崩溃恢复的时候仲裁由Binlog进行，如果Redolog回放的时候，未提交的事务没有在Binlog中找到，则回滚，否则提交。</p>
 <p><img src="/images/semi/mysql_2pc.jpg" alt="mysql_2pc"></p>
+<p>图来自<a href="http://mysqlmusings.blogspot.com/2012/06/binary-log-group-commit-in-mysql-56.html" target="_blank" rel="external">iMySQL沉思</a></p>
 <ul>
 <li>半同步如何保证数据不丢失？</li>
 <li>在从库ACK之后，如果主库还没有返回client，这个时候主库故障，会发生什么场景？</li>
 </ul>
 <h2 id="数据一致性"><a href="#数据一致性" class="headerlink" title="数据一致性"></a>数据一致性</h2><p><a href="http://my-replication-life.blogspot.com/2013/09/loss-less-semi-synchronous-replication.html" target="_blank" rel="external">Loss-less Semi-Synchronous Replication on MySQL 5.7.2</a><br><a href="http://mysql.taobao.org/monthly/2017/04/01/" target="_blank" rel="external">MySQL 半同步复制数据一致性分析</a></p>
 <p>半同步的两种类型，使用参数rpl_semi_sync_master_wait_point进行控制，包括两种AFTER_SYNC &amp; AFTER_COMMIT。</p>
-<h4 id="AFTER-SYNC模式"><a href="#AFTER-SYNC模式" class="headerlink" title="AFTER_SYNC模式"></a>AFTER_SYNC模式</h4><p>master将新的事务写入binlog（buffer），然后发送给slave，再sync到自己的binlog file（disk）。之后才允许接收slave的ACK回复。接收到ACK之后才会引擎层提交事务，并返回成功信息给客户端。<span style="color: red"><strong>这里的AFTER_SYNC是在主库binlog的sync之后就接收SLAVE的ACK回复。</strong></span><br><img src="/images/semi/how_after_sync.jpeg" alt="after_sync"></p>
-<h4 id="AFTER-COMMIT模式"><a href="#AFTER-COMMIT模式" class="headerlink" title="AFTER_COMMIT模式"></a>AFTER_COMMIT模式</h4><p>master将新的事务写入binlog（buffer），然后发送给slave，再sync到自己的binlog（disk），然后直接引擎提交事务。之后才允许接收slave的ACK回复，然后再返回成功信息给客户端。<span style="color: red"><strong>这里的AFTER COMMIT是在引擎层commit之后再接收SLAVE的ACK回复。</strong></span><br><img src="/images/semi/how_after_commit.jpeg" alt="after_commit"></p>
+<h3 id="AFTER-SYNC模式"><a href="#AFTER-SYNC模式" class="headerlink" title="AFTER_SYNC模式"></a>AFTER_SYNC模式</h3><p>master将新的事务写入binlog（buffer），然后发送给slave，再sync到自己的binlog file（disk）。之后才允许接收slave的ACK回复。接收到ACK之后才会引擎层提交事务，并返回成功信息给客户端。<span style="color: red"><strong>这里的AFTER_SYNC是在主库binlog的sync之后就接收SLAVE的ACK回复。</strong></span><br><img src="/images/semi/how_after_sync.jpeg" alt="after_sync"></p>
+<h3 id="AFTER-COMMIT模式"><a href="#AFTER-COMMIT模式" class="headerlink" title="AFTER_COMMIT模式"></a>AFTER_COMMIT模式</h3><p>master将新的事务写入binlog（buffer），然后发送给slave，再sync到自己的binlog（disk），然后直接引擎提交事务。之后才允许接收slave的ACK回复，然后再返回成功信息给客户端。<span style="color: red"><strong>这里的AFTER COMMIT是在引擎层commit之后再接收SLAVE的ACK回复。</strong></span><br><img src="/images/semi/how_after_commit.jpeg" alt="after_commit"></p>
 <p>图参照<a href="https://www.cnblogs.com/f-ck-need-u/p/9166452.html" target="_blank" rel="external">深入MySQL复制(三)：半同步复制</a></p>
 <p>AFTER_COMMIT模式使得数据持久化保存并对释放对数据的锁定。因此，即使client仍在等待确认，此后其他会话也可以访问到该数据。如果master故障而slave切换之后，它会导致幻读。具体如下图所示：<br><img src="/images/semi/failover.png" alt="failover"><br>新主库没有最新的数据，说明新主库ACK没有返回成功，而旧主库已经引擎层提交了，这个时候旧主库出现故障并发生切换的情况。</p>
 <p>一开始是AFTER_COMMIT的模式，在5.7.2引入Loss-Less Semi-Synchronous机制，也就是AFTER_SYNC模式。</p>
@@ -471,8 +472,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021-03-26-Binlog日志格式/" rel="next" title="Binlog日志格式">
-                <i class="fa fa-chevron-left"></i> Binlog日志格式
+              <a href="/2021-03-26-Binlog日志/" rel="next" title="Binlog日志">
+                <i class="fa fa-chevron-left"></i> Binlog日志
               </a>
             
           </div>
@@ -560,7 +561,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-count">203</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -571,7 +572,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -617,7 +618,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-number">2.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#半同步复制流程"><span class="nav-number">2.1.</span> <span class="nav-text">半同步复制流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#场景分析"><span class="nav-number">2.1.1.</span> <span class="nav-text">场景分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL二阶段提交"><span class="nav-number">2.2.</span> <span class="nav-text">MySQL二阶段提交</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据一致性"><span class="nav-number">3.</span> <span class="nav-text">数据一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AFTER-SYNC模式"><span class="nav-number">3.0.1.</span> <span class="nav-text">AFTER_SYNC模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AFTER-COMMIT模式"><span class="nav-number">3.0.2.</span> <span class="nav-text">AFTER_COMMIT模式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#半同步配置"><span class="nav-number">4.</span> <span class="nav-text">半同步配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关参数"><span class="nav-number">4.1.</span> <span class="nav-text">相关参数</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架构"><span class="nav-number">2.</span> <span class="nav-text">架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#半同步复制流程"><span class="nav-number">2.1.</span> <span class="nav-text">半同步复制流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#场景分析"><span class="nav-number">2.1.1.</span> <span class="nav-text">场景分析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL二阶段提交"><span class="nav-number">2.2.</span> <span class="nav-text">MySQL二阶段提交</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据一致性"><span class="nav-number">3.</span> <span class="nav-text">数据一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AFTER-SYNC模式"><span class="nav-number">3.1.</span> <span class="nav-text">AFTER_SYNC模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AFTER-COMMIT模式"><span class="nav-number">3.2.</span> <span class="nav-text">AFTER_COMMIT模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#半同步配置"><span class="nav-number">4.</span> <span class="nav-text">半同步配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关参数"><span class="nav-number">4.1.</span> <span class="nav-text">相关参数</span></a></li></ol></li></ol></div>
             
 
           </div>

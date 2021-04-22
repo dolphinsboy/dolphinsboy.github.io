@@ -68,17 +68,17 @@
 
 
 
-<meta name="description" content="1、背景多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压缩过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。 由此引发一个问题就是如何找出被kill">
+<meta name="description" content="1、背景多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压力过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。 由此引发一个问题就是如何找出被kill">
 <meta property="og:type" content="article">
 <meta property="og:title" content="信号量扑捉">
 <meta property="og:url" content="http://dolphinsboy.github.io/2015-07-14-xin-hao-liang-bu-zhuo/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="1、背景多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压缩过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。 由此引发一个问题就是如何找出被kill">
+<meta property="og:description" content="1、背景多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压力过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。 由此引发一个问题就是如何找出被kill">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-19T02:35:52.000Z">
+<meta property="og:updated_time" content="2021-04-09T08:05:50.598Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="信号量扑捉">
-<meta name="twitter:description" content="1、背景多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压缩过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。 由此引发一个问题就是如何找出被kill">
+<meta name="twitter:description" content="1、背景多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压力过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。 由此引发一个问题就是如何找出被kill">
 
 
 
@@ -400,7 +400,7 @@
       
 
       
-        <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压缩过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。</p>
+        <h3 id="1、背景"><a href="#1、背景" class="headerlink" title="1、背景"></a>1、背景</h3><p>多个平台共同使用一台中控机，由于某个部门运行python脚本的bug，导致机器压力过大无法登陆，解决的方案就是重启机器，由于是部署的crontab任务，机器启动之后很快有不行了。其他部门的同学在没有通知的情况，使用一个死循序kill掉所有和python相关的运行程序。由于没有周知其他部门的同学，其他部门同学随便运行一个python脚本都会被kill。</p>
 <p>由此引发一个问题就是如何找出被kill程序对应的源程序呢？</p>
 <h3 id="2、信号量"><a href="#2、信号量" class="headerlink" title="2、信号量"></a>2、信号量</h3><blockquote>
 <p>kill -9 和 kill -15的区别？？</p>
@@ -449,8 +449,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015-07-20-using-mysql-with-java/" rel="prev" title="Using MySQL with java">
-                Using MySQL with java <i class="fa fa-chevron-right"></i>
+              <a href="/2015-07-22-zai-intellij-ideazhong-pei-zhi-golang/" rel="prev" title="在Intellij IDEA中配置golang">
+                在Intellij IDEA中配置golang <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -528,7 +528,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-count">203</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -539,7 +539,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

@@ -52,7 +52,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Hadoop," />
 
 
 
@@ -68,14 +68,20 @@
 
 
 
+<meta name="description" content="HDFS读关键问题 整体读的流程 就近访问规则 如何保证数据一致性 一个文件涉及多个Block，Block之间是串行读取还是并发读取？ 数据读取的单位是啥？">
+<meta name="keywords" content="Hadoop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2021-04-01_HDFS-读流程">
 <meta property="og:url" content="http://dolphinsboy.github.io/2021-04-01-HDFS-读流程/index.html">
 <meta property="og:site_name" content="Guosong">
+<meta property="og:description" content="HDFS读关键问题 整体读的流程 就近访问规则 如何保证数据一致性 一个文件涉及多个Block，Block之间是串行读取还是并发读取？ 数据读取的单位是啥？">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-04-01T03:41:24.322Z">
+<meta property="og:image" content="http://dolphinsboy.github.io/images/hadoop/client_read_hdfs.png">
+<meta property="og:updated_time" content="2021-04-09T07:34:02.969Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2021-04-01_HDFS-读流程">
+<meta name="twitter:description" content="HDFS读关键问题 整体读的流程 就近访问规则 如何保证数据一致性 一个文件涉及多个Block，Block之间是串行读取还是并发读取？ 数据读取的单位是啥？">
+<meta name="twitter:image" content="http://dolphinsboy.github.io/images/hadoop/client_read_hdfs.png">
 
 
 
@@ -337,6 +343,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">Hadoop</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -375,7 +403,33 @@
       
 
       
-        
+        <h3 id="HDFS读关键问题"><a href="#HDFS读关键问题" class="headerlink" title="HDFS读关键问题"></a>HDFS读关键问题</h3><ul>
+<li>整体读的流程</li>
+<li>就近访问规则</li>
+<li>如何保证数据一致性</li>
+<li>一个文件涉及多个Block，Block之间是串行读取还是并发读取？</li>
+<li>数据读取的单位是啥？</li>
+</ul>
+<a id="more"></a>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><p>-1. block：HDFS操作文件的最小单元，默认是128MB<br>-2. chunk：文件块block实际存储/校验的最小单位，chunk包括数据域（默认512字节）和校验域（checksum值，固定4个字节）<br>-3. packet：HDFS各组件间数据传输的基本单位，默认64KB</p>
+<p>三者之间的关系为：</p>
+<ul>
+<li>1个block由多个chunk data组成，每个chunk data里存储的都是二进制数据</li>
+<li>1个block对应一个meta文件，存放与之对应的chunk checksum</li>
+<li>HDFS组件间传输数据最小以packet为单位，1个packet由多个chunk构成，传输后取出其中的chunk（data+checksum），最后构成block和meta</li>
+</ul>
+<h3 id="HDFS读Java代码"><a href="#HDFS读Java代码" class="headerlink" title="HDFS读Java代码"></a>HDFS读Java代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FSDataInputStream;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.fs.FileSystem;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.IOUtils;</span><br><span class="line"><span class="keyword">import</span> java.net.URI;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FileRead</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">        String dst = <span class="string">"hdfs://my-hadoop-test14:8020/tmp/tezsmokeinput/sample-tez-test"</span>;</span><br><span class="line">        Configuration conf = <span class="keyword">new</span> Configuration();</span><br><span class="line">        FileSystem fs = FileSystem.get(URI.create(dst), conf);</span><br><span class="line">        <span class="comment">//发RPC给NameNode，返回的stream对象包含文件对应的block+dn列表（假设文件已存在，且权限认证通过）</span></span><br><span class="line">        FSDataInputStream in = fs.open(<span class="keyword">new</span> Path(dst));</span><br><span class="line">        <span class="comment">//读取核心的逻辑</span></span><br><span class="line">        in.read();</span><br><span class="line">        IOUtils.copyBytes(in, System.out, <span class="number">4096</span>, <span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>读文件流程看着比较简单，关键的三行代码，背后对应哪些流程和细节呢？</p>
+<p><img src="/images/hadoop/client_read_hdfs.png" alt="client_read_hdfs"></p>
+<p>关键流程如下：</p>
+<ul>
+<li>客户端通过F</li>
+</ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><ul>
+<li><a href="http://www.imbajin.com/2020-01-17-HDFS%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90%E4%B9%8BClient%E8%AF%BB%E6%B5%81%E7%A8%8B%E4%B8%80/" target="_blank" rel="external">HDFS源码分析之Client读流程</a></li>
+<li>Hadoop权威指南第四版</li>
+</ul>
+
       
     </div>
     
@@ -389,6 +443,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+        </div>
       
 
       
@@ -463,8 +523,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -479,7 +548,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-count">203</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -490,7 +559,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -526,6 +595,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HDFS读关键问题"><span class="nav-number">1.</span> <span class="nav-text">HDFS读关键问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HDFS读Java代码"><span class="nav-number">3.</span> <span class="nav-text">HDFS读Java代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

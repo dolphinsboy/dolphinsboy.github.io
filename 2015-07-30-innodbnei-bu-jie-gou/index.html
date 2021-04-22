@@ -68,17 +68,17 @@
 
 
 
-<meta name="description" content="1、资料来源 逐篇阅读Jeremy Cole大拿的bloghttp://blog.jcole.us/innodb/进行记录汇总。  官方的Internals https://dev.mysql.com/doc/internals/en/index.html   两个结合在一起看。">
+<meta name="description" content="资料来源 逐篇阅读Jeremy Cole大拿的bloghttp://blog.jcole.us/innodb/进行记录汇总。 官方的Internals https://dev.mysql.com/doc/internals/en/index.html  两个结合在一起看。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Innodb内部结构">
 <meta property="og:url" content="http://dolphinsboy.github.io/2015-07-30-innodbnei-bu-jie-gou/index.html">
 <meta property="og:site_name" content="Guosong">
-<meta property="og:description" content="1、资料来源 逐篇阅读Jeremy Cole大拿的bloghttp://blog.jcole.us/innodb/进行记录汇总。  官方的Internals https://dev.mysql.com/doc/internals/en/index.html   两个结合在一起看。">
+<meta property="og:description" content="资料来源 逐篇阅读Jeremy Cole大拿的bloghttp://blog.jcole.us/innodb/进行记录汇总。 官方的Internals https://dev.mysql.com/doc/internals/en/index.html  两个结合在一起看。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-19T02:29:00.000Z">
+<meta property="og:updated_time" content="2021-04-09T08:10:36.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Innodb内部结构">
-<meta name="twitter:description" content="1、资料来源 逐篇阅读Jeremy Cole大拿的bloghttp://blog.jcole.us/innodb/进行记录汇总。  官方的Internals https://dev.mysql.com/doc/internals/en/index.html   两个结合在一起看。">
+<meta name="twitter:description" content="资料来源 逐篇阅读Jeremy Cole大拿的bloghttp://blog.jcole.us/innodb/进行记录汇总。 官方的Internals https://dev.mysql.com/doc/internals/en/index.html  两个结合在一起看。">
 
 
 
@@ -400,15 +400,13 @@
       
 
       
-        <h2 id="1、资料来源"><a href="#1、资料来源" class="headerlink" title="1、资料来源"></a>1、资料来源</h2><ul>
-<li><p>逐篇阅读Jeremy Cole大拿的blog<a href="http://blog.jcole.us/innodb/" target="_blank" rel="external">http://blog.jcole.us/innodb/</a>进行记录汇总。</p>
-</li>
-<li><p>官方的Internals <a href="https://dev.mysql.com/doc/internals/en/index.html" target="_blank" rel="external">https://dev.mysql.com/doc/internals/en/index.html</a></p>
-</li>
+        <h2 id="资料来源"><a href="#资料来源" class="headerlink" title="资料来源"></a>资料来源</h2><ul>
+<li>逐篇阅读Jeremy Cole大拿的blog<a href="http://blog.jcole.us/innodb/" target="_blank" rel="external">http://blog.jcole.us/innodb/</a>进行记录汇总。</li>
+<li>官方的Internals <a href="https://dev.mysql.com/doc/internals/en/index.html" target="_blank" rel="external">https://dev.mysql.com/doc/internals/en/index.html</a></li>
 </ul>
 <p>两个结合在一起看。</p>
 <a id="more"></a>
-<h2 id="2、Innodb记录结构"><a href="#2、Innodb记录结构" class="headerlink" title="2、Innodb记录结构"></a>2、Innodb记录结构</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`test4`</span> (</span><br><span class="line"><span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line"><span class="string">`data`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'1'</span>,</span><br><span class="line"><span class="string">`data2`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8</span><br></pre></td></tr></table></figure>
+<h2 id="Innodb记录结构"><a href="#Innodb记录结构" class="headerlink" title="Innodb记录结构"></a>Innodb记录结构</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`test4`</span> (</span><br><span class="line"><span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line"><span class="string">`data`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> <span class="keyword">DEFAULT</span> <span class="string">'1'</span>,</span><br><span class="line"><span class="string">`data2`</span> <span class="built_in">varchar</span>(<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span>  <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8</span><br></pre></td></tr></table></figure>
 <p>表t包括6个列，而不是3个列，额外的看不到的列是row ID、transaction ID以及rollback pointer。</p>
 <p>插入如下记录：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+<span class="comment">-------+------+--------+</span></span><br><span class="line">| id    | data | data2  |</span><br><span class="line">+<span class="comment">-------+------+--------+</span></span><br><span class="line">|     1 |    0 | NULL   |</span><br><span class="line">|     2 |    0 | b      |</span><br><span class="line">|     3 |    0 | b      |</span><br><span class="line">|     4 |    0 | b      |</span><br><span class="line">|    10 |    1 | NULL   |</span><br><span class="line">|    11 |    2 | TTTTT  |</span><br><span class="line">+<span class="comment">-------+------+--------+</span></span><br></pre></td></tr></table></figure>
@@ -419,10 +417,10 @@
 
 <p>28个字节</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> binascii</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'i'</span>)</span><br><span class="line"><span class="string">'69'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'n'</span>)</span><br><span class="line"><span class="string">'6e'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'f'</span>)</span><br><span class="line"><span class="string">'66'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'i'</span>)</span><br><span class="line"><span class="string">'69'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'m'</span>)</span><br><span class="line"><span class="string">'6d'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>binascii.b2a_hex(<span class="string">'u'</span>)</span><br><span class="line"><span class="string">'75'</span></span><br><span class="line">&gt;&gt;&gt;hex(<span class="number">1024</span>*<span class="number">3</span>)</span><br><span class="line"><span class="string">'0xc00'</span></span><br></pre></td></tr></table></figure>
-<p>使用姜承尧的脚本进行分析<a href="http://code.google.com/p/david-mysql-tools/source/browse/trunk/py_innodb_page_type/" target="_blank" rel="external">http://code.google.com/p/david-mysql-tools/source/browse/trunk/py_innodb_page_type/</a></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">page offset 00000000, page type <span class="tag">&lt;<span class="name">File</span> <span class="attr">Space</span> <span class="attr">Header</span>&gt;</span></span><br><span class="line">page offset 00000001, page type <span class="tag">&lt;<span class="name">Insert</span> <span class="attr">Buffer</span> <span class="attr">Bitmap</span>&gt;</span></span><br><span class="line">page offset 00000002, page type <span class="tag">&lt;<span class="name">File</span> <span class="attr">Segment</span> <span class="attr">inode</span>&gt;</span></span><br><span class="line">page offset 00000003, page type <span class="tag">&lt;<span class="name">B-tree</span> <span class="attr">Node</span>&gt;</span>, page level <span class="tag">&lt;<span class="name">0000</span>&gt;</span></span><br><span class="line">page offset 00000000, page type <span class="tag">&lt;<span class="name">Freshly</span> <span class="attr">Allocated</span> <span class="attr">Page</span>&gt;</span></span><br><span class="line">page offset 00000000, page type <span class="tag">&lt;<span class="name">Freshly</span> <span class="attr">Allocated</span> <span class="attr">Page</span>&gt;</span></span><br><span class="line">Total number of page: 6:</span><br><span class="line">Freshly Allocated Page: 2</span><br><span class="line">Insert Buffer Bitmap: 1</span><br><span class="line">File Space Header: 1</span><br><span class="line">B-tree Node: 1</span><br><span class="line">File Segment inode: 1</span><br></pre></td></tr></table></figure>
+<p><a href="http://code.google.com/p/david-mysql-tools/source/browse/trunk/py_innodb_page_type/" target="_blank" rel="external">使用py_innodb_page_type</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">page offset 00000000, page type &lt;File Space Header&gt;</span><br><span class="line">page offset 00000001, page type &lt;Insert Buffer Bitmap&gt;</span><br><span class="line">page offset 00000002, page type &lt;File Segment inode&gt;</span><br><span class="line">page offset 00000003, page type &lt;B-tree Node&gt;, page level &lt;0000&gt;</span><br><span class="line">page offset 00000000, page type &lt;Freshly Allocated Page&gt;</span><br><span class="line">page offset 00000000, page type &lt;Freshly Allocated Page&gt;</span><br><span class="line">Total number of page: 6:</span><br><span class="line">Freshly Allocated Page: 2</span><br><span class="line">Insert Buffer Bitmap: 1</span><br><span class="line">File Space Header: 1</span><br><span class="line">B-tree Node: 1</span><br><span class="line">File Segment inode: 1</span><br></pre></td></tr></table></figure>
 <p>总共6个page，文件大小是96KB，innodb单个页面大小为16KB，故也是6个page</p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1、<a href="http://www.cnblogs.com/zhoujinyi/archive/2012/10/17/2726462.html" target="_blank" rel="external">http://www.cnblogs.com/zhoujinyi/archive/2012/10/17/2726462.html</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://www.cnblogs.com/zhoujinyi/archive/2012/10/17/2726462.html" target="_blank" rel="external">http://www.cnblogs.com/zhoujinyi/archive/2012/10/17/2726462.html</a></p>
 
       
     </div>
@@ -536,7 +534,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">208</span>
+                <span class="site-state-item-count">203</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -547,7 +545,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">22</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -593,7 +591,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1、资料来源"><span class="nav-number">1.</span> <span class="nav-text">1、资料来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2、Innodb记录结构"><span class="nav-number">2.</span> <span class="nav-text">2、Innodb记录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#资料来源"><span class="nav-number">1.</span> <span class="nav-text">资料来源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Innodb记录结构"><span class="nav-number">2.</span> <span class="nav-text">Innodb记录结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
 
           </div>
