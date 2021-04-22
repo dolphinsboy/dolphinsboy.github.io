@@ -84,7 +84,7 @@
 <meta property="og:image" content="http://dolphinsboy.github.io/images/semi/how_after_sync.jpeg">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/semi/how_after_commit.jpeg">
 <meta property="og:image" content="http://dolphinsboy.github.io/images/semi/failover.png">
-<meta property="og:updated_time" content="2021-04-22T02:18:40.142Z">
+<meta property="og:updated_time" content="2021-04-22T03:13:27.103Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="半同步复制">
 <meta name="twitter:description" content="前言传统的MySQL复制是主从异步复制的模式，在主库故障的时候，存在binlog未传到从库的场景，从而引发丢失的问题。为了解决这个问题，在MySQL5.5版本引入半同步复制功能。半同步同步机制是怎么样的？半同步是否完全解决数据丢失问题以及主从数据一致呢？本文一一介绍一下。">
@@ -441,7 +441,7 @@
 <p>AFTER_COMMIT模式使得数据持久化保存并对释放对数据的锁定。因此，即使client仍在等待确认，此后其他会话也可以访问到该数据。如果master故障而slave切换之后，它会导致幻读。具体如下图所示：<br><img src="/images/semi/failover.png" alt="failover"><br>新主库没有最新的数据，说明新主库ACK没有返回成功，而旧主库已经引擎层提交了，这个时候旧主库出现故障并发生切换的情况。</p>
 <p>一开始是AFTER_COMMIT的模式，在5.7.2引入Loss-Less Semi-Synchronous机制，也就是AFTER_SYNC模式。</p>
 <h2 id="半同步配置"><a href="#半同步配置" class="headerlink" title="半同步配置"></a>半同步配置</h2><h3 id="相关参数"><a href="#相关参数" class="headerlink" title="相关参数"></a>相关参数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show global variables like &apos;rpl_semi_%&apos;;</span><br><span class="line">+-------------------------------------------+------------+</span><br><span class="line">| Variable_name                             | Value      |</span><br><span class="line">+-------------------------------------------+------------+</span><br><span class="line">| rpl_semi_sync_master_enabled              | OFF        |</span><br><span class="line">| rpl_semi_sync_master_timeout              | 10000      |</span><br><span class="line">| rpl_semi_sync_master_trace_level          | 32         |</span><br><span class="line">| rpl_semi_sync_master_wait_for_slave_count | 1          |</span><br><span class="line">| rpl_semi_sync_master_wait_no_slave        | ON         |</span><br><span class="line">| rpl_semi_sync_master_wait_point           | AFTER_SYNC |</span><br><span class="line">| rpl_semi_sync_slave_enabled               | OFF        |</span><br><span class="line">| rpl_semi_sync_slave_trace_level           | 32         |</span><br><span class="line">+-------------------------------------------+------------+</span><br></pre></td></tr></table></figure>
-<p><strong>线上使用的时候多注意rpl_semi_sync_master_timeout，超时之后自动从半同步复制降级到异步复制。</strong><br>主要参照<a href="https://www.cnblogs.com/f-ck-need-u/p/9166452.html" target="_blank" rel="external">https://www.cnblogs.com/f-ck-need-u/p/9166452.html</a></p>
+<p><span style="color: red">rpl_semi_sync_master_wait_for_slave_count 控制至少有几个slave回复ACK之后才返回给客户端。</span><br><strong>线上使用的时候多注意rpl_semi_sync_master_timeout，超时之后自动从半同步复制降级到异步复制。</strong><br>主要参照<a href="https://www.cnblogs.com/f-ck-need-u/p/9166452.html" target="_blank" rel="external">https://www.cnblogs.com/f-ck-need-u/p/9166452.html</a></p>
 
       
     </div>
